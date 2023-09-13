@@ -1,0 +1,192 @@
+/**
+ * This injects Tailwind's base styles, which is a combination of
+ * Normalize.css and some additional base styles.
+ *
+ * You can see the styles here:
+ * https://unpkg.com/tailwindcss/dist/base.css
+ */
+@tailwind base;
+
+/**
+ * Remove the default box-shadow for invalid elements to prevent
+ * inputs in Livewire components showing with a
+ * red border by default in Firefox.
+ *
+ * See: https://github.com/laravel-frontend-presets/tall/issues/7
+ */
+ input:invalid, textarea:invalid, select:invalid {
+    box-shadow: none;
+}
+
+/**
+ * This injects any component classes registered by plugins.
+ */
+@tailwind components;
+
+/**
+ * Here you would add any of your custom component classes; stuff that you'd
+ * want loaded *before* the utilities so that the utilities could still
+ * override them.
+ *
+ * Example:
+ *
+ * .btn { ... }
+ * .form-input { ... }
+ */
+
+/**
+ * This injects all of Tailwind's utility classes, generated based on your
+ * config file.
+ */
+@tailwind utilities;
+
+/**
+ * Here you would add any custom utilities you need that don't come out of the
+ * box with Tailwind.
+ *
+ * Example :
+ *
+ * .bg-pattern-graph-paper { ... }
+ * .skew-45 { ... }
+ */
+
+ [x-cloak] {
+    display: none;
+}
+
+@font-face {
+    font-family: UbuntuBold;
+    src: url('../../public/font/Ubuntu-Bold.ttf');
+}
+
+@font-face {
+    font-family: UbuntuLight;
+    src: url('../../public/font/Ubuntu-Light.ttf');
+}
+
+@font-face {
+    font-family: UbuntuRegular;
+    src: url('../../public/font/Ubuntu-Regular.ttf');
+}
+
+@font-face {
+    font-family: UbuntuSemibold;
+    src: url('../../public/font/Ubuntu-Medium.ttf');
+}
+
+.myFontRegular{
+    font-family: UbuntuRegular;
+}
+.myFontMedium{
+    font-family: UbuntuMedium;
+}
+.myFontBold{
+    font-family: UbuntuBold;
+}
+.myFontLight{
+    font-family: UbuntuLight;
+}
+.filepond--credits{
+    display: none;
+}
+.filepond--root .filepond--drop-label {
+    min-height: 8.75em;
+    @apply bg-gray-50 rounded-lg border-2 border-dotted text-gray-700 dark:bg-secondary-800 dark:text-gray-400 dark:border-gray-600  ;
+}
+
+.ck-editor__editable_inline {
+    height: 250px;
+}
+
+.ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable, .ck.ck-editor__main>.ck-editor__editable.ck-rounded-corners {
+    border-radius: var(--ck-border-radius);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    @apply dark:bg-secondary-800 dark:text-gray-400 dark:border-secondary-600
+}
+
+.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar, .ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
+    border-radius: var(--ck-border-radius);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    @apply dark:bg-secondary-900 dark:text-gray-400 dark:border-secondary-600
+}
+.ck.ck-dropdown .ck-button.ck-dropdown__button {
+    width: 100%;
+    @apply text-black dark:text-gray-400
+}
+.ck.ck-toolbar>.ck-toolbar__items>:not(.ck-toolbar__line-break), .ck.ck-toolbar>.ck.ck-toolbar__grouped-dropdown {
+    margin-bottom: var(--ck-spacing-small);
+    margin-top: var(--ck-spacing-small);
+    @apply text-black dark:text-gray-400
+}
+
+.ck.ck-icon.ck-icon_inherit-color, .ck.ck-icon.ck-icon_inherit-color * {
+    color: inherit;
+    @apply text-black dark:text-gray-400
+}
+
+.ck-rounded-corners .ck.ck-editor__main > .ck-editor__editable, .ck.ck-editor__main > .ck-editor__editable.ck-rounded-corners {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.fc-toolbar-title{
+    @apply text-black dark:text-white
+}
+.fc-col-header-cell-cushion {
+    @apply text-black dark:text-white
+}
+.fc-daygrid-day-number{
+    @apply text-black dark:text-white
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+    @apply bg-yellow-300/50
+}
+
+.fc-theme-standard td, .fc-theme-standard th {
+    @apply border dark:border-gray-700
+}
+
+.fc-theme-standard .fc-scrollgrid {
+    @apply border dark:border-gray-700
+}
+
+.fc-event-title {
+    white-space: normal;
+    overflow: visible;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+
+.fc .fc-timegrid-slot-label-cushion {
+   @apply text-black dark:text-white
+}
+
+.fc .fc-timegrid-axis-cushion {
+    @apply text-black dark:text-white
+}
+
+@media screen and (max-width:767px) {
+    .fc-toolbar.fc-header-toolbar {
+        font-size: 60%
+    }
+    .fc-view {
+        overflow-x: scroll !important;
+        width: 800px;
+    }
+
+    .fc .fc-view-harness {
+        flex-grow: 1;
+        position: relative;
+        overflow-x: auto;
+    }
+
+}
+
+@layer base {
+    ul, ol {
+        list-style: revert;
+    }
+}
