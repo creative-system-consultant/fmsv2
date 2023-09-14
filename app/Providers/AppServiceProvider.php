@@ -21,12 +21,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Livewire::setUpdateRoute(function ($handle) {
-            return Route::post(config('app.LIVEWIRE_ASSET',null).'/livewire/update', $handle);
-        });
+        if (config('app.LIVEWIRE_ASSET') != ''){
+            Livewire::setUpdateRoute(function ($handle) {
+                return Route::post(config('app.LIVEWIRE_ASSET','').'/livewire/update', $handle);
+            });
 
-        Livewire::setScriptRoute(function ($handle) {
-            return Route::get(config('app.LIVEWIRE_ASSET',null).'/livewire/livewire.js', $handle);
-        });
+            Livewire::setScriptRoute(function ($handle) {
+                return Route::get(config('app.LIVEWIRE_ASSET','').'/livewire/livewire.js', $handle);
+            });
+        }
     }
 }

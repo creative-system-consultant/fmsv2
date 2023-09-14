@@ -23,8 +23,6 @@ use App\Livewire\Home\Home;
 |
 */
 
-
-
 Route::middleware('guest')->group(function () {
     Route::get('/', Login::class);
     Route::get('login', Login::class)
@@ -60,5 +58,4 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('home', Home::class)->name('home');
-
 });
