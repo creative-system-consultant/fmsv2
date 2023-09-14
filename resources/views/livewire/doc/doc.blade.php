@@ -45,7 +45,7 @@ class Home extends Component
                                 </pre>
                             </div>
                             <div class="p-6 bg-white rounded-md shadow-md ">
-                                <h2 class="mb-4 text-base font-semibold border-b-2 border-gray-300">Every Your Page livewire.blade.php you must be start whit the component <span class="text-red-500">"x-container"</span></h2>
+                                <h2 class="mb-4 text-base font-semibold border-b-2 border-gray-300">Every Your Page livewire.blade.php you must be start with the component <span class="text-red-500">"x-container"</span></h2>
                                 <p class="font-semibold">Code</p>
                                 <pre class="-mt-4 language-html" wire:ignore>
                                     <code class="language-html">
