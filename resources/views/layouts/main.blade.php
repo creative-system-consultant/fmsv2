@@ -32,7 +32,7 @@
             class=" w-full h-[15rem] md:h-[27rem] bg-center bg-cover  md:-mt-[5rem]"
             style="background-image:url('{{asset('headerLight.png')}}');">
         </div>
-        <div class="absolute inset-0 transition duration-300 ease-in-out bg-gray-400/50 dark:bg-gray-900/50 md:h-[26rem] h-[19rem]"></div>
+        <div class="absolute inset-0 transition duration-300 ease-in-out bg-gray-400/50 dark:bg-gray-900/50 md:h-[26.3rem] h-[19rem]"></div>
             <main class="w-full">
                 <div class="-mt-[15rem] md:-mt-[22rem] ">
                     <!--content-->

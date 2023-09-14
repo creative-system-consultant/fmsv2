@@ -11,6 +11,7 @@ use App\Livewire\Auth\Verify;
 use Illuminate\Support\Facades\Route;
 
 use App\Livewire\Home\Home;
+use App\Livewire\Doc\Doc;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,3 +60,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('home', Home::class)->name('home');
 });
+
+
+//Doc
+Route::get('doc', Doc::class)->name('doc');
