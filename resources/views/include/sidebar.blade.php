@@ -37,6 +37,36 @@
                                 <x-icon name="home" class="w-6 h-6"/>
                             </x-slot>
                         </x-sidebar.nav-item>
+
+                        <x-sidebar.nav-item
+                            title="Education"
+                            activeUrl="education"
+                            route="{{route('education.list')}}"
+                        >
+                            <x-slot name="iconName">
+                                <x-icon name="home" class="w-6 h-6"/>
+                            </x-slot>
+                        </x-sidebar.nav-item>
+
+                        <x-sidebar.nav-item
+                            title="Bank"
+                            activeUrl="bank"
+                            route="{{route('bank.list')}}"
+                        >
+                            <x-slot name="iconName">
+                                <x-icon name="home" class="w-6 h-6"/>
+                            </x-slot>
+                        </x-sidebar.nav-item>
+
+                        <x-sidebar.nav-item
+                            title="Country"
+                            activeUrl="country"
+                            route="{{route('country.list')}}"
+                        >
+                            <x-slot name="iconName">
+                                <x-icon name="home" class="w-6 h-6"/>
+                            </x-slot>
+                        </x-sidebar.nav-item>
                     </ul>
                 </div>
             </div>
