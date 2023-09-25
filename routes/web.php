@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Route;
 
 use App\Livewire\Home\Home;
 use App\Livewire\Doc\Doc;
+use App\Livewire\Admin\Maintenance\Glcode\GlcodeCreate;
+use App\Livewire\Admin\Maintenance\Glcode\GlcodeEdit;
+use App\Livewire\Admin\Maintenance\Glcode\GlcodeList;
+use App\Livewire\Admin\Maintenance\Race\RaceCreate;
+use App\Livewire\Admin\Maintenance\Race\RaceEdit;
+use App\Livewire\Admin\Maintenance\Race\RaceList;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +61,26 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', LogoutController::class)
         ->name('logout');
+
+    Route::prefix('admin')->group(function(){
+        Route::prefix('maintenance')->group(function(){
+            //Admin->Maintenance->Race
+            Route::prefix('race')->group(function(){
+                Route::get('/', RaceList::class)->name('race.list');
+                Route::get('create', RaceCreate::class)->name('race.create');
+                Route::get('edit/{id}', RaceEdit::class)->name('race.edit');
+
+            });
+            //Admin->Maintenance->Gl code
+            Route::prefix('glcode')->group(function(){
+                Route::get('/', GlcodeList::class)->name('glcode.list');
+                Route::get('create', GlcodeCreate::class)->name('glcode.create');
+                Route::get('edit/{id}', GlcodeEdit::class)->name('glcode.edit');
+
+            });
+
+        });
+    });
 });
 
 Route::middleware('auth')->group(function () {
@@ -64,3 +90,5 @@ Route::middleware('auth')->group(function () {
 
 //Doc
 Route::get('doc', Doc::class)->name('doc');
+
+

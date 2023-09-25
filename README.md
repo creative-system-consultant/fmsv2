@@ -32,7 +32,6 @@ copy .env.example .env
 php artisan storage:link
 php artisan key:generate
 php artisan ide-helper:generate
-php artisan ide-helper:models
 npm install
 npm run dev
 ```

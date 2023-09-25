@@ -24,11 +24,13 @@ class Login extends Component
 
     public function authenticate()
     {
+        //dd(['email' => $this->email, 'password' => $this->password]);
         $this->validate();
 
         if (!Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             $this->addError('email', trans('auth.failed'));
 
+            dd('lol');
             return;
         }
 
