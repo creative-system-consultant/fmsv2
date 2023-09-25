@@ -12,9 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Livewire\Home\Home;
 use App\Livewire\Doc\Doc;
-use App\Livewire\Admin\Maintenance\Gender\GenderCreate;
 use App\Livewire\Admin\Maintenance\Gender\GenderList;
-use App\Livewire\Admin\Maintenance\Gender\GenderEdit;
 use App\Livewire\Admin\Maintenance\Marital\MaritalCreate;
 use App\Livewire\Admin\Maintenance\Marital\MaritalEdit;
 use App\Livewire\Admin\Maintenance\Marital\MaritalList;
@@ -62,8 +60,6 @@ Route::middleware('auth')->group(function () {
             //admin->maintenance->gender
             Route::prefix('gender')->group(function(){
                 Route::get('/', GenderList::class)->name('gender.list');
-                Route::get('create', GenderCreate::class)->name('gender.create');
-                Route::get('edit/{id}', GenderEdit::class)->name('gender.edit');
             });
 
             //admin->maintenance->title
