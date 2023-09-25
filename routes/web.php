@@ -18,6 +18,8 @@ use App\Livewire\Admin\Maintenance\Glcode\GlcodeList;
 use App\Livewire\Admin\Maintenance\Race\RaceCreate;
 use App\Livewire\Admin\Maintenance\Race\RaceEdit;
 use App\Livewire\Admin\Maintenance\Race\RaceList;
+use App\Livewire\Cif\Individual;
+use App\Livewire\Cif\Info;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,7 +64,13 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', LogoutController::class)
         ->name('logout');
 
-    Route::prefix('admin')->group(function(){
+        Route::prefix('cif')->group(function(){
+            Route::get('/', Individual::class)->name('individual');
+            Route::get('info', Info::class)->name('info');
+
+        });
+
+        Route::prefix('admin')->group(function(){
         Route::prefix('maintenance')->group(function(){
             //Admin->Maintenance->Race
             Route::prefix('race')->group(function(){
