@@ -70,13 +70,13 @@
                         </li>
 
                         <li>
-                            <a class="bg-white inline-block py-2 px-4 text-blue hover:text-blue-darker font-semibold" href="javascript:void(0)" onclick="showTab('monthly-payment')">
+                            <a class="bg-white inline-block py-2 px-4 text-blue hover:text-blue-darker font-semibold" href="javascript:void(0)" onclick="showTab('monthly-payment-summary')">
                                 <x-icon name="calendar" class="w-6 h-6"/>
                             </a>
                         </li>
 
                         <li>
-                            <a class="bg-white inline-block py-2 px-4 text-blue hover:text-blue-darker font-semibold" href="javascript:void(0)" onclick="showTab('dividend-statements')">
+                            <a class="bg-white inline-block py-2 px-4 text-blue hover:text-blue-darker font-semibold" href="javascript:void(0)" onclick="showTab('dividend-statement')">
                                 <x-icon name="clipboard-list" class="w-6 h-6"/>
                             </a>
                         </li>
@@ -117,27 +117,27 @@
                 </div>
 
                 <div id="tab-third-party" >
-                    @include('livewire.cif.info.third-party-info')
+                    {{-- @include('file path blade') --}}
                 </div>
 
                 <div id="tab-guarantee" >
-                    @include('livewire.cif.info.guarantee')
-                </div>
-
-                <div id="tab-others-payment">
-                    @include('livewire.cif.info.others-payment')
-                </div>
-
-                <div id="tab-monthly-payment" >
                    {{-- @include('file path blade') --}}
                 </div>
 
-                <div id="tab-dividend-statements" >
-                    {{-- @include('file path blade') --}}
+                <div id="tab-others-payment">
+                   {{-- @include('file path blade') --}}
                 </div>
 
+                <div id="tab-monthly-payment-summary" >
+                    @include('livewire.cif.individual.info.monthly-payment-summary')
+                </div>
+                
+                <div id="tab-dividend-statement" >
+                    @include('livewire.cif.individual.info.dividend-statement')
+                </div>
+                
                 <div id="tab-Miscellaneous">
-                    {{-- @include('file path blade') --}}
+                    @include('livewire.cif.individual.info.miscellaneous')
                 </div>
             </div>
         </div>
@@ -152,7 +152,7 @@
     });
 
     function showTab(tabId) {
-        var tabs = ['details','address','beneficiary','contribution','share','finance','third-party', 'guarantee', 'others-payment','monthly-payment','dividend-statements','Miscellaneous'];
+        var tabs = ['details','address','beneficiary','contribution','share','finance','third-party', 'guarantee', 'others-payment','monthly-payment-summary','dividend-statement','Miscellaneous'];
         for (var i = 0; i < tabs.length; i++) {
             var content = document.getElementById('tab-' + tabs[i]);
             if (tabs[i] === tabId) {
