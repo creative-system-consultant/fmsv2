@@ -39,7 +39,7 @@
                         </x-sidebar.nav-item>
 
                         <x-sidebar.nav-item
-                            title="Dashboard"
+                            title="Member Info"
                             activeUrl="home"
                             route="{{route('individual')}}"
                         >

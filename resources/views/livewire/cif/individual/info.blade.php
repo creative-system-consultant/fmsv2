@@ -117,15 +117,15 @@
                 </div>
 
                 <div id="tab-third-party" >
-                    {{-- @include('livewire.cif.info.third-party-info') --}}
+                    @include('livewire.cif.info.third-party-info')
                 </div>
 
                 <div id="tab-guarantee" >
-                    {{-- @include('livewire.cif.info.guarantee') --}}
+                    @include('livewire.cif.info.guarantee')
                 </div>
 
                 <div id="tab-others-payment">
-                    {{-- @include('livewire.cif.info.others-payment') --}}
+                    @include('livewire.cif.info.others-payment')
                 </div>
 
                 <div id="tab-monthly-payment" >

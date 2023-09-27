@@ -20,6 +20,9 @@ use App\Livewire\Admin\Maintenance\Race\RaceEdit;
 use App\Livewire\Admin\Maintenance\Race\RaceList;
 use App\Livewire\Cif\Individual;
 use App\Livewire\Cif\Info;
+use App\Livewire\Cif\Info\ThirdPartyInfo;
+use App\Livewire\Cif\Info\Guarantee;
+use App\Livewire\Cif\Info\OthersPayment;
 use App\Livewire\Cif\Info\Details;
 use App\Livewire\Cif\Info\Address;
 use App\Livewire\Cif\Info\Beneficiary;
@@ -70,9 +73,27 @@ Route::middleware('auth')->group(function () {
         Route::prefix('cif')->group(function(){
             Route::get('/', Individual::class)->name('individual');
             Route::get('info', Info::class)->name('info');
-            Route::get('details', Details::class)->name('details');
-            Route::get('address', Address::class)->name('address');
-            Route::get('beneficiary', Beneficiary::class)->name('beneficiary');
+
+            //detail
+            Route::get('details',Details::class)->name('details');
+
+            //address
+            Route::get('address',Address::class)->name('address');
+
+            //beneficiary
+            Route::get('beneficiary',Beneficiary::class)->name('beneficiary');
+
+            //Third Party Info
+            Route::get('ThirdParty',ThirdPartyInfo::class)->name('ThirdPartyInfo');
+
+            //Others Payment
+            Route::get('OthersPayment',OthersPayment::class)->name('OthersPayment');
+
+            //guarantee
+            Route::get('guarantee',Guarantee::class)->name('guarantee');
+
+            
+
         });
 
         Route::prefix('admin')->group(function(){
