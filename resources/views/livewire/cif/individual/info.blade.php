@@ -105,37 +105,38 @@
                 </div>
 
                 <div id="tab-contribution" >
-                    {{-- @include('file path blade') --}}
+                    @include('livewire.cif.info.contribution')
                 </div>
 
                 <div id="tab-share" >
-                    {{-- @include('file path blade') --}}
+                    @include('livewire.cif.info.share')
                 </div>
 
                 <div id="tab-finance">
-                    {{-- @include('file path blade') --}}
+                    @include('livewire.cif.info.finance')
                 </div>
 
                 <div id="tab-third-party" >
-                    {{-- @include('file path blade') --}}
+                    @include('livewire.cif.info.third-party-info')
                 </div>
 
                 <div id="tab-guarantee" >
-                   {{-- @include('file path blade') --}}
+                    @include('livewire.cif.info.guarantee')
                 </div>
 
                 <div id="tab-others-payment">
-                   {{-- @include('file path blade') --}}
+                    @include('livewire.cif.info.others-payment')
+
                 </div>
 
                 <div id="tab-monthly-payment-summary" >
                     @include('livewire.cif.individual.info.monthly-payment-summary')
                 </div>
-                
+
                 <div id="tab-dividend-statement" >
                     @include('livewire.cif.individual.info.dividend-statement')
                 </div>
-                
+
                 <div id="tab-Miscellaneous">
                     @include('livewire.cif.individual.info.miscellaneous')
                 </div>

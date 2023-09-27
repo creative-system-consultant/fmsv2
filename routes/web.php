@@ -29,6 +29,10 @@ use App\Livewire\Cif\Info\OthersPayment;
 use App\Livewire\Cif\Info\Details;
 use App\Livewire\Cif\Info\Address;
 use App\Livewire\Cif\Info\Beneficiary;
+use App\Livewire\Cif\Info\Contribution;
+use App\Livewire\Cif\Info\Share;
+use App\Livewire\Cif\Info\Finance;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -96,6 +100,15 @@ Route::middleware('auth')->group(function () {
             Route::get('guarantee',Guarantee::class)->name('guarantee');
 
             
+
+            //Contribution
+            Route::get('contribution', Contribution::class)->name('contribution');
+
+            //Share
+            Route::get('share', Share::class)->name('Share');
+
+            //Finance
+            Route::get('finance', Finance::class)->name('Finance');
 
         });
 
