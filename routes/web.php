@@ -20,6 +20,9 @@ use App\Livewire\Admin\Maintenance\Race\RaceEdit;
 use App\Livewire\Admin\Maintenance\Race\RaceList;
 use App\Livewire\Cif\Individual;
 use App\Livewire\Cif\Info;
+use App\Livewire\Cif\Info\Details;
+use App\Livewire\Cif\Info\Address;
+use App\Livewire\Cif\Info\Beneficiary;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,7 +70,9 @@ Route::middleware('auth')->group(function () {
         Route::prefix('cif')->group(function(){
             Route::get('/', Individual::class)->name('individual');
             Route::get('info', Info::class)->name('info');
-
+            Route::get('details', Details::class)->name('details');
+            Route::get('address', Address::class)->name('address');
+            Route::get('beneficiary', Beneficiary::class)->name('beneficiary');
         });
 
         Route::prefix('admin')->group(function(){

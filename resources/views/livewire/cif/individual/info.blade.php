@@ -58,7 +58,7 @@
                         </li>
 
                         <li>
-                            <a class="bg-white inline-block py-2 px-4 text-blue hover:text-blue-darker font-semibold" href="{{ route('guarantee') }}" onclick="test">
+                            <a class="bg-white inline-block py-2 px-4 text-blue hover:text-blue-darker font-semibold" href="javascript:void(0)" onclick="showTab('guarantee')">
                                 <x-icon name="shield-check" class="w-6 h-6"/>
                             </a>
                         </li>
@@ -93,15 +93,15 @@
 
             <div style="margin-bottom: 50px;">
                 <div id="tab-details" >
-                    {{-- @include('file path blade') --}}
+                    @include('livewire.cif.info.details')
                 </div>
 
                 <div id="tab-address" >
-                    {{-- @include('file path blade') --}}
+                    @include('livewire.cif.info.address')
                 </div>
 
                 <div id="tab-beneficiary">
-                    {{-- @include('file path blade') --}}
+                    @include('livewire.cif.info.beneficiary')
                 </div>
 
                 <div id="tab-contribution" >
@@ -117,15 +117,15 @@
                 </div>
 
                 <div id="tab-third-party" >
-                    @include('livewire.cif.info.third-party-info')
+                    {{-- @include('livewire.cif.info.third-party-info') --}}
                 </div>
 
                 <div id="tab-guarantee" >
-                    @include('livewire.cif.info.guarantee')
+                    {{-- @include('livewire.cif.info.guarantee') --}}
                 </div>
 
                 <div id="tab-others-payment">
-                    @include('livewire.cif.info.others-payment')
+                    {{-- @include('livewire.cif.info.others-payment') --}}
                 </div>
 
                 <div id="tab-monthly-payment" >
