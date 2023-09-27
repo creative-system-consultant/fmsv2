@@ -29,7 +29,7 @@ class EducationEdit extends Component
 
         $User = User::find(auth()->user()->id);
 
-        $Check = RefEducation::where('coop_id',$User->coop_id)->where('code',$this->CountryCode);
+        $Check = RefEducation::where('coop_id',$User->coop_id)->where('code',$this->EducationCode);
 
         if($Check->exists() == false || $Check->value('id') == $id)
         {

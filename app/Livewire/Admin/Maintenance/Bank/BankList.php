@@ -14,9 +14,42 @@ class BankList extends Component
     public $User;
 
     function delete($id){
+        $this->dialog()->confirm([
+
+            'title'       => 'Are you Sure?',
+
+            'description' => 'Delete the information?',
+
+            'icon'        => 'question',
+
+            'accept'      => [
+
+                'label'  => 'Yes, delete it',
+
+                'method' => 'ConfirmDelete',
+
+                'params' => $id,
+
+            ],
+
+            'reject' => [
+
+                'label'  => 'No, cancel',
+
+                'method' => 'cancel',
+
+            ],
+
+        ]);
+    }
+
+    function ConfirmDelete($id){
         $data = RefBank::find($id);
         $data->delete();
         $this->Bank = RefBank::where('coop_id',$this->User->coop_id)->get();
+    }
+
+    public function cancel() {
     }
 
     public function mount()

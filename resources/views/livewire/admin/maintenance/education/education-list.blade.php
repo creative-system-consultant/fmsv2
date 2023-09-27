@@ -37,11 +37,8 @@
                                 <a href="{{ route('education.edit',$item->id) }}" class="inline-flex items-center px-4 py-2 text-sm font-bold text-white bg-orange-500 rounded hover:bg-orange-400">
                                     Edit
                                 </a>
-                              
-                                    <button onclick="deleteItem({{ $item->id }})",
-                                        class = "inline-flex items-center px-4 py-2 text-sm font-bold text-white bg-red-500 rounded hover:bg-red-400">
-                                        Delete
-                                    </button>
+                                
+                                <x-button wire:click="delete({{ $item->id }})" squared negative label="Delete"/>
                                        
                             </x-table.table-body>
                         </tr>
@@ -54,31 +51,3 @@
         </div>
     </x-container>
 </div>
-
-
-@push('js')
-<script>
-    function deleteItem(id)
-{
-    Swal.fire({
-  title: 'Are you sure?',
-  text: "You won't be able to revert this!",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Yes, delete it!'
-}).then((result) => {
-  if (result.isConfirmed) {
-    @this.delete(id) 
-     Swal.fire(    
-     'Deleted!',
-        'Your file has been deleted.',
-         'success'
-     )
-  }
-})
-    
- }
-   </script>
-    @endpush

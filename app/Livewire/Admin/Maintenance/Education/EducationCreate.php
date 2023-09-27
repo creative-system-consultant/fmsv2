@@ -5,9 +5,11 @@ namespace App\Livewire\Admin\Maintenance\Education;
 use App\Models\Ref\RefEducation;
 use Livewire\Component;
 use App\Models\User;
+use WireUi\Traits\Actions;
 
 class EducationCreate extends Component
 {
+    use Actions;
     public $User;
     public $EducationDescription;
     public $EducationCode;
