@@ -10,28 +10,18 @@ use App\Livewire\Auth\Register;
 use App\Livewire\Auth\Verify;
 use Illuminate\Support\Facades\Route;
 
+
 use App\Livewire\Home\Home;
 use App\Livewire\Doc\Doc;
-use App\Livewire\Admin\Maintenance\Glcode\GlcodeCreate;
-use App\Livewire\Admin\Maintenance\Glcode\GlcodeEdit;
-use App\Livewire\Admin\Maintenance\Glcode\GlcodeList;
-use App\Livewire\Admin\Maintenance\Race\RaceCreate;
-use App\Livewire\Admin\Maintenance\Race\RaceEdit;
-use App\Livewire\Admin\Maintenance\Race\RaceList;
-use App\Livewire\Cif\Individual;
-use App\Livewire\Cif\Info;
-use App\Livewire\Cif\Individual\Info\MonthlyPaymentSummary;
-use App\Livewire\Cif\Individual\Info\DividendStatement;
-use App\Livewire\Cif\Individual\Info\Miscellaneous;
-use App\Livewire\Cif\Info\ThirdPartyInfo;
-use App\Livewire\Cif\Info\Guarantee;
-use App\Livewire\Cif\Info\OthersPayment;
-use App\Livewire\Cif\Info\Details;
-use App\Livewire\Cif\Info\Address;
-use App\Livewire\Cif\Info\Beneficiary;
-use App\Livewire\Cif\Info\Contribution;
-use App\Livewire\Cif\Info\Share;
-use App\Livewire\Cif\Info\Finance;
+use App\Livewire\Admin\Maintenance\Religion\ReligionList;
+use App\Livewire\Admin\Maintenance\Religion\ReligionCreate;
+use App\Livewire\Admin\Maintenance\Religion\ReligionEdit;
+use App\Livewire\Admin\Maintenance\State\StateList;
+use App\Livewire\Admin\Maintenance\State\StateCreate;
+use App\Livewire\Admin\Maintenance\State\StateEdit;
+use App\Livewire\Admin\Maintenance\Relationship\RelationshipList;
+use App\Livewire\Admin\Maintenance\Relationship\RelationshipCreate;
+use App\Livewire\Admin\Maintenance\Relationship\RelationshipEdit;
 
 
 /*
@@ -67,6 +57,33 @@ Route::middleware('auth')->group(function () {
 
     Route::get('password/confirm', Confirm::class)
         ->name('password.confirm');
+
+        Route::prefix('admin')->group(function(){
+            Route::prefix('maintenance')->group(function(){
+
+            //Admin->
+            Route::prefix('religion')->group(function(){
+            Route::get('/', ReligionList::class)->name('religion.list');
+            Route::get('ReligionCreate', ReligionCreate::class)->name('religion.create');
+            Route::get('ReligionEdit/{id}', ReligionEdit::class)->name('religion.edit');
+
+        });  
+   
+            Route::prefix('state')->group(function(){
+            Route::get('/', StateList::class)->name('state.list');
+            Route::get('StateCreate', StateCreate::class)->name('state.create');
+            Route::get('StateEdit/{id}', StateEdit::class)->name('state.edit');
+        });     
+        
+
+            Route::prefix('relationship')->group(function(){
+            Route::get('/', RelationshipList::class)->name('relationship.list');
+            Route::get('RelationshipCreate', RelationshipCreate::class)->name('relationship.create');
+            Route::get('RelationshipEdit/{id}', RelationshipEdit::class)->name('relationship.edit');
+            });     
+    
+    });
+}); 
 });
 
 Route::middleware('auth')->group(function () {
@@ -140,5 +157,3 @@ Route::middleware('auth')->group(function () {
 
 //Doc
 Route::get('doc', Doc::class)->name('doc');
-
-
