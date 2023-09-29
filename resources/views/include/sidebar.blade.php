@@ -39,6 +39,16 @@
                         </x-sidebar.nav-item>
 
                         <x-sidebar.nav-item
+                            title="Member Info"
+                            activeUrl="home"
+                            route="{{route('individual')}}"
+                        >
+                            <x-slot name="iconName">
+                                <x-icon name="home" class="w-6 h-6"/>
+                            </x-slot>
+                        </x-sidebar.nav-item>
+
+                        <x-sidebar.nav-item
                         title="Race"
                         activeUrl="race"
                         route="{{route('race.list')}}"

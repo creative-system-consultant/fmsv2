@@ -18,6 +18,21 @@ use App\Livewire\Admin\Maintenance\Glcode\GlcodeList;
 use App\Livewire\Admin\Maintenance\Race\RaceCreate;
 use App\Livewire\Admin\Maintenance\Race\RaceEdit;
 use App\Livewire\Admin\Maintenance\Race\RaceList;
+use App\Livewire\Cif\Individual;
+use App\Livewire\Cif\Info;
+use App\Livewire\Cif\Individual\Info\MonthlyPaymentSummary;
+use App\Livewire\Cif\Individual\Info\DividendStatement;
+use App\Livewire\Cif\Individual\Info\Miscellaneous;
+use App\Livewire\Cif\Info\ThirdPartyInfo;
+use App\Livewire\Cif\Info\Guarantee;
+use App\Livewire\Cif\Info\OthersPayment;
+use App\Livewire\Cif\Info\Details;
+use App\Livewire\Cif\Info\Address;
+use App\Livewire\Cif\Info\Beneficiary;
+use App\Livewire\Cif\Info\Contribution;
+use App\Livewire\Cif\Info\Share;
+use App\Livewire\Cif\Info\Finance;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -62,7 +77,42 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', LogoutController::class)
         ->name('logout');
 
-    Route::prefix('admin')->group(function(){
+        Route::prefix('cif')->group(function(){
+            Route::get('/', Individual::class)->name('individual');
+            Route::get('info', Info::class)->name('info');
+
+            //detail
+            Route::get('details',Details::class)->name('details');
+
+            //address
+            Route::get('address',Address::class)->name('address');
+
+            //beneficiary
+            Route::get('beneficiary',Beneficiary::class)->name('beneficiary');
+
+            //Third Party Info
+            Route::get('ThirdParty',ThirdPartyInfo::class)->name('ThirdPartyInfo');
+
+            //Others Payment
+            Route::get('OthersPayment',OthersPayment::class)->name('OthersPayment');
+
+            //guarantee
+            Route::get('guarantee',Guarantee::class)->name('guarantee');
+
+            
+
+            //Contribution
+            Route::get('contribution', Contribution::class)->name('contribution');
+
+            //Share
+            Route::get('share', Share::class)->name('Share');
+
+            //Finance
+            Route::get('finance', Finance::class)->name('Finance');
+
+        });
+
+        Route::prefix('admin')->group(function(){
         Route::prefix('maintenance')->group(function(){
             //Admin->Maintenance->Race
             Route::prefix('race')->group(function(){
