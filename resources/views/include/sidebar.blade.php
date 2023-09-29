@@ -58,6 +58,44 @@
                         </x-slot>
                     </x-sidebar.nav-item>
 
+
+
+                    <! -- start dropdown -->
+                    <x-sidebar.dropdown-nav
+                        activeUrl="url-module/*"
+                        title="Dropdown"
+                        >
+                        <x-slot name="iconName">
+                            <x-icon name="cog" class="w-6 h-6"/>
+                        </x-slot>
+                        
+                        <x-slot name="navItem">
+                            <x-sidebar.dropdown-nav-item
+                                title="single item"
+                                activeUrl="url-page"
+                                route=""
+                            />
+
+                            <!-- start child dropdown -->
+                            <x-sidebar.dropdown-nav-child
+                                title="child dropdown"
+                                activeUrl="url-page"
+                                route=""
+                            >
+                                <x-slot name="navitem">
+                                    <x-sidebar.dropdown-nav-item
+                                        title="single item"
+                                        activeUrl="url-page"
+                                        route=""
+                                    />
+                                </x-slot>
+                            </x-sidebar.dropdown-nav-child>
+                            <!-- end child dropdown -->
+
+                        </x-slot>
+                    </x-sidebar.dropdown-nav>
+                    <! -- end dropdown -->
+
                     </ul>
                 </div>
             </div>
