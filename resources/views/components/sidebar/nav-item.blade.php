@@ -31,7 +31,7 @@
         x-show="showDropdown"
         x-cloak
         x-ref="dropdownContent"
-        class="absolute px-4 py-2  bg-white rounded-md shadow-2xl top-1 text-primary-600 dark:bg-gray-900 dark:text-primary-500 left-[3.6rem] border dark:border-gray-800"
+        class="absolute px-4 py-2 w-40  bg-white rounded-md shadow-2xl top-1 text-primary-600 dark:bg-gray-900 dark:text-primary-500 left-[3.6rem] border dark:border-gray-800"
         style="z-index: 9999 !important;">
         {{$title}}
     </div>
