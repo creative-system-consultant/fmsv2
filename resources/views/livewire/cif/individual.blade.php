@@ -69,7 +69,7 @@
                             </x-table.table-body>
                 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                <a href="{{ route('info') }}" class="inline-flex items-center px-4 py-2 text-sm font-bold text-white bg-orange-500 rounded hover:bg-orange-400">
+                                <a href="{{ route('cif.info') }}" class="inline-flex items-center px-4 py-2 text-sm font-bold text-white bg-orange-500 rounded hover:bg-orange-400">
                                     View
                                 </a>
                                 
