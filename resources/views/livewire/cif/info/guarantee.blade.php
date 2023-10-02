@@ -1,7 +1,7 @@
 <div>
-    {{-- GUARANTEE --}}
+    <!-- GUARANTEE -->
     <x-card title="Guarantee">
-        <div class="grid grid-cols-1 gap-x-2 gap-y-0 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 mt-5">
+        <div class="grid grid-cols-1 gap-x-2 gap-y-0 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1">
             <x-table.table>
                 <x-slot name="thead">
                     <x-table.table-header class="text-left" value="BORROWER`S MEMBERSHIP NO" sort="" />
@@ -60,8 +60,8 @@
         </div>
     </x-card>
 
-    {{-- GUARANTOR --}}
-    <div style="margin-top: 40px;">
+    <!-- GUARANTOR  -->
+    <div class="mt-6">
         <x-card title="Guarantor">
             <div class="grid grid-cols-1 gap-x-2 gap-y-0 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 mt-5">
                 <x-table.table>

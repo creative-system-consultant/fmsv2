@@ -1,25 +1,20 @@
 <div>
     <x-card title="Others Payment">
         <x-slot name="action">
-            <div class="text-right">
-                <x-button squared primary label="Excel" />
-                <x-button squared primary label="PDF" />
+            <div>
+                <x-button sm icon="document-report" green label="Excel" sm/>
+                <x-button sm icon="document-report" orange label="PDF" sm/>
             </div>
         </x-slot>
         
-        <div class="flex gap-6">
-            <div>
-                <x-label class="block text-sm font-semibold leading-5 text-gray-700" label="Start Date"/>
-                <input type="date" value="" id="name=" class="lg:text-sm form-input py-1  px-4">
-            </div>
-            
-            <div>
-                <x-label class="block text-sm font-semibold leading-5 text-gray-700" label="End Date"/>
-                <input type="date" value="" id="name=" class="lg:text-sm form-input py-1 px-4" >
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-2">
+                <x-input type="date"  label="Start Date" value="" wire:model=""/>
+                <x-input type="date"  label="End Date" value="" wire:model=""/>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-x-2 gap-y-0 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 mt-5">
+        <div class="grid grid-cols-1 mt-5">
             
             <x-table.table>
                 <x-slot name="thead">

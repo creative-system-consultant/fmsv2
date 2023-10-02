@@ -1,36 +1,27 @@
 <div>
     <x-card title="Dividend Statements" >
-        <div>
-            <div>
-                <div class="flex mt-1 mb-2 rounded-md gap-6">
-                    <x-input wire:model="" label="Qualified Dividend" placeholder="RM 0.00"/>
-                
-                    <div class="flex gap-6">
-                        <div>
-                            <x-label class="block text-sm font-semibold leading-5 text-gray-700" label="Start Date"/>
-                            <input type="date" value="" id="name=" class="flex mt-1 mb-2 rounded-md lg:text-sm form-input py-1  px-4">
-                        </div>
-                        
-                        <div>
-                            <x-label class="block text-sm font-semibold leading-5 text-gray-700" label="End Date"/>
-                            <input type="date" value="" id="name=" class="flex mt-1 mb-2 rounded-md lg:text-sm form-input py-1 px-4" >
-                        </div>
-                    </div>
-                        
-                </div>
+        <div class="flex items-center justify-between mb-4">
+            <x-input 
+                label="Qualified Dividend" 
+                placeholder="RM 0.00"
+                disabled
+                wire:model="" 
+            />
+        
+            <div class="flex gap-6">
+                <div class="flex items-center space-x-2">
+                    <x-input type="date"  label="Start Date" value="" wire:model=""/>
+                    <x-input type="date"  label="End Date" value="" wire:model=""/>
 
-                <x-slot name="action">
-                    <div class="text-right">
-                        <x-button squared primary label="Excel" />
-                        <x-button squared primary label="PDF" />
+                    <div class="mt-6">
+                        <x-button sm icon="document-report" green label="Excel"/>
+                        <x-button sm icon="document-report" orange label="PDF" />
                     </div>
-                </x-slot>
-                
                 </div>
             </div>
+                
+        </div>
 
-            
-            
             <x-table.table>
                 
                 <x-slot name="thead">
@@ -45,47 +36,39 @@
 
                 </x-slot>
                 <x-slot name="tbody">
-                   
                     <tr>
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                           
+                            
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                         
+                            
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                           
+                            
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                           
+                            
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                           
+                            
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                           
+                            
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                           
+                            
                         </x-table.table-body>
-                        
-
-                       
                     </tr>
-                    <x-table.table-body colspan="7" class="font-medium text-center text-gray-900">
-                        <p>No data</p>
-                    </x-table.table-body>
-                 
                 </x-slot>
             </x-table.table>
 
-       </div>
+        </div>
     </x-card>
 </div>
 

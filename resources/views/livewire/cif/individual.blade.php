@@ -2,18 +2,23 @@
     <x-container title="Member Info" routeBackBtn="" titleBackBtn="" disableBackBtn="">
         <div>
 
-            <div class="flex grid-cols-3 gap-7">
-                <p>Search:</p>
-                <x-select
-                    wire:model.defer="model"
-                >
-                    <x-select.option label="Name" value="1" />
-                    <x-select.option label="Identity No" value="2" />
-                    <x-select.option label="Membership Id" value="3" />
-                    <x-select.option label="Staff No" value="4" />
-                </x-select>
+            <div class="flex items-center space-x-2">
+                <x-label label="Search :"/>
+                <div>
+                    <x-native-select  wire:model="model">
+                        <option value="">Name</option>
+                        <option value="">Identity No</option>
+                        <option value="">Membership Id</option>
+                        <option value="">Staff No</option>
+                    </x-native-select>
+                </div>
 
-                <x-input wire:model="search"/>
+                <div class="w-64">
+                    <x-input 
+                        wire:model="search"
+                        placeholder="Search"
+                    />
+                </div>
             </div>
             
             <div style="margin-top: 30px;">
@@ -33,17 +38,17 @@
                     <x-slot name="tbody">
                         <tr>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                               1
+                                1
                             </x-table.table-body>
                 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                               2
+                                2
                             </x-table.table-body>
     
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                               3
+                                3
                             </x-table.table-body>
-                               
+                        
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 4
                             </x-table.table-body>
@@ -69,10 +74,7 @@
                             </x-table.table-body>
                 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                <a href="{{ route('cif.info') }}" class="inline-flex items-center px-4 py-2 text-sm font-bold text-white bg-orange-500 rounded hover:bg-orange-400">
-                                    View
-                                </a>
-                                
+                                <x-button sm  href="{{ route('cif.info') }}" icon="eye" primary label="View" wire:navigate/>
                             </x-table.table-body>
                         </tr>
                     </x-slot>

@@ -12,7 +12,7 @@
     x-data="{ showDropdown: false }"
     @mouseover="showDropdown = true"
     @mouseout="showDropdown = false">
-    <a href="{{ $route }}"
+    <a  wire:navigate href="{{ $route }}"
         class="flex items-center px-4 py-2 text-base font-normal  rounded-lg hover:bg-primary-50 hover:text-primary-600  dark:hover:text-primary-600 mb-2 dark:hover:bg-gray-800
         animate__animated animate__fadeInLeft animate__faster
         {{Route::current()->uri == $activeUrl ? ' bg-primary-50 hover:border-0 text-primary-600 dark:bg-gray-800' : 'bg-transparent text-gray-900 dark:text-white'}}
@@ -39,7 +39,7 @@
 
 <!-- mobile -->
 <li  class="relative block lg:hidden">
-    <a href="{{ $route }}"
+    <a  wire:navigate href="{{ $route }}"
         class="flex items-center px-4 py-2 text-base font-normal  rounded-lg hover:bg-primary-50 hover:text-primary-600  dark:hover:text-primary-600 mb-2 dark:hover:bg-gray-800
         animate__animated animate__fadeInLeft animate__faster
         {{Route::current()->uri == $activeUrl ? ' bg-primary-50 hover:border-0 text-primary-600 dark:bg-gray-800' : 'bg-transparent text-gray-900 dark:text-white'}}

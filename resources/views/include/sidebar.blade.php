@@ -67,7 +67,7 @@
                                         <x-sidebar.dropdown-nav-item
                                             title="State"
                                             activeUrl="url-page"
-                                            route="{{ route('cif.main') }}"
+                                            route="{{ route('state.list') }}"
                                         />
                                         <x-sidebar.dropdown-nav-item
                                             title="Relationship"

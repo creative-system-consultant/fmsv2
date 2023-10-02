@@ -1,41 +1,71 @@
 <div>
-    <x-button icon="plus" primary label="Add New" />
-    <div class="text-right">
-        <x-button icon="pencil" primary label="Edit" />
-        <x-button icon="save" primary label="Save" />
+    <div class="flex items-center justify-between mb-5 ">
+        <div>
+            <x-button icon="plus" primary label="Add New" sm />
+        </div>
+        <div>
+            <x-button icon="pencil" primary label="Edit" sm />
+            <x-button icon="save" primary label="Save" sm/>
+        </div>
     </div>
 
-    <x-card title="Address Detail 1" >
-        <div class="grid grid-cols-3 gap-5" style="margin-bottom: 20px">
-                <x-input  label="Address" placeholder="" />
-                <x-input  label="Address Type" placeholder="" />
-                <x-input  label="Postcode" placeholder="" />
-                <x-input  label="Town" placeholder="" />
-                <x-input  label="State" placeholder="" />
-                <x-input  label="Country" placeholder="" />
-        </div>
-        <x-checkbox id="left-label" left-label="Mailing Address" wire:model.defer="model" />
-        <button
-            wire:click="",
-            class = "inline-flex items-center px-4 py-2 text-sm font-bold text-white bg-red-500 rounded hover:bg-red-400 text-right">
-            Delete
-        </button>
-    </x-card>
-    
-    <x-card title="Address Detail 2" >
-            <div class="grid grid-cols-3 gap-5" style="margin-bottom: 20px">
-                <x-input  label="Address" placeholder="" />
-                <x-input  label="Address Type" placeholder="" />
-                <x-input  label="Postcode" placeholder="" />
-                <x-input  label="Town" placeholder="" />
-                <x-input  label="State" placeholder="" />
-                <x-input  label="Country" placeholder="" />
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <! -- Start loop -->
+        <x-card title="Address Detail 1" >
+            <x-slot name="action" >
+                <div class="flex items-center space-x-2">
+                    <x-checkbox 
+                        id="left-label" 
+                        left-label="Mailing Address" 
+                        wire:model.defer="" 
+                    />
+                    <x-button icon="trash" red label="delete" sm />
+                </div>
+            </x-slot>
+            <div class="grid grid-cols-1 gap-2">
+                <x-input 
+                    label="Address" 
+                    placeholder="Address 1" 
+                    wire:model=""
+                    disabled
+                />
+                <x-input 
+                    placeholder="Address 2" 
+                    wire:model=""
+                    disabled
+                />
+                <x-input 
+                    placeholder="Address 3" 
+                    wire:model=""
+                    disabled
+                />
             </div>
-        <x-checkbox id="left-label" left-label="Mailing Address" wire:model.defer="model" />
-        <button
-            wire:click="",
-            class = "inline-flex items-center px-4 py-2 text-sm font-bold text-white bg-red-500 rounded hover:bg-red-400 text-right">
-            Delete
-        </button>
-    </x-card>
+            <div class="grid grid-cols-1 gap-4 mt-4">
+                <x-native-select label="Address Type" wire:model="" disabled>
+                    <option></option>
+                </x-native-select>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+                <x-input 
+                    label="Postcode" 
+                    wire:model=""
+                    disabled
+                />
+                <x-input 
+                    label="Town" 
+                    wire:model=""
+                    disabled
+                />
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+                <x-native-select label="State" wire:model="" disabled>
+                    <option></option>
+                </x-native-select>
+                <x-native-select label="Country" wire:model="" disabled>
+                    <option></option>
+                </x-native-select>
+            </div>
+        </x-card>
+        <! -- End loop -->
+    </div>
 </div>

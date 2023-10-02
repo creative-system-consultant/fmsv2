@@ -7,7 +7,7 @@
         toggleSidebarDesktop:localStorage.getItem('toggleSidebarDesktop')  === 'true',
         toggleMiniSidebar:localStorage.getItem('toggleMiniSidebar')  === 'true',
     }">
-    <div class="flex">
+    <div class="flex w-full ">
         @include('include.sidebar')
         <div
             x-on:click="toggleSidebarMobile = !toggleSidebarMobile"
@@ -36,7 +36,7 @@
             <main class="w-full">
                 <div class="-mt-[15rem] md:-mt-[22rem] ">
                     <!--content-->
-                    <div class="relative">
+                    <div class="relative overflow-x-hidden">
                         @yield('content')
                     </div>
                 </div>
