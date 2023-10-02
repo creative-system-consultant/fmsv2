@@ -64,6 +64,11 @@ Route::middleware('auth')->group(function () {
             base_path('routes/web/admin/maintenance/country.php'),
         );
 
+        //admin/maintenance/education
+        Route::prefix('Education')->as('education.')->group(
+            base_path('routes/web/admin/maintenance/education.php'),
+        );
+
         //admin/maintenance/gender
         Route::prefix('Gender')->as('gender.')->group(
             base_path('routes/web/admin/maintenance/gender.php'),
