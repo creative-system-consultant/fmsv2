@@ -22,6 +22,13 @@ use App\Livewire\Admin\Maintenance\State\StateEdit;
 use App\Livewire\Admin\Maintenance\Relationship\RelationshipList;
 use App\Livewire\Admin\Maintenance\Relationship\RelationshipCreate;
 use App\Livewire\Admin\Maintenance\Relationship\RelationshipEdit;
+use App\Livewire\Admin\Maintenance\Gender\GenderList;
+use App\Livewire\Admin\Maintenance\Marital\MaritalCreate;
+use App\Livewire\Admin\Maintenance\Marital\MaritalEdit;
+use App\Livewire\Admin\Maintenance\Marital\MaritalList;
+use App\Livewire\Admin\Maintenance\Title\TitleList;
+use App\Livewire\Admin\Maintenance\Title\TitleCreate;
+use App\Livewire\Admin\Maintenance\Title\TitleEdit;
 
 
 /*
@@ -84,6 +91,30 @@ Route::middleware('auth')->group(function () {
     
     });
 }); 
+
+    Route::prefix('admin')->group(function(){
+        Route::prefix('maintenance')->group(function(){
+
+            //admin->maintenance->gender
+            Route::prefix('gender')->group(function(){
+                Route::get('/', GenderList::class)->name('gender.list');
+            });
+
+            //admin->maintenance->title
+            Route::prefix('title')->group(function(){
+                Route::get('/', TitleList::class)->name('title.list');
+                Route::get('create', TitleCreate::class)->name('title.create');
+                Route::get('edit/{id}', TitleEdit::class)->name('title.edit');
+            });
+
+            //admin->maintenance->marital
+            Route::prefix('marital')->group(function(){
+                Route::get('/', MaritalList::class)->name('marital.list');
+                Route::get('create', MaritalCreate::class)->name('marital.create');
+                Route::get('edit/{id}', MaritalEdit::class)->name('marital.edit');
+            });
+        });
+    });
 });
 
 Route::middleware('auth')->group(function () {
@@ -153,6 +184,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('home', Home::class)->name('home');
 });
+
 
 
 //Doc
