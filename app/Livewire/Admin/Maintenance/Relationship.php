@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefRelationship;
+use App\Services\Maintenance\RelationshipService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -22,69 +23,62 @@ class Relationship extends Component
     public $status;
 
     public $openModal;
-    public $title;
-    public $method;
+    public $modalTitle;
+    public $modalDescription;
+    public $modalMethod;
     public $relationship;
     public $coopId;
 
-    public function openCreateModal()
+    protected $relationshipService;
+
+    public function __construct()
+    {
+        $this->relationshipService = app(RelationshipService::class);
+    }
+
+    private function setupModal($method, $title, $description, $actualMethod = null)
     {
         $this->openModal = true;
-        $this->title = "Create Relationship";
-        $this->method = "create";
+        $this->modalTitle = $title;
+        $this->modalDescription = $description;
+        $this->modalMethod = $actualMethod ?? $method;
+    }
+
+    public function openCreateModal()
+    {
+        $this->setupModal("create", "Create Relationship", "Relationship");
+    }
+
+    public function openUpdateModal($id)
+    {
+        $this->relationship = RefRelationship::find($id);
+        $this->description = $this->relationship->description;
+        $this->code = $this->relationship->code;
+        $this->relationship->status == 1 ? $this->status = true : $this->status = false;
+
+        $this->setupModal("update", "Update Relationship", "Relationship", "update({$id})");
     }
 
     public function create()
     {
         $this->validate();
 
-        $existedCode = RefRelationship::whereCoopId(auth()->user()->coop_id)->whereCode($this->code)->exists();
-
-        if ($existedCode) {
+        if ($this->relationshipService->isCodeExists($this->code)) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            RefRelationship::create([
-                'code'            => trim(strtoupper($this->code)),
-                'description'     => trim(strtoupper($this->description)),
-                'coop_id'         => auth()->user()->coop_id,
-                'status'          => $this->status == true ? '1' : '0',
-                'created_at'      => now(),
-                'created_by'      => auth()->user()->name,
-            ]);
+            $this->relationshipService->createRelationship($this->description, $this->code, $this->status);
 
             $this->reset();
             $this->openModal = false;
         }
     }
 
-    public function openUpdateModal($id)
-    {
-        $this->openModal = true;
-        $this->title = "Update Relationship";
-        $this->method = "update(" .$id. ")";
-        $this->relationship = RefRelationship::find($id);
-
-        $this->description = $this->relationship->description;
-        $this->code = $this->relationship->code;
-        $this->relationship->status == 1 ? $this->status = true : $this->status = false;
-    }
-
     public function update($id)
     {
         $this->validate();
 
-        $code = RefRelationship::find($id);
-        $check = RefRelationship::whereCoopId(auth()->user()->coop_id)->whereCode($code->code);
-
-        if ($check->exists() && $check->value('id') == $id) {
-            RefRelationship::whereId($id)->update([
-                'description'     => trim(strtoupper($this->description)),
-                'code'            => trim(strtoupper($this->code)),
-                'status'          => $this->status == true ? '1' : '0',
-                'updated_at'      => now(),
-                'updated_by'      => auth()->user()->name,
-            ]);
-
+        if ($this->relationshipService->canUpdateCode($id, $this->code)) {
+            $this->relationshipService->updateRelationship($id, $this->description, $this->code, $this->status);
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -111,12 +105,12 @@ class Relationship extends Component
 
     public function ConfirmDelete($id)
     {
-        RefRelationship::whereId($id)->delete();
+        $this->relationshipService->deleteRelationship($id);
     }
 
     public function render()
     {
-        $data = RefRelationship::whereCoopId(auth()->user()->coop_id)->paginate(10);
+        $data = $this->relationshipService->getPaginatedRelationships();
 
         return view('livewire.admin.maintenance.relationship', [
             'data' => $data,

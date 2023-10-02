@@ -57,17 +57,17 @@
     </x-container>
 
     <!-- modal -->
-    <x-modal.card title="{{ $title }}" align="center" blur wire:model.defer="openModal" max-width="lg" hide-close="true">
+    <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="lg" hide-close="true">
         <div class="grid gap-4 my-2 lg:grid-cols-2 ">
             <x-input wire:model="code" label="Code" placeholder="" class="uppercase "/>
-            <x-input wire:model="description" label="Relationship" placeholder="" />
+            <x-input wire:model="description" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
             <x-toggle wire:model="status" left-label="Status" />
         </div>
 
         <x-slot name="footer">
             <div class="flex justify-end">
                 <div class="flex">
-                    <x-button primary label="Save" wire:click="{{ $method }}" />
+                    <x-button primary label="Save" wire:click="{{ $modalMethod }}" />
                 </div>
             </div>
         </x-slot>

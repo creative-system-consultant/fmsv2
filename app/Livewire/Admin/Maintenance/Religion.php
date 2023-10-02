@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefReligion;
+use App\Services\Maintenance\ReligionService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -22,34 +23,49 @@ class Religion extends Component
     public $status;
 
     public $openModal;
-    public $title;
-    public $method;
+    public $modalTitle;
+    public $modalDescription;
+    public $modalMethod;
     public $religion;
+
+    protected $religionService;
+
+    public function __construct()
+    {
+        $this->religionService = app(ReligionService::class);
+    }
+
+    private function setupModal($method, $title, $description, $actualMethod = null)
+    {
+        $this->openModal = true;
+        $this->modalTitle = $title;
+        $this->modalDescription = $description;
+        $this->modalMethod = $actualMethod ?? $method;
+    }
 
     public function openCreateModal()
     {
-        $this->openModal = true;
-        $this->title = "Create Religion";
-        $this->method = "create";
+        $this->setupModal("create", "Create Religion", "Religion");
+    }
+
+    public function openUpdateModal($id)
+    {
+        $this->religion = RefReligion::find($id);
+        $this->description = $this->religion->description;
+        $this->code = $this->religion->code;
+        $this->religion->status == 1 ? $this->status = true : $this->status = false;
+
+        $this->setupModal("update", "Update Religion", "Religion", "update({$id})");
     }
 
     public function create()
     {
         $this->validate();
 
-        $existedCode = RefReligion::whereCoopId(auth()->user()->coop_id)->whereCode($this->code)->exists();
-
-        if ($existedCode) {
+        if ($this->religionService->isCodeExists($this->code)) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            RefReligion::create([
-                'description'     => trim(strtoupper($this->description)),
-                'code'            => trim(strtoupper($this->code)),
-                'coop_id'         => auth()->user()->coop_id,
-                'status'          => $this->status == true ? '1' : '0',
-                'created_at'      => now(),
-                'created_by'      => auth()->user()->name,
-            ]);
+            $this->religionService->createReligion($this->description, $this->code, $this->status);
 
             // clear input field
             $this->reset();
@@ -58,34 +74,12 @@ class Religion extends Component
         }
     }
 
-    public function openUpdateModal($id)
-    {
-        $this->openModal = true;
-        $this->title = "Update Religion";
-        $this->method = "update(" .$id. ")";
-        $this->religion = RefReligion::find($id);
-
-        $this->description = $this->religion->description;
-        $this->code = $this->religion->code;
-        $this->religion->status == 1 ? $this->status = true : $this->status = false;
-    }
-
     public function update($id)
     {
         $this->validate();
 
-        $code = RefReligion::find($id);
-        $check = RefReligion::whereCoopId(auth()->user()->coop_id)->whereCode($code->code);
-
-        if ($check->exists() && $check->value('id') == $id) {
-            RefReligion::whereId($id)->update([
-                'description'     => trim(strtoupper($this->description)),
-                'code'            => trim(strtoupper($this->code)),
-                'status'          => $this->status == true ? '1' : '0',
-                'updated_at'      => now(),
-                'updated_by'      => auth()->user()->name,
-            ]);
-
+        if ($this->religionService->canUpdateCode($id, $this->code)) {
+            $this->religionService->updateReligion($id, $this->description, $this->code, $this->status);
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -113,12 +107,12 @@ class Religion extends Component
 
     public function ConfirmDelete($id)
     {
-        RefReligion::whereId($id)->delete();
+        $this->religionService->deleteReligion($id);
     }
 
     public function render()
     {
-        $data = RefReligion::whereCoopId(auth()->user()->coop_id)->paginate(10);
+        $data = $this->religionService->getPaginatedReligions();
 
         return view('livewire.admin.maintenance.religion', [
             'data' => $data,
