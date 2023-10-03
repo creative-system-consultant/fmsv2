@@ -1,5 +1,5 @@
 <div>
-    <x-container title="REFUND ADVANCE LIST" routeBackBtn="" titleBackBtn="" disableBackBtn="">
+    <x-container title="REFUND ADVANCE LIST" routeBackBtn="{{route('teller.teller-list')}}" titleBackBtn="teller list" disableBackBtn="true">
         <div class="grid grid-cols-1">
             <div class="flex items-center space-x-2">
                 <x-label label="Search :"/>

@@ -2,10 +2,10 @@
 <div x-cloak >
     <aside
         x-cloak
-        class="fixed top-0 left-0 z-20 flex flex-col flex-shrink-0 h-full duration-75 lg:flex transition-width"
+        class="fixed top-0 left-0 flex flex-col flex-shrink-0 h-full duration-75 lg:flex transition-width"
         :class="{
-            'block lg:hidden': toggleSidebarDesktop,
-            'w-64 lg:w-[5rem]': toggleMiniSidebar,
+            'block lg:hidden z-0': toggleSidebarDesktop,
+            'w-64 lg:w-[5rem] z-20': toggleMiniSidebar,
             'w-64' : !toggleMiniSidebar,
             'animate__animated animate__slideInLeft': toggleSidebarMobile,
             'hidden lg:block': !toggleSidebarMobile

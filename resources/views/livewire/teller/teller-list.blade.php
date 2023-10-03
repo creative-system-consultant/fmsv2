@@ -41,6 +41,148 @@
                                             <span>Refund Advance</span>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a wire:navigate href="{{ route('teller.teller-miscellaneous-out-list') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                            <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                            <span>Miscellaneous Out</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a wire:navigate href="{{ route('teller.teller-disbursement') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                            <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                            <span>Disbursement</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a wire:navigate href="{{ route('teller.teller-payment-contribution') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                            <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                            <span>Payment Contribution</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a wire:navigate href="{{ route('teller.teller-purchase-share') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                            <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                            <span>Purchase Share</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a wire:navigate href="{{ route('teller.teller-miscellaneous-in') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                            <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                            <span>Miscellaneous In</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a wire:navigate href="{{ route('teller.teller-withdraw-contribution') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                            <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                            <span>Withdraw Contribution</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a wire:navigate href="{{ route('teller.teller-withdraw-share') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                            <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                            <span>Withdraw Share</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a wire:navigate href="{{ route('teller.teller-close-membership') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                            <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                            <span>Close Membership</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a wire:navigate href="{{ route('teller.teller-transfer-share') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                            <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                            <span>Transfer Share</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a wire:navigate href="{{ route('teller.teller-financing-repayment') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                            <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                            <span>Financing Repayment</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a wire:navigate href="{{ route('teller.teller-payment-member') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                            <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                            <span>Payment To Member</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a wire:navigate href="{{ route('teller.teller-early-settlement-payment') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                            <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                            <span>Early Setllement Payment</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a wire:navigate href="{{ route('teller.teller-third-party') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                            <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                            <span>Third Party</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a wire:navigate href="{{ route('teller.teller-virtual-account-inventory') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                            <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                            <span>Virtual Account Inventory</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a wire:navigate href="{{ route('teller.teller-withdraw-dividen') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                            <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                            <span>Dividend Withdrawal</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a wire:navigate href="{{ route('teller.teller-account-overlap') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                            <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                            <span>Account Overlap</span>
+                                        </a>
+                                    </li>
+                                    <div class="border-y dark:border-gray-700 border-primary-200 py-2">
+                                        <li>
+                                            <h1 class="text-sm font-semibold  px-4 py-2 dark:text-white">GENERAL PAYMENT</h1>
+                                        </li>
+                                        <li>
+                                            <a wire:navigate href="{{ route('teller.teller-bulk-payment') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                                <span>Bulk Payment</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a wire:navigate href="{{ route('teller.teller-autopay') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                                <span>Autopay</span>
+                                            </a>
+                                        </li>
+                                    </div>
+                                    <div class="border-y dark:border-gray-700 border-primary-200 py-2">
+                                        <li>
+                                            <h1 class="text-sm font-semibold  px-4 py-2 dark:text-white">GL</h1>
+                                        </li>
+                                        <li>
+                                            <a wire:navigate href="{{ route('teller.teller-gl-transaction') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                                <span>GL Transaction</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a wire:navigate href="{{ route('teller.teller-settlement-overlap') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                                <span>Early Settlement Overlap</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a wire:navigate href="{{ route('teller.teller-dividen-approval') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                                <span>Dividen Approval</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a wire:navigate href="{{ route('teller.teller-dividen-batch-withdraw') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                <x-icon name="collection" class="w-4 h-4 mr-2"/>
+                                                <span>Dividen Batch Widthdrawal</span>
+                                            </a>
+                                        </li>
+                                    </div>
                                 </ul>
                             </div>
                         </div>
@@ -51,4 +193,26 @@
         </section>
     </div>
 </div>
+
+
+@push('js')
+<script>
+    function myFunction() {
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myUL");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("a")[0];
+            txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    }
+</script>
+@endpush
 
