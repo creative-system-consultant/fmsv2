@@ -30,87 +30,93 @@ Route::get('password/reset/{token}', Reset::class)
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('home', Home::class)->name('home');
+        Route::get('home', Home::class)->name('home');
 
-    Route::get('email/verify/{id}/{hash}', EmailVerificationController::class)
-        ->middleware('signed')
-        ->name('verification.verify');
+        Route::get('email/verify/{id}/{hash}', EmailVerificationController::class)
+            ->middleware('signed')
+            ->name('verification.verify');
 
-    Route::post('logout', LogoutController::class)
-        ->name('logout');
+        Route::post('logout', LogoutController::class)
+            ->name('logout');
 
-    Route::get('email/verify', Verify::class)
-        ->middleware('throttle:6,1')
-        ->name('verification.notice');
+        Route::get('email/verify', Verify::class)
+            ->middleware('throttle:6,1')
+            ->name('verification.notice');
 
-    Route::get('password/confirm', Confirm::class)
-        ->name('password.confirm');
+        Route::get('password/confirm', Confirm::class)
+            ->name('password.confirm');
 
-    // cif
-    Route::prefix('cif')->as('cif.')->group(
-        base_path('routes/web/cif.php'),
-    );
-
-    // admin/maintenance
-    Route::prefix('Admin/Maintenance')->group(function(){
-
-        //admin/maintenance/bank
-        Route::prefix('Bank')->as('bank.')->group(
-            base_path('routes/web/admin/maintenance/bank.php'),
+        // cif
+        Route::prefix('cif')->as('cif.')->group(
+            base_path('routes/web/cif.php'),
         );
 
-        //admin/maintenance/country
-        Route::prefix('Country')->as('country.')->group(
-            base_path('routes/web/admin/maintenance/country.php'),
+        //teller
+        Route::prefix('teller')->as('teller.')->group(
+            base_path('routes/web/teller.php'),
         );
 
-        //admin/maintenance/education
-        Route::prefix('Education')->as('education.')->group(
-            base_path('routes/web/admin/maintenance/education.php'),
-        );
+         // admin/maintenance
+        Route::prefix('Admin/Maintenance')->group(function(){
 
-        //admin/maintenance/gender
-        Route::prefix('Gender')->as('gender.')->group(
-            base_path('routes/web/admin/maintenance/gender.php'),
-        );
+            //admin/maintenance/bank
+            Route::prefix('Bank')->as('bank.')->group(
+                base_path('routes/web/admin/maintenance/bank.php'),
+            );
 
-        //admin/maintenance/glcode
-        Route::prefix('GLCode')->as('glcode.')->group(
-            base_path('routes/web/admin/maintenance/glcode.php'),
-        );
+            //admin/maintenance/country
+            Route::prefix('Country')->as('country.')->group(
+                base_path('routes/web/admin/maintenance/country.php'),
+            );
 
-        //admin/maintenance/marital
-        Route::prefix('Marital')->as('marital.')->group(
-            base_path('routes/web/admin/maintenance/marital.php'),
-        );
+            //admin/maintenance/education
+            Route::prefix('Education')->as('education.')->group(
+                base_path('routes/web/admin/maintenance/education.php'),
+            );
 
-        //admin/maintenance/race
-        Route::prefix('Race')->as('race.')->group(
-            base_path('routes/web/admin/maintenance/race.php'),
-        );
+            //admin/maintenance/gender
+            Route::prefix('Gender')->as('gender.')->group(
+                base_path('routes/web/admin/maintenance/gender.php'),
+            );
 
-        //admin/maintenance/relationship
-        Route::prefix('Relationship')->as('relationship.')->group(
-            base_path('routes/web/admin/maintenance/relationship.php'),
-        );
+            //admin/maintenance/glcode
+            Route::prefix('GLCode')->as('glcode.')->group(
+                base_path('routes/web/admin/maintenance/glcode.php'),
+            );
 
-        //admin/maintenance/religion
-        Route::prefix('Religion')->as('religion.')->group(
-            base_path('routes/web/admin/maintenance/religion.php'),
-        );
+            //admin/maintenance/marital
+            Route::prefix('Marital')->as('marital.')->group(
+                base_path('routes/web/admin/maintenance/marital.php'),
+            );
 
-        //admin/maintenance/state
-        Route::prefix('State')->as('state.')->group(
-            base_path('routes/web/admin/maintenance/state.php'),
-        );
+            //admin/maintenance/race
+            Route::prefix('Race')->as('race.')->group(
+                base_path('routes/web/admin/maintenance/race.php'),
+            );
 
-        //admin/maintenance/title
-        Route::prefix('Title')->as('title.')->group(
-            base_path('routes/web/admin/maintenance/title.php'),
-        );
+            //admin/maintenance/relationship
+            Route::prefix('Relationship')->as('relationship.')->group(
+                base_path('routes/web/admin/maintenance/relationship.php'),
+            );
+
+            //admin/maintenance/religion
+            Route::prefix('Religion')->as('religion.')->group(
+                base_path('routes/web/admin/maintenance/religion.php'),
+            );
+
+            //admin/maintenance/state
+            Route::prefix('State')->as('state.')->group(
+                base_path('routes/web/admin/maintenance/state.php'),
+            );
+
+            //admin/maintenance/title
+            Route::prefix('Title')->as('title.')->group(
+                base_path('routes/web/admin/maintenance/title.php'),
+            );
+
+        });
 
     });
-});
 
 //Doc
 Route::get('doc', Doc::class)->name('doc');

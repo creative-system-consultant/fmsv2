@@ -37,20 +37,32 @@
                             </x-slot>
                         </x-sidebar.nav-item>
 
-                        <!-- cif -->
+                        <!-- Start Cif -->
                         <x-sidebar.nav-item
                             title="Member Info"
-                            activeUrl="cif"
+                            activeUrl="cif/*"
                             route="{{ route('cif.main') }}">
                             <x-slot name="iconName">
                                 <x-icon name="user-group" class="w-6 h-6"/>
                             </x-slot>
                         </x-sidebar.nav-item>
+                        <!-- End Cif -->
+
+                        <!-- Start teller -->
+                        <x-sidebar.nav-item
+                            title="Teller"
+                            activeUrl="teller/*"
+                            route="{{ route('teller.teller-list') }}">
+                            <x-slot name="iconName">
+                                <x-icon name="currency-dollar" class="w-6 h-6"/>
+                            </x-slot>
+                        </x-sidebar.nav-item>
+                        <!-- End teller -->
 
 
                         <! -- Start setting module -->
                         <x-sidebar.dropdown-nav
-                            activeUrl="url-module/*"
+                            activeUrl="Admin/*"
                             title="Setting"
                             >
                             <x-slot name="iconName">
