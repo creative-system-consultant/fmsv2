@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefReligion;
 use App\Services\Maintenance\ReligionService;
+use App\Traits\MaintenanceModalTrait;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -11,7 +12,7 @@ use WireUi\Traits\Actions;
 
 class Religion extends Component
 {
-    use Actions, WithPagination;
+    use Actions, WithPagination, MaintenanceModalTrait;
 
     #[Rule('required|string')]
     public $description;
@@ -33,14 +34,6 @@ class Religion extends Component
     public function __construct()
     {
         $this->religionService = app(ReligionService::class);
-    }
-
-    private function setupModal($method, $title, $description, $actualMethod = null)
-    {
-        $this->openModal = true;
-        $this->modalTitle = $title;
-        $this->modalDescription = $description;
-        $this->modalMethod = $actualMethod ?? $method;
     }
 
     public function openCreateModal()
