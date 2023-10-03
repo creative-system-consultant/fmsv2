@@ -9,8 +9,7 @@
             'w-64' : !toggleMiniSidebar,
             'animate__animated animate__slideInLeft': toggleSidebarMobile,
             'hidden lg:block': !toggleSidebarMobile
-        }"
-        >
+        }">
         <div class="relative flex flex-col flex-1 min-h-0 pt-0 border-r border-gray-200 backdrop-blur-xl bg-white/60 dark:bg-gray-900 dark:border-gray-800">
             <a href="{{ route('home') }}" class="flex items-center justify-center pt-4 text-xl font-bold">
                 <div x-show="!toggleMiniSidebar">
@@ -28,74 +27,105 @@
                             <x-toggle-theme/>
                         </div>
 
+                        <!-- Home -->
                         <x-sidebar.nav-item
                             title="Dashboard"
                             activeUrl="home"
-                            route="{{route('home')}}"
-                        >
+                            route="{{ route('home') }}">
                             <x-slot name="iconName">
                                 <x-icon name="home" class="w-6 h-6"/>
                             </x-slot>
                         </x-sidebar.nav-item>
 
+                        <!-- cif -->
                         <x-sidebar.nav-item
-                        title="Race"
-                        activeUrl="race"
-                        route="{{route('race.list')}}"
-                    >
-                        <x-slot name="iconName">
-                            <x-icon name="user" class="w-6 h-6"/>
-                        </x-slot>
-                    </x-sidebar.nav-item>
-
-                    <x-sidebar.nav-item
-                        title="GL Code"
-                        activeUrl="glcode"
-                        route="{{route('glcode.list')}}"
-                    >
-                        <x-slot name="iconName">
-                            <x-icon name="home" class="w-6 h-6"/>
-                        </x-slot>
-                    </x-sidebar.nav-item>
+                            title="Member Info"
+                            activeUrl="cif"
+                            route="{{ route('cif.main') }}">
+                            <x-slot name="iconName">
+                                <x-icon name="user-group" class="w-6 h-6"/>
+                            </x-slot>
+                        </x-sidebar.nav-item>
 
 
-
-                    <! -- start dropdown -->
-                    <x-sidebar.dropdown-nav
-                        activeUrl="url-module/*"
-                        title="Dropdown"
-                        >
-                        <x-slot name="iconName">
-                            <x-icon name="cog" class="w-6 h-6"/>
-                        </x-slot>
-                        
-                        <x-slot name="navItem">
-                            <x-sidebar.dropdown-nav-item
-                                title="single item"
-                                activeUrl="url-page"
-                                route=""
-                            />
-
-                            <!-- start child dropdown -->
-                            <x-sidebar.dropdown-nav-child
-                                title="child dropdown"
-                                activeUrl="url-page"
-                                route=""
+                        <! -- Start setting module -->
+                        <x-sidebar.dropdown-nav
+                            activeUrl="url-module/*"
+                            title="Setting"
                             >
-                                <x-slot name="navitem">
-                                    <x-sidebar.dropdown-nav-item
-                                        title="single item"
-                                        activeUrl="url-page"
-                                        route=""
-                                    />
-                                </x-slot>
-                            </x-sidebar.dropdown-nav-child>
-                            <!-- end child dropdown -->
+                            <x-slot name="iconName">
+                                <x-icon name="cog" class="w-6 h-6"/>
+                            </x-slot>
+                            
+                            <x-slot name="navItem">
+                                <! -- Start Maintenance -->
+                                <x-sidebar.dropdown-nav-child
+                                    title="Maintenance"
+                                    activeUrl=""
+                                    >
+                                    <x-slot name="navitem">
+                                        <x-sidebar.dropdown-nav-item
+                                            title="State"
+                                            activeUrl="url-page"
+                                            route="{{ route('state.list') }}"
+                                        />
+                                        <x-sidebar.dropdown-nav-item
+                                            title="Relationship"
+                                            activeUrl="RefRelationship"
+                                            route="{{ route('relationship.list') }}"
+                                        />
 
-                        </x-slot>
-                    </x-sidebar.dropdown-nav>
-                    <! -- end dropdown -->
-
+                                        <x-sidebar.dropdown-nav-item
+                                            title="Religion"
+                                            activeUrl="RefReligion"
+                                            route="{{ route('religion.list') }}"
+                                        />
+                                        <x-sidebar.dropdown-nav-item
+                                            title="Race"
+                                            activeUrl="race"
+                                            route="{{ route('race.list') }}"
+                                        />
+                                        <x-sidebar.dropdown-nav-item
+                                            title="GL Code"
+                                            activeUrl="glcode"
+                                            route="{{ route('glcode.list') }}"
+                                        />
+                                        <x-sidebar.dropdown-nav-item
+                                            title="Gender"
+                                            activeUrl="RefGender"
+                                            route="{{ route('gender.list') }}"
+                                        />
+                                        <x-sidebar.dropdown-nav-item
+                                            title="Title"
+                                            activeUrl="RefTitle"
+                                            route="{{ route('title.list') }}"
+                                        />
+                                        <x-sidebar.dropdown-nav-item
+                                            title="Marital"
+                                            activeUrl="RefMarital"
+                                            route="{{ route('marital.list') }}"
+                                        />
+                                        <x-sidebar.dropdown-nav-item
+                                            title="Education"
+                                            activeUrl="education"
+                                            route="{{ route('education.list') }}"
+                                        />
+                                        <x-sidebar.dropdown-nav-item
+                                            title="Bank"
+                                            activeUrl="bank"
+                                            route="{{ route('bank.list') }}"
+                                        />
+                                        <x-sidebar.dropdown-nav-item
+                                            title="Country"
+                                            activeUrl="country"
+                                            route="{{ route('country.list') }}"
+                                        />
+                                    </x-slot>
+                                </x-sidebar.dropdown-nav-child>
+                                <! -- End Maintenance -->
+                            </x-slot>
+                        </x-sidebar.dropdown-nav>
+                        <! -- End setting module -->
                     </ul>
                 </div>
             </div>

@@ -71,9 +71,14 @@
         <script src="{{ asset('assets') }}/js/filepondimagepreview.js"></script>
         <script src="{{ asset('assets') }}/js/filepondvalidatesize.js"></script>
         <script src="{{ asset('assets') }}/js/filepondvalidatetype.js"></script>
+        <!-- sweetalert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <!-- lottie -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.9.6/lottie.min.js" ></script>
+
+        <!-- sweetalert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
             FilePond.registerPlugin(FilePondPluginFileValidateType);

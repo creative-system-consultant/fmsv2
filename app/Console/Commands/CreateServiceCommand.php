@@ -35,12 +35,12 @@ class CreateServiceCommand extends Command
 
         $serviceTemplate = $this->getServiceTemplate($serviceName);
 
-        $directoryPath = app_path('Services');
+        $directoryPath = app_path('Services/' . dirname($serviceName));
         if (!File::exists($directoryPath)) {
             File::makeDirectory($directoryPath, 0755, true);
         }
 
-        $filePath = "{$directoryPath}/{$serviceName}.php";
+        $filePath = "{$directoryPath}/" . class_basename($serviceName) . ".php";
 
         if (File::exists($filePath)) {
             $this->error("Service {$serviceName} already exists!");
@@ -52,14 +52,24 @@ class CreateServiceCommand extends Command
         $this->info("Service {$serviceName} created successfully.");
     }
 
+
     protected function getServiceTemplate($serviceName)
     {
+        $namespace = 'App\Services';
+
+        // Check if there's a subdirectory
+        if (dirname($serviceName) !== '.' && dirname($serviceName) !== $serviceName) {
+            $namespace .= '\\' . str_replace('/', '\\', dirname($serviceName));
+        }
+
+        $className = class_basename($serviceName);
+
         return <<<EOD
 <?php
 
-namespace App\Services;
+namespace {$namespace};
 
-class {$serviceName}
+class {$className}
 {
     public function __construct()
     {
