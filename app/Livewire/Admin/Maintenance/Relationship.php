@@ -29,12 +29,13 @@ class Relationship extends Component
     public $modalMethod;
     public $relationship;
     public $coopId;
+    public $paginated;
 
     protected $relationshipService;
 
     public function __construct()
     {
-        $this->relationshipService = app(RelationshipService::class);
+        $this->relationshipService = new RelationshipService();
     }
 
     public function openCreateModal()
@@ -103,7 +104,7 @@ class Relationship extends Component
 
     public function render()
     {
-        $data = $this->relationshipService->getPaginatedRelationships();
+        $data = $this->relationshipService->getPaginatedRelationships($this->paginated);
 
         return view('livewire.admin.maintenance.relationship', [
             'data' => $data,

@@ -1,37 +1,37 @@
 <div>
-    <x-container title="Religions Maintenance" routeBackBtn="" titleBackBtn="" disableBackBtn="">
+    <x-container title="Gl Code Maintenance" routeBackBtn="" titleBackBtn="" disableBackBtn="">
         <div>
-            <div wire:click="openCreateModal" class="inline-flex items-center px-4 py-2 mb-4 text-sm font-bold text-white bg-green-500 rounded cursor-pointer hover:bg-green-400">
+            <div wire:click="openCreateModal" type="button" class="inline-flex items-center px-4 py-2 mb-4 text-sm font-bold text-white bg-green-500 rounded cursor-pointer hover:bg-green-400">
                 Create
             </div>
             <div class="grid grid-cols-4">
-                <x-input wire:model.live.debounce.1500ms="paginated" label="List Until" placeholder="00"/>      
+                <x-input wire:model.live.debounce.1500ms="paginated" label="List Until" placeholder="00"/>          
             </div>
             <x-table.table>
                 <x-slot name="thead">
                     <x-table.table-header class="text-left" value="NO." sort="" />
-                    <x-table.table-header class="text-left" value="RELIGION NAME" sort="" />
+                    <x-table.table-header class="text-left" value="GL CODE NAME" sort="" />
                     <x-table.table-header class="text-left" value="CODE" sort="" />
                     <x-table.table-header class="text-left" value="STATUS" sort="" />
                     <x-table.table-header class="text-left" value="ACTION" sort="" />
                 </x-slot>
                 <x-slot name="tbody">
-                    @foreach ($data as $religion)
+                    @foreach ($data as $glcode)
                         <tr>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 {{ $loop->iteration }}
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                {{ $religion->description }}
+                                {{ $glcode->description }}
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                {{ $religion->code }}
+                                {{ $glcode->code }}
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                @if($religion->status == 1)
+                                @if($glcode->status == 1)
                                     <x-badge flat emerald label="ENABLE" />
                                 @else
                                     <x-badge flat negative  label="DISABLE" />
@@ -39,12 +39,12 @@
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                <div wire:click="openUpdateModal({{ $religion->id }})" class="inline-flex items-center px-4 py-2 text-sm font-bold text-white bg-orange-500 rounded cursor-pointer hover:bg-orange-400">
+                                <div wire:click="openUpdateModal({{ $glcode->id }})" class="inline-flex items-center px-4 py-2 text-sm font-bold text-white bg-orange-500 rounded cursor-pointer hover:bg-orange-400">
                                     Edit
                                 </div>
 
                                 <button
-                                    wire:click="delete({{ $religion->id }})",
+                                    wire:click="delete({{ $glcode->id }})",
                                     class = "inline-flex items-center px-4 py-2 text-sm font-bold text-white bg-red-500 rounded hover:bg-red-400">
                                     Delete
                                 </button>

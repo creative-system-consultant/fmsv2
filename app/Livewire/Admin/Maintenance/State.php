@@ -2,23 +2,22 @@
 
 namespace App\Livewire\Admin\Maintenance;
 
-use App\Models\Ref\RefReligion;
-use App\Services\Maintenance\ReligionService;
-use App\Traits\MaintenanceModalTrait;
+use App\Models\Ref\RefState;
+use App\Services\Maintenance\StateService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
-class Religion extends Component
+class State extends Component
 {
-    use Actions, WithPagination, MaintenanceModalTrait;
-
-    #[Rule('required|string')]
-    public $description;
+    use Actions, WithPagination;
 
     #[Rule('required|max:3|alpha')]
     public $code;
+
+    #[Rule('required|string')]
+    public $description;
 
     #[Rule('nullable|boolean')]
     public $status;
@@ -27,43 +26,50 @@ class Religion extends Component
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
-    public $religion;
+    public $state;
+    public $coopId;
     public $paginated;
 
-    protected $religionService;
+    protected $stateService;
 
     public function __construct()
     {
-        $this->religionService = new ReligionService();
+        $this->stateService = new StateService();
+    }
+
+    private function setupModal($method, $title, $description, $actualMethod = null)
+    {
+        $this->openModal = true;
+        $this->modalTitle = $title;
+        $this->modalDescription = $description;
+        $this->modalMethod = $actualMethod ?? $method;
     }
 
     public function openCreateModal()
     {
-        $this->setupModal("create", "Create Religion", "Religion");
+        $this->setupModal("create", "Create State", "State");
     }
 
     public function openUpdateModal($id)
     {
-        $this->religion = RefReligion::find($id);
-        $this->description = $this->religion->description;
-        $this->code = $this->religion->code;
-        $this->religion->status == 1 ? $this->status = true : $this->status = false;
+        $this->state = RefState::find($id);
+        $this->description = $this->state->description;
+        $this->code = $this->state->code;
+        $this->state->status == 1 ? $this->status = true : $this->status = false;
 
-        $this->setupModal("update", "Update Religion", "Religion", "update({$id})");
+        $this->setupModal("update", "Update State", "State", "update({$id})");
     }
 
     public function create()
     {
         $this->validate();
 
-        if ($this->religionService->isCodeExists($this->code)) {
+        if ($this->stateService->isCodeExists($this->code)) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $this->religionService->createReligion($this->description, $this->code, $this->status);
+            $this->stateService->createState($this->description, $this->code, $this->status);
 
-            // clear input field
             $this->reset();
-            // close modal
             $this->openModal = false;
         }
     }
@@ -72,8 +78,8 @@ class Religion extends Component
     {
         $this->validate();
 
-        if ($this->religionService->canUpdateCode($id, $this->code)) {
-            $this->religionService->updateReligion($id, $this->description, $this->code, $this->status);
+        if ($this->stateService->canUpdateCode($id, $this->code)) {
+            $this->stateService->updateState($id, $this->description, $this->code, $this->status);
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -91,8 +97,7 @@ class Religion extends Component
                 'method' => 'ConfirmDelete',
                 'params' => $id,
             ],
-            'reject' =>
-            [
+            'reject' => [
                 'label'  => 'No, cancel',
                 'method' => 'cancel',
             ],
@@ -101,14 +106,14 @@ class Religion extends Component
 
     public function ConfirmDelete($id)
     {
-        $this->religionService->deleteReligion($id);
+        $this->stateService->deleteState($id);
     }
 
     public function render()
     {
-        $data = $this->religionService->getPaginatedReligions($this->paginated);
+        $data = $this->stateService->getPaginatedState($this->paginated);
 
-        return view('livewire.admin.maintenance.religion', [
+        return view('livewire.admin.maintenance.state', [
             'data' => $data,
         ])->extends('layouts.main');
     }
