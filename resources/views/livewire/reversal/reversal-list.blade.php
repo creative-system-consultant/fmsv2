@@ -54,7 +54,7 @@
                                             </div>
                                         </li>
 
-                                        <div x-show="show" class="px-4 bg-gray-50 dark:bg-gray-800 ">
+                                        <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
                                             <li>
                                                 <a wire:navigate href="{{ route('reversal.reversal-disbursement') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                     <x-icon name="collection" class="w-4 h-4 mr-2"/>

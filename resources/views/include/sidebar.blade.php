@@ -105,6 +105,17 @@
                         </x-sidebar.nav-item>
                         <!-- End Dividen -->
 
+                        <!-- Start Report -->
+                        <x-sidebar.nav-item
+                            title="report"
+                            activeUrl="report/*"
+                            route="{{ route('report.report-list') }}">
+                            <x-slot name="iconName">
+                                <x-icon name="clipboard-list" class="w-6 h-6"/>
+                            </x-slot>
+                        </x-sidebar.nav-item>
+                        <!-- End Report -->
+
 
                         <! -- Start setting module -->
                         <x-sidebar.dropdown-nav
