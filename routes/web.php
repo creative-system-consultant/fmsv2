@@ -66,6 +66,11 @@ Route::middleware('auth')->group(function () {
             base_path('routes/web/reversal.php'),
         );
 
+        //calculator
+        Route::prefix('calculator')->as('calculator.')->group(
+            base_path('routes/web/calculator.php'),
+        );
+
          // admin/maintenance
         Route::prefix('Admin/Maintenance')->group(function(){
 

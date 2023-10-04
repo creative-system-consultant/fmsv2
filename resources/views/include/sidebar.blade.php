@@ -54,7 +54,7 @@
                             activeUrl="finance/*"
                             route="{{ route('finance.finance-financing-info') }}">
                             <x-slot name="iconName">
-                                <x-icon name="calculator" class="w-6 h-6"/>
+                                <x-icon name="database" class="w-6 h-6"/>
                             </x-slot>
                         </x-sidebar.nav-item>
                         <!-- End finance -->
@@ -69,6 +69,18 @@
                             </x-slot>
                         </x-sidebar.nav-item>
                         <!-- End Reversal -->
+
+
+                        <!-- Start Calculator -->
+                        <x-sidebar.nav-item
+                            title="Calculator"
+                            activeUrl="calculator/*"
+                            route="{{ route('calculator.calculator-index') }}">
+                            <x-slot name="iconName">
+                                <x-icon name="calculator" class="w-6 h-6"/>
+                            </x-slot>
+                        </x-sidebar.nav-item>
+                        <!-- End Calculator -->
 
 
                         <!-- Start teller -->
