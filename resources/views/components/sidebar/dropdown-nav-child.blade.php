@@ -22,7 +22,8 @@
                 </span>
             </summary>
 
-            <nav class="mt-1.5 ml-8 flex flex-col">
+            <nav class="mt-1.5 ml-8 flex flex-col "
+            :class="toggleMiniSidebar == true ? 'h-96  overflow-y-auto' : ''">
                 {{$navitem}}
             </nav>
         </details>

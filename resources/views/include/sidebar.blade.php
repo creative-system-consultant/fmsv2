@@ -59,6 +59,18 @@
                         </x-sidebar.nav-item>
                         <!-- End finance -->
 
+                        <!-- Start teller -->
+                        <x-sidebar.nav-item
+                            title="Teller"
+                            activeUrl="teller/*"
+                            route="{{ route('teller.teller-list') }}">
+                            <x-slot name="iconName">
+                                <x-icon name="currency-dollar" class="w-6 h-6"/>
+                            </x-slot>
+                        </x-sidebar.nav-item>
+                        <!-- End teller -->
+
+
                         <!-- Start Reversal -->
                         <x-sidebar.nav-item
                             title="Reversal"
@@ -82,17 +94,17 @@
                         </x-sidebar.nav-item>
                         <!-- End Calculator -->
 
-
-                        <!-- Start teller -->
+                        <!-- Start Dividen -->
                         <x-sidebar.nav-item
-                            title="Teller"
-                            activeUrl="teller/*"
-                            route="{{ route('teller.teller-list') }}">
+                            title="Dividen"
+                            activeUrl="dividen/*"
+                            route="{{ route('dividen.dividen-index') }}">
                             <x-slot name="iconName">
-                                <x-icon name="currency-dollar" class="w-6 h-6"/>
+                                <x-icon name="presentation-chart-line" class="w-6 h-6"/>
                             </x-slot>
                         </x-sidebar.nav-item>
-                        <!-- End teller -->
+                        <!-- End Dividen -->
+
 
                         <! -- Start setting module -->
                         <x-sidebar.dropdown-nav

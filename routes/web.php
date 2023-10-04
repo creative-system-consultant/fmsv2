@@ -71,6 +71,11 @@ Route::middleware('auth')->group(function () {
             base_path('routes/web/calculator.php'),
         );
 
+         //dividen
+        Route::prefix('dividen')->as('dividen.')->group(
+            base_path('routes/web/dividen.php'),
+        );
+
          // admin/maintenance
         Route::prefix('Admin/Maintenance')->group(function(){
 
