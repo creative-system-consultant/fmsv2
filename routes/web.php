@@ -56,6 +56,11 @@ Route::middleware('auth')->group(function () {
             base_path('routes/web/teller.php'),
         );
 
+        //finance
+        Route::prefix('finance')->as('finance.')->group(
+            base_path('routes/web/finance.php'),
+        );
+
          // admin/maintenance
         Route::prefix('Admin/Maintenance')->group(function(){
 

@@ -48,6 +48,18 @@
                         </x-sidebar.nav-item>
                         <!-- End Cif -->
 
+                        <!-- Start finance -->
+                        <x-sidebar.nav-item
+                            title="Financing Info"
+                            activeUrl="finance/*"
+                            route="{{ route('finance.finance-financing-info') }}">
+                            <x-slot name="iconName">
+                                <x-icon name="calculator" class="w-6 h-6"/>
+                            </x-slot>
+                        </x-sidebar.nav-item>
+                        <!-- End finance -->
+
+
                         <!-- Start teller -->
                         <x-sidebar.nav-item
                             title="Teller"
@@ -58,7 +70,6 @@
                             </x-slot>
                         </x-sidebar.nav-item>
                         <!-- End teller -->
-
 
                         <! -- Start setting module -->
                         <x-sidebar.dropdown-nav
