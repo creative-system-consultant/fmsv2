@@ -61,6 +61,11 @@ Route::middleware('auth')->group(function () {
             base_path('routes/web/finance.php'),
         );
 
+        //reversal
+        Route::prefix('reversal')->as('reversal.')->group(
+            base_path('routes/web/reversal.php'),
+        );
+
          // admin/maintenance
         Route::prefix('Admin/Maintenance')->group(function(){
 

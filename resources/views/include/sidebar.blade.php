@@ -59,6 +59,17 @@
                         </x-sidebar.nav-item>
                         <!-- End finance -->
 
+                        <!-- Start Reversal -->
+                        <x-sidebar.nav-item
+                            title="Reversal"
+                            activeUrl="reversal/*"
+                            route="{{ route('reversal.reversal-list') }}">
+                            <x-slot name="iconName">
+                                <x-icon name="refresh" class="w-6 h-6"/>
+                            </x-slot>
+                        </x-sidebar.nav-item>
+                        <!-- End Reversal -->
+
 
                         <!-- Start teller -->
                         <x-sidebar.nav-item
