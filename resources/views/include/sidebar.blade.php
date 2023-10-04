@@ -2,10 +2,10 @@
 <div x-cloak >
     <aside
         x-cloak
-        class="fixed top-0 left-0 z-20 flex flex-col flex-shrink-0 h-full duration-75 lg:flex transition-width"
+        class="fixed top-0 left-0 flex flex-col flex-shrink-0 h-full duration-75 lg:flex transition-width"
         :class="{
-            'block lg:hidden': toggleSidebarDesktop,
-            'w-64 lg:w-[5rem]': toggleMiniSidebar,
+            'block lg:hidden z-0': toggleSidebarDesktop,
+            'w-64 lg:w-[5rem] z-20': toggleMiniSidebar,
             'w-64' : !toggleMiniSidebar,
             'animate__animated animate__slideInLeft': toggleSidebarMobile,
             'hidden lg:block': !toggleSidebarMobile
@@ -37,20 +37,32 @@
                             </x-slot>
                         </x-sidebar.nav-item>
 
-                        <!-- cif -->
+                        <!-- Start Cif -->
                         <x-sidebar.nav-item
                             title="Member Info"
-                            activeUrl="cif"
+                            activeUrl="cif/*"
                             route="{{ route('cif.main') }}">
                             <x-slot name="iconName">
                                 <x-icon name="user-group" class="w-6 h-6"/>
                             </x-slot>
                         </x-sidebar.nav-item>
+                        <!-- End Cif -->
+
+                        <!-- Start teller -->
+                        <x-sidebar.nav-item
+                            title="Teller"
+                            activeUrl="teller/*"
+                            route="{{ route('teller.teller-list') }}">
+                            <x-slot name="iconName">
+                                <x-icon name="currency-dollar" class="w-6 h-6"/>
+                            </x-slot>
+                        </x-sidebar.nav-item>
+                        <!-- End teller -->
 
 
                         <! -- Start setting module -->
                         <x-sidebar.dropdown-nav
-                            activeUrl="url-module/*"
+                            activeUrl="Admin/*"
                             title="Setting"
                             >
                             <x-slot name="iconName">

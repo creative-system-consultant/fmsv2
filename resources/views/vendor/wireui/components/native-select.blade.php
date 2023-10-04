@@ -1,4 +1,4 @@
-<div class="@if($disabled) opacity-60 @endif">
+<div class="@if($disabled) cursor-not-allowed opacity-60 @endif">
     @if ($label)
         <x-dynamic-component
             :component="WireUi::component('label')"

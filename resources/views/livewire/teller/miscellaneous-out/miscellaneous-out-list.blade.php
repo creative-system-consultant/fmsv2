@@ -1,5 +1,5 @@
 <div>
-    <x-container title="Member Info" routeBackBtn="" titleBackBtn="" disableBackBtn="">
+    <x-container title="Miscellaneous Out List" routeBackBtn="{{route('teller.teller-list')}}" titleBackBtn="teller list" disableBackBtn="true">
         <div class="grid grid-cols-1">
             <div class="flex items-center space-x-2">
                 <x-label label="Search :"/>
@@ -24,56 +24,43 @@
                 <x-table.table>
                     <x-slot name="thead">
                         <x-table.table-header class="text-left" value="NO" sort="" />
-                        <x-table.table-header class="text-left" value="STAFF NO" sort="" />
                         <x-table.table-header class="text-left" value="MEMBERSHIP ID" sort="" />
                         <x-table.table-header class="text-left" value="IC NUMBER" sort="" />
                         <x-table.table-header class="text-left" value="NAME" sort="" />
-                        <x-table.table-header class="text-left" value="BSKE GOLD(G)" sort="" />
-                        <x-table.table-header class="text-left" value="STATUS" sort="" />
-                        <x-table.table-header class="text-left" value="APPROVED DATE" sort="" />
-                        <x-table.table-header class="text-left" value="UPDATE DATE" sort="" />
-                        <x-table.table-header class="text-left" value="ACTION" sort="" />
+                        <x-table.table-header class="text-center" value="MISCELLANEOUS AMOUNT" sort="" />
+                        <x-table.table-header class="text-left" value="PAY TO" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
                         <tr>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 1
                             </x-table.table-body>
-                
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                2
-                            </x-table.table-body>
     
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                3
+                                01069
                             </x-table.table-body>
                         
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                4
+                                650916065344  
                             </x-table.table-body>
     
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                5
+                                ROZILAH BINTI IBRAHIM 
+                            </x-table.table-body>
+
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right ">
+                                31,789.24
                             </x-table.table-body>
     
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                6
-                            </x-table.table-body>
-    
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                7
-                            </x-table.table-body>
-    
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                8
-                            </x-table.table-body>
-    
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                9
-                            </x-table.table-body>
-                
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                <x-button sm  href="{{ route('cif.info') }}" icon="eye" primary label="View" wire:navigate/>
+                                <x-button 
+                                    href="{{ route('teller.teller-miscellaneous-out-create', ['id' => 1]) }}" 
+                                    sm  
+                                    icon="eye" 
+                                    primary 
+                                    label="View" 
+                                    wire:navigate
+                                />
                             </x-table.table-body>
                         </tr>
                     </x-slot>
