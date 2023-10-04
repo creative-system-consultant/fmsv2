@@ -35,11 +35,11 @@
             </div>
 
             <div class="mt-6">
-                @if($setIndex == '2')
+                @if($setIndex == '0')
                     <livewire:finance.pre-disbursement.pre-disb-list />
                 @elseif($setIndex  == '1')
                     <livewire:finance.active-account.active-account-list />
-                @elseif($setIndex  == '0')
+                @elseif($setIndex  == '2')
                     <livewire:finance.closed-account.closed-account-list />
                 @endif
             </div>
