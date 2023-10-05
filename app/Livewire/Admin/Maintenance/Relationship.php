@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefRelationship;
 use App\Services\Maintenance\RelationshipService;
+use App\Traits\MaintenanceModalTrait;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -11,7 +12,7 @@ use WireUi\Traits\Actions;
 
 class Relationship extends Component
 {
-    use Actions, WithPagination;
+    use Actions, WithPagination, MaintenanceModalTrait;
 
     #[Rule('required|max:3|alpha')]
     public $code;
@@ -28,20 +29,13 @@ class Relationship extends Component
     public $modalMethod;
     public $relationship;
     public $coopId;
+    public $paginated;
 
     protected $relationshipService;
 
     public function __construct()
     {
-        $this->relationshipService = app(RelationshipService::class);
-    }
-
-    private function setupModal($method, $title, $description, $actualMethod = null)
-    {
-        $this->openModal = true;
-        $this->modalTitle = $title;
-        $this->modalDescription = $description;
-        $this->modalMethod = $actualMethod ?? $method;
+        $this->relationshipService = new RelationshipService();
     }
 
     public function openCreateModal()
@@ -110,7 +104,7 @@ class Relationship extends Component
 
     public function render()
     {
-        $data = $this->relationshipService->getPaginatedRelationships();
+        $data = $this->relationshipService->getPaginatedRelationships($this->paginated);
 
         return view('livewire.admin.maintenance.relationship', [
             'data' => $data,

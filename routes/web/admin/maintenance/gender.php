@@ -1,5 +1,5 @@
 <?php
 
-use App\Livewire\Admin\Maintenance\Gender\GenderList;
+use App\Livewire\Admin\Maintenance\Gender;
 
-Route::get('/', GenderList::class)->name('list');
+Route::get('/', Gender::class)->name('list');

@@ -4,6 +4,9 @@
             <div wire:click="openCreateModal" type="button" class="inline-flex items-center px-4 py-2 mb-4 text-sm font-bold text-white bg-green-500 rounded cursor-pointer hover:bg-green-400">
                 Create
             </div>
+            <div class="grid grid-cols-4">
+                <x-input wire:model.live.debounce.1500ms="paginated" label="List Until" placeholder="00"/>          
+            </div>
             <x-table.table>
                 <x-slot name="thead">
                     <x-table.table-header class="text-left" value="NO." sort="" />

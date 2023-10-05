@@ -2,4 +2,4 @@
 
 use App\Livewire\Admin\Maintenance\Relationship;
 
-Route::get('Index', Relationship::class)->name('list');
+Route::get('/', Relationship::class)->name('list');
