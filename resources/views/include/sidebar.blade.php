@@ -107,7 +107,7 @@
 
                         <!-- Start Report -->
                         <x-sidebar.nav-item
-                            title="report"
+                            title="Report"
                             activeUrl="report/*"
                             route="{{ route('report.report-list') }}">
                             <x-slot name="iconName">
