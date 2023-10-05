@@ -106,7 +106,7 @@
 
                                             <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{route('report.report-mc-summary')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Monthly Contribution Summary</span>
                                                     </a>
@@ -130,7 +130,7 @@
 
                                             <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{route('report.report-mfp-summary')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Monthly Financing Position Summary</span>
                                                     </a>
@@ -154,7 +154,7 @@
 
                                             <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{route('report.report-mnpf-summary')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Monthly Npf Summary</span>
                                                     </a>
@@ -178,7 +178,7 @@
 
                                             <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{route('report.report-ms-summary')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Monthly Share Summary</span>
                                                     </a>
