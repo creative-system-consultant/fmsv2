@@ -153,6 +153,10 @@
     @apply border dark:border-gray-700
 }
 
+.btn {
+    @apply outline-none inline-flex justify-center items-center transition-all ease-in duration-150 focus:ring-2 focus:ring-offset-2 hover:shadow-sm disabled:opacity-80 disabled:cursor-not-allowed rounded gap-x-2 text-sm leading-4 px-3 py-2 ring-primary-500 text-white bg-primary-500 hover:bg-primary-600 hover:ring-primary-600 dark:ring-offset-slate-800 dark:bg-primary-700 dark:ring-primary-700 dark:hover:bg-primary-600 dark:hover:ring-primary-600
+}
+
 .fc-event-title {
     white-space: normal;
     overflow: visible;
@@ -184,6 +188,8 @@
     }
 
 }
+
+
 
 @layer base {
     ul, ol {

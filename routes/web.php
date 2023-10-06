@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Livewire\Auth\Login;
+use App\Livewire\Profile\Index as Profile;
 use App\Livewire\Auth\Passwords\Confirm;
 use App\Livewire\Auth\Passwords\Email;
 use App\Livewire\Auth\Passwords\Reset;
@@ -31,6 +32,7 @@ Route::get('password/reset/{token}', Reset::class)
 Route::middleware('auth')->group(function () {
 
         Route::get('home', Home::class)->name('home');
+        Route::get('profile', Profile::class)->name('profile');
 
         Route::get('email/verify/{id}/{hash}', EmailVerificationController::class)
             ->middleware('signed')
