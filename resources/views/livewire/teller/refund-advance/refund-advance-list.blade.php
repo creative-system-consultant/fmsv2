@@ -18,7 +18,7 @@
             </div>
 
             <div class="my-6 ">
-                <x-table.table>
+                <x-table.table loading="true" loadingtarget="search">
                     <x-slot name="thead">
                         <x-table.table-header class="text-left" value="IC NUMBER" sort="" />
                         <x-table.table-header class="text-left" value="MEMBERSHIP ID" sort="" />
@@ -96,7 +96,7 @@
                     </x-slot>
                 </x-table.table>
             </div>
-            {{ $advance->links('pagination::tailwind') }}
+            {{ $advance->links('livewire::pagination-links') }}
         </div>
     </x-container>
 </div>
