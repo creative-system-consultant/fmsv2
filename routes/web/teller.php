@@ -29,7 +29,7 @@ use App\Livewire\Teller\DividenBatch\DividenBatch;
 
 Route::get('list', TellerList::class)->name('teller-list');
 Route::get('refund-advance-list', RefundAdvanceList::class)->name('teller-refund-advance-list');
-Route::get('refund-advance-create/{id}', RefundAdvanceCreate::class)->name('teller-refund-advance-create');
+Route::get('refund-advance-create/{account_no}', RefundAdvanceCreate::class)->name('teller-refund-advance-create');
 Route::get('miscellaneous-out-list', MiscellaneousOutList::class)->name('teller-miscellaneous-out-list');
 Route::get('miscellaneous-out-create/{id}', MiscellaneousOutCreate::class)->name('teller-miscellaneous-out-create');
 Route::get('disbursement', DisbursementTransaction::class)->name('teller-disbursement');
@@ -53,4 +53,3 @@ Route::get('gl-transaction', GlTransaction::class)->name('teller-gl-transaction'
 Route::get('settlement-overlap', SettlementOverlap::class)->name('teller-settlement-overlap');
 Route::get('dividen-approval', DividenApproval::class)->name('teller-dividen-approval');
 Route::get('dividen-batch-withdraw', DividenBatch::class)->name('teller-dividen-batch-withdraw');
-

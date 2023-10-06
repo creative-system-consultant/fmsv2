@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Models\Fms;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class FmsAccountPosition extends Model
+{
+    use HasFactory;
+
+    protected $table   = 'FMS.Account_Positions';
+    protected $guarded = [];
+
+    public function fmsAccMaster()
+    {
+        return $this->belongsTo(FmsAccountMaster::class, 'account_no', 'account_no');
+    }
+}

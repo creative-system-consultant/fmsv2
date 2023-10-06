@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Services\Maintenance;
+namespace App\Services\Model;
 
-use App\Models\Ref\RefRelationship;
+use App\Models\Ref\RefReligion;
 
-class RelationshipService
+class ReligionService
 {
     public function isCodeExists($code)
     {
-        return RefRelationship::whereCoopId(auth()->user()->coop_id)->whereCode($code)->exists();
+        return RefReligion::whereCoopId(auth()->user()->coop_id)->whereCode($code)->exists();
     }
 
-    public function createRelationship($description, $code, $status)
+    public function createReligion($description, $code, $status)
     {
-        RefRelationship::create([
+        RefReligion::create([
             'description' => trim(strtoupper($description)),
             'code' => trim(strtoupper($code)),
             'coop_id' => auth()->user()->coop_id,
@@ -25,14 +25,14 @@ class RelationshipService
 
     public function canUpdateCode($id, $code)
     {
-        $existingCode = RefRelationship::whereCoopId(auth()->user()->coop_id)->whereCode($code);
+        $existingCode = RefReligion::whereCoopId(auth()->user()->coop_id)->whereCode($code);
 
         return !$existingCode->exists() || $existingCode->value('id') == $id;
     }
 
-    public function updateRelationship($id, $description, $code, $status)
+    public function updateReligion($id, $description, $code, $status)
     {
-        RefRelationship::whereId($id)->update([
+        RefReligion::whereId($id)->update([
             'description' => trim(strtoupper($description)),
             'code' => trim(strtoupper($code)),
             'status' => $status == true ? '1' : '0',
@@ -41,13 +41,13 @@ class RelationshipService
         ]);
     }
 
-    public function deleteRelationship($id)
+    public function deleteReligion($id)
     {
-        RefRelationship::whereId($id)->delete();
+        RefReligion::whereId($id)->delete();
     }
 
-    public function getPaginatedRelationships($perPage = 10)
+    public function getPaginatedReligions($perPage = 10)
     {
-        return RefRelationship::whereCoopId(auth()->user()->coop_id)->paginate($perPage);
+        return RefReligion::whereCoopId(auth()->user()->coop_id)->paginate($perPage);
     }
 }
