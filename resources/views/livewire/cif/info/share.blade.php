@@ -1,6 +1,6 @@
 <div>
     <x-card title="Contribution Information">
-        <div class="grid grid-cols-3 gap-3">
+        <div class="grid grid-cols-3 gap-2">
             <x-input  label="Total" wire:model="" disabled />
             <x-input  label="Last Purchase Amount" wire:model="" disabled />
             <x-input  label="Last Purchase Date" wire:model="" disabled />

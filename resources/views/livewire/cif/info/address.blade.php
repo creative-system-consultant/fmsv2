@@ -40,12 +40,12 @@
                     disabled
                 />
             </div>
-            <div class="grid grid-cols-1 gap-4 mt-4">
+            <div class="grid grid-cols-1 gap-2 mt-2">
                 <x-native-select label="Address Type" wire:model="" disabled>
                     <option></option>
                 </x-native-select>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 mt-2">
                 <x-input 
                     label="Postcode" 
                     wire:model=""
@@ -57,7 +57,7 @@
                     disabled
                 />
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 mt-2">
                 <x-native-select label="State" wire:model="" disabled>
                     <option></option>
                 </x-native-select>

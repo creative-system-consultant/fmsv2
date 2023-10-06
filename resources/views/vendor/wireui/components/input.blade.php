@@ -47,7 +47,7 @@
 
         <input {{ $attributes->class([
                 $getInputClasses($hasError),
-                $disabled ? 'bg-slate-200 cursor-not-allowed' : 'bg-white',
+                $disabled ? 'disabled-form cursor-not-allowed' : 'bg-white',
             ])->merge([
                 'type'         => 'text',
                 'autocomplete' => 'off',

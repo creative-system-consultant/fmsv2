@@ -3,7 +3,7 @@
     if ($name) { $hasError = $errors->has($name); }
 @endphp
 
-<div class="@if($disabled) opacity-60 @endif">
+<div class="@if($disabled) cursor-pointer opacity-60 @endif">
     @if ($label || $cornerHint)
         <div class="flex {{ !$label && $cornerHint ? 'justify-end' : 'justify-between' }} mb-1">
             @if ($label)
@@ -48,6 +48,7 @@
 
         <textarea {{ $attributes->class([
             $getInputClasses($hasError),
+            $disabled ? 'disabled-form cursor-not-allowed' : 'bg-white',
         ])->merge([
             'autocomplete' => 'off',
             'rows'         => 4

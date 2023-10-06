@@ -13,7 +13,7 @@
         $defaultClasses(),
         $errorClasses() =>  $errors->has($name),
         $colorClasses() => !$errors->has($name),
-        $disabled ? 'bg-slate-300 cursor-not-allowed' : 'bg-white',
+        $disabled ? 'disabled-form cursor-not-allowed' : 'bg-white',
     ]) }}>
         @if ($options->isNotEmpty())
             @if ($placeholder)

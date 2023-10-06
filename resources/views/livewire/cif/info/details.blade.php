@@ -10,7 +10,7 @@
                     <x-button icon="save" primary label="Save" sm/>
                 </div>
             </x-slot>
-            <div class="grid grid-cols-1 md:grid-cols-3  gap-5">
+            <div class="grid grid-cols-1 md:grid-cols-3  gap-2">
                 <x-input 
                     label="Staff No." 
                     placeholder="staff no." 
@@ -132,7 +132,7 @@
     <!-- Member's Information -->
     <div class="mt-6">
         <x-card title="Member's Information" >
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
                 <x-input 
                     label="Title" 
                     placeholder=""  
@@ -239,7 +239,7 @@
     <!-- Employer Information -->
     <div class="mt-6">
         <x-card title="Employer Information" >
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
                 <x-input 
                     label="Company Name" 
                     placeholder=""   
