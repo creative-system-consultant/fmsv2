@@ -7,12 +7,13 @@ use Livewire\Component;
 use Livewire\Attributes\Rule;
 use App\Services\Maintenance\BankService;
 use App\Services\General\PopupService;
+use App\Traits\MaintenanceModalTrait;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
 class Bank extends Component
 {
-    use Actions, WithPagination;
+    use Actions,WithPagination,MaintenanceModalTrait;
 
     #[Rule('required|alpha')]
     public $code;
@@ -38,14 +39,6 @@ class Bank extends Component
     {
         $this->bankService = new BankService();
         $this->popupService = app(PopupService::class);
-    }
-
-    private function setupModal($method, $bank, $description, $actualMethod = null)
-    {
-        $this->openModal = true;
-        $this->modalTitle = $bank;
-        $this->modalDescription = $description;
-        $this->modalMethod = $actualMethod ?? $method;
     }
 
     public function openCreateModal()

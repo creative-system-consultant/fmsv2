@@ -7,12 +7,13 @@ use Livewire\Component;
 use Livewire\Attributes\Rule;
 use App\Services\Maintenance\MaritalService;
 use App\Services\General\PopupService;
+use App\Traits\MaintenanceModalTrait;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
 class Marital extends Component
 {
-    use Actions, WithPagination;
+    use Actions, WithPagination,MaintenanceModalTrait;
 
     #[Rule('required|alpha')]
     public $code;
@@ -38,14 +39,6 @@ class Marital extends Component
     {
         $this->maritalService = new MaritalService();
         $this->popupService = app(PopupService::class);
-    }
-
-    private function setupModal($method, $marital, $description, $actualMethod = null)
-    {
-        $this->openModal = true;
-        $this->modalTitle = $marital;
-        $this->modalDescription = $description;
-        $this->modalMethod = $actualMethod ?? $method;
     }
 
     public function openCreateModal()

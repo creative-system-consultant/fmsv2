@@ -6,13 +6,14 @@ use App\Models\Ref\RefRace;
 use App\Services\Maintenance\RaceService;
 use App\Services\General\PopupService;
 use Livewire\Attributes\Rule;
+use App\Traits\MaintenanceModalTrait;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
 class Race extends Component
 {
-    use Actions, WithPagination;
+    use Actions, WithPagination,MaintenanceModalTrait;
 
     #[Rule('required|max:3|alpha')]
     public $code;
@@ -38,14 +39,6 @@ class Race extends Component
     {
         $this->raceService = new RaceService();
         $this->popupService = app(PopupService::class);
-    }
-
-    private function setupModal($method, $title, $description, $actualMethod = null)
-    {
-        $this->openModal = true;
-        $this->modalTitle = $title;
-        $this->modalDescription = $description;
-        $this->modalMethod = $actualMethod ?? $method;
     }
 
     public function openCreateModal()

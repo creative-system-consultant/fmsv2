@@ -7,12 +7,13 @@ use Livewire\Component;
 use Livewire\Attributes\Rule;
 use App\Services\Maintenance\EducationService;
 use App\Services\General\PopupService;
+use App\Traits\MaintenanceModalTrait;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
 class Education extends Component
 {
-    use Actions, WithPagination;
+    use Actions, WithPagination,MaintenanceModalTrait;
 
     #[Rule('required|alpha')]
     public $code;
@@ -38,14 +39,6 @@ class Education extends Component
     {
         $this->educationService = new EducationService();
         $this->popupService = app(PopupService::class);
-    }
-
-    private function setupModal($method, $education, $description, $actualMethod = null)
-    {
-        $this->openModal = true;
-        $this->modalTitle = $education;
-        $this->modalDescription = $description;
-        $this->modalMethod = $actualMethod ?? $method;
     }
 
     public function openCreateModal()

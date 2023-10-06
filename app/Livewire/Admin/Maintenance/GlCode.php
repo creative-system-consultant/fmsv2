@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Maintenance;
 use App\Models\Ref\RefGlcode;
 use App\Services\Maintenance\GlCodeService;
 use App\Services\General\PopupService;
+use App\Traits\MaintenanceModalTrait;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -12,7 +13,7 @@ use WireUi\Traits\Actions;
 
 class GlCode extends Component
 {
-    use Actions, WithPagination;
+    use Actions, WithPagination,MaintenanceModalTrait;
 
     #[Rule('required|max:3|alpha')]
     public $code;
@@ -38,14 +39,6 @@ class GlCode extends Component
     {
         $this->glcodeService = new GlCodeService();
         $this->popupService = app(PopupService::class);
-    }
-
-    private function setupModal($method, $title, $description, $actualMethod = null)
-    {
-        $this->openModal = true;
-        $this->modalTitle = $title;
-        $this->modalDescription = $description;
-        $this->modalMethod = $actualMethod ?? $method;
     }
 
     public function openCreateModal()

@@ -6,13 +6,14 @@ use App\Models\Ref\RefTitle;
 use Livewire\Component;
 use App\Services\Maintenance\TitleService;
 use App\Services\General\PopupService;
+use App\Traits\MaintenanceModalTrait;
 use Livewire\Attributes\Rule;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
 class Title extends Component
 {
-    use Actions, WithPagination;
+    use Actions, WithPagination,MaintenanceModalTrait;
 
     #[Rule('required|alpha')]
     public $code;
@@ -38,14 +39,6 @@ class Title extends Component
     {
         $this->titleService = new TitleService();
         $this->popupService = app(PopupService::class);
-    }
-
-    private function setupModal($method, $title, $description, $actualMethod = null)
-    {
-        $this->openModal = true;
-        $this->modalTitle = $title;
-        $this->modalDescription = $description;
-        $this->modalMethod = $actualMethod ?? $method;
     }
 
     public function openCreateModal()

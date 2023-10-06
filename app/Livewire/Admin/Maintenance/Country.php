@@ -7,12 +7,13 @@ use Livewire\Component;
 use Livewire\Attributes\Rule;
 use App\Services\Maintenance\CountryService;
 use App\Services\General\PopupService;
+use App\Traits\MaintenanceModalTrait;
 use WireUi\Traits\Actions;
 use Livewire\WithPagination;
 
 class Country extends Component
 {
-    use Actions, WithPagination;
+    use Actions, WithPagination , MaintenanceModalTrait;
 
     #[Rule('required|alpha')]
     public $code;
@@ -38,14 +39,6 @@ class Country extends Component
     {
         $this->countryService = new CountryService();
         $this->popupService = app(PopupService::class);
-    }
-
-    private function setupModal($method, $country, $description, $actualMethod = null)
-    {
-        $this->openModal = true;
-        $this->modalTitle = $country;
-        $this->modalDescription = $description;
-        $this->modalMethod = $actualMethod ?? $method;
     }
 
     public function openCreateModal()
