@@ -1,5 +1,5 @@
 <div>
-    <x-container title="State Maintenance" routeBackBtn="{{route('setting.setting-list')}}" titleBackBtn="setting list" disableBackBtn="true" >
+    <x-container title="Education Maintenance" routeBackBtn="{{route('setting.setting-list')}}" titleBackBtn="setting list" disableBackBtn="true">
         <div class="grid grid-cols-1">
             <x-card title="">
                 <div class="flex items-center justify-between w-full mb-4">
@@ -25,28 +25,28 @@
                 <x-table.table loading="true" loadingtarget="paginated">
                     <x-slot name="thead">
                         <x-table.table-header class="text-left" value="NO." sort="" />
-                        <x-table.table-header class="text-left" value="STATE NAME" sort="" />
+                        <x-table.table-header class="text-left" value="TTILE" sort="" />
                         <x-table.table-header class="text-left" value="CODE" sort="" />
                         <x-table.table-header class="text-left" value="STATUS" sort="" />
                         <x-table.table-header class="text-left" value="ACTION" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
-                        @foreach ($data as $state)
+                        @foreach ($data as $education)
                             <tr>
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     {{ $loop->iteration }}
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    {{ $state->description }}
+                                    {{ $education->description }}
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    {{ $state->code }}
+                                    {{ $education->code }}
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    @if($state->status == 1)
+                                    @if($education->status == 1)
                                         <x-badge flat emerald label="ENABLE" />
                                     @else
                                         <x-badge flat negative  label="DISABLE" />
@@ -55,14 +55,14 @@
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <x-button 
-                                        wire:click="openUpdateModal({{ $state->id }})"
+                                        wire:click="openUpdateModal({{ $education->id }})"
                                         sm  
                                         icon="pencil-alt" 
                                         orange 
                                         label="Edit" 
                                     />
                                     <x-button 
-                                        wire:click="delete({{ $state->id }})"
+                                        wire:click="delete({{ $education->id }})"
                                         sm  
                                         icon="trash" 
                                         red 

@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefRelationship;
 use App\Services\Maintenance\RelationshipService;
+use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -32,10 +33,12 @@ class Relationship extends Component
     public $paginated;
 
     protected $relationshipService;
+    protected $popupService;
 
     public function __construct()
     {
         $this->relationshipService = new RelationshipService();
+        $this->popupService = app(PopupService::class);
     }
 
     public function openCreateModal()
@@ -81,20 +84,7 @@ class Relationship extends Component
 
     public function delete($id)
     {
-        $this->dialog()->confirm([
-            'title'       => 'Are you Sure?',
-            'description' => 'Delete the information?',
-            'icon'        => 'question',
-            'accept'      => [
-                'label'  => 'Yes, delete it',
-                'method' => 'ConfirmDelete',
-                'params' => $id,
-            ],
-            'reject' => [
-                'label'  => 'No, cancel',
-                'method' => 'cancel',
-            ],
-        ]);
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete the information?',$id);
     }
 
     public function ConfirmDelete($id)
@@ -104,7 +94,7 @@ class Relationship extends Component
 
     public function render()
     {
-        $data = $this->relationshipService->getPaginatedRelationships($this->paginated);
+        $data = $this->relationshipService->getPaginatedRelationship($this->paginated);
 
         return view('livewire.admin.maintenance.relationship', [
             'data' => $data,

@@ -2,19 +2,19 @@
 
 namespace App\Livewire\Admin\Maintenance;
 
-use App\Models\Ref\RefGlcode;
-use App\Services\Maintenance\GlCodeService;
-use App\Services\General\PopupService;
-use Livewire\Attributes\Rule;
+use App\Models\Ref\RefBank;
 use Livewire\Component;
+use Livewire\Attributes\Rule;
+use App\Services\Maintenance\BankService;
+use App\Services\General\PopupService;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
-class GlCode extends Component
+class Bank extends Component
 {
     use Actions, WithPagination;
 
-    #[Rule('required|max:3|alpha')]
+    #[Rule('required|alpha')]
     public $code;
 
     #[Rule('required|string')]
@@ -27,49 +27,49 @@ class GlCode extends Component
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
-    public $glcode;
+    public $bank;
     public $coopId;
     public $paginated;
 
-    protected $glcodeService;
+    protected $bankService;
     protected $popupService;
 
     public function __construct()
     {
-        $this->glcodeService = new GlCodeService();
+        $this->bankService = new BankService();
         $this->popupService = app(PopupService::class);
     }
 
-    private function setupModal($method, $title, $description, $actualMethod = null)
+    private function setupModal($method, $bank, $description, $actualMethod = null)
     {
         $this->openModal = true;
-        $this->modalTitle = $title;
+        $this->modalTitle = $bank;
         $this->modalDescription = $description;
         $this->modalMethod = $actualMethod ?? $method;
     }
 
     public function openCreateModal()
     {
-        $this->setupModal("create", "Create Race", "Race");
+        $this->setupModal("create", "Create Bank", "Bank");
     }
 
     public function openUpdateModal($id)
     {
-        $this->glcode = RefGlcode::find($id);
-        $this->description = $this->glcode->description;
-        $this->code = $this->glcode->code;
-        $this->glcode->status == 1 ? $this->status = true : $this->status = false;
-        $this->setupModal("update", "Update Race", "Race", "update({$id})");
+        $this->bank = RefBank::find($id);
+        $this->description = $this->bank->description;
+        $this->code = $this->bank->code;
+        $this->bank->status == 1 ? $this->status = true : $this->status = false;
+        $this->setupModal("update", "Update Bank", "Bank", "update({$id})");
     }
 
     public function create()
     {
         $this->validate();
 
-        if ($this->glcodeService->isCodeExists($this->code)) {
+        if ($this->bankService->isCodeExists($this->code)) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $this->glcodeService->createGlCode($this->description, $this->code, $this->status);
+            $this->bankService->createBank($this->description, $this->code, $this->status);
             $this->reset();
             $this->openModal = false;
         }
@@ -79,8 +79,8 @@ class GlCode extends Component
     {
         $this->validate();
 
-        if ($this->glcodeService->canUpdateCode($id, $this->code)) {
-            $this->glcodeService->updateGlcode($id, $this->description, $this->code, $this->status);
+        if ($this->bankService->canUpdateCode($id, $this->code)) {
+            $this->bankService->updateBank($id, $this->description, $this->code, $this->status);
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -94,14 +94,14 @@ class GlCode extends Component
 
     public function ConfirmDelete($id)
     {
-        $this->glcodeService->deleteGlcode($id);
+        $this->bankService->deleteBank($id);
     }
 
     public function render()
     {
-        $data = $this->glcodeService->getPaginatedGlcode($this->paginated);
+        $data = $this->bankService->getPaginatedBank($this->paginated);
 
-        return view('livewire.admin.maintenance.glcode', [
+        return view('livewire.admin.maintenance.bank',[
             'data' => $data,
         ])->extends('layouts.main');
     }

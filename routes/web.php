@@ -81,65 +81,15 @@ Route::middleware('auth')->group(function () {
             base_path('routes/web/report.php'),
         );
 
-         // admin/maintenance
-        Route::prefix('Admin/Maintenance')->group(function(){
+        //admin/setting
+        Route::prefix('Admin/setting')->as('setting.')->group(
+            base_path('routes/web/admin/setting/setting.php'),
+        );
 
-            //admin/maintenance/bank
-            Route::prefix('Bank')->as('bank.')->group(
-                base_path('routes/web/admin/maintenance/bank.php'),
-            );
-
-            //admin/maintenance/country
-            Route::prefix('Country')->as('country.')->group(
-                base_path('routes/web/admin/maintenance/country.php'),
-            );
-
-            //admin/maintenance/education
-            Route::prefix('Education')->as('education.')->group(
-                base_path('routes/web/admin/maintenance/education.php'),
-            );
-
-            //admin/maintenance/gender
-            Route::prefix('Gender')->as('gender.')->group(
-                base_path('routes/web/admin/maintenance/gender.php'),
-            );
-
-            //admin/maintenance/glcode
-            Route::prefix('GLCode')->as('glcode.')->group(
-                base_path('routes/web/admin/maintenance/glcode.php'),
-            );
-
-            //admin/maintenance/marital
-            Route::prefix('Marital')->as('marital.')->group(
-                base_path('routes/web/admin/maintenance/marital.php'),
-            );
-
-            //admin/maintenance/race
-            Route::prefix('Race')->as('race.')->group(
-                base_path('routes/web/admin/maintenance/race.php'),
-            );
-
-            //admin/maintenance/relationship
-            Route::prefix('Relationship')->as('relationship.')->group(
-                base_path('routes/web/admin/maintenance/relationship.php'),
-            );
-
-            //admin/maintenance/religion
-            Route::prefix('Religion')->as('religion.')->group(
-                base_path('routes/web/admin/maintenance/religion.php'),
-            );
-
-            //admin/maintenance/state
-            Route::prefix('State')->as('state.')->group(
-                base_path('routes/web/admin/maintenance/state.php'),
-            );
-
-            //admin/maintenance/title
-            Route::prefix('Title')->as('title.')->group(
-                base_path('routes/web/admin/maintenance/title.php'),
-            );
-
-        });
+        //admin/maintenance
+        Route::prefix('Admin/Maintenance')->as('maintenance.')->group(
+            base_path('routes/web/admin/maintenance/maintenance.php'),
+        );
 
     });
 

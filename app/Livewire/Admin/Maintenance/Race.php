@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefRace;
 use App\Services\Maintenance\RaceService;
+use App\Services\General\PopupService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -31,10 +32,12 @@ class Race extends Component
     public $paginated;
 
     protected $raceService;
+    protected $popupService;
 
     public function __construct()
     {
         $this->raceService = new RaceService();
+        $this->popupService = app(PopupService::class);
     }
 
     private function setupModal($method, $title, $description, $actualMethod = null)
@@ -86,20 +89,7 @@ class Race extends Component
 
     public function delete($id)
     {
-        $this->dialog()->confirm([
-            'title'       => 'Are you Sure?',
-            'description' => 'Delete the information?',
-            'icon'        => 'question',
-            'accept'      => [
-                'label'  => 'Yes, delete it',
-                'method' => 'ConfirmDelete',
-                'params' => $id,
-            ],
-            'reject' => [
-                'label'  => 'No, cancel',
-                'method' => 'cancel',
-            ],
-        ]);
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete the information?',$id);
     }
 
     public function ConfirmDelete($id)

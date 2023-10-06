@@ -2,19 +2,19 @@
 
 namespace App\Livewire\Admin\Maintenance;
 
-use App\Models\Ref\RefGlcode;
-use App\Services\Maintenance\GlCodeService;
+use App\Models\Ref\RefTitle;
+use Livewire\Component;
+use App\Services\Maintenance\TitleService;
 use App\Services\General\PopupService;
 use Livewire\Attributes\Rule;
-use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
-class GlCode extends Component
+class Title extends Component
 {
     use Actions, WithPagination;
 
-    #[Rule('required|max:3|alpha')]
+    #[Rule('required|alpha')]
     public $code;
 
     #[Rule('required|string')]
@@ -27,16 +27,16 @@ class GlCode extends Component
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
-    public $glcode;
+    public $title;
     public $coopId;
     public $paginated;
 
-    protected $glcodeService;
+    protected $titleService;
     protected $popupService;
 
     public function __construct()
     {
-        $this->glcodeService = new GlCodeService();
+        $this->titleService = new TitleService();
         $this->popupService = app(PopupService::class);
     }
 
@@ -50,26 +50,26 @@ class GlCode extends Component
 
     public function openCreateModal()
     {
-        $this->setupModal("create", "Create Race", "Race");
+        $this->setupModal("create", "Create Title", "Title");
     }
 
     public function openUpdateModal($id)
     {
-        $this->glcode = RefGlcode::find($id);
-        $this->description = $this->glcode->description;
-        $this->code = $this->glcode->code;
-        $this->glcode->status == 1 ? $this->status = true : $this->status = false;
-        $this->setupModal("update", "Update Race", "Race", "update({$id})");
+        $this->title = RefTitle::find($id);
+        $this->description = $this->title->description;
+        $this->code = $this->title->code;
+        $this->title->status == 1 ? $this->status = true : $this->status = false;
+        $this->setupModal("update", "Update Title", "Title", "update({$id})");
     }
 
     public function create()
     {
         $this->validate();
 
-        if ($this->glcodeService->isCodeExists($this->code)) {
+        if ($this->titleService->isCodeExists($this->code)) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $this->glcodeService->createGlCode($this->description, $this->code, $this->status);
+            $this->titleService->createTitle($this->description, $this->code, $this->status);
             $this->reset();
             $this->openModal = false;
         }
@@ -79,8 +79,8 @@ class GlCode extends Component
     {
         $this->validate();
 
-        if ($this->glcodeService->canUpdateCode($id, $this->code)) {
-            $this->glcodeService->updateGlcode($id, $this->description, $this->code, $this->status);
+        if ($this->titleService->canUpdateCode($id, $this->code)) {
+            $this->titleService->updateTitle($id, $this->description, $this->code, $this->status);
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -94,14 +94,14 @@ class GlCode extends Component
 
     public function ConfirmDelete($id)
     {
-        $this->glcodeService->deleteGlcode($id);
+        $this->titleService->deleteTitle($id);
     }
 
     public function render()
     {
-        $data = $this->glcodeService->getPaginatedGlcode($this->paginated);
-
-        return view('livewire.admin.maintenance.glcode', [
+        $data = $this->titleService->getPaginatedTitle($this->paginated);
+        
+        return view('livewire.admin.maintenance.title', [
             'data' => $data,
         ])->extends('layouts.main');
     }

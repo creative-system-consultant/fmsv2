@@ -116,85 +116,16 @@
                         </x-sidebar.nav-item>
                         <!-- End Report -->
 
-
-                        <! -- Start setting module -->
-                        <x-sidebar.dropdown-nav
-                            activeUrl="Admin/*"
+                        <!-- Start Report -->
+                        <x-sidebar.nav-item
                             title="Setting"
-                            >
+                            activeUrl="Admin/*"
+                            route="{{ route('setting.setting-list') }}">
                             <x-slot name="iconName">
                                 <x-icon name="cog" class="w-6 h-6"/>
                             </x-slot>
-                            
-                            <x-slot name="navItem">
-                                <! -- Start Maintenance -->
-                                <x-sidebar.dropdown-nav-child
-                                    title="Maintenance"
-                                    activeUrl=""
-                                    >
-                                    <x-slot name="navitem">
-                                        <x-sidebar.dropdown-nav-item
-                                            title="State"
-                                            activeUrl="url-page"
-                                            route="{{ route('state.list') }}"
-                                        />
-                                        <x-sidebar.dropdown-nav-item
-                                            title="Relationship"
-                                            activeUrl="RefRelationship"
-                                            route="{{ route('relationship.list') }}"
-                                        />
-
-                                        <x-sidebar.dropdown-nav-item
-                                            title="Religion"
-                                            activeUrl="RefReligion"
-                                            route="{{ route('religion.list') }}"
-                                        />
-                                        <x-sidebar.dropdown-nav-item
-                                            title="Race"
-                                            activeUrl="race"
-                                            route="{{ route('race.list') }}"
-                                        />
-                                        <x-sidebar.dropdown-nav-item
-                                            title="GL Code"
-                                            activeUrl="glcode"
-                                            route="{{ route('glcode.list') }}"
-                                        />
-                                        <x-sidebar.dropdown-nav-item
-                                            title="Gender"
-                                            activeUrl="RefGender"
-                                            route="{{ route('gender.list') }}"
-                                        />
-                                        <x-sidebar.dropdown-nav-item
-                                            title="Title"
-                                            activeUrl="RefTitle"
-                                            route="{{ route('title.list') }}"
-                                        />
-                                        <x-sidebar.dropdown-nav-item
-                                            title="Marital"
-                                            activeUrl="RefMarital"
-                                            route="{{ route('marital.list') }}"
-                                        />
-                                        <x-sidebar.dropdown-nav-item
-                                            title="Education"
-                                            activeUrl="education"
-                                            route="{{ route('education.list') }}"
-                                        />
-                                        <x-sidebar.dropdown-nav-item
-                                            title="Bank"
-                                            activeUrl="bank"
-                                            route="{{ route('bank.list') }}"
-                                        />
-                                        <x-sidebar.dropdown-nav-item
-                                            title="Country"
-                                            activeUrl="country"
-                                            route="{{ route('country.list') }}"
-                                        />
-                                    </x-slot>
-                                </x-sidebar.dropdown-nav-child>
-                                <! -- End Maintenance -->
-                            </x-slot>
-                        </x-sidebar.dropdown-nav>
-                        <! -- End setting module -->
+                        </x-sidebar.nav-item>
+                        <!-- End Report -->
                     </ul>
                 </div>
             </div>

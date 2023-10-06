@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefGender;
 use App\Services\Maintenance\GenderService;
+use App\Services\General\PopupService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -31,10 +32,12 @@ class Gender extends Component
     public $paginated;
 
     protected $genderService;
+    protected $popupService;
 
     public function __construct()
     {
         $this->genderService = new GenderService();
+        $this->popupService = app(PopupService::class);
     }
 
     private function setupModal($method, $title, $description, $actualMethod = null)
@@ -50,6 +53,15 @@ class Gender extends Component
         $this->setupModal("create", "Create Gender", "Gender");
     }
 
+    public function openUpdateModal($id)
+    {
+        $this->gender = RefGender::find($id);
+        $this->description = $this->gender->description;
+        $this->code = $this->gender->code;
+        $this->gender->status == 1 ? $this->status = true : $this->status = false;
+        $this->setupModal("update", "Update Gender", "Gender", "update({$id})");
+    }
+
     public function create()
     {
         $this->validate();
@@ -61,6 +73,28 @@ class Gender extends Component
             $this->reset();
             $this->openModal = false;
         }
+    }
+
+    public function update($id)
+    {
+        $this->validate();
+
+        if ($this->genderService->canUpdateCode($id, $this->code)) {
+            $this->genderService->updateGender($id, $this->description, $this->code, $this->status);
+            $this->openModal = false;
+        } else {
+            $this->addError('code', 'The code has already been taken.');
+        }
+    }
+
+    public function delete($id)
+    {
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete the information?',$id);
+    }
+
+    public function ConfirmDelete($id)
+    {
+        $this->genderService->deleteGender($id);
     }
 
     public function render()

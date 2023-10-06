@@ -10,7 +10,7 @@
             x-transition:leave-end="opacity-0"
             class="fixed inset-0 transition-opacity"
         >
-            <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-lg"></div>
+            <div class="absolute inset-0 bg-gray-100/50 dark:bg-gray-900/50 backdrop-blur-lg"></div>
         </div>
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen"></span>​
         <div
@@ -24,11 +24,11 @@
             class="inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6" role="dialog" aria-modal="true" aria-labelledby="modal-headline"
         >
             <div class="flex flex-col items-center justify-center mx-auto">
-                <svg class="h-10 w-10 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg class="h-10 w-10 text-primary-600 dark:text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <p class="text-white text-sm mt-2 text-center ml-3">Loading...</p>
+                <p class="dark:text-white text-sm mt-2 text-center ml-3 text-primary-600">Loading...</p>
             </div>
         </div>
     </div>

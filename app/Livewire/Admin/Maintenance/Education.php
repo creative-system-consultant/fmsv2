@@ -2,19 +2,19 @@
 
 namespace App\Livewire\Admin\Maintenance;
 
-use App\Models\Ref\RefGlcode;
-use App\Services\Maintenance\GlCodeService;
-use App\Services\General\PopupService;
-use Livewire\Attributes\Rule;
+use App\Models\Ref\RefEducation;
 use Livewire\Component;
+use Livewire\Attributes\Rule;
+use App\Services\Maintenance\EducationService;
+use App\Services\General\PopupService;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
-class GlCode extends Component
+class Education extends Component
 {
     use Actions, WithPagination;
 
-    #[Rule('required|max:3|alpha')]
+    #[Rule('required|alpha')]
     public $code;
 
     #[Rule('required|string')]
@@ -27,49 +27,49 @@ class GlCode extends Component
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
-    public $glcode;
+    public $education;
     public $coopId;
     public $paginated;
 
-    protected $glcodeService;
+    protected $educationService;
     protected $popupService;
 
     public function __construct()
     {
-        $this->glcodeService = new GlCodeService();
+        $this->educationService = new EducationService();
         $this->popupService = app(PopupService::class);
     }
 
-    private function setupModal($method, $title, $description, $actualMethod = null)
+    private function setupModal($method, $education, $description, $actualMethod = null)
     {
         $this->openModal = true;
-        $this->modalTitle = $title;
+        $this->modalTitle = $education;
         $this->modalDescription = $description;
         $this->modalMethod = $actualMethod ?? $method;
     }
 
     public function openCreateModal()
     {
-        $this->setupModal("create", "Create Race", "Race");
+        $this->setupModal("create", "Create Education", "Education");
     }
 
     public function openUpdateModal($id)
     {
-        $this->glcode = RefGlcode::find($id);
-        $this->description = $this->glcode->description;
-        $this->code = $this->glcode->code;
-        $this->glcode->status == 1 ? $this->status = true : $this->status = false;
-        $this->setupModal("update", "Update Race", "Race", "update({$id})");
+        $this->education = RefEducation::find($id);
+        $this->description = $this->education->description;
+        $this->code = $this->education->code;
+        $this->education->status == 1 ? $this->status = true : $this->status = false;
+        $this->setupModal("update", "Update Education", "Education", "update({$id})");
     }
 
     public function create()
     {
         $this->validate();
 
-        if ($this->glcodeService->isCodeExists($this->code)) {
+        if ($this->educationService->isCodeExists($this->code)) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $this->glcodeService->createGlCode($this->description, $this->code, $this->status);
+            $this->educationService->createEducation($this->description, $this->code, $this->status);
             $this->reset();
             $this->openModal = false;
         }
@@ -79,8 +79,8 @@ class GlCode extends Component
     {
         $this->validate();
 
-        if ($this->glcodeService->canUpdateCode($id, $this->code)) {
-            $this->glcodeService->updateGlcode($id, $this->description, $this->code, $this->status);
+        if ($this->educationService->canUpdateCode($id, $this->code)) {
+            $this->educationService->updateEducation($id, $this->description, $this->code, $this->status);
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -94,14 +94,14 @@ class GlCode extends Component
 
     public function ConfirmDelete($id)
     {
-        $this->glcodeService->deleteGlcode($id);
+        $this->educationService->deleteEducation($id);
     }
 
     public function render()
     {
-        $data = $this->glcodeService->getPaginatedGlcode($this->paginated);
+        $data = $this->educationService->getPaginatedEducation($this->paginated);
 
-        return view('livewire.admin.maintenance.glcode', [
+        return view('livewire.admin.maintenance.education',[
             'data' => $data,
         ])->extends('layouts.main');
     }

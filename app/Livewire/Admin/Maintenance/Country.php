@@ -2,19 +2,19 @@
 
 namespace App\Livewire\Admin\Maintenance;
 
-use App\Models\Ref\RefGlcode;
-use App\Services\Maintenance\GlCodeService;
-use App\Services\General\PopupService;
-use Livewire\Attributes\Rule;
+use App\Models\Ref\RefCountry;
 use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\Attributes\Rule;
+use App\Services\Maintenance\CountryService;
+use App\Services\General\PopupService;
 use WireUi\Traits\Actions;
+use Livewire\WithPagination;
 
-class GlCode extends Component
+class Country extends Component
 {
     use Actions, WithPagination;
 
-    #[Rule('required|max:3|alpha')]
+    #[Rule('required|alpha')]
     public $code;
 
     #[Rule('required|string')]
@@ -27,49 +27,49 @@ class GlCode extends Component
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
-    public $glcode;
+    public $country;
     public $coopId;
     public $paginated;
 
-    protected $glcodeService;
+    protected $countryService;
     protected $popupService;
 
     public function __construct()
     {
-        $this->glcodeService = new GlCodeService();
+        $this->countryService = new CountryService();
         $this->popupService = app(PopupService::class);
     }
 
-    private function setupModal($method, $title, $description, $actualMethod = null)
+    private function setupModal($method, $country, $description, $actualMethod = null)
     {
         $this->openModal = true;
-        $this->modalTitle = $title;
+        $this->modalTitle = $country;
         $this->modalDescription = $description;
         $this->modalMethod = $actualMethod ?? $method;
     }
 
     public function openCreateModal()
     {
-        $this->setupModal("create", "Create Race", "Race");
+        $this->setupModal("create", "Create Country", "Country");
     }
 
     public function openUpdateModal($id)
     {
-        $this->glcode = RefGlcode::find($id);
-        $this->description = $this->glcode->description;
-        $this->code = $this->glcode->code;
-        $this->glcode->status == 1 ? $this->status = true : $this->status = false;
-        $this->setupModal("update", "Update Race", "Race", "update({$id})");
+        $this->country = RefCountry::find($id);
+        $this->description = $this->country->description;
+        $this->code = $this->country->code;
+        $this->country->status == 1 ? $this->status = true : $this->status = false;
+        $this->setupModal("update", "Update Country", "Country", "update({$id})");
     }
 
     public function create()
     {
         $this->validate();
 
-        if ($this->glcodeService->isCodeExists($this->code)) {
+        if ($this->countryService->isCodeExists($this->code)) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $this->glcodeService->createGlCode($this->description, $this->code, $this->status);
+            $this->countryService->createCountry($this->description, $this->code, $this->status);
             $this->reset();
             $this->openModal = false;
         }
@@ -79,8 +79,8 @@ class GlCode extends Component
     {
         $this->validate();
 
-        if ($this->glcodeService->canUpdateCode($id, $this->code)) {
-            $this->glcodeService->updateGlcode($id, $this->description, $this->code, $this->status);
+        if ($this->countryService->canUpdateCode($id, $this->code)) {
+            $this->countryService->updateCountry($id, $this->description, $this->code, $this->status);
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -94,14 +94,14 @@ class GlCode extends Component
 
     public function ConfirmDelete($id)
     {
-        $this->glcodeService->deleteGlcode($id);
+        $this->countryService->deleteCountry($id);
     }
 
     public function render()
     {
-        $data = $this->glcodeService->getPaginatedGlcode($this->paginated);
+        $data = $this->countryService->getPaginatedCountry($this->paginated);
 
-        return view('livewire.admin.maintenance.glcode', [
+        return view('livewire.admin.maintenance.country',[
             'data' => $data,
         ])->extends('layouts.main');
     }

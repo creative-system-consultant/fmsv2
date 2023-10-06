@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefReligion;
 use App\Services\Maintenance\ReligionService;
+use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -31,10 +32,12 @@ class Religion extends Component
     public $paginated;
 
     protected $religionService;
+    protected $popupService;
 
     public function __construct()
     {
         $this->religionService = new ReligionService();
+        $this->popupService = app(PopupService::class);
     }
 
     public function openCreateModal()
@@ -82,21 +85,7 @@ class Religion extends Component
 
     public function delete($id)
     {
-        $this->dialog()->confirm([
-            'title'       => 'Are you Sure?',
-            'description' => 'Delete the information?',
-            'icon'        => 'question',
-            'accept'      => [
-                'label'  => 'Yes, delete it',
-                'method' => 'ConfirmDelete',
-                'params' => $id,
-            ],
-            'reject' =>
-            [
-                'label'  => 'No, cancel',
-                'method' => 'cancel',
-            ],
-        ]);
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete the information?',$id);
     }
 
     public function ConfirmDelete($id)
@@ -106,7 +95,7 @@ class Religion extends Component
 
     public function render()
     {
-        $data = $this->religionService->getPaginatedReligions($this->paginated);
+        $data = $this->religionService->getPaginatedReligion($this->paginated);
 
         return view('livewire.admin.maintenance.religion', [
             'data' => $data,
