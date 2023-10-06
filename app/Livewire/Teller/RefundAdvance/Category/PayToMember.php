@@ -35,10 +35,7 @@ class PayToMember extends Component
 
     public $documentNo;
 
-    #[Rule('required')]
     public $bank;
-
-    #[Rule('required')]
     public $payableAccountNo;
 
     #[Rule('required')]
@@ -86,7 +83,11 @@ class PayToMember extends Component
 
     public function saveAdvanceInfo()
     {
-        $this->validate();
+        $this->validate([
+            'bank' => 'required',
+            'payableAccountNo' => 'required'
+        ]);
+
         $this->popupService->confirm($this, 'confirmSaveAdvanceInfo', 'Save Information?', 'Are you sure to save this information?');
     }
 
@@ -99,13 +100,18 @@ class PayToMember extends Component
 
         FmsAccountMaster::updateAccountData($this->accountNo, $data);
 
-        $this->setInitialValues();
+        $this->clientBankDetails = true;
         $this->dialog()->success('Updated!', 'The detail has been updated.');
     }
 
     public function saveTransaction()
     {
-        $this->validate();
+        $this->validate([
+            'amount' => 'required|lte:advancePayment|numeric',
+            'transactionDate' => 'required|before_or_equal:today',
+            'bankIbt' => 'required'
+        ]);
+
         $this->popupService->confirm($this, 'confirmSaveTransaction', 'Save Transaction?', 'Are you sure to proceed with the transaction?');
     }
 
@@ -130,7 +136,6 @@ class PayToMember extends Component
             ? $this->notification()->success('Success!', 'The transaction have been recorded.')
             : $this->notification()->error('Error!', 'something went wrong.');
 
-        $this->setInitialValues();
         $this->dispatch('refreshComponent')->to(RefundAdvanceCreate::class);
         $this->resetFields();
     }
