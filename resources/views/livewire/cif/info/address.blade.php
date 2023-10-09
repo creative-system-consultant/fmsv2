@@ -22,49 +22,14 @@
                     <x-button icon="trash" red label="delete" sm />
                 </div>
             </x-slot>
-            <div class="grid grid-cols-1 gap-2">
-                <x-input 
-                    label="Address" 
-                    placeholder="Address 1" 
-                    wire:model=""
-                    disabled
-                />
-                <x-input 
-                    placeholder="Address 2" 
-                    wire:model=""
-                    disabled
-                />
-                <x-input 
-                    placeholder="Address 3" 
-                    wire:model=""
-                    disabled
-                />
-            </div>
-            <div class="grid grid-cols-1 gap-2 mt-2">
-                <x-native-select label="Address Type" wire:model="" disabled>
-                    <option></option>
-                </x-native-select>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 mt-2">
-                <x-input 
-                    label="Postcode" 
-                    wire:model=""
-                    disabled
-                />
-                <x-input 
-                    label="Town" 
-                    wire:model=""
-                    disabled
-                />
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 mt-2">
-                <x-native-select label="State" wire:model="" disabled>
-                    <option></option>
-                </x-native-select>
-                <x-native-select label="Country" wire:model="" disabled>
-                    <option></option>
-                </x-native-select>
-            </div>
+            <x-form.address-input
+                key=""
+                editable=false
+                postcodes=""
+                :states="$states"
+                :countries="$countries"
+                :addressTypes="$addressTypes"
+            />
         </x-card>
         <! -- End loop -->
     </div>

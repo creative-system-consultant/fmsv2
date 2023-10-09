@@ -105,9 +105,9 @@
             </div>
 
             <div class="mt-12">
-                @if($setIndex == '0')
+                @if($setIndex == '1')
                     <livewire:cif.info.details :uuid="$uuid" />
-                @elseif($setIndex  == '1')
+                @elseif($setIndex  == '0')
                     <livewire:cif.info.address :uuid="$uuid" />
                 @elseif($setIndex  == '2')
                     <livewire:cif.info.beneficiary :uuid="$uuid" />
