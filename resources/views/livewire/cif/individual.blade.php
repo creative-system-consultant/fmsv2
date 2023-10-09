@@ -5,21 +5,25 @@
                 <x-label label="Search :"/>
                 <div>
                     <x-native-select  wire:model="model">
-                        <option value="">Name</option>
-                        <option value="">Identity No</option>
-                        <option value="">Membership Id</option>
-                        <option value="">Staff No</option>
+                        <option value="name">Name</option>
+                        <option value="identity_no">Identity No</option>
+                        <option value="ref_no">Membership Id</option>
+                        <option value="staff_no">Staff No</option>
                     </x-native-select>
                 </div>
 
                 <div class="w-64">
                     <x-input 
-                        wire:model="search"
+                    wire:model.debounce.500ms="search"
                         placeholder="Search"
                     />
                 </div>
+
             </div>
             
+            <div wire:loading wire:target="search">
+                @include('misc.loading')
+            </div>
             <div style="margin-top: 30px;">
                 <x-table.table>
                     <x-slot name="thead">
@@ -35,49 +39,56 @@
                         <x-table.table-header class="text-left" value="ACTION" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
-                        <tr>
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                1
-                            </x-table.table-body>
-                
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                2
-                            </x-table.table-body>
-    
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                3
-                            </x-table.table-body>
+                        @forelse ($customers as $item)
+                            <tr>
+                                <x-table.table-body colspan="" class="text-center text-gray-500">
+                                    <p>{{ (($customers ->currentpage()-1) * $customers ->perpage()) + $loop->index + 1 }}</p>
+                                </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-left text-gray-500">
+                                    <p>{{$item->staff_no}}</p>
+                                </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-left text-gray-500">
+                                    <p>{{$item->ref_no}}</p>
+                                </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-left font-medium text-gray-900">
+                                    <p>{{$item->icno}}</p>
+                                </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-left text-gray-500">
+                                    <p>{{$item->name}}</p>
+                                </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-left text-gray-500">
+                                    <p>{{ $item->AVAILABLE_GOLD ?  $item->AVAILABLE_GOLD : 'N/A' }}</p>
+                                </x-table.table-body>
+                                
+                                <x-table.table-body colspan="" class="text-left text-gray-500">
+                                    <p>{{ $item->status_id ?  $item->status_id : 'N/A' }}</p>
+                                </x-table.table-body>
+                                
+                                <x-table.table-body colspan="" class="text-left text-gray-500">
+                                    <p>{{ $item->created_at ?  date('d/m/Y', strtotime($item->created_at)) : 'N/A' }}</p>
+                                </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-left text-gray-500">
+                                    <p>{{ $item->updated_at ?  date('d/m/Y', strtotime($item->updated_at)) : 'N/A' }}</p>
+                                </x-table.table-body>
                         
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                4
+                                                
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    <x-button sm  href="{{ route('cif.info') }}" icon="eye" primary label="View" wire:navigate/>
+                                </x-table.table-body>
+
+                            </tr>
+                            @empty
+                            <x-table.table-body colspan="3" class="font-medium text-center text-gray-900">
+                                <p><center>No data</center></p>
                             </x-table.table-body>
-    
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                5
-                            </x-table.table-body>
-    
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                6
-                            </x-table.table-body>
-    
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                7
-                            </x-table.table-body>
-    
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                8
-                            </x-table.table-body>
-    
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                9
-                            </x-table.table-body>
-                
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                <x-button sm  href="{{ route('cif.info') }}" icon="eye" primary label="View" wire:navigate/>
-                            </x-table.table-body>
-                        </tr>
+                            @endforelse
+                            
                     </x-slot>
+                    
                 </x-table.table>
+                <div class="px-2 py-2">
+                    {{ $customers->links() }}
+                </div>
             </div>
             
         </div>
