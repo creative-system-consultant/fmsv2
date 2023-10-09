@@ -14,18 +14,14 @@
 
                 <div class="w-64">
                     <x-input 
-                    wire:model.debounce.500ms="search"
+                        wire:model.live="search"
                         placeholder="Search"
                     />
                 </div>
-
             </div>
             
-            <div wire:loading wire:target="search">
-                @include('misc.loading')
-            </div>
             <div style="margin-top: 30px;">
-                <x-table.table>
+                <x-table.table loading="true" loadingtarget="search">
                     <x-slot name="thead">
                         <x-table.table-header class="text-left" value="NO" sort="" />
                         <x-table.table-header class="text-left" value="STAFF NO" sort="" />
@@ -50,7 +46,7 @@
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{$item->ref_no}}</p>
                                 </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-left font-medium text-gray-900">
+                                <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{$item->icno}}</p>
                                 </x-table.table-body>
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
@@ -78,7 +74,7 @@
 
                             </tr>
                             @empty
-                            <x-table.table-body colspan="3" class="font-medium text-center text-gray-900">
+                            <x-table.table-body colspan="10" class="font-medium text-center text-gray-900">
                                 <p><center>No data</center></p>
                             </x-table.table-body>
                             @endforelse
@@ -86,8 +82,8 @@
                     </x-slot>
                     
                 </x-table.table>
-                <div class="px-2 py-2">
-                    {{ $customers->links() }}
+                <div class="px-2 py-2 mt-4">
+                    {{ $customers->links('livewire::pagination-links') }}
                 </div>
             </div>
             
