@@ -3,8 +3,8 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefRelationship;
-use App\Services\Maintenance\RelationshipService;
 use App\Services\General\PopupService;
+use App\Services\Model\RelationshipService;
 use App\Traits\MaintenanceModalTrait;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -60,10 +60,16 @@ class Relationship extends Component
     {
         $this->validate();
 
-        if ($this->relationshipService->isCodeExists($this->code)) {
+        if (RelationshipService::isCodeExists($this->code)) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $this->relationshipService->createRelationship($this->description, $this->code, $this->status);
+            $data = [
+                'description' => trim(strtoupper($this->description)),
+                'code' => trim(strtoupper($this->code)),
+                'status' => $this->status == true ? '1' : '0',
+            ];
+
+            RelationshipService::createRelationship($data);
 
             $this->reset();
             $this->openModal = false;
@@ -74,8 +80,14 @@ class Relationship extends Component
     {
         $this->validate();
 
-        if ($this->relationshipService->canUpdateCode($id, $this->code)) {
-            $this->relationshipService->updateRelationship($id, $this->description, $this->code, $this->status);
+        if (RelationshipService::canUpdateCode($id, $this->code)) {
+            $data = [
+                'description' => trim(strtoupper($this->description)),
+                'code' => trim(strtoupper($this->code)),
+                'status' => $this->status == true ? '1' : '0',
+            ];
+
+            RelationshipService::updateRelationship($id, $data);
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -89,12 +101,12 @@ class Relationship extends Component
 
     public function ConfirmDelete($id)
     {
-        $this->relationshipService->deleteRelationship($id);
+        RelationshipService::deleteRelationship($id);
     }
 
     public function render()
     {
-        $data = $this->relationshipService->getPaginatedRelationship($this->paginated);
+        $data = RelationshipService::getPaginatedRelationships($this->paginated);
 
         return view('livewire.admin.maintenance.relationship', [
             'data' => $data,
