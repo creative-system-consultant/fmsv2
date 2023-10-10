@@ -10,7 +10,7 @@
                     <h1 class="font-semibold text-lg dark:text-white">Category</h1>
                     <div class="bg-white border-2 border-black dark:border-gray-400 dark:text-white dark:bg-gray-800 px-4 py-2 text-xs rounded-lg text-black flex space-x-2 items-center">
                         <x-icon name="user-circle" class="w-5 h-5"/>
-                        <p>RAJA SAHRUL HISHAN BIN RAJA MAT</p>
+                        <p>{{$name}}</p>
                     </div>
                 </div>
             
@@ -51,7 +51,7 @@
                         </span>
                     </x-hovertab.title>
 
-                    <x-hovertab.title name="5" wire:click="setState(5)">
+                    {{-- <x-hovertab.title name="5" wire:click="setState(5)">
                         <x-icon name="currency-dollar" class="w-6 h-6 mr-2"/>
                         <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
                             Finance
@@ -70,7 +70,7 @@
                         <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
                             Guarantee/Guarantor
                         </span>
-                    </x-hovertab.title>
+                    </x-hovertab.title> --}}
 
                     <x-hovertab.title name="8" wire:click="setState(8)">
                         <x-icon name="credit-card" class="w-6 h-6 mr-2"/>
