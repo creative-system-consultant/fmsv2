@@ -3,14 +3,10 @@
 namespace App\Services\Module;
 
 use App\Models\Cif\CifCustomer;
-use App\Models\Systm\SysActgPeriod;
-use Carbon\Carbon;
 use DB;
 
 class RefundAdvance
 {
-    const CLOSE_FLAG = 'N';
-
     public function __construct()
     {
         //
@@ -20,7 +16,7 @@ class RefundAdvance
     {
         return CifCustomer::select(
                 'cif.customers.uuid',
-                'cif.customers.icno',
+                'cif.customers.identity_no',
                 'cif.customers.ref_no',
                 'cif.customers.name',
                 'FMS.ACCOUNT_MASTERS.account_no',
@@ -50,29 +46,5 @@ class RefundAdvance
         return self::getAdvanceQuery()
             ->where($search_by, 'like', '%' . $search . '%')
             ->paginate(10);
-    }
-
-    public static function determinePeriodRange()
-    {
-        $actg_period_prevMonth = SysActgPeriod::select('actg_period_start', 'actg_period_end')
-                                                ->where('actg_period_start', '=', Carbon::now()->subMonth(1)->startOfMonth())
-                                                ->where('actg_close_flag', '=', self::CLOSE_FLAG)
-                                                ->first();
-
-        $actg_period_thisMonth = SysActgPeriod::select('actg_period_start', 'actg_period_end')
-                                                ->where('actg_period_start', '=', Carbon::now()->startOfMonth())
-                                                ->where('actg_close_flag', '=', self::CLOSE_FLAG)
-                                                ->first();
-
-        /* set start date & end date */
-        if ($actg_period_prevMonth != NULL && $actg_period_thisMonth != NULL) {
-            return ['startDate' => $actg_period_prevMonth->actg_period_start, 'endDate' => $actg_period_thisMonth->actg_period_end];
-        } elseif (!$actg_period_prevMonth && $actg_period_thisMonth) {
-            return ['startDate' => $actg_period_thisMonth->actg_period_start, 'endDate' => $actg_period_thisMonth->actg_period_end];
-        } elseif ($actg_period_prevMonth && !$actg_period_thisMonth) {
-            return ['startDate' => $actg_period_prevMonth->actg_period_start, 'endDate' => $actg_period_prevMonth->actg_period_end];
-        } else {
-            return ['startDate' => NULL, 'endDate' => NULL];
-        }
     }
 }
