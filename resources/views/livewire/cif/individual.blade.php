@@ -57,7 +57,7 @@
                                 </x-table.table-body>
                                 
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
-                                    <p>{{ $item->status_id ?  $item->status_id : 'N/A' }}</p>
+                                    <p>{{ $item->status_id ?  ($item->status_id ==1 ? 'Active' :'Inactive') : 'N/A' }}</p>
                                 </x-table.table-body>
                                 
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
@@ -69,8 +69,9 @@
                         
                                                 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    <x-button sm  href="{{ route('cif.info') }}" icon="eye" primary label="View" wire:navigate/>
+                                    <x-button sm  href="{{ route('cif.info',['uuid'=>$item->uuid]) }}" icon="eye" primary label="View" wire:navigate/>
                                 </x-table.table-body>
+
 
                             </tr>
                             @empty

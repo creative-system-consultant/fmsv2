@@ -11,7 +11,8 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <! -- Start loop -->
-        <x-card title="Address Detail 1" >
+        @foreach ($addresses as $key => $address)
+        <x-card title="Address Detail {{ $loop->iteration }}" >
             <x-slot name="action" >
                 <div class="flex items-center space-x-2">
                     <x-checkbox 
@@ -19,18 +20,19 @@
                         left-label="Mailing Address" 
                         wire:model.defer="" 
                     />
-                    <x-button icon="trash" red label="delete" sm />
+                    <x-button icon="trash" red label="delete" sm  onclick="deleteAddress({{ $key }})"/>
                 </div>
             </x-slot>
             <x-form.address-input
-                key=""
-                editable=false
-                postcodes=""
-                :states="$states"
-                :countries="$countries"
-                :addressTypes="$addressTypes"
+            :key="$key"
+            editable={{$editAddress}}
+            postcodes=""
+            :states="$states"
+            :countries="$countries"
+            :addressTypes="$addressTypes"
             />
         </x-card>
+        @endforeach
         <! -- End loop -->
     </div>
 </div>
