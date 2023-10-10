@@ -6,47 +6,54 @@ use App\Models\Ref\RefRelationship;
 
 class RelationshipService
 {
-    public function isCodeExists($code)
+    public static function isCodeExists($code)
     {
         return RefRelationship::whereCoopId(auth()->user()->coop_id)->whereCode($code)->exists();
     }
 
-    public function createRelationship($description, $code, $status)
+    public static function getAllRelationship()
     {
-        RefRelationship::create([
-            'description' => trim(strtoupper($description)),
-            'code' => trim(strtoupper($code)),
-            'coop_id' => auth()->user()->coop_id,
-            'status' => $status == true ? '1' : '0',
-            'created_at' => now(),
-            'created_by' => auth()->user()->name,
-        ]);
+        return RefRelationship::all();
     }
 
-    public function canUpdateCode($id, $code)
+    public static function createRelationship($data)
+    {
+        $defaultData = [
+            'coop_id' => auth()->user()->coop_id,
+            'updated_at' => now(),
+            'updated_by' => auth()->user()->name,
+        ];
+
+        $mergedData = array_merge($data, $defaultData);
+
+        RefRelationship::create($mergedData);
+    }
+
+    public static function canUpdateCode($id, $code)
     {
         $existingCode = RefRelationship::whereCoopId(auth()->user()->coop_id)->whereCode($code);
 
         return !$existingCode->exists() || $existingCode->value('id') == $id;
     }
 
-    public function updateRelationship($id, $description, $code, $status)
+    public static function updateRelationship($id, $data)
     {
-        RefRelationship::whereId($id)->update([
-            'description' => trim(strtoupper($description)),
-            'code' => trim(strtoupper($code)),
-            'status' => $status == true ? '1' : '0',
+        $defaultData = [
             'updated_at' => now(),
             'updated_by' => auth()->user()->name,
-        ]);
+        ];
+
+        $mergedData = array_merge($data, $defaultData);
+
+        RefRelationship::whereId($id)->update($mergedData);
     }
 
-    public function deleteRelationship($id)
+    public static function deleteRelationship($id)
     {
         RefRelationship::whereId($id)->delete();
     }
 
-    public function getPaginatedRelationships($perPage = 10)
+    public static function getPaginatedRelationships($perPage = 10)
     {
         return RefRelationship::whereCoopId(auth()->user()->coop_id)->paginate($perPage);
     }
