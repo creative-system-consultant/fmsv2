@@ -4,13 +4,16 @@ namespace App\Services\Model;
 
 use App\Models\Ref\RefBankIbt;
 
+/**
+ * This service class is responsible for operations related to 'RefBankIbt'.
+ */
 class BankIbtService
 {
-    public function __construct()
-    {
-        //
-    }
-
+    /**
+     * Retrieves all records from the 'RefBankIbt' model.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection Collection of RefBankIbt records.
+     */
     public static function getAllRefBankIbts()
     {
         return RefBankIbt::all();
