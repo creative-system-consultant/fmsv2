@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Livewire\Home\Home;
 use App\Livewire\Doc\Doc;
+use App\Livewire\Report\ReportList;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', Login::class);
@@ -78,9 +79,17 @@ Route::middleware('auth')->group(function () {
             base_path('routes/web/dividen.php'),
         );
 
-        //report
-        Route::prefix('report')->as('report.')->group(
-            base_path('routes/web/report.php'),
+        // report List
+        Route::prefix('report')->as('report.')->get('index', ReportList::class)->name('report-list');
+
+        //report Management
+        Route::prefix('report')->as('report.management.')->group(
+            base_path('routes/web/reportManagement.php'),
+        );
+
+        //report Operation
+        Route::prefix('report')->as('report.operation.')->group(
+            base_path('routes/web/reportOperation.php'),
         );
 
         //admin/setting

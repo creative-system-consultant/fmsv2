@@ -37,52 +37,52 @@
                                 <ul id="myUL" class="list-none">
                                     <div class="py-2">
                                         <li>
-                                            <p class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white pb-2">
+                                            <p class="inline-flex items-center w-full px-4 py-2 pb-2 text-sm font-semibold text-gray-500 dark:text-white">
                                                 <span>MANAGEMENT</span>
                                             </p>
                                         </li>
 
                                         <div x-data={show:false}>
                                             <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
+                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white">
+                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>
                                                     <span>Monthly Arreas</span>
                                                 </p>
                                                 <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                                 <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                             </li>
 
                                             <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
                                                 <li>
-                                                    <a wire:navigate href="{{route('report.report-ma-age')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{route('report.management.report-ma-age')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Monthly Arrears Account By Age</span>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a wire:navigate href="{{route('report.report-ma-employer')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{route('report.management.report-ma-employer')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Monthly Arrears Account By Employer</span>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a wire:navigate href="{{route('report.report-ma-state')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{route('report.management.report-ma-state')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Monthly Arrears Account By State</span>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a wire:navigate href="{{route('report.report-ma-product')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{route('report.management.report-ma-product')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Monthly Arrears Account By Product</span>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a wire:navigate href="{{route('report.report-ma-ageing')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{route('report.management.report-ma-ageing')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Monthly Arrears Ageing</span>
                                                     </a>
@@ -92,21 +92,21 @@
 
                                         <div x-data={show:false}>
                                             <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
+                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white">
+                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>
                                                     <span>Monthly Contribution</span>
                                                 </p>
                                                 <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                                 <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                             </li>
 
                                             <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
                                                 <li>
-                                                    <a wire:navigate href="{{route('report.report-mc-summary')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{route('report.management.report-mc-summary')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Monthly Contribution Summary</span>
                                                     </a>
@@ -116,21 +116,21 @@
 
                                         <div x-data={show:false}>
                                             <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
+                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white">
+                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>
                                                     <span>Monthly Financing Position</span>
                                                 </p>
                                                 <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                                 <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                             </li>
 
                                             <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
                                                 <li>
-                                                    <a wire:navigate href="{{route('report.report-mfp-summary')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{route('report.management.report-mfp-summary')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Monthly Financing Position Summary</span>
                                                     </a>
@@ -140,21 +140,21 @@
 
                                         <div x-data={show:false}>
                                             <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
+                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white">
+                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>
                                                     <span>Monthly Npf</span>
                                                 </p>
                                                 <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                                 <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                             </li>
 
                                             <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
                                                 <li>
-                                                    <a wire:navigate href="{{route('report.report-mnpf-summary')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{route('report.management.report-mnpf-summary')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Monthly Npf Summary</span>
                                                     </a>
@@ -164,21 +164,21 @@
 
                                         <div x-data={show:false}>
                                             <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
+                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white">
+                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>
                                                     <span>Monthly Share</span>
                                                 </p>
                                                 <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                                 <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                             </li>
 
                                             <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
                                                 <li>
-                                                    <a wire:navigate href="{{route('report.report-ms-summary')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{route('report.management.report-ms-summary')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Monthly Share Summary</span>
                                                     </a>
@@ -187,24 +187,24 @@
                                         </div>
 
                                     </div>
-                                    <div class="border-t py-2 border-primary-50 dark:border-gray-700">
+                                    <div class="py-2 border-t border-primary-50 dark:border-gray-700">
                                         <li>
-                                            <p class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white pb-2">
+                                            <p class="inline-flex items-center w-full px-4 py-2 pb-2 text-sm font-semibold text-gray-500 dark:text-white">
                                                 <span>OPERATION</span>
                                             </p>
                                         </li>
 
                                         <div x-data={show:false}>
                                             <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
+                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white">
+                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>
                                                     <span>Contribution</span>
                                                 </p>
                                                 <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                                 <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                             </li>
 
@@ -226,15 +226,15 @@
 
                                         <div x-data={show:false}>
                                             <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
+                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white">
+                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>
                                                     <span>Daily Transaction</span>
                                                 </p>
                                                 <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                                 <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                             </li>
 
@@ -256,15 +256,15 @@
 
                                         <div x-data={show:false}>
                                             <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
+                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white">
+                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>
                                                     <span>Financing</span>
                                                 </p>
                                                 <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                                 <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                             </li>
 
@@ -298,15 +298,15 @@
 
                                         <div x-data={show:false}>
                                             <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
+                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white">
+                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>
                                                     <span>List</span>
                                                 </p>
                                                 <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                                 <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                             </li>
 
@@ -318,7 +318,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a wire:navigate href="{{route('report.report-list-member')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{route('report.management.report-list-member')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>List Of Member</span>
                                                     </a>
@@ -414,7 +414,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{ route('report.operation.list.fin-trx-base-disbursement') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>List Of Fin Transaction Base On Disbursement </span>
                                                     </a>
@@ -430,15 +430,15 @@
 
                                         <div x-data={show:false}>
                                             <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
+                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white">
+                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>
                                                     <span>Member</span>
                                                 </p>
                                                 <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                                 <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                             </li>
 
@@ -460,15 +460,15 @@
 
                                         <div x-data={show:false}>
                                             <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
+                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white">
+                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>
                                                     <span>Monthly</span>
                                                 </p>
                                                 <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                                 <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                             </li>
 
@@ -550,15 +550,15 @@
 
                                         <div x-data={show:false}>
                                             <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
+                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white">
+                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>
                                                     <span>Share</span>
                                                 </p>
                                                 <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                                 <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                             </li>
 
@@ -586,15 +586,15 @@
 
                                         <div x-data={show:false}>
                                             <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
+                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white">
+                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>
                                                     <span>Summary</span>
                                                 </p>
                                                 <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                                 <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                             </li>
 
@@ -616,15 +616,15 @@
 
                                         <div x-data={show:false}>
                                             <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
+                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white">
+                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>
                                                     <span>GL</span>
                                                 </p>
                                                 <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                                 <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
+                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>
                                                 </div>
                                             </li>
 
@@ -683,4 +683,3 @@
     }
 </script>
 @endpush
-
