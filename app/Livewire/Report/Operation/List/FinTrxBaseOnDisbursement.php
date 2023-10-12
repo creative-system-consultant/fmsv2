@@ -17,22 +17,15 @@ class FinTrxBaseOnDisbursement extends Component
     #[Rule('required')]
     public $endDate;
 
-    private function getDataFromSp()
-    {
-        $input = [
-            'clientId' => $this->clientId,
-            'startDate' => $this->startDate,
-            'endDate' => $this->endDate,
-        ];
-
-        return SpFmsUpRptListFinancingTrxOnDisb::handle($input);
-    }
-
     public function generateExcel()
     {
         $this->validate();
 
-        $data = $this->getDataFromSp();
+        $data = SpFmsUpRptListFinancingTrxOnDisb::handle([
+            'clientId' => $this->clientId,
+            'startDate' => $this->startDate,
+            'endDate' => $this->endDate,
+        ]);
         $filename = 'List Of Financing base on disbursement-%s.xlsx';
         $report = new ReportService();
 

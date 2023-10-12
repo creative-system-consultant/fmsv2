@@ -17,22 +17,16 @@ class Autopay extends Component
     #[Rule('required')]
     public $endDate;
 
-    private function getDataFromSp()
-    {
-        $input = [
-            'clientId' => $this->clientId,
-            'startDate' => $this->startDate,
-            'endDate' => $this->endDate,
-        ];
-
-        return SpFmsUpRptAutopayList::handle($input);
-    }
-
     public function generateExcel()
     {
         $this->validate();
 
-        $data = $this->getDataFromSp();
+        $data = SpFmsUpRptAutopayList::handle([
+            'clientId' => $this->clientId,
+            'startDate' => $this->startDate,
+            'endDate' => $this->endDate,
+        ]);
+
         $filename = 'ListOfAutopay-%s.xlsx';
         $report = new ReportService();
 
