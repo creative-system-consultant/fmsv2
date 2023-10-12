@@ -12,6 +12,7 @@ use App\Livewire\Report\MonthlyFinancingPosition\MfpSummary;
 use App\Livewire\Report\MonthlyNpf\MnpfSummary;
 use App\Livewire\Report\MonthlyShare\MsSummary;
 
+// Management
 Route::get('index', ReportList::class)->name('report-list');
 Route::get('list-member', ListMember::class)->name('report-list-member');
 Route::get('ma-age', MaAge::class)->name('report-ma-age');
@@ -23,3 +24,5 @@ Route::get('mc-summary', McSummary::class)->name('report-mc-summary');
 Route::get('mfp-summary', MfpSummary::class)->name('report-mfp-summary');
 Route::get('mnpf-summary', MnpfSummary::class)->name('report-mnpf-summary');
 Route::get('ms-summary', MsSummary::class)->name('report-ms-summary');
+
+// Operation
