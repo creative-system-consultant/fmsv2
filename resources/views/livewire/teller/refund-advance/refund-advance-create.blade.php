@@ -1,5 +1,5 @@
 <div>
-    <x-container title="Refund Advance" routeBackBtn="{{route('teller.teller-refund-advance-list')}}" titleBackBtn="Refund Advance list" disableBackBtn="true">
+    <x-container title="Refund Advance" routeBackBtn="{{route('teller.teller-list')}}" titleBackBtn="Refund Advance list" disableBackBtn="true">
         <div class="grid grid-cols-1">
             <div class="w-full p-4 bg-white border rounded-lg shadow-md dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700">
                 <div class="flex flex-col items-start w-full space-x-0 space-y-2 md:flex-row md:items-center md:space-x-2 md:space-y-0">

@@ -112,7 +112,7 @@
                             <livewire:teller.miscellaneous-out.miscellaneous-out-list />
 
                         @elseif($type_payment_out == 'Refund Advance')
-                            <livewire:teller.refund-advance.refund-advance />
+                            <livewire:teller.refund-advance.refund-advance-list />
 
                         @elseif($type_payment_out == 'Dividen Batch Widthdrawal')
                             <livewire:teller.dividen-batch.dividen-batch />
