@@ -7,6 +7,7 @@ use Livewire\Component;
 class DividenIndex extends Component
 {
     public $setIndex = 0;
+    public $date; //testing for learning purposes
     
 
     public function setState($index)
