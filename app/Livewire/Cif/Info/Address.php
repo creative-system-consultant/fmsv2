@@ -82,7 +82,7 @@ class Address extends Component
 
         if (array_sum(array_column($this->addresses, 'mail_flag')) == 1) {
             foreach ($this->addresses as $index => $address) {
-                dump($address);
+                // dd($address);
 
                 CifAddress::where('id', $address['id'])->update([
                     'mail_flag'         => $address['mail_flag'] == true ? '1' : NULL,
