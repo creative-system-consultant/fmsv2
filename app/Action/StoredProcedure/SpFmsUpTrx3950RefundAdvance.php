@@ -23,7 +23,6 @@ class SpFmsUpTrx3950RefundAdvance
         // Construct the SQL statement for executing the stored procedure.
         $sql = "exec " . $sp . " :clientId, :accountNo, :amount, :transactionDate, :txnCode, :remark, :documentNo, :userId, :bank, :bankIbt";
 
-        // dd($data);
         // Execute the SQL statement using Laravel's database facade.
         DB::statement($sql, $data);
 

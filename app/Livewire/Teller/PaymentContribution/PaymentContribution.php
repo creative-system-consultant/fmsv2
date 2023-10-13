@@ -6,10 +6,12 @@ use Livewire\Component;
 
 class PaymentContribution extends Component
 {
-    public  $type = 'cheque';
+    public $type = 'cheque';
 
-    public function selectType($type){
+    public function selectType($type)
+    {
         $this->type = $type;
+        $this->dispatch('typeUpdated', type: $this->type)->to(Details::class);
     }
 
     public function render()

@@ -11,7 +11,7 @@ class FmsAccountMaster extends Model
 {
     use HasFactory;
 
-    protected $table   = 'FMS.Account_Masters';
+    protected $table   = 'FMS.ACCOUNT_MASTERS';
     protected $guarded = [];
 
     // Functions
