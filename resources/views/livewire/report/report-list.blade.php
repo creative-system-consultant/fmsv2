@@ -210,13 +210,13 @@
 
                                             <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{ route('report.operation.contribution.payment') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="collection" class="w-4 h-4 mr-2"/>
                                                         <span>Contribution Payment</span>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{ route('report.operation.contribution.withdrawal') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Contribution Wihdrawal</span>
                                                     </a>
@@ -240,13 +240,13 @@
 
                                             <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800">
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{ route('report.operation.dailytransaction.listing') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Daily Transaction Listing</span>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{ route('report.operation.dailytransaction.product') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Daily Transaction By Product</span>
                                                     </a>
@@ -270,25 +270,25 @@
 
                                             <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800">
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{ route('report.operation.financing.summary') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Financing Summary</span>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{ route('report.operation.financing.disbursement') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Financing Disbursement</span>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{ route('report.operation.financing.cashdetail') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Financing Cash Detail</span>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{ route('report.operation.financing.approval') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Financing Approval</span>
                                                     </a>
@@ -444,7 +444,7 @@
 
                                             <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800">
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{ route('report.operation.member.byincome') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Member By Income</span>
                                                     </a>
