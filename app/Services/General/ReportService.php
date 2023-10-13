@@ -2,12 +2,23 @@
 
 namespace App\Services\General;
 
+use Illuminate\Pagination\LengthAwarePaginator;
 use OpenSpout\Common\Entity\Style\CellAlignment;
 use OpenSpout\Common\Entity\Style\Style;
 use Rap2hpoutre\FastExcel\FastExcel;
 
 class ReportService
 {
+    public static function paginateData($data, $perPage = 10)
+    {
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentPageData = $data->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
+        $finalResultData = new LengthAwarePaginator($currentPageData, count($data), $perPage);
+        $finalResultData->setPath(LengthAwarePaginator::resolveCurrentPath());
+
+        return $finalResultData;
+    }
+
     public function generateExcelReport($data, $filename, $startDate)
     {
         $header_style = (new Style())->setFontBold()->setShouldWrapText(false);

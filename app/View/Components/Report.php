@@ -12,15 +12,17 @@ class Report extends Component
     public $startDate;
     public $endDate;
     public $reportDate;
+    public $result;
     /**
      * Create a new component instance.
      */
-    public function __construct($title, $startDate = false, $endDate = false, $reportDate = false)
+    public function __construct($title, $startDate = false, $endDate = false, $reportDate = false, $result = null)
     {
         $this->title = $title;
         $this->startDate = (bool) $startDate;
         $this->endDate = (bool) $endDate;
         $this->reportDate = (bool) $reportDate;
+        $this->result = $result;
     }
 
     /**
