@@ -1,5 +1,5 @@
 <div>
-    <x-container title="MISCELLANEOUS OUT" routeBackBtn="{{route('teller.teller-miscellaneous-out-list')}}" titleBackBtn="miscellaneous out list " disableBackBtn="true">
+    <x-container title="MISCELLANEOUS OUT" routeBackBtn="{{route('teller.teller-list')}}" titleBackBtn="miscellaneous out list " disableBackBtn="true">
         <div class="grid grid-cols-1">
             <div class=" bg-white border rounded-lg shadow-md w-full dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700  p-4">
                 <div class="flex flex-col items-start w-full space-x-0 space-y-2 md:flex-row md:items-center md:space-x-2 md:space-y-0">
@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-12 gap-6 mt-4  p-4 rounded-lg dark:bg-gray-900" x-data="{ tab: 2 }">
+            <div class="grid grid-cols-12 gap-6 mt-4  p-4 rounded-lg dark:bg-gray-900" x-data="{ tab: 0 }">
                 <div class="col-span-12 lg:col-span-4 xxl:col-span-4">
                     <x-card title="Category">
                         <x-tab.basic-title name="0">

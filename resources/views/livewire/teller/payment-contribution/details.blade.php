@@ -1,4 +1,7 @@
 <div>
+    <div wire:loading wire:target="saveTransaction,confirmSaveTransaction">
+        @include('misc.loading')
+    </div>
     <x-card title="{{ strtoupper($type) }} DETAILS" >
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div class=" {{ $type == 'cheque' ? 'block' : 'hidden' }}">

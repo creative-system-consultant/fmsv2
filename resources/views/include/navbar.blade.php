@@ -2,7 +2,7 @@
         x-data="{ atTop: (window.pageYOffset > 50) ? false : true }"
         x-init="() => { atTop = (window.pageYOffset > 50) ? true : false }"
         @scroll.window.window="atTop = (window.pageYOffset > 50) ? true : false"
-        class="sticky top-0 z-30 w-full py-3 backdrop-blur-xl bg-white/60 dark:bg-gray-900/90 dark:border-gray-600 lg:pr-4"
+        class="sticky top-0 z-10 w-full py-3 backdrop-blur-xl bg-white/60 dark:bg-gray-900/90 dark:border-gray-600 lg:pr-4"
         :class="{'': atTop, ' lg:backdrop-blur-none lg:bg-transparent lg:dark:bg-transparent': !atTop}"
     >
     <div class="px-3 lg:pl-3">

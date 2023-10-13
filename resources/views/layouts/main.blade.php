@@ -36,7 +36,7 @@
             <main class="w-full">
                 <div class="-mt-[15rem] md:-mt-[22rem] ">
                     <!--content-->
-                    <div class="relative overflow-x-hidden">
+                    <div class="relative ">
                         @yield('content')
                     </div>
                 </div>
