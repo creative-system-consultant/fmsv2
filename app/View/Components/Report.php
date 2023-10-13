@@ -9,12 +9,18 @@ use Illuminate\View\Component;
 class Report extends Component
 {
     public $title;
+    public $startDate;
+    public $endDate;
+    public $reportDate;
     /**
      * Create a new component instance.
      */
-    public function __construct($title)
+    public function __construct($title, $startDate = false, $endDate = false, $reportDate = false)
     {
         $this->title = $title;
+        $this->startDate = (bool) $startDate;
+        $this->endDate = (bool) $endDate;
+        $this->reportDate = (bool) $reportDate;
     }
 
     /**
