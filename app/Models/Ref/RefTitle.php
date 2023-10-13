@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class RefTitle extends Model
 {
     use SoftDeletes;
-    protected $table = 'REF.cust_titles';
+    protected $table = 'REF.TITLES';
     protected $guarded = [];
-    protected $dates   = ['created_at','deleted_at','updated_at'];
+    protected $dates   = ['created_at', 'deleted_at', 'updated_at'];
 }

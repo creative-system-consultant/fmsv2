@@ -13,5 +13,5 @@ class AddressType extends Model implements Auditable
 
     protected $guarded = [];
 
-    protected $table = 'ref.address_types';
+    protected $table = 'REF.ADDTYPES';
 }

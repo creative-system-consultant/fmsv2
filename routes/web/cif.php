@@ -11,6 +11,7 @@ use App\Livewire\Cif\Info\Beneficiary;
 use App\Livewire\Cif\Info\Contribution;
 use App\Livewire\Cif\Info\Share;
 use App\Livewire\Cif\Info\Finance;
+use App\Livewire\Cif\Membership;
 
 Route::get('main', Individual::class)->name('main');
 Route::get('info/{uuid}', Info::class)->name('info');
@@ -23,3 +24,4 @@ Route::get('guarantee', Guarantee::class)->name('guarantee');
 Route::get('contribution', Contribution::class)->name('contribution');
 Route::get('share', Share::class)->name('Share');
 Route::get('finance', Finance::class)->name('Finance');
+Route::get('member/{uuid}', Membership::class)->name('member');

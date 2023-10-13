@@ -25,7 +25,7 @@ class Individual extends Component
         // Apply search filter if a search term is provided
         if ($this->search) {
             $query->where('name', 'like', '%' . $this->search . '%')
-                ->orWhere('icno', 'like', '%' . $this->search . '%')
+                ->orWhere('identity_no', 'like', '%' . $this->search . '%')
                 ->orWhere('ref_no', 'like', '%' . $this->search . '%');
             // ->orWhere('staff_no', 'like', '%' . $this->search . '%');
         }

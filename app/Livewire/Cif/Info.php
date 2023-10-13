@@ -7,19 +7,36 @@ use Livewire\Component;
 
 class Info extends Component
 {
-    public $uuid, $name, $cID;
+    public $uuid, $name, $cID, $addresses, $customer;
     public $setIndex = 0;
 
     public function mount()
     {
-        $customerName = CifCustomer::select('name', 'id')->where('uuid', $this->uuid)->first();
-        $this->name = $customerName->name;
-        $this->cID = $customerName->id;
+        $this->customer = CifCustomer::select('name', 'id')->where('uuid', $this->uuid)->first();
+        $this->name = $this->customer->name;
+        $this->cID = $this->customer->id;
     }
 
     public function deleteAddress($key)
     {
-        $this->emit('deleteAddressShow', $key);
+        $this->addresses                = ($this->customer->addresses) ? $this->customer->addresses->toArray() : 0;
+
+        $id = $this->addresses[$key]['id'];
+        $address = $this->customer->addresses->where('id', $id)->first();
+        if (isset($address)) {
+            $address->update(['deleted_by' => auth()->user()->id]);
+            $address->delete();
+        }
+        unset($this->addresses[$key]);
+        // $this->dispatchBrowserEvent('swal', [
+        //     'title' => 'Deleted!',
+        //     'text'  => 'The detail has been deleted.',
+        //     'icon'  => 'success',
+        //     'showConfirmButton' => false,
+        //     'timer' => 1500,
+        // ]);
+
+        // $this->emit('deleteAddressShow', $key);
     }
 
     public function setState($index)

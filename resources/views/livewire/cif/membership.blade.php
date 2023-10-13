@@ -23,7 +23,7 @@
                         </span>
                     </x-hovertab.title>
 
-                    <x-hovertab.title name="1" wire:click="setState(1)">
+                    {{-- <x-hovertab.title name="1" wire:click="setState(1)">
                         <x-icon name="home" class="w-6 h-6 mr-2"/>
                         <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
                             Address
@@ -51,7 +51,7 @@
                         </span>
                     </x-hovertab.title>
 
-                    {{-- <x-hovertab.title name="5" wire:click="setState(5)">
+                     <x-hovertab.title name="5" wire:click="setState(5)">
                         <x-icon name="currency-dollar" class="w-6 h-6 mr-2"/>
                         <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
                             Finance
@@ -70,7 +70,7 @@
                         <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
                             Guarantee/Guarantor
                         </span>
-                    </x-hovertab.title> --}}
+                    </x-hovertab.title> 
 
                     <x-hovertab.title name="8" wire:click="setState(8)">
                         <x-icon name="credit-card" class="w-6 h-6 mr-2"/>
@@ -98,7 +98,7 @@
                         <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
                             Miscellaneous
                         </span>
-                    </x-hovertab.title>
+                    </x-hovertab.title> --}}
 
                 </div>
 
@@ -106,29 +106,7 @@
 
             <div class="mt-12">
                 @if($setIndex == '0')
-                    <livewire:cif.info.details :uuid="$uuid" />
-                @elseif($setIndex  == '1')
-                    <livewire:cif.info.address :uuid="$uuid" />
-                @elseif($setIndex  == '2')
-                    <livewire:cif.info.beneficiary :uuid="$uuid" />
-                @elseif($setIndex  == '3')
-                    <livewire:cif.info.contribution :uuid="$uuid" />
-                @elseif($setIndex  == '4')
-                    <livewire:cif.info.share :uuid="$uuid" />
-                @elseif($setIndex  == '5')
-                    <livewire:cif.info.finance :uuid="$uuid" />
-                @elseif($setIndex  == '6')
-                    <livewire:cif.info.third-party-info :uuid="$uuid" />
-                @elseif($setIndex  == '7')
-                    <livewire:cif.info.guarantee :uuid="$uuid" />
-                @elseif($setIndex  == '8')
-                    <livewire:cif.info.others-payment :uuid="$uuid" />
-                @elseif($setIndex  == '9')
-                    <livewire:cif.info.monthly-payment-summary :uuid="$uuid" />
-                @elseif($setIndex  == '10')
-                    <livewire:cif.info.dividend-statement :uuid="$uuid" />
-                @elseif($setIndex  == '11')
-                    <livewire:cif.info.miscellaneous :uuid="$uuid" />
+                    <livewire:cif.membership.mem-details :uuid="$uuid" />
                 @endif
             </div>
         </div>
@@ -136,34 +114,3 @@
 </div>
 
 
-@push('js')
-<script>
-    function deleteAddress(key){
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                @this.deleteAddress(key)
-            }
-        })
-    }
-    window.addEventListener('swal',function(e){Swal.fire(e.detail);});
-</script>
-
-@if(session()->has('createCustomer'))
-<script>
-    Swal.fire({
-            title               : 'Created!',
-            text                : 'The member have been created!.',
-            icon                : 'success',
-            showConfirmButton   : false,
-            timer               : 1500,
-        })
-</script>
-@endif
-@endpush

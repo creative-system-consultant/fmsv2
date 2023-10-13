@@ -2,14 +2,15 @@
 
 namespace App\Models\Ref;
 
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class RefState extends Model
+class RefLanguage extends Model
 {
     use SoftDeletes;
-    protected $table   = 'REF.STATECODES';
+    use HasFactory;
+    protected $table   = 'REF.LANGUAGES';
     protected $guarded = [];
     protected $casts   = [
         'created_at'    => 'datetime',

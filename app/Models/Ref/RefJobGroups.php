@@ -2,14 +2,15 @@
 
 namespace App\Models\Ref;
 
-
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model;
 
-class RefState extends Model
+class RefJobGroups extends Model
 {
     use SoftDeletes;
-    protected $table   = 'REF.STATECODES';
+    use HasFactory;
+    protected $table   = 'REF.JOB_GROUPS';
     protected $guarded = [];
     protected $casts   = [
         'created_at'    => 'datetime',
