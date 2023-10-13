@@ -11,7 +11,7 @@ use Livewire\Component;
 
 class Address extends Component
 {
-    public $uuid, $editAddress = 'true';
+    public $uuid, $editAddress = true;
     public $states, $countries, $addressTypes, $add1, $add2, $add3, $postcode, $town, $addresses;
 
 
@@ -61,7 +61,7 @@ class Address extends Component
 
     public function editAddressbtn()
     {
-        $this->editAddress = 'false';
+        $this->editAddress = false;
     }
 
     public function saveAddress()

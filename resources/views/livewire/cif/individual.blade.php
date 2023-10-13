@@ -62,15 +62,13 @@
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{ $item->updated_at ?  date('d/m/Y', strtotime($item->updated_at)) : 'N/A' }}</p>
                                 </x-table.table-body>
-                        
-                                                
+                                
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    <x-button sm  href="{{ route('cif.info',['uuid'=>$item->uuid]) }}" icon="eye" primary label="CIF" wire:navigate/>
+                                    <div class="flex items-center space-x-2">
+                                        <x-button sm  href="{{ route('cif.info',['uuid'=>$item->uuid]) }}" icon="eye" primary label="CIF" wire:navigate/>
+                                        <x-button sm  href="{{ route('cif.member',['uuid'=>$item->uuid]) }}" icon="eye" primary label="Membership" wire:navigate/>
+                                    </div>
                                 </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    <x-button sm  href="{{ route('cif.member',['uuid'=>$item->uuid]) }}" icon="eye" primary label="Membership" wire:navigate/>
-                                </x-table.table-body>
-
 
                             </tr>
                             @empty
