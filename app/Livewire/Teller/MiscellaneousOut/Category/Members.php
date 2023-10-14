@@ -10,6 +10,7 @@ class Members extends Component
     public $mbrNo;
     public $startDate;
     public $endDate;
+    public $miscAmt;
     public $ic;
 
     public function mount()

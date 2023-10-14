@@ -4,6 +4,6 @@
     </div>
 
     <div>
-        <livewire:teller.miscellaneous-out.category.members.members-transaction :mbrNo=$mbrNo :startDate=$startDate :endDate=$endDate />
+        <livewire:teller.miscellaneous-out.category.members.members-transaction :mbrNo=$mbrNo :startDate=$startDate :endDate=$endDate :miscAmt=$miscAmt />
     </div>
 </div>

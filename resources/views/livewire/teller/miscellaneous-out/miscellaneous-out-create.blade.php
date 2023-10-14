@@ -24,7 +24,7 @@
                             prefix="RM"
                             thousands=","
                             decimal="."
-                            wire:model="total"
+                            wire:model="miscAmt"
                             disabled
                         />
                     </div>
@@ -54,11 +54,11 @@
                 </div>
                 <div class="col-span-12 lg:col-span-8 xxl:col-span-8">
                     <div x-show="tab == 0">
-                        <livewire:teller.miscellaneous-out.category.contribution :mbrNo=$mbrNo :startDate=$startDate :endDate=$endDate />
+                        <livewire:teller.miscellaneous-out.category.contribution :mbrNo=$mbrNo :startDate=$startDate :endDate=$endDate :miscAmt=$miscAmt />
                     </div>
 
                     <div x-show="tab == 1">
-                        <livewire:teller.miscellaneous-out.category.members :mbrNo=$mbrNo :startDate=$startDate :endDate=$endDate />
+                        <livewire:teller.miscellaneous-out.category.members :mbrNo=$mbrNo :startDate=$startDate :endDate=$endDate :miscAmt=$miscAmt />
                     </div>
 
                     <div x-show="tab == 2">
@@ -66,7 +66,7 @@
                     </div>
 
                     <div x-show="tab == 3">
-                        <livewire:teller.miscellaneous-out.category.share :mbrNo=$mbrNo />
+                        <livewire:teller.miscellaneous-out.category.share :mbrNo=$mbrNo :startDate=$startDate :endDate=$endDate :miscAmt=$miscAmt />
                     </div>
                 </div>
             </div>

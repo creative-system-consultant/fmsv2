@@ -4,6 +4,7 @@ namespace App\Livewire\Teller\MiscellaneousOut\Category\Members;
 
 use App\Action\StoredProcedure\SpFmsGenerateMbrMisc;
 use App\Action\StoredProcedure\SpFmsUpTrxMiscOut;
+use App\Livewire\Teller\MiscellaneousOut\MiscellaneousOutCreate;
 use App\Models\Fms\FmsMiscAccount as ModelFmsMiscAccount;
 use App\Services\General\PopupService;
 use App\Services\Model\BankIbtService;
@@ -48,8 +49,6 @@ class MembersTransaction extends Component
         ($miscAcc->misc_pv_no)
             ? $this->docNo = $miscAcc->misc_pv_no
             : $this->docNo = $this->generatePvNo($this->mbrNo);
-
-        $this->miscAmt = $miscAcc->misc_amt;
 
         $cifCustomer = $miscAcc->fmsMembership->cifCustomer;
         $this->checkBankInfo($cifCustomer);
@@ -107,6 +106,7 @@ class MembersTransaction extends Component
             ? $this->dialog()->success('Success!', 'The transaction have been recorded.')
             : $this->dialog()->error('Error!', 'something went wrong.');
 
+        $this->dispatch('refreshComponent')->to(MiscellaneousOutCreate::class);
         $this->resetFields();
     }
 

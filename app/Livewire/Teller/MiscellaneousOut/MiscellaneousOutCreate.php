@@ -15,7 +15,9 @@ class MiscellaneousOutCreate extends Component
 
     public $name;
     public $refNo;
-    public $total;
+    public $miscAmt;
+
+    protected $listeners = ['refreshComponent' => '$refresh'];
 
     public function mount($mbrNo)
     {
@@ -28,7 +30,7 @@ class MiscellaneousOutCreate extends Component
         $miscAcc = FmsMiscAccount::getFmsMiscAccountByMbrNo($this->mbrNo);
         $this->name = $miscAcc->fmsMembership->cifCustomer->name;
         $this->refNo = $miscAcc->fmsMembership->ref_no;
-        $this->total = $miscAcc->misc_amt;
+        $this->miscAmt = $miscAcc->misc_amt;
     }
 
     public function render()

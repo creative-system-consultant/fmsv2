@@ -3,6 +3,7 @@
 namespace App\Livewire\Teller\MiscellaneousOut\Category;
 
 use App\Action\StoredProcedure\SpFmsUpTrxMiscOut;
+use App\Livewire\Teller\MiscellaneousOut\MiscellaneousOutCreate;
 use App\Models\Fms\FmsMiscAccount;
 use App\Services\General\ActgPeriod;
 use App\Services\General\PopupService;
@@ -20,9 +21,9 @@ class Contribution extends Component
     public $mbrNo;
     public $startDate;
     public $endDate;
-    public $miscAmount = 0;
+    public $miscAmt;
 
-    #[Rule('required|lte:miscAmount|numeric')]
+    #[Rule('required|lte:miscAmt|numeric')]
     public $txnAmt;
 
     #[Rule('required|before_or_equal:today')]
@@ -30,12 +31,6 @@ class Contribution extends Component
 
     public $docNo = 'N/A';
     public $remarks;
-
-    public function mount()
-    {
-        $miscAcc = ModelFmsMiscAccount::getFmsMiscAccountByMbrNo($this->mbrNo);
-        $this->miscAmount = $miscAcc->misc_amt;
-    }
 
     public function saveTransaction()
     {
@@ -65,8 +60,13 @@ class Contribution extends Component
             ? $this->dialog()->success('Success!', 'The transaction have been recorded.')
             : $this->dialog()->error('Error!', 'something went wrong.');
 
-        // $this->dispatch('refreshComponent')->to(RefundAdvanceCreate::class);
+        $this->dispatch('refreshComponent')->to(MiscellaneousOutCreate::class);
         $this->resetFields();
+    }
+
+    private function resetFields()
+    {
+        $this->reset('txnAmt', 'txnDate', 'remarks');
     }
 
     public function render()

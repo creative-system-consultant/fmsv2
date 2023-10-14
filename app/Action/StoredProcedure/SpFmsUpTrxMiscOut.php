@@ -23,7 +23,7 @@ class SpFmsUpTrxMiscOut
         $sp = 'FMS.up_trx_misc_out';
 
         // Construct the SQL statement to execute the stored procedure with provided parameters.
-        $sql = "SET NOCOUNT ON; exec " . $sp . " :clientId :mbrNo, :txnAmt, :txnDate, :type, :remarks, :docNo, :userId, :bankCustomer, :accNo, :instiCode, :bankClient";
+        $sql = "SET NOCOUNT ON; exec " . $sp . " :clientId, :mbrNo, :txnAmt, :txnDate, :type, :remarks, :docNo, :userId, :bankCustomer, :accNo, :instiCode, :bankClient";
 
         dd($data);
         // Execute the statement using Laravel's database query builder and capture the result.
