@@ -1,12 +1,14 @@
 <div>
-    <x-container title="REFUND ADVANCE LIST" routeBackBtn="{{ route('teller.teller-list') }}" titleBackBtn="teller list" disableBackBtn="true">
+    @if($selectedAccNo)
+        @livewire('teller.refund-advance.refund-advance-create', ['account_no' => $selectedAccNo])
+    @else
         <div class="grid grid-cols-1">
             <div class="flex items-center space-x-2">
                 <x-label label="Search :"/>
                 <div>
                     <x-native-select  wire:model.live="search_by">
                         <option value="cif.customers.name">Name</option>
-                        <option value="cif.customers.icno">Identity No</option>
+                        <option value="cif.customers.identity_no">Identity No</option>
                         <option value="cif.customers.ref_no">Membership Id</option>
                         <option value="fms.account_masters.account_no">Account No</option>
                     </x-native-select>
@@ -36,7 +38,7 @@
                         @forelse ($advance as $advances)
                             <tr>
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    <p>{{ $advances->icno }}</p>
+                                    <p>{{ $advances->identity_no }}</p>
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
@@ -77,12 +79,13 @@
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <x-button
-                                        href="{{ route('teller.teller-refund-advance-create', ['account_no' => $advances->account_no]) }}"
+                                        {{-- href="{{ route('teller.teller-refund-advance-create', ['account_no' => $advances->account_no]) }}" --}}
                                         sm
                                         icon="eye"
                                         primary
                                         label="View"
-                                        wire:navigate
+                                        wire:click="selectAcc({{ $advances->account_no }})"
+                                        {{-- wire:navigate --}}
                                     />
                                 </x-table.table-body>
                             </tr>
@@ -98,5 +101,5 @@
             </div>
             {{ $advance->links('livewire::pagination-links') }}
         </div>
-    </x-container>
+    @endif
 </div>

@@ -5,10 +5,10 @@ namespace App\Livewire\Teller\RefundAdvance\Category\PayToMember;
 use App\Action\StoredProcedure\SpFmsGenerateFinancingAdv;
 use App\Action\StoredProcedure\SpFmsUpTrx3950RefundAdvance;
 use App\Livewire\Teller\RefundAdvance\RefundAdvanceCreate;
+use App\Services\General\ActgPeriod;
 use App\Services\General\PopupService;
 use App\Services\Model\BankIbtService;
 use App\Services\Model\FmsAccountMaster;
-use App\Services\Module\RefundAdvance;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use WireUi\Traits\Actions;
@@ -44,18 +44,7 @@ class RefundAdvanceInfo extends Component
 
     public $clientBankDetails = false;
 
-    protected $popupService;
-    protected $financingAdvService;
-    protected $refundAdvanceService;
-
     protected $listeners = ['updatePayButton'];
-
-    public function __construct()
-    {
-        $this->financingAdvService = app(SpFmsGenerateFinancingAdv::class);
-        $this->refundAdvanceService = app(RefundAdvance::class);
-        $this->popupService = app(PopupService::class);
-    }
 
     public function mount($accountNo)
     {
@@ -67,13 +56,13 @@ class RefundAdvanceInfo extends Component
     {
         $this->refBankIbt = BankIbtService::getAllRefBankIbts();
         $accountMaster = FmsAccountMaster::getAccountData($this->accountNo);
-        $this->bank = $accountMaster->bank_members;
+        $this->bank = $accountMaster->fmsMembership->cifCustomer->bank_id;
         $this->advancePayment = $accountMaster->fmsAccountPosition->advance_payment;
-        $this->documentNo = $this->financingAdvService->handle($this->accountNo);
-        $this->payableAccountNo = $accountMaster->account_no_members;
+        $this->documentNo = SpFmsGenerateFinancingAdv::handle(1, $this->accountNo);
+        $this->payableAccountNo = $accountMaster->fmsMembership->cifCustomer->bank_acct_no;
         $this->clientBankDetails = $this->bank && $this->payableAccountNo;
 
-        $periodRange  = $this->refundAdvanceService->determinePeriodRange();
+        $periodRange  = ActgPeriod::determinePeriodRange();
         $this->startDate = $periodRange ['startDate'];
         $this->endDate = $periodRange ['endDate'];
     }
@@ -87,19 +76,14 @@ class RefundAdvanceInfo extends Component
 
     public function saveTransaction()
     {
-        $this->validate([
-            'amount' => 'required|lte:advancePayment|numeric',
-            'transactionDate' => 'required|before_or_equal:today',
-            'bankIbt' => 'required'
-        ]);
-
-        $this->popupService->confirm($this, 'confirmSaveTransaction', 'Save Transaction?', 'Are you sure to proceed with the transaction?');
+        $this->validate();
+        PopupService::confirm($this, 'confirmSaveTransaction', 'Save Transaction?', 'Are you sure to proceed with the transaction?');
     }
 
     public function confirmSaveTransaction()
     {
-        $sp = new SpFmsUpTrx3950RefundAdvance();
         $data = [
+            'clientId' => 1,
             'accountNo' => $this->accountNo,
             'amount' => $this->amount,
             'transactionDate' => $this->transactionDate,
@@ -111,11 +95,10 @@ class RefundAdvanceInfo extends Component
             'bankIbt' => $this->bankIbt
         ];
 
-        $result = $sp->handle($data);
-
+        $result = SpFmsUpTrx3950RefundAdvance::handle($data);
         $result == 'DONE'
-        ? $this->dialog()->success('Success!', 'The transaction have been recorded.')
-        : $this->dialog()->error('Error!', 'something went wrong.');
+            ? $this->dialog()->success('Success!', 'The transaction have been recorded.')
+            : $this->dialog()->error('Error!', 'something went wrong.');
 
         $this->dispatch('refreshComponent')->to(RefundAdvanceCreate::class);
         $this->resetFields();

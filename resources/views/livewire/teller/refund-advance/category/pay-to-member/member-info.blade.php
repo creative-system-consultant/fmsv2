@@ -1,4 +1,7 @@
 <div>
+    <div wire:loading wire:target="saveAdvanceInfo,confirmSaveAdvanceInfo">
+        @include('misc.loading')
+    </div>
     <x-card title="Members Information">
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
             <x-select

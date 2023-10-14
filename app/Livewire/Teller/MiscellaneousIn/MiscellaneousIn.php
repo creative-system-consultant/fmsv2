@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Teller\MiscellaneousIn;
 
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class MiscellaneousIn extends Component
@@ -11,9 +12,10 @@ class MiscellaneousIn extends Component
     public function selectType($type){
         $this->type = $type;
     }
-    
+
+    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.miscellaneous-in.miscellaneous-in')->extends('layouts.main');
+        return view('livewire.teller.miscellaneous-in.miscellaneous-in');
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Ref\RefState;
 use App\Services\Maintenance\StateService;
 use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -92,12 +93,13 @@ class State extends Component
         $this->stateService->deleteState($id);
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
         $data = $this->stateService->getPaginatedState($this->paginated);
 
         return view('livewire.admin.maintenance.state', [
             'data' => $data,
-        ])->extends('layouts.main');
+        ]);
     }
 }

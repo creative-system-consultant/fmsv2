@@ -2,20 +2,22 @@
 
 namespace App\Livewire\Finance\Category;
 
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class AccountInfo extends Component
 {
     public $setIndex = 0;
-    
+
 
     public function setState($index)
     {
         $this->setIndex = $index;
     }
-    
+
+    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.finance.category.account-info')->extends('layouts.main');
+        return view('livewire.finance.category.account-info');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Teller\PurchaseShare;
 
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class PurchaseShare extends Component
@@ -11,9 +12,10 @@ class PurchaseShare extends Component
     public function selectType($type){
         $this->type = $type;
     }
-    
+
+    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.purchase-share.purchase-share')->extends('layouts.main');
+        return view('livewire.teller.purchase-share.purchase-share');
     }
 }

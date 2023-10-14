@@ -11,7 +11,7 @@ class FmsAccountMaster extends Model
 {
     use HasFactory;
 
-    protected $table   = 'FMS.Account_Masters';
+    protected $table   = 'FMS.ACCOUNT_MASTERS';
     protected $guarded = [];
 
     // Functions
@@ -21,9 +21,9 @@ class FmsAccountMaster extends Model
     }
 
     // Relationship
-    public function cifCustomer()
+    public function fmsMembership()
     {
-        return $this->belongsTo(CifCustomer::class, 'mbr_no', 'ref_no');
+        return $this->belongsTo(FmsMembership::class, 'mbr_no', 'ref_no');
     }
 
     public function fmsAccountPosition()

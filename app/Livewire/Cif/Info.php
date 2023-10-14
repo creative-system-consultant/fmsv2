@@ -3,6 +3,7 @@
 namespace App\Livewire\Cif;
 
 use App\Models\Cif\CifCustomer;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class Info extends Component
@@ -27,9 +28,9 @@ class Info extends Component
         $this->setIndex = $index;
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
-
-        return view('livewire.cif.info')->extends('layouts.main');
+        return view('livewire.cif.info');
     }
 }

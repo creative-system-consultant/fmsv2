@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class Register extends Component
@@ -44,8 +45,9 @@ class Register extends Component
         return redirect()->intended(route('home'));
     }
 
+    #[Layout('layouts.auth')]
     public function render()
     {
-        return view('livewire.auth.register')->extends('layouts.auth');
+        return view('livewire.auth.register');
     }
 }

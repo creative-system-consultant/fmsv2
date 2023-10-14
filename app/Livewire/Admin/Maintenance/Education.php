@@ -8,6 +8,7 @@ use Livewire\Attributes\Rule;
 use App\Services\Maintenance\EducationService;
 use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
+use Livewire\Attributes\Layout;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
@@ -90,12 +91,13 @@ class Education extends Component
         $this->educationService->deleteEducation($id);
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
         $data = $this->educationService->getPaginatedEducation($this->paginated);
 
         return view('livewire.admin.maintenance.education',[
             'data' => $data,
-        ])->extends('layouts.main');
+        ]);
     }
 }

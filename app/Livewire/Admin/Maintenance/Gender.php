@@ -6,6 +6,7 @@ use App\Models\Ref\RefGender;
 use App\Services\Maintenance\GenderService;
 use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -90,12 +91,13 @@ class Gender extends Component
         $this->genderService->deleteGender($id);
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
         $data = $this->genderService->getPaginatedGender($this->paginated);
 
         return view('livewire.admin.maintenance.gender', [
             'data' => $data,
-        ])->extends('layouts.main');
+        ]);
     }
 }

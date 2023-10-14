@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
+use Livewire\Attributes\Layout;
 
 class Reset extends Component
 {
@@ -86,8 +87,9 @@ class Reset extends Component
         return Auth::guard();
     }
 
+    #[Layout('layouts.auth')]
     public function render()
     {
-        return view('livewire.auth.passwords.reset')->extends('layouts.auth');
+        return view('livewire.auth.passwords.reset');
     }
 }

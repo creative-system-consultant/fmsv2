@@ -4,20 +4,29 @@ namespace App\Action\StoredProcedure;
 
 use DB;
 
+/**
+ * This class is responsible for executing the stored procedure named 'FMS.up_trx_3950_refund_advance'.
+ */
 class SpFmsUpTrx3950RefundAdvance
 {
-    protected $sp = 'FMS.up_trx_3950_refund_advance';
-
-    public function __construct()
+    /**
+     * Executes the stored procedure with the given data.
+     *
+     * @param array $data The data to be used in the stored procedure.
+     * @return string Returns 'DONE' upon successful execution.
+     */
+    public static function handle($data)
     {
-        //
-    }
+        // Name of the stored procedure.
+        $sp = 'FMS.up_trx_3950_refund_advance';
 
-    public function handle($data)
-    {
-        $sql = "exec {$this->sp} :accountNo, :amount, :transactionDate, :txnCode, :remark, :documentNo, :userId, :bank, :bankIbt";
+        // Construct the SQL statement for executing the stored procedure.
+        $sql = "exec " . $sp . " :clientId, :accountNo, :amount, :transactionDate, :txnCode, :remark, :documentNo, :userId, :bank, :bankIbt";
+
+        // Execute the SQL statement using Laravel's database facade.
         DB::statement($sql, $data);
 
+        // Return 'DONE' upon successful execution.
         return 'DONE';
     }
 }

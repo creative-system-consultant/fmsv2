@@ -8,6 +8,7 @@ use Livewire\Attributes\Rule;
 use App\Services\Maintenance\BankService;
 use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
+use Livewire\Attributes\Layout;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
@@ -90,12 +91,13 @@ class Bank extends Component
         $this->bankService->deleteBank($id);
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
         $data = $this->bankService->getPaginatedBank($this->paginated);
 
         return view('livewire.admin.maintenance.bank',[
             'data' => $data,
-        ])->extends('layouts.main');
+        ]);
     }
 }
