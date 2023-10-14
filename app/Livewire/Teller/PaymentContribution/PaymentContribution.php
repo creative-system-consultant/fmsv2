@@ -3,8 +3,10 @@
 namespace App\Livewire\Teller\PaymentContribution;
 
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Lazy;
 use Livewire\Component;
 
+#[Lazy]
 class PaymentContribution extends Component
 {
     public $type = 'cheque';

@@ -23,4 +23,9 @@ class FmsMembership extends Model
     {
         return $this->belongsTo(CifCustomer::class, 'cif_id', 'id');
     }
+
+    public function fmsMiscAccount()
+    {
+        return $this->hasOne(FmsMiscAccount::class, 'mbr_no', 'ref_no');
+    }
 }

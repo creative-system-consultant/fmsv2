@@ -79,13 +79,11 @@
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <x-button
-                                        {{-- href="{{ route('teller.teller-refund-advance-create', ['account_no' => $advances->account_no]) }}" --}}
                                         sm
                                         icon="eye"
                                         primary
                                         label="View"
                                         wire:click="selectAcc({{ $advances->account_no }})"
-                                        {{-- wire:navigate --}}
                                     />
                                 </x-table.table-body>
                             </tr>

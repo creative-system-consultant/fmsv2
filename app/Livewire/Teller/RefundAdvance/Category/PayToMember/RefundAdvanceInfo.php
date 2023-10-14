@@ -9,13 +9,15 @@ use App\Services\General\ActgPeriod;
 use App\Services\General\PopupService;
 use App\Services\Model\BankIbtService;
 use App\Services\Model\FmsAccountMaster;
+use App\Traits\Teller\General\MembersBankInfo;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 
 class RefundAdvanceInfo extends Component
 {
-    use Actions;
+    use Actions, MembersBankInfo;
 
     protected const TXN_CODE = '3950';
 
@@ -29,22 +31,15 @@ class RefundAdvanceInfo extends Component
     #[Rule('required|lte:advancePayment|numeric')]
     public $amount;
 
-    public $bank;
-
     #[Rule('required|before_or_equal:today')]
     public $transactionDate;
 
     public $documentNo;
-    public $payableAccountNo;
 
     #[Rule('required')]
     public $bankIbt;
 
     public $remark;
-
-    public $clientBankDetails = false;
-
-    protected $listeners = ['updatePayButton'];
 
     public function mount($accountNo)
     {
@@ -56,22 +51,23 @@ class RefundAdvanceInfo extends Component
     {
         $this->refBankIbt = BankIbtService::getAllRefBankIbts();
         $accountMaster = FmsAccountMaster::getAccountData($this->accountNo);
-        $this->bank = $accountMaster->fmsMembership->cifCustomer->bank_id;
         $this->advancePayment = $accountMaster->fmsAccountPosition->advance_payment;
         $this->documentNo = SpFmsGenerateFinancingAdv::handle(1, $this->accountNo);
-        $this->payableAccountNo = $accountMaster->fmsMembership->cifCustomer->bank_acct_no;
-        $this->clientBankDetails = $this->bank && $this->payableAccountNo;
+
+        $ic = $accountMaster->fmsMembership->cifCustomer;
+        $this->checkBankInfo($ic);
 
         $periodRange  = ActgPeriod::determinePeriodRange();
         $this->startDate = $periodRange ['startDate'];
         $this->endDate = $periodRange ['endDate'];
     }
 
+    #[On('updatePayButton')]
     public function updatePayButton($data)
     {
-        $this->bank = $data['bank'];
-        $this->payableAccountNo = $data['payableAccountNo'];
-        $this->clientBankDetails = $this->bank && $this->payableAccountNo;
+        $this->bankMember = $data['bankMember'];
+        $this->memberBankAccNo = $data['memberBankAccNo'];
+        $this->membersBankDetails = $this->bankMember && $this->memberBankAccNo;
     }
 
     public function saveTransaction()

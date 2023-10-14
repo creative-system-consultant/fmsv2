@@ -43,15 +43,9 @@
             <x-textarea label="Remarks" wire:model="remark" />
         </div>
 
-        <x-slot name="footer">
-            <div class="flex items-center justify-end space-x-2">
-                <a href="{{ route('teller.teller-refund-advance-list') }}" wire:navigate>
-                    <x-button
-                        sm
-                        label="cancel"
-                    />
-                </a>
-                @if($clientBankDetails)
+        @if($membersBankDetails)
+            <x-slot name="footer">
+                <div class="flex items-center justify-end space-x-2">
                     <x-button
                         sm
                         icon="clipboard-check"
@@ -59,8 +53,8 @@
                         label="Pay"
                         wire:click="saveTransaction"
                     />
-                @endif
-            </div>
-        </x-slot>
+                </div>
+            </x-slot>
+        @endif
     </x-card>
 </div>
