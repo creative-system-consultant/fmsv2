@@ -4,7 +4,7 @@
             <div class="flex items-center space-x-2">
                 <x-label label="Search :"/>
                 <div>
-                    <x-native-select  wire:model="model">
+                    <x-native-select  wire:model="searchBy">
                         <option value="name">Name</option>
                         <option value="identity_no">Identity No</option>
                         <option value="ref_no">Membership Id</option>
@@ -13,13 +13,13 @@
                 </div>
 
                 <div class="w-64">
-                    <x-input 
+                    <x-input
                         wire:model.live="search"
                         placeholder="Search"
                     />
                 </div>
             </div>
-            
+
             <div style="margin-top: 30px;">
                 <x-table.table loading="true" loadingtarget="search">
                     <x-slot name="thead">
@@ -51,18 +51,18 @@
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{$item->name}}</p>
                                 </x-table.table-body>
-                                
+
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{ $item->status_id ?  ($item->status_id ==1 ? 'Active' :'Inactive') : 'N/A' }}</p>
                                 </x-table.table-body>
-                                
+
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{ $item->created_at ?  date('d/m/Y', strtotime($item->created_at)) : 'N/A' }}</p>
                                 </x-table.table-body>
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{ $item->updated_at ?  date('d/m/Y', strtotime($item->updated_at)) : 'N/A' }}</p>
                                 </x-table.table-body>
-                                
+
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <div class="flex items-center space-x-2">
                                         <x-button sm  href="{{ route('cif.info',['uuid'=>$item->uuid]) }}" icon="eye" primary label="CIF" wire:navigate/>
@@ -76,16 +76,15 @@
                                 <p><center>No data</center></p>
                             </x-table.table-body>
                             @endforelse
-                            
+
                     </x-slot>
-                    
+
                 </x-table.table>
                 <div class="px-2 py-2 mt-4">
                     {{ $customers->links('livewire::pagination-links') }}
                 </div>
             </div>
-            
+
         </div>
     </x-container>
 </div>
-
