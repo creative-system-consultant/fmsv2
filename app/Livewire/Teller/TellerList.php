@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Teller;
 
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class TellerList extends Component
@@ -44,8 +45,9 @@ class TellerList extends Component
         $this->render();
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.teller-list')->extends('layouts.main');
+        return view('livewire.teller.teller-list');
     }
 }

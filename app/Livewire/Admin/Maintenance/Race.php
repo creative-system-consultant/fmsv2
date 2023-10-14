@@ -7,6 +7,7 @@ use App\Services\Maintenance\RaceService;
 use App\Services\General\PopupService;
 use Livewire\Attributes\Rule;
 use App\Traits\MaintenanceModalTrait;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
@@ -90,12 +91,13 @@ class Race extends Component
         $this->raceService->deleteRace($id);
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
         $data = $this->raceService->getPaginatedRace($this->paginated);
 
         return view('livewire.admin.maintenance.race', [
             'data' => $data,
-        ])->extends('layouts.main');
+        ]);
     }
 }

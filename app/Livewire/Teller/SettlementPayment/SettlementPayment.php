@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Teller\SettlementPayment;
 
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class SettlementPayment extends Component
@@ -13,8 +14,9 @@ class SettlementPayment extends Component
         $this->type = $type;
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.settlement-payment.settlement-payment')->extends('layouts.main');
+        return view('livewire.teller.settlement-payment.settlement-payment');
     }
 }

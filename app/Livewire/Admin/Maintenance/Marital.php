@@ -8,6 +8,7 @@ use Livewire\Attributes\Rule;
 use App\Services\Maintenance\MaritalService;
 use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
+use Livewire\Attributes\Layout;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
@@ -90,12 +91,13 @@ class Marital extends Component
         $this->maritalService->deleteMarital($id);
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
         $data = $this->maritalService->getPaginatedMarital($this->paginated);
 
         return view('livewire.admin.maintenance.marital',[
             'data' => $data,
-        ])->extends('layouts.main');
+        ]);
     }
 }

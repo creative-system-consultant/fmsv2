@@ -56,10 +56,10 @@ class RefundAdvanceInfo extends Component
     {
         $this->refBankIbt = BankIbtService::getAllRefBankIbts();
         $accountMaster = FmsAccountMaster::getAccountData($this->accountNo);
-        $this->bank = $accountMaster->cifCustomer->bank_id;
+        $this->bank = $accountMaster->fmsMembership->cifCustomer->bank_id;
         $this->advancePayment = $accountMaster->fmsAccountPosition->advance_payment;
         $this->documentNo = SpFmsGenerateFinancingAdv::handle(1, $this->accountNo);
-        $this->payableAccountNo = $accountMaster->cifCustomer->bank_acct_no;
+        $this->payableAccountNo = $accountMaster->fmsMembership->cifCustomer->bank_acct_no;
         $this->clientBankDetails = $this->bank && $this->payableAccountNo;
 
         $periodRange  = ActgPeriod::determinePeriodRange();

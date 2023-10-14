@@ -20,10 +20,10 @@ class CifCustomer extends Model
         return $this->hasOne(FmsMembership::class, 'cif_id', 'id');
     }
 
-    public function fmsAccountMaster()
-    {
-        return $this->hasMany(FmsAccountMaster::class, 'mbr_no', 'ref_no');
-    }
+    // public function fmsAccountMaster()
+    // {
+    //     return $this->hasMany(FmsAccountMaster::class, 'mbr_no', 'ref_no');
+    // }
 
     public function addresses()
     {

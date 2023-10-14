@@ -7,6 +7,7 @@ use App\Models\Cif\CifCustomer;
 use App\Models\Ref\AddressType;
 use App\Models\Ref\RefCountry;
 use App\Models\Ref\RefState;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class Address extends Component
@@ -64,8 +65,9 @@ class Address extends Component
         $this->editAddress = true;
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.cif.info.address')->extends('layouts.main');
+        return view('livewire.cif.info.address');
     }
 }

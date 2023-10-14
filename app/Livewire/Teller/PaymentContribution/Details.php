@@ -9,82 +9,34 @@ use App\Services\General\PopupService;
 use App\Services\Model\BankIbtService;
 use App\Services\Model\BankService;
 use App\Services\Model\FmsGlobalParm;
-use Illuminate\Validation\Rule;
+use App\Traits\Teller\PaymentContribution\DetailsTrait;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 
 class Details extends Component
 {
-    use Actions;
-
-    public $type;
-
-    public $customer;
-    public $name;
-    public $refNo;
-    public $totalContribution = 0;
-    public $minContribution = 0;
-    public $refBank;
-    public $refBankIbt;
-    public $startDate;
-    public $endDate;
-
-    public $txnCode = '4020';
-    public $clientId = 1;
-
-    public $chequeDate;
-    public $bankCustomer;
-    public $bankClient;
-    public $documentNo;
-    public $transactionAmount = 50;
-    public $transactionDate;
-    public $remarks;
-
-    public $saveButton = false;
+    use Actions, DetailsTrait;
 
     public function mount()
     {
-        $this->minContribution = (float) FmsGlobalParm::getAllFmsGlobalParm()->MIN_CONTRIBUTION;
-        $this->refBank = BankService::getAllRefBanks();
-        $this->refBankIbt = BankIbtService::getAllRefBankIbts();
-        $this->startDate = ActgPeriod::determinePeriodRange()['startDate'];
-        $this->endDate = ActgPeriod::determinePeriodRange()['endDate'];
+        $this->initializeAttributes();
     }
 
     #[On('customerSelected')]
-    public function customerSelected($customer)
+    public function handleCustomerSelection($customer)
     {
-        $this->customer = $customer;
-        $this->name = (string) $this->customer['name'];
-        $this->refNo = (string) $this->customer['fms_membership']['ref_no'];
-        $this->totalContribution = (float) $this->customer['fms_membership']['total_contribution'];
+        $this->setCustomerAttributes($customer);
         $this->saveButton = true;
     }
 
     #[On('typeUpdated')]
-    public function typeUpdated($type)
+    public function handleTypeUpdate($type)
     {
         $this->resetFields();
         $this->resetValidation();
         $this->type = $type;
         $this->updateTxnCode();
-    }
-
-    private function updateTxnCode()
-    {
-        $txnCodes = [
-            'cheque' => '4020',
-            'cash' => '4030',
-            'ibt/si' => '4040',
-        ];
-
-        $this->txnCode = $txnCodes[$this->type] ?? '4020'; // Default to '4020'
-    }
-
-    private function resetFields()
-    {
-        $this->reset('chequeDate', 'bankCustomer', 'bankClient', 'documentNo', 'transactionAmount', 'transactionDate', 'remarks');
     }
 
     public function saveTransaction()
@@ -93,34 +45,43 @@ class Details extends Component
         PopupService::confirm($this, 'confirmSaveTransaction', 'Save Transaction?', 'Are you sure to proceed with the transaction?');
     }
 
-    protected function getValidationRules()
-    {
-        $baseRules = [
-            'transactionAmount' => ['required', 'numeric','gte:minContribution'],
-            'transactionDate' => ['required', 'before_or_equal:today'],
-            'remarks' => ['required'],
-        ];
-
-        switch ($this->type) {
-            case 'cheque':
-                return array_merge($baseRules, [
-                    'chequeDate' => ['required', 'before_or_equal:today'],
-                    'bankCustomer' => ['required']
-                ]);
-            case 'cash':
-                return $baseRules;
-            case 'ibt/si':
-                return array_merge($baseRules, [
-                    'bankClient' => ['required']
-                ]);
-            default:
-                return []; // or throw an exception if this is unexpected
-        }
-    }
-
     public function confirmSaveTransaction()
     {
-        $data = [
+        $result = SpFmsUpTrxContributionIn::handle($this->prepareTransactionData());
+
+        $result
+            ? $this->showDialog('success', 'Success!', 'The transaction has been recorded.')
+            : $this->showDialog('error', 'Error!', 'Something went wrong.');
+
+        $this->resetFields();
+        $this->dispatch('refreshComponent', uuid: $this->customer['uuid'])->to(CustomerSearch::class);
+    }
+
+    public function render()
+    {
+        return view('livewire.teller.payment-contribution.details');
+    }
+
+    private function initializeAttributes()
+    {
+        $this->minContribution = (float) FmsGlobalParm::getAllFmsGlobalParm()->MIN_CONTRIBUTION;
+        $this->refBank = BankService::getAllRefBanks();
+        $this->refBankIbt = BankIbtService::getAllRefBankIbts();
+        $this->startDate = ActgPeriod::determinePeriodRange()['startDate'];
+        $this->endDate = ActgPeriod::determinePeriodRange()['endDate'];
+    }
+
+    private function setCustomerAttributes($customer)
+    {
+        $this->customer = $customer;
+        $this->name = (string) $customer['name'];
+        $this->refNo = (string) $customer['fms_membership']['ref_no'];
+        $this->totalContribution = (float) $customer['fms_membership']['total_contribution'];
+    }
+
+    private function prepareTransactionData(): array
+    {
+        return [
             'clientId' => $this->clientId,
             'refNo' => $this->refNo,
             'txnAmt' => $this->transactionAmount,
@@ -133,18 +94,10 @@ class Details extends Component
             'chequeDate' => $this->chequeDate,
             'bankClient' => $this->bankClient
         ];
-
-        $result = SpFmsUpTrxContributionIn::handle($data);
-        ($result)
-            ? $this->dialog()->success('Success!', 'The transaction have been recorded.')
-            : $this->dialog()->error('Error!', 'something went wrong.');
-
-        $this->resetFields();
-        $this->dispatch('refreshComponent', uuid: $this->customer['uuid'])->to(CustomerSearch::class);
     }
 
-    public function render()
+    private function showDialog($type, $title, $message)
     {
-        return view('livewire.teller.payment-contribution.details');
+        $this->dialog()->{$type}($title, $message);
     }
 }

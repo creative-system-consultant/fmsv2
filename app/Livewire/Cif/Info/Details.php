@@ -4,6 +4,7 @@ namespace App\Livewire\Cif\Info;
 
 use App\Models\Cif\CifCustomer;
 use App\Models\Cif\Employer;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class Details extends Component
@@ -66,10 +67,9 @@ class Details extends Component
         $this->editDetail = true;
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
-
-
-        return view('livewire.cif.info.details')->extends('layouts.main');
+        return view('livewire.cif.info.details');
     }
 }

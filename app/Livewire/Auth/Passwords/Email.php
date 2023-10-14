@@ -4,6 +4,7 @@ namespace App\Livewire\Auth\Passwords;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Password;
+use Livewire\Attributes\Layout;
 
 class Email extends Component
 {
@@ -40,8 +41,9 @@ class Email extends Component
         return Password::broker();
     }
 
+    #[Layout('layouts.auth')]
     public function render()
     {
-        return view('livewire.auth.passwords.email')->extends('layouts.auth');
+        return view('livewire.auth.passwords.email');
     }
 }

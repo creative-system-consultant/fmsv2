@@ -3,6 +3,7 @@
 namespace App\Livewire\Teller\RefundAdvance;
 
 use App\Services\Model\FmsAccountMaster;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class RefundAdvanceCreate extends Component
@@ -18,13 +19,14 @@ class RefundAdvanceCreate extends Component
         $this->accountNo = $account_no;
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
-        $accountMaster = FmsAccountMaster::getAccountData($this->accountNo);;
-        $this->name = $accountMaster->cifcustomer->name;
+        $accountMaster = FmsAccountMaster::getAccountData($this->accountNo);
+        $this->name = $accountMaster->fmsMembership->cifcustomer->name;
         $this->accountNo = $accountMaster->account_no;
         $this->advAmount = $accountMaster->fmsAccountPosition->advance_payment;
 
-        return view('livewire.teller.refund-advance.refund-advance-create')->extends('layouts.main');
+        return view('livewire.teller.refund-advance.refund-advance-create');
     }
 }

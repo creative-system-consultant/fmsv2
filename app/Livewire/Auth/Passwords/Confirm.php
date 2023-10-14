@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth\Passwords;
 
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class Confirm extends Component
@@ -20,8 +21,9 @@ class Confirm extends Component
         return redirect()->intended(route('home'));
     }
 
+    #[Layout('layouts.auth')]
     public function render()
     {
-        return view('livewire.auth.passwords.confirm')->extends('layouts.auth');
+        return view('livewire.auth.passwords.confirm');
     }
 }

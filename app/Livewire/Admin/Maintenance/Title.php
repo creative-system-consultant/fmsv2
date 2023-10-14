@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Services\Maintenance\TitleService;
 use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
@@ -90,12 +91,13 @@ class Title extends Component
         $this->titleService->deleteTitle($id);
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
         $data = $this->titleService->getPaginatedTitle($this->paginated);
-        
+
         return view('livewire.admin.maintenance.title', [
             'data' => $data,
-        ])->extends('layouts.main');
+        ]);
     }
 }

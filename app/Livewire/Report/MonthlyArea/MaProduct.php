@@ -6,9 +6,10 @@ use Livewire\Component;
 use OpenSpout\Common\Entity\Style\Style;
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\Models\User;
+use Livewire\Attributes\Layout;
 
 class MaProduct extends Component
-{   
+{
     public $startDate;
     public $endDate;
 
@@ -42,8 +43,10 @@ class MaProduct extends Component
             });
         }, sprintf('users-%s.xlsx',now()->format('Y-m-d')));
     }
+
+    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.report.monthly-area.ma-product')->extends('layouts.main');
+        return view('livewire.report.monthly-area.ma-product');
     }
 }

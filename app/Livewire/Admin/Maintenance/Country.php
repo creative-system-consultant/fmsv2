@@ -8,6 +8,7 @@ use Livewire\Attributes\Rule;
 use App\Services\Maintenance\CountryService;
 use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
+use Livewire\Attributes\Layout;
 use WireUi\Traits\Actions;
 use Livewire\WithPagination;
 
@@ -90,12 +91,13 @@ class Country extends Component
         $this->countryService->deleteCountry($id);
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
         $data = $this->countryService->getPaginatedCountry($this->paginated);
 
         return view('livewire.admin.maintenance.country',[
             'data' => $data,
-        ])->extends('layouts.main');
+        ])->extends;
     }
 }

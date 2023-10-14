@@ -6,6 +6,7 @@ use App\Models\Ref\RefRelationship;
 use App\Services\General\PopupService;
 use App\Services\Model\RelationshipService;
 use App\Traits\MaintenanceModalTrait;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -104,12 +105,13 @@ class Relationship extends Component
         RelationshipService::deleteRelationship($id);
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
         $data = RelationshipService::getPaginatedRelationships($this->paginated);
 
         return view('livewire.admin.maintenance.relationship', [
             'data' => $data,
-        ])->extends('layouts.main');
+        ]);
     }
 }

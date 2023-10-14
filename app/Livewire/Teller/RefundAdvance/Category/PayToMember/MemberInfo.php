@@ -49,9 +49,9 @@ class MemberInfo extends Component
         $accountMaster = FmsAccountMaster::getAccountData($this->accountNo);
 
         // Set member's details based on retrieved account data
-        $this->ic = $accountMaster->cifCustomer->identity_no;
-        $this->bank = $accountMaster->cifCustomer->bank_id;
-        $this->payableAccountNo = $accountMaster->cifCustomer->bank_acct_no;
+        $this->ic = $accountMaster->fmsMembership->cifCustomer->identity_no;
+        $this->bank = $accountMaster->fmsMembership->cifCustomer->bank_id;
+        $this->payableAccountNo = $accountMaster->fmsMembership->cifCustomer->bank_acct_no;
     }
 
     /**

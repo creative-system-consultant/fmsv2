@@ -6,6 +6,7 @@ use App\Models\Ref\RefReligion;
 use App\Services\Maintenance\ReligionService;
 use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -93,12 +94,13 @@ class Religion extends Component
         $this->religionService->deleteReligion($id);
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
         $data = $this->religionService->getPaginatedReligion($this->paginated);
 
         return view('livewire.admin.maintenance.religion', [
             'data' => $data,
-        ])->extends('layouts.main');
+        ]);
     }
 }

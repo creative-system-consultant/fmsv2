@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Teller\FinancingRepayment;
 
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class FinancingRepayment extends Component
@@ -12,8 +13,9 @@ class FinancingRepayment extends Component
         $this->type = $type;
     }
 
+    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.financing-repayment.financing-repayment')->extends('layouts.main');
+        return view('livewire.teller.financing-repayment.financing-repayment');
     }
 }

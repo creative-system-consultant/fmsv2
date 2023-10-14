@@ -6,6 +6,7 @@ use Livewire\Component;
 use OpenSpout\Common\Entity\Style\Style;
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\Models\User;
+use Livewire\Attributes\Layout;
 
 class MaState extends Component
 {
@@ -42,8 +43,10 @@ class MaState extends Component
             });
         }, sprintf('users-%s.xlsx',now()->format('Y-m-d')));
     }
+
+    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.report.monthly-area.ma-state')->extends('layouts.main');
+        return view('livewire.report.monthly-area.ma-state');
     }
 }

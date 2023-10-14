@@ -17,7 +17,7 @@ class FmsAccountMaster
      */
     public static function getAccountData($account_no)
     {
-        return FmsAccountMasterModel::with(['cifCustomer', 'cifCustomer.fmsMembership', 'fmsAccountPosition'])->whereAccountNo($account_no)->first();
+        return FmsAccountMasterModel::with(['fmsMembership', 'fmsMembership.cifCustomer', 'fmsAccountPosition'])->whereAccountNo($account_no)->first();
     }
 
     /**
