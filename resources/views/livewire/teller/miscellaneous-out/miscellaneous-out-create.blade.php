@@ -7,7 +7,7 @@
                     outline 
                     black
                     icon="arrow-left" 
-                    label="Miscellaneous Out List" 
+                    label="Back To List" 
                 />
             </div>
             <div class="flex flex-col items-start w-full space-x-0 space-y-2 md:flex-row md:items-center md:space-x-2 md:space-y-0">
