@@ -44,9 +44,8 @@ class MaEmployer extends Component
         }, sprintf('users-%s.xlsx',now()->format('Y-m-d')));
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.report.monthly-area.ma-employer');
+        return view('livewire.report.monthly-area.ma-employer')->extends('layouts.main');
     }
 }

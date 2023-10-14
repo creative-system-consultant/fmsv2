@@ -91,13 +91,12 @@ class Title extends Component
         $this->titleService->deleteTitle($id);
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
         $data = $this->titleService->getPaginatedTitle($this->paginated);
 
         return view('livewire.admin.maintenance.title', [
             'data' => $data,
-        ]);
+        ])->extends('layouts.main');
     }
 }

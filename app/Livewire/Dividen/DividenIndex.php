@@ -15,9 +15,8 @@ class DividenIndex extends Component
         $this->setIndex = $index;
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.dividen.dividen-index');
+        return view('livewire.dividen.dividen-index')->extends('layouts.main');
     }
 }

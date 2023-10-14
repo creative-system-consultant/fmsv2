@@ -15,9 +15,8 @@ class PaymentContribution extends Component
         $this->dispatch('typeUpdated', type: $this->type)->to(Details::class);
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.payment-contribution.payment-contribution');
+        return view('livewire.teller.payment-contribution.payment-contribution')->extends('layouts.main');
     }
 }

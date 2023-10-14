@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class Miscellaneous extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.reversal.miscellaneous');
+        return view('livewire.reversal.miscellaneous')->extends('layouts.main');
     }
 }

@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class Disbursement extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.reversal.disbursement');
+        return view('livewire.reversal.disbursement')->extends('layouts.main');
     }
 }

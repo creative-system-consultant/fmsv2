@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class SettlementOverlap extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.settlement-overlap.settlement-overlap');
+        return view('livewire.teller.settlement-overlap.settlement-overlap')->extends('layouts.main');
     }
 }

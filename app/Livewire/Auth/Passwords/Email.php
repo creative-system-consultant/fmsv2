@@ -41,9 +41,8 @@ class Email extends Component
         return Password::broker();
     }
 
-    #[Layout('layouts.auth')]
     public function render()
     {
-        return view('livewire.auth.passwords.email');
+        return view('livewire.auth.passwords.email')->extends('layouts.auth');
     }
 }

@@ -65,9 +65,8 @@ class Address extends Component
         $this->editAddress = true;
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.cif.info.address');
+        return view('livewire.cif.info.address')->extends('layouts.main');
     }
 }

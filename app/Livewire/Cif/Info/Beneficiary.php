@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class Beneficiary extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.cif.info.beneficiary');
+        return view('livewire.cif.info.beneficiary')->extends('layouts.main');
     }
 }

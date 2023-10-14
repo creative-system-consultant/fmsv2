@@ -94,13 +94,12 @@ class Religion extends Component
         $this->religionService->deleteReligion($id);
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
         $data = $this->religionService->getPaginatedReligion($this->paginated);
 
         return view('livewire.admin.maintenance.religion', [
             'data' => $data,
-        ]);
+        ])->extends('layouts.main');
     }
 }

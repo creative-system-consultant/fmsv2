@@ -13,9 +13,8 @@ class FinancingRepayment extends Component
         $this->type = $type;
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.financing-repayment.financing-repayment');
+        return view('livewire.teller.financing-repayment.financing-repayment')->extends('layouts.main');
     }
 }

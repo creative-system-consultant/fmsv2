@@ -44,9 +44,8 @@ class MaAgeing extends Component
         }, sprintf('users-%s.xlsx',now()->format('Y-m-d')));
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.report.monthly-area.ma-ageing');
+        return view('livewire.report.monthly-area.ma-ageing')->extends('layouts.main');
     }
 }

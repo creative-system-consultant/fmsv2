@@ -91,13 +91,12 @@ class Race extends Component
         $this->raceService->deleteRace($id);
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
         $data = $this->raceService->getPaginatedRace($this->paginated);
 
         return view('livewire.admin.maintenance.race', [
             'data' => $data,
-        ]);
+        ])->extends('layouts.main');
     }
 }

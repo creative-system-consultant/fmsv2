@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class Autopay extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.autopay.autopay');
+        return view('livewire.teller.autopay.autopay')->extends('layouts.main');
     }
 }

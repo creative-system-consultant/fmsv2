@@ -44,9 +44,8 @@ class McSummary extends Component
         }, sprintf('users-%s.xlsx',now()->format('Y-m-d')));
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.report.monthly-contribution.mc-summary');
+        return view('livewire.report.monthly-contribution.mc-summary')->extends('layouts.main');
     }
 }

@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class ReportList extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.report.report-list');
+        return view('livewire.report.report-list')->extends('layouts.main');
     }
 }

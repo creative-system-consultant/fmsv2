@@ -93,13 +93,12 @@ class State extends Component
         $this->stateService->deleteState($id);
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
         $data = $this->stateService->getPaginatedState($this->paginated);
 
         return view('livewire.admin.maintenance.state', [
             'data' => $data,
-        ]);
+        ])->extends('layouts.main');
     }
 }

@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class DividenApproval extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.dividen-approval.dividen-approval');
+        return view('livewire.teller.dividen-approval.dividen-approval')->extends('layouts.main');
     }
 }

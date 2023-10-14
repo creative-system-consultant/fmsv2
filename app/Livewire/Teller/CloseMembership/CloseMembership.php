@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class CloseMembership extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.close-membership.close-membership');
+        return view('livewire.teller.close-membership.close-membership')->extends('layouts.main');
     }
 }

@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class AccountOverlap extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.account-overlap.account-overlap');
+        return view('livewire.teller.account-overlap.account-overlap')->extends('layouts.main');
     }
 }

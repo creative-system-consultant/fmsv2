@@ -105,13 +105,12 @@ class Relationship extends Component
         RelationshipService::deleteRelationship($id);
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
         $data = RelationshipService::getPaginatedRelationships($this->paginated);
 
         return view('livewire.admin.maintenance.relationship', [
             'data' => $data,
-        ]);
+        ])->extends('layouts.main');
     }
 }

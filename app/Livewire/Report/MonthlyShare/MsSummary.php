@@ -42,9 +42,8 @@ class MsSummary extends Component
         }, sprintf('users-%s.xlsx',now()->format('Y-m-d')));
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.report.monthly-share.ms-summary');
+        return view('livewire.report.monthly-share.ms-summary')->extends('layouts.main');
     }
 }

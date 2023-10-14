@@ -13,9 +13,8 @@ class MiscellaneousIn extends Component
         $this->type = $type;
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.miscellaneous-in.miscellaneous-in');
+        return view('livewire.teller.miscellaneous-in.miscellaneous-in')->extends('layouts.main');
     }
 }

@@ -15,9 +15,8 @@ class ThirdParty extends Component
         'MISC',
     ];
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.third-party.third-party');
+        return view('livewire.teller.third-party.third-party')->extends('layouts.main');
     }
 }

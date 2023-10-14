@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class Contribution extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.reversal.contribution');
+        return view('livewire.reversal.contribution')->extends('layouts.main');
     }
 }

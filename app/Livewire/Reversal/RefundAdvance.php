@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class RefundAdvance extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.reversal.refund-advance');
+        return view('livewire.reversal.refund-advance')->extends('layouts.main');
     }
 }

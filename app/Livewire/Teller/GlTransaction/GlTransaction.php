@@ -7,10 +7,8 @@ use Livewire\Component;
 
 class GlTransaction extends Component
 {
-    #[Layout('layouts.main')]
-
     public function render()
     {
-        return view('livewire.teller.gl-transaction.gl-transaction');
+        return view('livewire.teller.gl-transaction.gl-transaction')->extends('layouts.main');
     }
 }

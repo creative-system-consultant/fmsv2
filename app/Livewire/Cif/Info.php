@@ -28,9 +28,8 @@ class Info extends Component
         $this->setIndex = $index;
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.cif.info');
+        return view('livewire.cif.info')->extends('layouts.main');
     }
 }

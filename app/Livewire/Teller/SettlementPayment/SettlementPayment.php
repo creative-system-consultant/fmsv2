@@ -14,9 +14,8 @@ class SettlementPayment extends Component
         $this->type = $type;
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.settlement-payment.settlement-payment');
+        return view('livewire.teller.settlement-payment.settlement-payment')->extends('layouts.main');
     }
 }

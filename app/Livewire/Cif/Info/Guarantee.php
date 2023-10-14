@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class Guarantee extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.cif.info.guarantee');
+        return view('livewire.cif.info.guarantee')->extends('layouts.main');
     }
 }

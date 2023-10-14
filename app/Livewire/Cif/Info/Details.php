@@ -67,9 +67,8 @@ class Details extends Component
         $this->editDetail = true;
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.cif.info.details');
+        return view('livewire.cif.info.details')->extends('layouts.main');
     }
 }

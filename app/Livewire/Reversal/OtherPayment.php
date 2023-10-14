@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class OtherPayment extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.reversal.other-payment');
+        return view('livewire.reversal.other-payment')->extends('layouts.main');
     }
 }

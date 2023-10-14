@@ -14,12 +14,11 @@ class Individual extends Component
     public $searchBy = 'name';
     public $search;
 
-    #[Layout('layouts.main')]
     public function render()
     {
         // Retrieve customers based on conditions, search field and search term
         $customers = CifCustomer::fetchByCondition([], $this->searchBy, $this->search, null, null,[]);
 
-        return view('livewire.cif.individual', ['customers' => $customers]);
+        return view('livewire.cif.individual', ['customers' => $customers])->extends('layouts.main');
     }
 }

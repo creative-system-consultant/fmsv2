@@ -44,9 +44,8 @@ class MfpSummary extends Component
         }, sprintf('users-%s.xlsx',now()->format('Y-m-d')));
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.report.monthly-financing-position.mfp-summary');
+        return view('livewire.report.monthly-financing-position.mfp-summary')->extends('layouts.main');
     }
 }

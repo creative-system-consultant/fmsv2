@@ -22,9 +22,8 @@ class Verify extends Component
         session()->flash('resent');
     }
 
-    #[Layout('layouts.auth')]
     public function render()
     {
-        return view('livewire.auth.verify');
+        return view('livewire.auth.verify')->extends('layouts.auth');
     }
 }

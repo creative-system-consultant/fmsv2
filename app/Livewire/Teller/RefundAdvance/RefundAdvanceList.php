@@ -20,13 +20,12 @@ class RefundAdvanceList extends Component
         $this->selectedAccNo = $accountNo;
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
         $advance = RefundAdvance::getAdvanceList($this->search_by, $this->search);
 
         return view('livewire.teller.refund-advance.refund-advance-list', [
             'advance' => $advance,
-        ]);
+        ])->extends('layouts.main');
     }
 }

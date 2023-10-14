@@ -91,13 +91,12 @@ class GlCode extends Component
         $this->glcodeService->deleteGlcode($id);
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
         $data = $this->glcodeService->getPaginatedGlcode($this->paginated);
 
         return view('livewire.admin.maintenance.glcode', [
             'data' => $data,
-        ]);
+        ])->extends('layouts.main');
     }
 }

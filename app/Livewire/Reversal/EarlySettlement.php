@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class EarlySettlement extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.reversal.early-settlement');
+        return view('livewire.reversal.early-settlement')->extends('layouts.main');
     }
 }

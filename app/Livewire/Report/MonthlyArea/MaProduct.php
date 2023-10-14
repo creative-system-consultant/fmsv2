@@ -44,9 +44,8 @@ class MaProduct extends Component
         }, sprintf('users-%s.xlsx',now()->format('Y-m-d')));
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.report.monthly-area.ma-product');
+        return view('livewire.report.monthly-area.ma-product')->extends('layouts.main');
     }
 }

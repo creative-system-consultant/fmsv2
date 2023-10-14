@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class MiscellaneousOutList extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.miscellaneous-out.miscellaneous-out-list');
+        return view('livewire.teller.miscellaneous-out.miscellaneous-out-list')->extends('layouts.main');
     }
 }

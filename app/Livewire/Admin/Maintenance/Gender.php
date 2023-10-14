@@ -91,13 +91,12 @@ class Gender extends Component
         $this->genderService->deleteGender($id);
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
         $data = $this->genderService->getPaginatedGender($this->paginated);
 
         return view('livewire.admin.maintenance.gender', [
             'data' => $data,
-        ]);
+        ])->extends('layouts.main');
     }
 }

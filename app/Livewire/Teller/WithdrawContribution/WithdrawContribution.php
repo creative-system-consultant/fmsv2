@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class WithdrawContribution extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.withdraw-contribution.withdraw-contribution');
+        return view('livewire.teller.withdraw-contribution.withdraw-contribution')->extends('layouts.main');
     }
 }

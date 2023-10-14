@@ -13,9 +13,8 @@ class BulkPayment extends Component
         $this->type = $type;
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.bulk-payment.bulk-payment');
+        return view('livewire.teller.bulk-payment.bulk-payment')->extends('layouts.main');
     }
 }

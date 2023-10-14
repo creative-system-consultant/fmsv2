@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class PreDisbCreate extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.finance.pre-disbursement.pre-disb-create');
+        return view('livewire.finance.pre-disbursement.pre-disb-create')->extends('layouts.main');
     }
 }

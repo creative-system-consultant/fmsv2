@@ -13,9 +13,8 @@ class PurchaseShare extends Component
         $this->type = $type;
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.purchase-share.purchase-share');
+        return view('livewire.teller.purchase-share.purchase-share')->extends('layouts.main');
     }
 }

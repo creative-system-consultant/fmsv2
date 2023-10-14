@@ -16,9 +16,8 @@ class Info extends Component
         $this->setIndex = $index;
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.finance.info');
+        return view('livewire.finance.info')->extends('layouts.main');
     }
 }

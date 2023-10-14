@@ -11,12 +11,11 @@ class Home extends Component
 {
     use WithPagination;
 
-    #[Layout('layouts.main')]
     public function render()
     {
         $data = RefBank::paginate(3);
         return view('livewire.home.home',[
             'data' => $data
-        ]);
+        ])->extends('layouts.main');
     }
 }

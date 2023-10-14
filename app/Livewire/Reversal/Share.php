@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class Share extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.reversal.share');
+        return view('livewire.reversal.share')->extends('layouts.main');
     }
 }

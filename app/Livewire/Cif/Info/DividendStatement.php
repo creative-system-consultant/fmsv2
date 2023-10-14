@@ -7,9 +7,8 @@ use Livewire\Component;
 
 class DividendStatement extends Component
 {
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.cif.info.dividend-statement');
+        return view('livewire.cif.info.dividend-statement')->extends('layouts.main');
     }
 }

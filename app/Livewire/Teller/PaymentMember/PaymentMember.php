@@ -15,9 +15,8 @@ class PaymentMember extends Component
         $this->setIndex = $index;
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
-        return view('livewire.teller.payment-member.payment-member');
+        return view('livewire.teller.payment-member.payment-member')->extends('layouts.main');
     }
 }

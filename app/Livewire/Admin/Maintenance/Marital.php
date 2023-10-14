@@ -91,13 +91,12 @@ class Marital extends Component
         $this->maritalService->deleteMarital($id);
     }
 
-    #[Layout('layouts.main')]
     public function render()
     {
         $data = $this->maritalService->getPaginatedMarital($this->paginated);
 
         return view('livewire.admin.maintenance.marital',[
             'data' => $data,
-        ]);
+        ])->extends('layouts.main');
     }
 }
