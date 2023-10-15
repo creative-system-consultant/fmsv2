@@ -1,40 +1,43 @@
 <div>
     <div class="grid grid-cols-1">
         <div class="w-full p-4 bg-white border rounded-lg shadow-md dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700">
-            <div class="flex items-center justify-end w-full">
-                <x-button
-                    xs
-                    outline
-                    black
-                    icon="arrow-left"
-                    label="Back To List"
-                    wire:click="redirectBack"
-                />
-            </div>
-            <div class="flex flex-col items-start w-full space-x-0 space-y-2 md:flex-row md:items-center md:space-x-2 md:space-y-0">
-                <div class="w-full md:w-96">
-                    <x-input
-                        label="Name :"
-                        wire:model="name"
-                        disabled
-                    />
+            <div class="flex items-start justify-normal  flex-col-reverse lg:justify-between xl:flex-row">
+                <div class="flex flex-col items-start w-full space-x-0 space-y-2 md:flex-row md:items-center md:space-x-2 md:space-y-0">
+                    <div class="w-full md:w-96">
+                        <x-input
+                            label="Name :"
+                            wire:model="name"
+                            disabled
+                        />
+                    </div>
+                    <div class="w-full md:w-64">
+                        <x-input
+                            label="Account No :"
+                            wire:model="accountNo"
+                            disabled
+                        />
+                    </div>
+                    <div class="w-full md:w-64">
+                        <x-inputs.currency
+                            class="!pl-[2.5rem]"
+                            label="Advance Amount :"
+                            prefix="RM"
+                            thousands=","
+                            decimal="."
+                            wire:model="advAmount"
+                            disabled
+                        />
+                    </div>
                 </div>
-                <div class="w-full md:w-64">
-                    <x-input
-                        label="Account No :"
-                        wire:model="accountNo"
-                        disabled
-                    />
-                </div>
-                <div class="w-full md:w-64">
-                    <x-inputs.currency
-                        class="!pl-[2.5rem]"
-                        label="Advance Amount :"
-                        prefix="RM"
-                        thousands=","
-                        decimal="."
-                        wire:model="advAmount"
-                        disabled
+                <div class="mt-0 mb-2 xl:mb-2 xl:mt-7">
+                    <x-button
+                        class="w-32"
+                        xs
+                        outline
+                        black
+                        icon="arrow-left"
+                        label="Back To List"
+                        wire:click="redirectBack"
                     />
                 </div>
             </div>
