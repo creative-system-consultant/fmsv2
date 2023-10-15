@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Module;
+namespace App\Services\Module\Teller;
 
 use App\Models\Cif\CifCustomer;
 use DB;
@@ -15,18 +15,18 @@ class RefundAdvance
     private static function getAdvanceQuery()
     {
         return CifCustomer::select(
-                'cif.customers.uuid',
-                'cif.customers.identity_no',
-                'fms.MEMBERSHIP.ref_no',
-                'cif.customers.name',
-                'FMS.ACCOUNT_MASTERS.account_no',
-                DB::raw('products = FMS.uf_get_product(1, FMS.ACCOUNT_MASTERS.product_id)'),
-                'FMS.ACCOUNT_POSITIONS.disbursed_amount',
-                'FMS.ACCOUNT_POSITIONS.prin_outstanding',
-                'FMS.ACCOUNT_POSITIONS.uei_outstanding',
-                'FMS.ACCOUNT_POSITIONS.advance_payment',
-                'FMS.ACCOUNT_POSITIONS.bal_outstanding'
-            )
+            'cif.customers.uuid',
+            'cif.customers.identity_no',
+            'fms.MEMBERSHIP.ref_no',
+            'cif.customers.name',
+            'FMS.ACCOUNT_MASTERS.account_no',
+            DB::raw('products = FMS.uf_get_product(1, FMS.ACCOUNT_MASTERS.product_id)'),
+            'FMS.ACCOUNT_POSITIONS.disbursed_amount',
+            'FMS.ACCOUNT_POSITIONS.prin_outstanding',
+            'FMS.ACCOUNT_POSITIONS.uei_outstanding',
+            'FMS.ACCOUNT_POSITIONS.advance_payment',
+            'FMS.ACCOUNT_POSITIONS.bal_outstanding'
+        )
             ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', 'cif.customers.id')
             ->join('FMS.ACCOUNT_MASTERS', 'FMS.MEMBERSHIP.ref_no', 'FMS.ACCOUNT_MASTERS.mbr_no')
             ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_MASTERS.ACCOUNT_NO', 'FMS.ACCOUNT_POSITIONS.ACCOUNT_NO')

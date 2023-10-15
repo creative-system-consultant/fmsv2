@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Teller\RefundAdvance;
 
-use App\Services\Module\RefundAdvance;
+use App\Services\Module\Teller\RefundAdvance;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
