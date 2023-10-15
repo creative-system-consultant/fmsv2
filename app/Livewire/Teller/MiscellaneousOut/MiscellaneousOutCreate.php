@@ -19,6 +19,12 @@ class MiscellaneousOutCreate extends Component
 
     protected $listeners = ['refreshComponent' => '$refresh'];
 
+    public function redirectBack()
+    {
+        $this->mbrNo = NULL;
+        $this->dispatch('clearSelectedAcc')->to(MiscellaneousOutList::class);
+    }
+
     public function mount($mbrNo)
     {
         $this->mbrNo = $mbrNo;

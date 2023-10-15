@@ -5,6 +5,7 @@ namespace App\Livewire\Teller\MiscellaneousOut;
 use App\Services\Model\FmsMiscAccount;
 use App\Services\Module\Teller\MiscOut;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -19,6 +20,12 @@ class MiscellaneousOutList extends Component
     public function updatingSearch()
     {
         $this->resetPage();
+    }
+
+    #[On('clearSelectedAcc')]
+    public function clearSelectedAcc()
+    {
+        $this->selectedMbr = NULL;
     }
 
     public function selectMbr($mbrNo)

@@ -1,13 +1,14 @@
 <div>
     <div class="grid grid-cols-1">
         <div class="w-full p-4 bg-white border rounded-lg shadow-md dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700">
-            <div class="flex justify-end items-center w-full">
-                <x-button 
+            <div class="flex items-center justify-end w-full">
+                <x-button
                     xs
-                    outline 
+                    outline
                     black
-                    icon="arrow-left" 
-                    label="Back To List" 
+                    icon="arrow-left"
+                    label="Back To List"
+                    wire:click="redirectBack"
                 />
             </div>
             <div class="flex flex-col items-start w-full space-x-0 space-y-2 md:flex-row md:items-center md:space-x-2 md:space-y-0">
@@ -64,15 +65,12 @@
                 <div x-show="tab == 0">
                     <livewire:teller.miscellaneous-out.category.contribution :mbrNo=$mbrNo :startDate=$startDate :endDate=$endDate :miscAmt=$miscAmt />
                 </div>
-
                 <div x-show="tab == 1">
                     <livewire:teller.miscellaneous-out.category.members :mbrNo=$mbrNo :startDate=$startDate :endDate=$endDate :miscAmt=$miscAmt />
                 </div>
-
                 <div x-show="tab == 2">
                     <livewire:teller.miscellaneous-out.category.financing :mbrNo=$mbrNo />
                 </div>
-
                 <div x-show="tab == 3">
                     <livewire:teller.miscellaneous-out.category.share :mbrNo=$mbrNo :startDate=$startDate :endDate=$endDate :miscAmt=$miscAmt />
                 </div>
