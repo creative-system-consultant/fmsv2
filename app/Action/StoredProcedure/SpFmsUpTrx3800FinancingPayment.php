@@ -4,12 +4,7 @@ namespace App\Action\StoredProcedure;
 
 use DB;
 
-/**
- * Class SpFmsUpTrxContributionIn
- *
- * This class handles the execution of the `up_trx_contribution_in` stored procedure.
- */
-class SpFmsUpTrxContributionIn
+class SpFmsUpTrx3800FinancingPayment
 {
     /**
      * Execute the stored procedure with the provided data.
@@ -20,10 +15,10 @@ class SpFmsUpTrxContributionIn
     public static function handle($data)
     {
         // Define the name of the stored procedure.
-        $sp = 'up_trx_contribution_in';
+        $sp = 'FMS.up_trx_3800_financing_payment';
 
         // Construct the SQL statement to execute the stored procedure with provided parameters.
-        $sql = "SET NOCOUNT ON; exec " . $sp . "  :clientId, :refNo, :txnAmt, :txnDate, :docNo, :txnCode, :remarks, :bankMember, :userId, :chequeDate, :bankClient";
+        $sql = "SET NOCOUNT ON; exec " . $sp . "  :clientId, :accNo, :txnAmt, :txnCode, :docNo, :txnDate, :remarks, :bankClient, :userId";
 
         // Execute the statement using Laravel's database query builder and capture the result.
         $result = DB::statement($sql, $data);

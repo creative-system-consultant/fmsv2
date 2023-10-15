@@ -28,4 +28,37 @@ class CustomerSearch
 
         return $query->paginate(10);
     }
+
+    public static function getFinancingRepaymentData(
+        $searchBy = null,
+        $search = null
+    ) {
+        $query = CifCustomer::select(
+                'CIF.CUSTOMERS.uuid',
+                'CIF.CUSTOMERS.name',
+                'CIF.CUSTOMERS.identity_no',
+                'CIF.CUSTOMERS.id as user_id',
+                'CIF.CUSTOMERS.phone',
+                'CIF.CUSTOMERS.email',
+                'FMS.MEMBERSHIP.ref_no',
+                'FMS.MEMBERSHIP.total_contribution',
+                'FMS.ACCOUNT_MASTERS.account_no',
+                'FMS.ACCOUNT_MASTERS.instal_amount',
+                'FMS.ACCOUNT_MASTERS.approved_limit',
+                'FMS.ACCOUNT_POSITIONS.instal_arrears'
+                // 'SISKOP.DBO.ACCOUNT_PRODUCTS.name as pro'
+            )
+            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', 'CIF.CUSTOMERS.id')
+            ->join('FMS.ACCOUNT_MASTERS', 'FMS.ACCOUNT_MASTERS.mbr_no', 'FMS.MEMBERSHIP.ref_no')
+            ->leftJoin('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_POSITIONS.account_no', 'FMS.ACCOUNT_MASTERS.account_no')
+            ->whereIn('FMS.ACCOUNT_MASTERS.account_status', [1, 7, 8, 10])
+            ->where('FMS.ACCOUNT_POSITIONS.bal_outstanding', '>', 0)
+            ->where('FMS.ACCOUNT_POSITIONS.disbursed_amount', '>', 0);
+
+        if ($search && $searchBy) {
+            $query->where($searchBy, 'like', '%' . $search . '%');
+        }
+
+        return $query->paginate(10);
+    }
 }

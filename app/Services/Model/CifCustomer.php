@@ -41,6 +41,14 @@ class CifCustomer
         return ModelCifCustomer::whereUuid($uuid)->first();
     }
 
+    public static function getCustomerSearchData($uuid)
+    {
+        return ModelCifCustomer::with(['fmsMembership:id,ref_no,cif_id,total_contribution,total_share'])
+            ->whereUuid($uuid)
+            ->select('id', 'name', 'bank_id')
+            ->first();
+    }
+
     /**
      * Fetches the search data for CIF customers based on the provided parameters.
      *
