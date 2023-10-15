@@ -1,6 +1,5 @@
 <div>
     <div class="mb-4">
-        {{-- <livewire:teller.refund-advance.category.pay-to-member.member-info :accountNo="$accountNo"/> --}}
         <livewire:teller.general.members-bank-info :ic=$ic />
     </div>
 
