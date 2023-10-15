@@ -16,15 +16,29 @@
                         disabled
                     />
                 </div>
+                @if($totalContribution)
                 <x-inputs.currency
                     class="!pl-[2.5rem]"
                     label="Amount"
                     prefix="RM"
                     thousands=","
                     decimal="."
-                    wire:model="totalContribution"
+                    wire:model="totalContributionAmt"
                     disabled
                 />
+                @endif
+
+                @if($totalShare)
+                    <x-inputs.currency
+                        class="!pl-[2.5rem]"
+                        label="Total Share"
+                        prefix="RM"
+                        thousands=","
+                        decimal="."
+                        wire:model="totalShareAmt"
+                        disabled
+                    />
+                @endif
             </div>
             <div class="mt-3">
                 <x-button

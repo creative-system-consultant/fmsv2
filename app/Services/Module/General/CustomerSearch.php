@@ -6,16 +6,12 @@ use App\Models\Cif\CifCustomer;
 
 class CustomerSearch
 {
-    public function __construct()
-    {
-        //
-    }
-
     public static function getData(
         $searchBy = null,
         $search = null
     ) {
         $query = CifCustomer::select(
+                'CIF.CUSTOMERS.uuid',
                 'CIF.CUSTOMERS.staff_no',
                 'CIF.CUSTOMERS.identity_no',
                 'FMS.MEMBERSHIP.ref_no',

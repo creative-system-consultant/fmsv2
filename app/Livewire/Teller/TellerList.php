@@ -15,7 +15,7 @@ class TellerList extends Component
             'Payment Contribution' => 'teller.payment-contribution.payment-contribution',
             'Purchase Share' => 'teller.purchase-share.purchase-share',
             'Financing Repayment' => 'teller.financing-repayment.financing-repayment',
-            'Early Setllement Payment' => 'teller.settlement-payment.settlement-payment',
+            'Early Settlement Payment' => 'teller.settlement-payment.settlement-payment',
             'Third Party' => 'teller.third-party.third-party',
             'Miscellaneous in' => 'teller.miscellaneous-in.miscellaneous-in',
             'Autopay' => 'teller.autopay.autopay',

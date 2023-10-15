@@ -12,7 +12,10 @@ class CustomerSearch extends Component
 {
     use WithPagination;
 
-    public $name, $refNo, $totalContribution;
+    public $name, $refNo;
+    public $totalContribution, $totalContributionAmt;
+    public $totalShare, $totalShareAmt;
+
     public $searchBy = 'name', $search, $sortField, $sortDirection;
 
     protected $listeners = ['refreshComponent' => 'reload'];
@@ -28,7 +31,14 @@ class CustomerSearch extends Component
 
         $this->name = $customer->name;
         $this->refNo = $customer->fmsMembership->ref_no;
-        $this->totalContribution = $customer->fmsMembership->total_contribution;
+
+        if ($this->totalContribution) {
+            $this->totalContributionAmt = $customer->fmsMembership->total_contribution;
+        }
+
+        if ($this->totalShare) {
+            $this->totalShareAmt = $customer->fmsMembership->total_share;
+        }
 
         return $customer;
     }
