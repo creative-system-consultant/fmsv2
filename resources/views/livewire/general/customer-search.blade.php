@@ -76,6 +76,7 @@
                     primary
                     label="Search"
                 />
+
                 <x-modal.card title="Search Listing" align="center" max-width="6xl" blur wire:model.defer="search-modal">
                     <div class="grid grid-cols-1 sgap-4">
                         <div class="flex items-center mb-4 space-x-2">
@@ -101,27 +102,9 @@
                                 />
                             </div>
                         </div>
+
                         <x-table.table>
                             <x-slot name="thead">
-                                @php
-                                $headers = $customQuery == 'financingRepayment'
-                                    ? [
-                                        "IDENTITY NO.",
-                                        "NAME",
-                                        "ACCOUNT NO",
-                                        "APPROVED AMOUNT",
-                                        "FINANCING",
-                                        "ACTION"
-                                    ]
-                                    : [
-                                        "STAFF NO",
-                                        "IDENTITY NO.",
-                                        "MEMBERSHIP NO",
-                                        "NAME",
-                                        "ACTION"
-                                    ];
-                                @endphp
-
                                 @foreach($headers as $header)
                                     <x-table.table-header class="text-left" value="{{ $header }}" sort="" />
                                 @endforeach
@@ -140,6 +123,16 @@
                                                 null // placeholder for the button
                                             ];
                                             @endphp
+                                        @elseif($customQuery == 'withdrawShare')
+                                            @php
+                                            $values = [
+                                                $item->ref_no,
+                                                $item->name,
+                                                number_format($item->total_share,2),
+                                                ($item->last_payment_date) ? date('d/m/Y', strtotime($item->last_payment_date)) : '-',
+                                                null // placeholder for the button
+                                            ];
+                                            @endphp
                                         @else
                                             @php
                                             $values = [
@@ -152,6 +145,18 @@
                                             @endphp
                                         @endif
 
+                                        @php
+                                            $wireClickFunction = '';
+
+                                            if($customQuery == 'financingRepayment') {
+                                                $wireClickFunction = 'selectedAccNo(\''.$item->account_no.'\')';
+                                            // } elseif($customQuery == 'withdrawShare') {
+                                            //     $wireClickFunction = 'selectedUuid(\''.$item->uuid.'\')';
+                                            } else {
+                                                $wireClickFunction = 'selectedUuid(\''.$item->uuid.'\')';
+                                            }
+                                        @endphp
+
                                         @foreach($values as $key => $value)
                                             @if(is_null($value))
                                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
@@ -161,7 +166,7 @@
                                                         icon="plus"
                                                         primary
                                                         label="Select"
-                                                        wire:click="{{ $customQuery == 'financingRepayment' ? 'selectedAccNo(\''.$item->account_no.'\')' : 'selectedUuid(\''.$item->uuid.'\')' }}"
+                                                        wire:click="{{ $wireClickFunction }}"
                                                     />
                                                 </x-table.table-body>
                                             @else

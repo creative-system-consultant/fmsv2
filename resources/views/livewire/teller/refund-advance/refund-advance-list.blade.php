@@ -83,7 +83,7 @@
                                         icon="eye"
                                         primary
                                         label="View"
-                                        wire:click="selectAcc({{ $advances->account_no }})"
+                                        wire:click="selectAcc('{{ $advances->account_no }}')"
                                     />
                                 </x-table.table-body>
                             </tr>

@@ -10,7 +10,7 @@
             :searchTotShare="$searchTotShare"
             :searchMthInstallAmt="$searchMthInstallAmt"
             :searchInstallAmtArear="$searchInstallAmtArear"
-            :customQuery="$module == 'financingRepayment' ? 'financingRepayment' : ''"
+            :customQuery="$this->customQuery"
         />
 
         <div class="grid grid-cols-12 gap-6 py-4 mt-4 rounded-lg dark:bg-gray-900" x-data="{ tab: 0 }">
@@ -27,6 +27,12 @@
                             </x-tab.basic-title>
                         @endforeach
                     </x-card>
+                </div>
+            @endif
+
+            @if(in_array($module, $tellerOutModule))
+                <div class="mb-4">
+                    <livewire:teller.general.members-bank-info :ic=$ic />
                 </div>
             @endif
 
@@ -65,6 +71,7 @@
                                 />
                             </div>
 
+                            @if($category)
                             <div class="
                                 @if($selectedType == 'cheque')
                                     block
@@ -72,6 +79,7 @@
                                     hidden
                                 @endif
                             ">
+                            @endif
                                 <x-select
                                     label="Bank Customer"
                                     placeholder="-- PLEASE SELECT --"
@@ -81,7 +89,9 @@
                                         <x-select.option label="{{ $bank->description }}" value="{{ $bank->id }}" />
                                     @endforeach
                                 </x-select>
+                            @if($category)
                             </div>
+                            @endif
 
                             <x-select
                                 label="Bank Client"
@@ -93,10 +103,11 @@
                                 @endforeach
                             </x-select>
 
-                            <x-input
-                                label="Document No"
-                                wire:model="docNo"
-                            />
+                            @if($module == 'withdrawShare')
+                                <x-input label="Document No" wire:model="docNo" disabled />
+                            @else
+                                <x-input label="Document No" wire:model="docNo" />
+                            @endif
 
                             @if($additionalField)
                                 <x-input

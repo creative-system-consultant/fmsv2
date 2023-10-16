@@ -14,7 +14,6 @@ class TellerList extends Component
 
     public function mount()
     {
-
         $this->option_payment_in = [
             (object)[
                 "value" => "Payment Contribution"
@@ -45,7 +44,6 @@ class TellerList extends Component
             ],
         ];
 
-
         $this->option_payment_out = [
             (object)[
                 "value" => 'Withdraw Contribution'
@@ -75,6 +73,16 @@ class TellerList extends Component
                 "value" => "Dividen Batch Widthdrawal"
             ],
         ];
+    }
+
+    public function clearPaymentIn()
+    {
+        $this->type_payment_in = '';
+    }
+
+    public function clearPaymentOut()
+    {
+        $this->type_payment_out = '';
     }
 
     public function render()

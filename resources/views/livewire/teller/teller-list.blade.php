@@ -7,13 +7,13 @@
             <div class="grid grid-cols-1">
                 <div class="flex mb-4 bg-white rounded-lg shadow-sm dark:bg-gray-900">
                     <div class="flex items-center ">
-                        <x-tab.title name="0" >
+                        <x-tab.title name="0" wire:click="clearPaymentOut">
                             <div class="flex items-center text-sm spcae-x-2">
                                 <x-icon name="login" class="w-5 h-5 mr-2"/>
                                 <h1>Payment In</h1>
                             </div>
                         </x-tab.title>
-                        <x-tab.title name="1">
+                        <x-tab.title name="1" wire:click="clearPaymentIn">
                             <div class="flex items-center text-sm spcae-x-2">
                                 <x-icon name="logout" class="w-5 h-5 mr-2"/>
                                 <h1>Payment Out</h1>
@@ -105,8 +105,12 @@
                             <livewire:teller.withdraw-contribution.withdraw-contribution />
 
                         @elseif($type_payment_out == 'Withdraw Share')
-                            <livewire:teller.withdraw-share.withdraw-share />
-
+                            {{-- <livewire:teller.withdraw-share.withdraw-share /> --}}
+                            <livewire:general.teller.common-page
+                                module='withdrawShare'
+                                searchRefNo=true
+                                searchTotShare=true
+                            />
                         @elseif($type_payment_out == 'Close Membership')
                             <livewire:teller.close-membership.close-membership />
 

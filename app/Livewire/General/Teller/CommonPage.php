@@ -2,10 +2,12 @@
 
 namespace App\Livewire\General\Teller;
 
+use App\Action\StoredProcedure\SpFmsGenerateMbrWithdrawShare;
 use App\Action\StoredProcedure\SpFmsUpTrx3800FinancingPayment;
 use App\Action\StoredProcedure\SpFmsUpTrxContributionIn;
 use App\Action\StoredProcedure\SpFmsUpTrxPaymentAll;
 use App\Livewire\General\CustomerSearch;
+use App\Livewire\Teller\General\MembersBankInfo;
 use App\Traits\PaymentContributionRulesTrait;
 use App\Traits\BulkPaymentRulesTrait;
 use App\Services\General\ActgPeriod;
@@ -28,6 +30,7 @@ class CommonPage extends Component
     public $categoryList = [];
     public $selectedType;
     public $txnCode;
+    public $tellerOutModule = [];
 
     // search variable
     public $searchRefNo = false;
@@ -43,7 +46,7 @@ class CommonPage extends Component
     public $minFinRepay;
 
     // fetch variable
-    public $refNo, $accNo, $totalContribution;
+    public $ic, $refNo, $accNo, $totalContribution;
     public $saveButton = false;
 
     // input variable
@@ -58,12 +61,25 @@ class CommonPage extends Component
         $this->startDate = ActgPeriod::determinePeriodRange()['startDate'];
         $this->endDate = ActgPeriod::determinePeriodRange()['endDate'];
 
+        $this->tellerOutModule = [
+            "withdrawContribution",
+            "withdrawShare",
+            "closeMembership",
+            "paymentToMembers",
+            "dividendWithdrawal",
+            "disbursement",
+            "miscellaneousOut",
+            "refundAdvance",
+            "dividenBatchWidthdrawal",
+        ];
+
         $this->initializeModule();
     }
 
     private function initializeModule()
     {
         switch ($this->module) {
+            // payment in
             case 'paymentContribution':
                 $this->setupPaymentContribution();
                 break;
@@ -75,6 +91,10 @@ class CommonPage extends Component
                 break;
             case 'bulkPayment':
                 $this->setupBulkPayment();
+                break;
+            // payment out
+            case 'withdrawShare':
+                $this->setupWithdrawShare();
                 break;
         }
     }
@@ -127,6 +147,12 @@ class CommonPage extends Component
         $this->setDefaultCategory();
     }
 
+    private function setupWithdrawShare()
+    {
+        $this->setDefaultCategory();
+        $this->minShare = (float) FmsGlobalParm::getAllFmsGlobalParm()->MIN_SHARE;
+    }
+
     private function setDefaultCategory()
     {
         if (!empty($this->categoryList)) {
@@ -135,12 +161,33 @@ class CommonPage extends Component
         }
     }
 
+    public function getCustomQueryProperty()
+    {
+        switch ($this->module) {
+            case 'financingRepayment':
+                return 'financingRepayment';
+            case 'withdrawShare':
+                return 'withdrawShare';
+            default:
+                return '';
+        }
+    }
+
     #[On('customerSelected')]
-    public function handleCustomerSelection($refNo, $bankMember)
+    public function handleCustomerSelection($customer)
     {
         $this->saveButton = true;
-        $this->bankMember = $bankMember;
-        $this->refNo = (string) $refNo;
+        $this->bankMember = $customer['bank_id'];
+        $this->refNo = (string) $customer['fms_membership']['ref_no'];
+
+        if($this->module == 'withdrawShare')
+        {
+            $this->ic = $customer['identity_no'];
+            $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
+            // enable when sp is ok
+            // $this->docNo = $this->generatePvNo($this->refNo);
+            // $this->docNo = SpFmsGenerateMbrWithdrawShare::handle(1, $this->refNo);
+        }
     }
 
     #[On('accNoSelected')]

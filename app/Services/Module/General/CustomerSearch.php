@@ -61,4 +61,25 @@ class CustomerSearch
 
         return $query->paginate(10);
     }
+
+    public static function getWithdrawShareData(
+        $searchBy = null,
+        $search = null
+    ) {
+        $query = CifCustomer::select(
+                'CIF.CUSTOMERS.uuid',
+                'CIF.CUSTOMERS.name',
+                'FMS.MEMBERSHIP.ref_no',
+                'FMS.MEMBERSHIP.total_share',
+                'FMS.MEMBERSHIP.last_payment_date',
+            )
+            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', 'CIF.CUSTOMERS.id')
+            ->where('FMS.MEMBERSHIP.total_share', '>', 500);
+
+        if ($search && $searchBy) {
+            $query->where($searchBy, 'like', '%' . $search . '%');
+        }
+
+        return $query->paginate(10);
+    }
 }

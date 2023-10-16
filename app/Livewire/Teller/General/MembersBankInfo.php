@@ -5,6 +5,7 @@ namespace App\Livewire\Teller\General;
 use App\Services\General\PopupService;
 use App\Services\Model\BankService;
 use App\Services\Model\CifCustomer;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use WireUi\Traits\Actions;
@@ -28,8 +29,16 @@ class MembersBankInfo extends Component
         $this->refBank = BankService::getAllRefBanks();
 
         $cifCustAcc = CifCustomer::getCifCustomerByIc($this->ic);
-        $this->bankMember = $cifCustAcc->bank_id;
-        $this->memberBankAccNo = $cifCustAcc->bank_acct_no;
+        $this->bankMember = $cifCustAcc->bank_id ?? null;
+        $this->memberBankAccNo = $cifCustAcc->bank_acct_no ?? '';
+    }
+
+    #[On('icSelected')]
+    public function icSelected($ic)
+    {
+        $cifCustAcc = CifCustomer::getCifCustomerByIc($ic);
+        $this->bankMember = $cifCustAcc->bank_id ?? null;
+        $this->memberBankAccNo = $cifCustAcc->bank_acct_no ?? '';
     }
 
     public function saveMemberInfo()

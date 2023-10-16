@@ -24,6 +24,43 @@ class CustomerSearch extends Component
 
     public $searchBy = 'name', $search, $sortField, $sortDirection;
 
+    public $headers = [];
+
+    public function mount()
+    {
+        $this->setHeaders();
+    }
+
+    public function setHeaders()
+    {
+        if ($this->customQuery == 'financingRepayment') {
+            $this->headers = [
+                "IDENTITY NO.",
+                "NAME",
+                "ACCOUNT NO",
+                "APPROVED AMOUNT",
+                "FINANCING",
+                "ACTION"
+            ];
+        } elseif ($this->customQuery == 'withdrawShare') {
+            $this->headers = [
+                "MEMBERSHIP NO",
+                "NAME",
+                "TOTAL SHARE",
+                "LAST PAYMENT DATE",
+                "ACTION"
+            ];
+        } else {
+            $this->headers = [
+                "STAFF NO",
+                "IDENTITY NO.",
+                "MEMBERSHIP NO",
+                "NAME",
+                "ACTION"
+            ];
+        }
+    }
+
     public function updatingSearch()
     {
         $this->resetPage();
@@ -32,12 +69,9 @@ class CustomerSearch extends Component
     public function selectedUuid($uuid)
     {
         $customer = $this->getData($uuid);
-        $refNo = $customer->fmsMembership->ref_no;
-        $bankMember = $customer->bank_id;
         $this->dispatch(
             'customerSelected',
-            refNo: $refNo,
-            bankMember: $bankMember
+            customer: $customer,
         );
     }
 
@@ -109,10 +143,15 @@ class CustomerSearch extends Component
 
     public function render()
     {
-        if($this->customQuery == 'financingRepayment') {
-            $customers = GeneralCustomerSearch::getFinancingRepaymentData($this->searchBy, $this->search);
-        } else {
-            $customers = GeneralCustomerSearch::getData($this->searchBy, $this->search);
+        switch ($this->customQuery) {
+            case 'financingRepayment':
+                $customers = GeneralCustomerSearch::getFinancingRepaymentData($this->searchBy, $this->search);
+                break;
+            case 'withdrawShare':
+                $customers = GeneralCustomerSearch::getWithdrawShareData($this->searchBy, $this->search);
+                break;
+            default:
+                $customers = GeneralCustomerSearch::getData($this->searchBy, $this->search);
         }
 
         return view('livewire.general.customer-search', ['customers' => $customers]);
