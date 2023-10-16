@@ -1,5 +1,5 @@
 <x-card title="Members Bank Info">
-    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <x-select
             label="Bank Members"
             placeholder="-- PLEASE SELECT --"

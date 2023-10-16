@@ -31,18 +31,12 @@
             @endif
 
             @if(in_array($module, $tellerOutModule))
-                <div class="mb-4">
+                <div class="mb-4 col-span-12">
                     <livewire:teller.general.members-bank-info :ic=$ic />
                 </div>
             @endif
 
-            <div class="col-span-12
-                @if($category)
-                    lg:col-span-8 xxl:col-span-8
-                @else
-                    lg:col-span-12 xxl:col-span-12
-                @endif
-            ">
+            <div class="col-span-12 {{ $category ? ' lg:col-span-8' : 'lg:col-span-12'}}">
                 <div>
                     <div wire:loading wire:target="saveTransaction,confirmSaveTransaction">
                         @include('misc.loading')
@@ -54,13 +48,7 @@
 
                     <x-card title="{{ $title }}">
                         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <div class="
-                                @if($selectedType == 'cheque')
-                                    block
-                                @else
-                                    hidden
-                                @endif
-                            ">
+                            <div class="{{ $selectedType == 'cheque' ? ' block' : 'hidden'}}">
                                 <x-datetime-picker
                                     label="Cheque Date"
                                     wire:model="chequeDate"
@@ -72,13 +60,7 @@
                             </div>
 
                             @if($category)
-                            <div class="
-                                @if($selectedType == 'cheque')
-                                    block
-                                @else
-                                    hidden
-                                @endif
-                            ">
+                            <div class=" {{ $selectedType == 'cheque' ? ' block' : 'hidden'}}">
                             @endif
                                 <x-select
                                     label="Bank Customer"
