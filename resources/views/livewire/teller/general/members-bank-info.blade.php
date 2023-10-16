@@ -1,4 +1,4 @@
-<x-card title="Members Bank Info">
+<x-card title="MEMBERS BANK INFO">
     <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <x-select
             label="Bank Members"
@@ -15,15 +15,17 @@
             wire:model="memberBankAccNo"
         />
     </div>
-    <x-slot name="footer">
-        <div class="flex items-center justify-end">
-            <x-button
-                sm
-                icon="clipboard-check"
-                primary
-                label="Update Info"
-                wire:click="saveMemberInfo"
-            />
-        </div>
-    </x-slot>
+    @if($icSelected)
+        <x-slot name="footer">
+            <div class="flex items-center justify-end">
+                <x-button
+                    sm
+                    icon="clipboard-check"
+                    primary
+                    label="Update Info"
+                    wire:click="saveMemberInfo"
+                />
+            </div>
+        </x-slot>
+    @endif
 </x-card>

@@ -17,13 +17,18 @@ use App\Services\Model\BankService;
 use App\Services\Model\FmsGlobalParm;
 use App\Traits\FinancingRepaymentRulesTrait;
 use App\Traits\PurchaseShareRulesTrait;
+use App\Traits\WithdrawShareRulesTrait;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 
 class CommonPage extends Component
 {
-    use Actions, PaymentContributionRulesTrait, PurchaseShareRulesTrait, FinancingRepaymentRulesTrait, BulkPaymentRulesTrait;
+    use Actions,
+        // payment in
+        PaymentContributionRulesTrait, PurchaseShareRulesTrait, FinancingRepaymentRulesTrait, BulkPaymentRulesTrait,
+        // payment out
+        WithdrawShareRulesTrait;
 
     public $module = '';
     public $category = false;
@@ -44,6 +49,7 @@ class CommonPage extends Component
     public $minContribution;
     public $minShare;
     public $minFinRepay;
+    public $totalShareValid;
 
     // fetch variable
     public $ic, $refNo, $accNo, $totalContribution;
@@ -149,8 +155,8 @@ class CommonPage extends Component
 
     private function setupWithdrawShare()
     {
-        $this->setDefaultCategory();
         $this->minShare = (float) FmsGlobalParm::getAllFmsGlobalParm()->MIN_SHARE;
+        $this->txnCode = '3104';
     }
 
     private function setDefaultCategory()
@@ -176,15 +182,19 @@ class CommonPage extends Component
     #[On('customerSelected')]
     public function handleCustomerSelection($customer)
     {
-        $this->saveButton = true;
         $this->bankMember = $customer['bank_id'];
         $this->refNo = (string) $customer['fms_membership']['ref_no'];
 
         if($this->module == 'withdrawShare')
         {
+            $this->totalShareValid = $customer['fms_membership']['total_share'] - $this->minShare;
+            $this->txnAmt = (float) $this->totalShareValid;
+            $this->saveButton = $this->bankMember && $customer['bank_acct_no'];
+
             $this->ic = $customer['identity_no'];
             $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
             // enable when sp is ok
+            $this->docNo = '123456'; // delete this after sp fixed
             // $this->docNo = $this->generatePvNo($this->refNo);
             // $this->docNo = SpFmsGenerateMbrWithdrawShare::handle(1, $this->refNo);
         }
@@ -202,6 +212,12 @@ class CommonPage extends Component
         $this->totalContribution = $totalContribution;
     }
 
+    #[On('updatePayButton')]
+    public function updatePayButton($data)
+    {
+        $this->saveButton = $data['bankMember'] && $data['memberBankAccNo'];
+    }
+
     public function selectType($name, $code)
     {
         $this->selectedType = $name;
@@ -215,6 +231,7 @@ class CommonPage extends Component
         $rules = [];
 
         switch ($this->module) {
+            // payment in
             case 'paymentContribution':
                 $rules = $this->getPaymentContributionRules();
                 break;
@@ -227,6 +244,10 @@ class CommonPage extends Component
             case 'bulkPayment':
                 $rules = $this->getBulkPaymentRules();
                 break;
+            // payment out
+            case 'withdrawShare':
+                $rules = $this->getWithdrawShareRules();
+                break;
         }
 
         $this->validate($rules);
@@ -235,23 +256,8 @@ class CommonPage extends Component
 
     public function confirmSaveTransaction()
     {
-        if ($this->module == 'paymentContribution') {
-            $result = SpFmsUpTrxContributionIn::handle([
-                'clientId' => $this->clientId,
-                'refNo' => $this->refNo,
-                'txnAmt' => $this->txnAmt,
-                'txnDate' => $this->txnDate,
-                'docNo' => $this->docNo,
-                'txnCode' => $this->txnCode,
-                'remarks' => $this->remarks,
-                'bankMember' => $this->bankMember,
-                'userId' => auth()->id(),
-                'chequeDate' => $this->chequeDate,
-                'bankClient' => $this->bankClient
-            ]);
-        }
-
-        if ($this->module == 'purchaseShare') {
+        // payment in
+        if ($this->module == 'paymentContribution' || $this->module == 'purchaseShare' || $this->module == 'withdrawShare') {
             $result = SpFmsUpTrxContributionIn::handle([
                 'clientId' => $this->clientId,
                 'refNo' => $this->refNo,

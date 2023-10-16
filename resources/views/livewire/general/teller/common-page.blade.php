@@ -31,7 +31,7 @@
             @endif
 
             @if(in_array($module, $tellerOutModule))
-                <div class="mb-4 col-span-12">
+                <div class="col-span-12 mb-4">
                     <livewire:teller.general.members-bank-info :ic=$ic />
                 </div>
             @endif
@@ -62,15 +62,17 @@
                             @if($category)
                             <div class=" {{ $selectedType == 'cheque' ? ' block' : 'hidden'}}">
                             @endif
-                                <x-select
-                                    label="Bank Customer"
-                                    placeholder="-- PLEASE SELECT --"
-                                    wire:model="bankMember"
-                                >
-                                    @foreach ($refBank as $bank)
-                                        <x-select.option label="{{ $bank->description }}" value="{{ $bank->id }}" />
-                                    @endforeach
-                                </x-select>
+                                @if($module != 'withdrawShare')
+                                    <x-select
+                                        label="Bank Customer"
+                                        placeholder="-- PLEASE SELECT --"
+                                        wire:model="bankMember"
+                                    >
+                                        @foreach ($refBank as $bank)
+                                            <x-select.option label="{{ $bank->description }}" value="{{ $bank->id }}" />
+                                        @endforeach
+                                    </x-select>
+                                @endif
                             @if($category)
                             </div>
                             @endif

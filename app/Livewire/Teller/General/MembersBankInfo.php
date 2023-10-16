@@ -24,6 +24,8 @@ class MembersBankInfo extends Component
     #[Rule('required')]
     public $memberBankAccNo;
 
+    public $icSelected = false;
+
     public function mount()
     {
         $this->refBank = BankService::getAllRefBanks();
@@ -39,6 +41,9 @@ class MembersBankInfo extends Component
         $cifCustAcc = CifCustomer::getCifCustomerByIc($ic);
         $this->bankMember = $cifCustAcc->bank_id ?? null;
         $this->memberBankAccNo = $cifCustAcc->bank_acct_no ?? '';
+
+        $this->ic = $ic;
+        $this->icSelected = true;
     }
 
     public function saveMemberInfo()
