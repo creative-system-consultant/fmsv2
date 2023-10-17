@@ -5,6 +5,7 @@ namespace App\Livewire\General\Teller;
 use App\Action\StoredProcedure\SpFmsGenerateMbrWithdrawShare;
 use App\Action\StoredProcedure\SpFmsUpTrx3800FinancingPayment;
 use App\Action\StoredProcedure\SpFmsUpTrxContributionIn;
+use App\Action\StoredProcedure\SpFmsUpTrxMiscInBk;
 use App\Action\StoredProcedure\SpFmsUpTrxPaymentAll;
 use App\Livewire\General\CustomerSearch;
 use App\Livewire\Teller\General\MembersBankInfo;
@@ -16,6 +17,7 @@ use App\Services\Model\BankIbtService;
 use App\Services\Model\BankService;
 use App\Services\Model\FmsGlobalParm;
 use App\Traits\FinancingRepaymentRulesTrait;
+use App\Traits\MiscellaneousInRulesTrait;
 use App\Traits\PurchaseShareRulesTrait;
 use App\Traits\WithdrawShareRulesTrait;
 use Livewire\Attributes\On;
@@ -26,7 +28,7 @@ class CommonPage extends Component
 {
     use Actions,
         // payment in
-        PaymentContributionRulesTrait, PurchaseShareRulesTrait, FinancingRepaymentRulesTrait, BulkPaymentRulesTrait,
+        PaymentContributionRulesTrait, PurchaseShareRulesTrait, FinancingRepaymentRulesTrait, MiscellaneousInRulesTrait, BulkPaymentRulesTrait,
         // payment out
         WithdrawShareRulesTrait;
 
@@ -39,6 +41,7 @@ class CommonPage extends Component
 
     // search variable
     public $searchRefNo = false;
+    public $searchStaffNo = false;
     public $searchTotContribution = false;
     public $searchTotShare = false;
     public $searchMthInstallAmt = false;
@@ -52,7 +55,7 @@ class CommonPage extends Component
     public $totalShareValid;
 
     // fetch variable
-    public $ic, $refNo, $accNo, $totalContribution;
+    public $customer, $ic, $refNo, $accNo, $totalContribution;
     public $saveButton = false;
 
     // input variable
@@ -94,6 +97,9 @@ class CommonPage extends Component
                 break;
             case 'financingRepayment':
                 $this->setupFinancingRepayment();
+                break;
+            case 'miscellaneousIn':
+                $this->setupMiscellaneousIn();
                 break;
             case 'bulkPayment':
                 $this->setupBulkPayment();
@@ -142,6 +148,18 @@ class CommonPage extends Component
         $this->minFinRepay = (float) FmsGlobalParm::getAllFmsGlobalParm()->MIN_FIN_REPAYMENT;
     }
 
+    private function setupMiscellaneousIn()
+    {
+        $this->category = true;
+        $this->categoryList = [
+            ['name' => 'cheque', 'code' => '2110', 'icon' => 'credit-card'],
+            ['name' => 'cash/cdm', 'code' => '2110', 'icon' => 'cash'],
+            ['name' => 'ibt/si', 'code' => '2110', 'icon' => 'cash'],
+        ];
+        $this->setDefaultCategory();
+        $this->minContribution = (float) FmsGlobalParm::getAllFmsGlobalParm()->MIN_CONTRIBUTION;
+    }
+
     private function setupBulkPayment()
     {
         $this->category = true;
@@ -182,6 +200,7 @@ class CommonPage extends Component
     #[On('customerSelected')]
     public function handleCustomerSelection($customer)
     {
+        $this->customer = $customer;
         $this->bankMember = $customer['bank_id'];
         $this->refNo = (string) $customer['fms_membership']['ref_no'];
 
@@ -193,10 +212,9 @@ class CommonPage extends Component
 
             $this->ic = $customer['identity_no'];
             $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
-            // enable when sp is ok
-            $this->docNo = '123456'; // delete this after sp fixed
-            // $this->docNo = $this->generatePvNo($this->refNo);
-            // $this->docNo = SpFmsGenerateMbrWithdrawShare::handle(1, $this->refNo);
+            $this->docNo = SpFmsGenerateMbrWithdrawShare::handle(1, $this->refNo);
+        } else {
+            $this->saveButton = true;
         }
     }
 
@@ -241,6 +259,9 @@ class CommonPage extends Component
             case 'financingRepayment':
                 $rules = $this->getFinancingRepayment();
                 break;
+            case 'miscellaneousIn':
+                $rules = $this->getMiscellaneousIn();
+                break;
             case 'bulkPayment':
                 $rules = $this->getBulkPaymentRules();
                 break;
@@ -284,6 +305,20 @@ class CommonPage extends Component
                 'remarks' => $this->remarks,
                 'bankClient' => $this->bankClient,
                 'userId' => auth()->id()
+            ]);
+        }
+
+        if ($this->module == 'miscellaneousIn') {
+            $result = SpFmsUpTrxMiscInBk::handle([
+                'clientId' => $this->clientId,
+                'refNo' => $this->refNo,
+                'txnAmt' => $this->txnAmt,
+                'txnDate' => $this->txnDate,
+                'txnCode' => $this->txnCode,
+                'remarks' => $this->remarks,
+                'userId' => auth()->id(),
+                'thirdPartyCode' => NULL,
+                'bankClient' => $this->bankClient
             ]);
         }
 

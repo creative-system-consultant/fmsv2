@@ -6,6 +6,7 @@
     <div class="grid grid-cols-1">
         <livewire:general.customer-search
             :searchRefNo="$searchRefNo"
+            :searchStaffNo="$searchStaffNo"
             :searchTotContribution="$searchTotContribution"
             :searchTotShare="$searchTotShare"
             :searchMthInstallAmt="$searchMthInstallAmt"

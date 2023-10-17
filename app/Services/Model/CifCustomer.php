@@ -43,9 +43,9 @@ class CifCustomer
 
     public static function getCustomerSearchData($uuid)
     {
-        return ModelCifCustomer::with(['fmsMembership:id,ref_no,cif_id,total_contribution,total_share'])
+        return ModelCifCustomer::with(['fmsMembership:id,ref_no,cif_id,staff_no,total_contribution,total_share'])
             ->whereUuid($uuid)
-            ->select('id', 'name', 'identity_no', 'bank_id', 'bank_acct_no')
+            ->select('uuid', 'id', 'name', 'identity_no', 'bank_id', 'bank_acct_no')
             ->first();
     }
 

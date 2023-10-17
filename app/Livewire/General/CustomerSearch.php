@@ -15,6 +15,7 @@ class CustomerSearch extends Component
 
     public $name;
     public $searchRefNo, $searchRefNoValue;
+    public $searchStaffNo, $searchStaffNoValue;
     public $searchTotContribution, $searchTotContributionAmt;
     public $searchTotShare, $searchTotShareAmt;
     public $searchMthInstallAmt, $searchMthInstallAmtValue;
@@ -83,6 +84,10 @@ class CustomerSearch extends Component
 
         if ($this->searchRefNo) {
             $this->searchRefNoValue = $customer->fmsMembership->ref_no;
+        }
+
+        if ($this->searchStaffNo) {
+            $this->searchStaffNoValue = $customer->fmsMembership->staff_no;
         }
 
         if ($this->searchTotContribution) {

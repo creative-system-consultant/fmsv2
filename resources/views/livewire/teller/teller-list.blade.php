@@ -69,7 +69,12 @@
                             <livewire:teller.third-party.third-party />
 
                         @elseif($type_payment_in == 'Miscellaneous in')
-                            <livewire:teller.miscellaneous-in.miscellaneous-in />
+                            {{-- <livewire:teller.miscellaneous-in.miscellaneous-in /> --}}
+                            <livewire:general.teller.common-page
+                                module='miscellaneousIn'
+                                searchRefNo=true
+                                searchStaffNo=true
+                            />
 
                         @elseif($type_payment_in == 'Autopay')
                             <livewire:teller.autopay.autopay />
