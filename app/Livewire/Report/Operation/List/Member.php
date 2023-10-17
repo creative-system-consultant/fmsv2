@@ -10,8 +10,8 @@ use Livewire\WithPagination;
 
 
 class Member extends Component
-{   
-    use WithPagination;  
+{
+    use WithPagination;
     public $clientId = 1;
 
     #[Rule('required')]
@@ -27,8 +27,7 @@ class Member extends Component
     }
 
     private function handleDataTable()
-    {   
-        //dd($this->startDate,$this->endDate);
+    {
         $data = SpFmsUpRptMember::handleForTable([
             'clientId' => $this->clientId,
             'startDate' => $this->startDate,
@@ -40,16 +39,22 @@ class Member extends Component
 
     private function handleExcel()
     {
-        $data = iterator_to_array(SpFmsUpRptMember::handleForExcel([
-            'clientId' => $this->clientId,
-            'startDate' => $this->startDate,
-            'endDate' => $this->endDate,
-        ], true));
+        $dataGenerator = function () {
+            $rawData = SpFmsUpRptMember::handleForExcel([
+                'clientId' => $this->clientId,
+                'startDate' => $this->startDate,
+                'endDate' => $this->endDate,
+            ], true);
+
+            foreach ($rawData as $data) {
+                yield $data;
+            }
+        };
 
         $filename = 'ListOfMember-%s.xlsx';
         $report = new ReportService();
 
-        return $report->generateExcelReport($data, $filename, $this->startDate);
+        return $report->generateExcelReport($dataGenerator, $filename, $this->startDate);
     }
 
     public function render()

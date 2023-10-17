@@ -152,7 +152,4 @@ class SpFmsUpRptMember
         }
         return new Collection($formattedData);
     }
-
-
-    
 }

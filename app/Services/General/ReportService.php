@@ -19,13 +19,14 @@ class ReportService
         return $finalResultData;
     }
 
-    public function generateExcelReport($data, $filename, $startDate)
+    public function generateExcelReport($dataGenerator, $filename, $startDate)
     {
         $header_style = (new Style())->setFontBold()->setShouldWrapText(false);
         $rows_style = (new Style())->setShouldWrapText(false);
         $right_style = (new Style())->setCellAlignment(CellAlignment::RIGHT);
         $fileName = sprintf($filename, $startDate);
-        $fastExcel = new FastExcel($data);
+        $generatorData = $dataGenerator();
+        $fastExcel = new FastExcel($generatorData);
 
         return response()->streamDownload(function () use ($fastExcel, $header_style, $rows_style, $right_style) {
             return $fastExcel
