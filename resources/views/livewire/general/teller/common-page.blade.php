@@ -1,7 +1,9 @@
 <div>
-    <div wire:loading wire:target="selectType">
-        @include('misc.loading')
-    </div>
+    @if($loading)
+        <div>
+            @include('misc.loading')
+        </div>
+    @endif
 
     <div class="grid grid-cols-1">
         <livewire:general.customer-search
@@ -143,3 +145,16 @@
         </div>
     </div>
 </div>
+
+@push('js')
+<script>
+    Livewire.on('endProcessing', () => {
+        @this.set('loading', false);
+    });
+</script>
+@endpush
+
+
+
+
+

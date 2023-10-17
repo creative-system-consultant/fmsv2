@@ -63,6 +63,8 @@ class CommonPage extends Component
 
     public $additionalField = false;
 
+    public $loading = false;
+
     public function mount()
     {
         $this->refBank = BankService::getAllRefBanks();
@@ -200,6 +202,7 @@ class CommonPage extends Component
     #[On('customerSelected')]
     public function handleCustomerSelection($customer)
     {
+        $this->loading = true;
         $this->customer = $customer;
         $this->bankMember = $customer['bank_id'];
         $this->refNo = (string) $customer['fms_membership']['ref_no'];
@@ -216,6 +219,7 @@ class CommonPage extends Component
         } else {
             $this->saveButton = true;
         }
+        $this->dispatch('endProcessing');
     }
 
     #[On('accNoSelected')]
