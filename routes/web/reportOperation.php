@@ -7,7 +7,7 @@ use App\Livewire\Report\Operation\List\DormantMember;
 use App\Livewire\Report\Operation\List\FinTrxBaseOnDisbursement;
 use App\Livewire\Report\Operation\DailyTransaction\Listing;
 use App\Livewire\Report\Operation\DailyTransaction\Product;
-use App\Livewire\Report\Operation\Financing\Approval;
+use App\Livewire\Report\Operation\List\Member;
 use App\Livewire\Report\Operation\Financing\CashDetail;
 use App\Livewire\Report\Operation\Financing\Disbursement;
 use App\Livewire\Report\Operation\Financing\Summary;
@@ -34,3 +34,4 @@ Route::get('list/fin-trx-base-disbursement', FinTrxBaseOnDisbursement::class)->n
 
 //member
 Route::get('member/byincome', Byincome::class)->name('member.byincome');
+Route::get('list/member', Member::class)->name('list.member');
