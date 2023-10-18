@@ -134,18 +134,16 @@ class SpFmsUpRptMember
         return $excelData;
     }
 
-    public static function handleForExcel($input, $format = false)
+    public static function handleForExcel($rawData, $format = false)
     {
-        $rawData = self::getRawData($input);
         foreach ($rawData as $data) {
             $formattedData = $format ? self::formatDataForExcel($data) : $data;
             yield $formattedData;
         }
     }
 
-    public static function handleForTable($input, $format = false)
+    public static function handleForTable($rawData, $format = false)
     {
-        $rawData = self::getRawData($input);
         $formattedData = [];
         foreach ($rawData as $data) {
             $formattedData[] = $format ? self::formatData($data) : $data;

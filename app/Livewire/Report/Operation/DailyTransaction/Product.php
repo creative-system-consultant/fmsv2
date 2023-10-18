@@ -8,12 +8,13 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
 class Product extends Component
 {
-    use WithPagination;
+    use Actions, WithPagination;
 
-    public $clientId = 1;
+    public $clientId;
 
     #[Rule('required')]
     public $startDate;
@@ -21,36 +22,56 @@ class Product extends Component
     #[Rule('required')]
     public $endDate;
 
-    public function generateExcel()
+    public function mount()
     {
-        $this->validate();
-
-        return $this->handleExcel();
+        $this->clientId = auth()->user()->client_id;
     }
 
-    private function handleDataTable()
+    protected function getRawData()
     {
-        $data = SpFmsDailyTransactionProduct::handleForTable([
+        return SpFmsDailyTransactionProduct::getRawData([
             'clientId' => $this->clientId,
             'startDate' => $this->startDate,
             'endDate' => $this->endDate,
         ], true);
+    }
+
+    public function generateExcel()
+    {
+        $this->validate();
+
+        $rawData = $this->getRawData();
+
+        if (count($rawData) > 0) {
+            $formattedData = [];
+            foreach ($rawData as $data) {
+                $formattedData[] = SpFmsDailyTransactionProduct::formatDataForExcel($data);
+            }
+            return $this->handleExcel($formattedData);
+        } else {
+            $this->dialog()->success('Process Complete!', 'No Data Found.');
+        }
+    }
+
+    private function handleDataTable($rawData)
+    {
+        $data = SpFmsDailyTransactionProduct::handleForTable($rawData, true);
 
         return ReportService::paginateData($data);
     }
 
-    private function handleExcel()
+    private function handleExcel($rawData)
     {
-        $data = iterator_to_array(SpFmsDailyTransactionProduct::handleForExcel([
-            'clientId' => $this->clientId,
-            'startDate' => $this->startDate,
-            'endDate' => $this->endDate,
-        ], true));
+        $dataGenerator = function () use ($rawData) {
+            foreach ($rawData as $data) {
+                yield $data;
+            }
+        };
 
-        $filename = 'DailyTrxByProduct-%s.xlsx';
+        $filename = 'ListOfMember-%s.xlsx';
         $report = new ReportService();
 
-        return $report->generateExcelReport($data, $filename, $this->startDate);
+        return $report->generateExcelReport($dataGenerator, $filename, $this->startDate);
     }
 
     public function render()
@@ -58,7 +79,8 @@ class Product extends Component
         $result = null;
 
         if ($this->startDate && $this->endDate) {
-            $result = $this->handleDataTable();
+            $rawData = $this->getRawData();
+            $result = $this->handleDataTable($rawData);
         }
 
         return view('livewire.report.operation.dailytransaction.product', [

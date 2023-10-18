@@ -7,12 +7,13 @@ use App\Services\General\ReportService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
-
+use WireUi\Traits\Actions;
 
 class Member extends Component
 {
-    use WithPagination;
-    public $clientId = 1;
+    use Actions, WithPagination;
+
+    public $clientId;
 
     #[Rule('required')]
     public $startDate;
@@ -20,32 +21,40 @@ class Member extends Component
     #[Rule('required')]
     public $endDate;
 
-    public function generateExcel()
+    public function mount()
     {
-        $this->validate();
-        return $this->handleExcel();
+        $this->clientId = auth()->user()->client_id;
     }
 
-    private function handleDataTable()
+    protected function getRawData()
     {
-        $data = SpFmsUpRptMember::handleForTable([
+        return SpFmsUpRptMember::getRawData([
             'clientId' => $this->clientId,
             'startDate' => $this->startDate,
             'endDate' => $this->endDate,
         ], true);
-
-        return ReportService::paginateData($data);
     }
 
-    private function handleExcel()
+    public function generateExcel()
     {
-        $dataGenerator = function () {
-            $rawData = SpFmsUpRptMember::handleForExcel([
-                'clientId' => $this->clientId,
-                'startDate' => $this->startDate,
-                'endDate' => $this->endDate,
-            ], true);
+        $this->validate();
 
+        $rawData = $this->getRawData();
+
+        if(count($rawData) > 0) {
+            $formattedData = [];
+            foreach ($rawData as $data) {
+                $formattedData[] = SpFmsUpRptMember::formatDataForExcel($data);
+            }
+            return $this->handleExcel($formattedData);
+        } else {
+            $this->dialog()->success('Process Complete!', 'No Data Found.');
+        }
+    }
+
+    private function handleExcel($rawData)
+    {
+        $dataGenerator = function () use ($rawData) {
             foreach ($rawData as $data) {
                 yield $data;
             }
@@ -60,10 +69,6 @@ class Member extends Component
     public function render()
     {
         $result = null;
-
-        if ($this->startDate && $this->endDate) {
-            $result = $this->handleDataTable();
-        }
 
         return view('livewire.report.operation.list.member', [
             'result' => $result

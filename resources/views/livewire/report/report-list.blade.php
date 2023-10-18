@@ -286,8 +286,8 @@
                                                         <span>Financing Cash Detail</span>
                                                     </a>
                                                 </li>
-                                                {{-- <li>
-                                                    <a wire:navigate href="{{ route('report.operation.financing.approval') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                <li>
+                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Financing Approval</span>
                                                     </a>
