@@ -25,7 +25,7 @@ Route::get('dailytransaction/product', Product::class)->name('dailytransaction.p
 Route::get('financing/summary', Summary::class)->name('financing.summary');
 Route::get('financing/disbursement', Disbursement::class)->name('financing.disbursement');
 Route::get('financing/cashdetail', CashDetail::class)->name('financing.cashdetail');
-Route::get('financing/approval', Approval::class)->name('financing.approval');
+// Route::get('financing/approval', Approval::class)->name('financing.approval');
 
 // list
 Route::get('list/autopay', Autopay::class)->name('list.autopay');

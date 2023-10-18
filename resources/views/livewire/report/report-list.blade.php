@@ -1,15 +1,14 @@
 
 <div class="relative">
-    <div class="fixed top-0 bottom-0 right-0 z-50 mt-12 overflow-hidden lg:mt-0"
+    <div class="fixed top-0 bottom-0 left-0 right-0 z-50  mt-12 overflow-hidden lg:mt-0  max-w-md"
         :class="{
             'lg:left-[16rem] left-0': !toggleSidebarDesktop,
             'lg:left-[5rem] left-0': toggleMiniSidebar,
             'lg:left-0': toggleSidebarDesktop,
         }"
         x-cloak>
-        <section class="absolute inset-y-0 left-0 flex max-w-full " aria-labelledby="slide-over-heading">
+        <section class="absolute inset-y-0 left-0 flex max-w-full z-50 " aria-labelledby="slide-over-heading">
             <div class="relative w-screen max-w-md">
-
                 <div class="flex flex-col h-full py-6 pt-0 overflow-auto bg-white shadow-xl animate__animated animate__fadeInLeft dark:bg-gray-900">
                     <div class="relative flex-shrink-0 overflow-hidden bg-primary-600 ">
                         <svg class="absolute bottom-0 left-0 mb-8" viewBox="0 0 375 283" fill="none" style="transform: scale(1.5); opacity: 0.1;">
@@ -287,12 +286,12 @@
                                                         <span>Financing Cash Detail</span>
                                                     </a>
                                                 </li>
-                                                <li>
+                                                {{-- <li>
                                                     <a wire:navigate href="{{ route('report.operation.financing.approval') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Financing Approval</span>
                                                     </a>
-                                                </li>
+                                                </li> --}}
                                             </div>
                                         </div>
 
