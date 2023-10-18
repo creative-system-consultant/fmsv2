@@ -209,13 +209,13 @@
 
                                             <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
                                                 <li>
-                                                    <a wire:navigate href="{{ route('report.operation.contribution.payment') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="collection" class="w-4 h-4 mr-2"/>
                                                         <span>Contribution Payment</span>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a wire:navigate href="{{ route('report.operation.contribution.withdrawal') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Contribution Wihdrawal</span>
                                                     </a>
@@ -563,19 +563,19 @@
 
                                             <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{ route('report.operation.share.sharepurchase') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Share Purchase</span>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{ route('report.operation.share.shareredemption') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Share Redemption</span>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{ route('report.operation.share.sharewithdrawal') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Share Withdrawal</span>
                                                     </a>
@@ -599,13 +599,13 @@
 
                                             <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{ route('report.operation.summary.sumtotalshare') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Summary Total Share</span>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{ route('report.operation.summary.sumtotalcont') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Summary Total Contribution</span>
                                                     </a>
