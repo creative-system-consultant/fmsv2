@@ -1,6 +1,6 @@
 
 <div class="relative">
-    <div class="fixed top-0 bottom-0 left-0 right-0 z-50  mt-12 overflow-hidden lg:mt-0  max-w-md"
+    <div class="fixed top-0 bottom-0 left-0 right-0 z-50  mt-12 overflow-hidden lg:mt-0  max-w-lg"
         :class="{
             'lg:left-[16rem] left-0': !toggleSidebarDesktop,
             'lg:left-[5rem] left-0': toggleMiniSidebar,
