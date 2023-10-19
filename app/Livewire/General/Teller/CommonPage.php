@@ -235,7 +235,7 @@ class CommonPage extends Component
         if($this->module == 'withdrawShare')
         {
             $this->totalShareValid = $customer['fms_membership']['total_share'] - $this->minShare;
-            $this->txnAmt = (float) $this->totalShareValid;
+            $this->txnAmt = $this->totalShareValid;
             $this->saveButton = $this->bankMember && $customer['bank_acct_no'];
 
             $this->ic = $customer['identity_no'];
@@ -261,7 +261,7 @@ class CommonPage extends Component
 
         $this->bankMember = $bankMember;
         $this->accNo = (string) $accNo;
-        $this->txnAmt = (string) $mthInstallAmtValue;
+        $this->txnAmt = $mthInstallAmtValue;
         $this->totalContribution = $totalContribution;
     }
 

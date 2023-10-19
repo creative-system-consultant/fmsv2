@@ -99,23 +99,23 @@ class CustomerSearch extends Component
         }
 
         if ($this->searchTotContribution) {
-            $this->searchTotContributionAmt = $customer->fmsMembership->total_contribution;
+            $this->searchTotContributionAmt = number_format($customer->fmsMembership->total_contribution, 2);
         }
 
         if ($this->searchTotShare) {
-            $this->searchTotShareAmt = $customer->fmsMembership->total_share;
+            $this->searchTotShareAmt = number_format($customer->fmsMembership->total_share, 2);
         }
 
         if ($this->searchBalOutstanding) {
-            $this->searchBalOutstandingAmt = $customer->fmsMembership->fmsAccountMaster->fmsAccountPosition->bal_outstanding;
+            $this->searchBalOutstandingAmt = number_format($customer->fmsMembership->fmsAccountMaster->fmsAccountPosition->bal_outstanding, 2);
         }
 
         if ($this->searchRebate) {
-            $this->searchRebateAmt = $customer->fmsMembership->fmsAccountMaster->rebate_amt;
+            $this->searchRebateAmt = number_format($customer->fmsMembership->fmsAccountMaster->rebate_amt, 2);
         }
 
         if ($this->searchSettleProfit) {
-            $this->searchSettleProfitAmt = $customer->fmsMembership->fmsAccountMaster->settle_profit;
+            $this->searchSettleProfitAmt = number_format($customer->fmsMembership->fmsAccountMaster->settle_profit, 2);
         }
 
         return $customer;
@@ -140,15 +140,15 @@ class CustomerSearch extends Component
         $this->name = $accMaster->fmsMembership->cifCustomer->name;
 
         if ($this->searchMthInstallAmt) {
-            $this->searchMthInstallAmtValue = $accMaster->instal_amount;
+            $this->searchMthInstallAmtValue = number_format($accMaster->instal_amount, 2);
         }
 
         if ($this->searchInstallAmtArear) {
-            $this->searchInstallAmtArearAmt = $accMaster->fmsAccountPosition->instal_arrears;
+            $this->searchInstallAmtArearAmt = number_format($accMaster->fmsAccountPosition->instal_arrears, 2);
         }
 
         if ($this->searchTotContribution) {
-            $this->searchTotContributionAmt = $accMaster->fmsMembership->total_contribution;
+            $this->searchTotContributionAmt = number_format($accMaster->fmsMembership->total_contribution, 2);
         }
 
         return $accMaster;
