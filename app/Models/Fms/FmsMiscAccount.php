@@ -15,6 +15,6 @@ class FmsMiscAccount extends Model
     // Relationship
     public function fmsMembership()
     {
-        return $this->belongsTo(FmsMembership::class, 'mbr_no', 'ref_no');
+        return $this->belongsTo(FmsMembership::class, 'mbr_no', 'mbr_no');
     }
 }

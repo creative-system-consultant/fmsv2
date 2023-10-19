@@ -17,7 +17,7 @@ class SpFmsUpTrxMiscInBk
         $sp = 'fms.up_trx_misc_in_bk';
 
         // Construct the SQL statement to execute the stored procedure with provided parameters.
-        $sql = "exec " . $sp . "  :clientId, :refNo, :txnAmt, :txnDate, :txnCode, :remarks, :userId, :thirdPartyCode, :bankClient";
+        $sql = "exec " . $sp . "  :clientId, :mbrNo, :txnAmt, :txnDate, :txnCode, :remarks, :userId, :thirdPartyCode, :bankClient";
 
         // Execute the statement using Laravel's database query builder and capture the result.
         $result = DB::statement($sql, $data);

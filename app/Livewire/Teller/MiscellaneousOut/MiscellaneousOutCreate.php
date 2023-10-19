@@ -35,7 +35,7 @@ class MiscellaneousOutCreate extends Component
 
         $miscAcc = FmsMiscAccount::getFmsMiscAccountByMbrNo($this->mbrNo);
         $this->name = $miscAcc->fmsMembership->cifCustomer->name;
-        $this->refNo = $miscAcc->fmsMembership->ref_no;
+        $this->refNo = $miscAcc->fmsMembership->mbr_no;
         $this->miscAmt = $miscAcc->misc_amt;
     }
 

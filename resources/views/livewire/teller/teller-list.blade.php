@@ -44,14 +44,14 @@
                             {{-- <livewire:teller.payment-contribution.payment-contribution /> --}}
                             <livewire:general.teller.common-page
                                 module='paymentContribution'
-                                searchRefNo=true
+                                searchMbrNo=true
                                 searchTotContribution=true
                             />
                         @elseif($type_payment_in == 'Purchase Share')
                             {{-- <livewire:teller.purchase-share.purchase-share /> --}}
                             <livewire:general.teller.common-page
                                 module='purchaseShare'
-                                searchRefNo=true
+                                searchMbrNo=true
                                 searchTotShare=true
                             />
                         @elseif($type_payment_in == 'Financing Repayment')
@@ -62,8 +62,15 @@
                                 searchInstallAmtArear=true
                                 searchTotContribution=true
                             />
-                        @elseif($type_payment_in == 'Early Setllement Payment')
-                            <livewire:teller.settlement-payment.settlement-payment />
+                        @elseif($type_payment_in == 'Early Settlement Payment')
+                            {{-- <livewire:teller.settlement-payment.settlement-payment /> --}}
+                            <livewire:general.teller.common-page
+                                module='earlySettlementRepayment'
+                                searchAccNo=true
+                                searchBalOutstanding=true
+                                searchRebate=true
+                                searchSettleProfit=true
+                            />
 
                         @elseif($type_payment_in == 'Third Party')
                             <livewire:teller.third-party.third-party />
@@ -72,7 +79,7 @@
                             {{-- <livewire:teller.miscellaneous-in.miscellaneous-in /> --}}
                             <livewire:general.teller.common-page
                                 module='miscellaneousIn'
-                                searchRefNo=true
+                                searchMbrNo=true
                                 searchStaffNo=true
                             />
 
@@ -113,7 +120,7 @@
                             {{-- <livewire:teller.withdraw-share.withdraw-share /> --}}
                             <livewire:general.teller.common-page
                                 module='withdrawShare'
-                                searchRefNo=true
+                                searchMbrNo=true
                                 searchTotShare=true
                             />
                         @elseif($type_payment_out == 'Close Membership')

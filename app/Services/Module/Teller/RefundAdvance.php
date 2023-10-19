@@ -17,7 +17,7 @@ class RefundAdvance
         return CifCustomer::select(
             'cif.customers.uuid',
             'cif.customers.identity_no',
-            'fms.MEMBERSHIP.ref_no',
+            'fms.MEMBERSHIP.mbr_no',
             'cif.customers.name',
             'FMS.ACCOUNT_MASTERS.account_no',
             DB::raw('products = FMS.uf_get_product(1, FMS.ACCOUNT_MASTERS.product_id)'),
@@ -28,7 +28,7 @@ class RefundAdvance
             'FMS.ACCOUNT_POSITIONS.bal_outstanding'
         )
             ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', 'cif.customers.id')
-            ->join('FMS.ACCOUNT_MASTERS', 'FMS.MEMBERSHIP.ref_no', 'FMS.ACCOUNT_MASTERS.mbr_no')
+            ->join('FMS.ACCOUNT_MASTERS', 'FMS.MEMBERSHIP.mbr_no', 'FMS.ACCOUNT_MASTERS.mbr_no')
             ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_MASTERS.ACCOUNT_NO', 'FMS.ACCOUNT_POSITIONS.ACCOUNT_NO')
             ->where(function ($query) {
                 $query->where('FMS.ACCOUNT_POSITIONS.disbursed_amount', '>', 0)

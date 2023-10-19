@@ -1,18 +1,22 @@
 <div>
-    @if($loading)
-        <div>
+    {{-- @if($loading) --}}
+        {{-- <div>
             @include('misc.loading')
-        </div>
-    @endif
+        </div> --}}
+    {{-- @endif --}}
 
     <div class="grid grid-cols-1">
         <livewire:general.customer-search
-            :searchRefNo="$searchRefNo"
+            :searchMbrNo="$searchMbrNo"
             :searchStaffNo="$searchStaffNo"
+            :searchAccNo="$searchAccNo"
             :searchTotContribution="$searchTotContribution"
             :searchTotShare="$searchTotShare"
             :searchMthInstallAmt="$searchMthInstallAmt"
             :searchInstallAmtArear="$searchInstallAmtArear"
+            :searchBalOutstanding="$searchBalOutstanding"
+            :searchRebate="$searchRebate"
+            :searchSettleProfit="$searchSettleProfit"
             :customQuery="$this->customQuery"
         />
 
@@ -146,15 +150,10 @@
     </div>
 </div>
 
-@push('js')
+{{-- @push('js')
 <script>
     Livewire.on('endProcessing', () => {
         @this.set('loading', false);
     });
 </script>
-@endpush
-
-
-
-
-
+@endpush --}}

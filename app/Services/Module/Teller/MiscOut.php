@@ -16,7 +16,7 @@ class MiscOut
             'CIF.CUSTOMERS.name',
             'FMS.MISC_ACCOUNT.misc_amt'
         )
-        ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.ref_no', 'FMS.MISC_ACCOUNT.mbrno')
+        ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', 'FMS.MISC_ACCOUNT.mbrno')
         ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', 'FMS.MEMBERSHIP.cif_id');
 
         if ($search && $searchBy) {

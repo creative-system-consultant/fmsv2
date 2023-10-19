@@ -4,7 +4,7 @@ namespace App\Action\StoredProcedure;
 
 use DB;
 
-class SpFmsUpTrxPaymentAll
+class SpFmsUpTrxPreSettlemtPostn
 {
     public function __construct()
     {
@@ -14,10 +14,10 @@ class SpFmsUpTrxPaymentAll
     public static function handle($data)
     {
         // Define the name of the stored procedure.
-        $sp = 'FMS.up_trx_payment_all';
+        $sp = 'FMS.up_trx_pre_settlemt_postn';
 
         // Construct the SQL statement to execute the stored procedure with provided parameters.
-        $sql = "exec " . $sp . " :clientId, :mbrNo, :txnAmt, :txnDate, :docNo, :txnCode, :remarks, :bankMember, :userId, :chequeDate";
+        $sql = "exec " . $sp . " :clientId, :accNo, :userId, :idMsg, :accId";
 
         // Execute the statement using Laravel's database query builder and capture the result.
         $result = DB::statement($sql, $data);

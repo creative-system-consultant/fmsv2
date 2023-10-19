@@ -9,7 +9,7 @@
                     <x-native-select wire:model="searchBy">
                         <option value="CIF.CUSTOMERS.name">Name</option>
                         <option value="CIF.CUSTOMERS.identity_no">Identity No</option>
-                        <option value="FMS.MEMBERSHIP.ref_no">Membership Id</option>
+                        <option value="FMS.MEMBERSHIP.mbr_no">Membership Id</option>
                     </x-native-select>
                 </div>
 

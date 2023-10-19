@@ -10,11 +10,11 @@
                     />
                 </div>
 
-                @if($searchRefNo)
+                @if($searchMbrNo)
                 <div class="w-full md:w-64">
                     <x-input
                         label="Membership No :"
-                        wire:model="searchRefNoValue"
+                        wire:model="searchMbrNoValue"
                         disabled
                     />
                 </div>
@@ -25,6 +25,16 @@
                     <x-input
                         label="Staff No :"
                         wire:model="searchStaffNoValue"
+                        disabled
+                    />
+                </div>
+                @endif
+
+                @if($searchAccNo)
+                <div class="w-full md:w-64">
+                    <x-input
+                        label="Staff No :"
+                        wire:model="searchAccNoValue"
                         disabled
                     />
                 </div>
@@ -77,6 +87,42 @@
                         disabled
                     />
                 @endif
+
+                @if($searchBalOutstanding)
+                    <x-inputs.currency
+                        class="!pl-[2.5rem]"
+                        label="Total Share"
+                        prefix="RM"
+                        thousands=","
+                        decimal="."
+                        wire:model="searchBalOutstandingAmt"
+                        disabled
+                    />
+                @endif
+
+                @if($searchRebate)
+                    <x-inputs.currency
+                        class="!pl-[2.5rem]"
+                        label="Total Share"
+                        prefix="RM"
+                        thousands=","
+                        decimal="."
+                        wire:model="searchRebateAmt"
+                        disabled
+                    />
+                @endif
+
+                @if($searchSettleProfit)
+                    <x-inputs.currency
+                        class="!pl-[2.5rem]"
+                        label="Total Share"
+                        prefix="RM"
+                        thousands=","
+                        decimal="."
+                        wire:model="searchSettleProfitAmt"
+                        disabled
+                    />
+                @endif
             </div>
             <div class="mt-3">
                 <x-button
@@ -99,7 +145,7 @@
                                     @if($customQuery == 'financingRepayment')
                                         <option value="FMS.ACCOUNT_MASTERS.account_no">Account No</option>
                                     @else
-                                        <option value="FMS.MEMBERSHIP.ref_no">Membership Id</option>
+                                        <option value="FMS.MEMBERSHIP.mbr_no">Membership Id</option>
                                         <option value="CIF.CUSTOMERS.staff_no">Staff No</option>
                                     @endif
                                 </x-native-select>
@@ -122,7 +168,7 @@
                             <x-slot name="tbody">
                                 @forelse ($customers as $item)
                                     <tr>
-                                        @if($customQuery == 'financingRepayment')
+                                        @if($customQuery == 'financingRepayment' || $customQuery == 'earlySettlementRepayment')
                                             @php
                                             $values = [
                                                 $item->identity_no,
@@ -136,7 +182,7 @@
                                         @elseif($customQuery == 'withdrawShare')
                                             @php
                                             $values = [
-                                                $item->ref_no,
+                                                $item->mbr_no,
                                                 $item->name,
                                                 number_format($item->total_share,2),
                                                 ($item->last_payment_date) ? date('d/m/Y', strtotime($item->last_payment_date)) : '-',
@@ -148,7 +194,7 @@
                                             $values = [
                                                 $item->staff_no,
                                                 $item->identity_no,
-                                                $item->ref_no,
+                                                $item->mbr_no,
                                                 $item->name,
                                                 null // placeholder for the button
                                             ];

@@ -4,11 +4,14 @@ namespace App\Livewire\General\Teller;
 
 use App\Action\StoredProcedure\SpFmsGenerateMbrWithdrawShare;
 use App\Action\StoredProcedure\SpFmsUpTrx3800FinancingPayment;
+use App\Action\StoredProcedure\SpFmsUpTrx3920EarlySettlement;
 use App\Action\StoredProcedure\SpFmsUpTrxContributionIn;
 use App\Action\StoredProcedure\SpFmsUpTrxMiscInBk;
 use App\Action\StoredProcedure\SpFmsUpTrxPaymentAll;
+use App\Action\StoredProcedure\SpFmsUpTrxPreSettlemtPostn;
 use App\Livewire\General\CustomerSearch;
 use App\Livewire\Teller\General\MembersBankInfo;
+use App\Models\Systm\SysMsgSp;
 use App\Traits\PaymentContributionRulesTrait;
 use App\Traits\BulkPaymentRulesTrait;
 use App\Services\General\ActgPeriod;
@@ -16,6 +19,7 @@ use App\Services\General\PopupService;
 use App\Services\Model\BankIbtService;
 use App\Services\Model\BankService;
 use App\Services\Model\FmsGlobalParm;
+use App\Traits\EarlySettlementPaymentTrait;
 use App\Traits\FinancingRepaymentRulesTrait;
 use App\Traits\MiscellaneousInRulesTrait;
 use App\Traits\PurchaseShareRulesTrait;
@@ -28,7 +32,7 @@ class CommonPage extends Component
 {
     use Actions,
         // payment in
-        PaymentContributionRulesTrait, PurchaseShareRulesTrait, FinancingRepaymentRulesTrait, MiscellaneousInRulesTrait, BulkPaymentRulesTrait,
+        PaymentContributionRulesTrait, PurchaseShareRulesTrait, FinancingRepaymentRulesTrait, EarlySettlementPaymentTrait, MiscellaneousInRulesTrait, BulkPaymentRulesTrait,
         // payment out
         WithdrawShareRulesTrait;
 
@@ -40,12 +44,16 @@ class CommonPage extends Component
     public $tellerOutModule = [];
 
     // search variable
-    public $searchRefNo = false;
+    public $searchMbrNo = false;
     public $searchStaffNo = false;
+    public $searchAccNo = false;
     public $searchTotContribution = false;
     public $searchTotShare = false;
     public $searchMthInstallAmt = false;
     public $searchInstallAmtArear = false;
+    public $searchBalOutstanding = false;
+    public $searchRebate = false;
+    public $searchSettleProfit = false;
 
     // mount variable
     public $startDate, $endDate, $refBank, $refBankIbt;
@@ -55,18 +63,19 @@ class CommonPage extends Component
     public $totalShareValid;
 
     // fetch variable
-    public $customer, $ic, $refNo, $accNo, $totalContribution;
+    public $customer, $ic, $mbrNo, $accId, $accNo, $totalContribution, $idMsg;
     public $saveButton = false;
 
     // input variable
-    public $clientId = 1, $chequeDate, $bankMember, $bankClient, $docNo, $txnAmt, $txnDate, $remarks;
+    public $clientId, $chequeDate, $bankMember, $bankClient, $docNo, $txnAmt, $txnDate, $remarks;
 
     public $additionalField = false;
 
-    public $loading = false;
+    // public $loading = false;
 
     public function mount()
     {
+        $this->clientId = auth()->user()->client_id;
         $this->refBank = BankService::getAllRefBanks();
         $this->refBankIbt = BankIbtService::getAllRefBankIbts();
         $this->startDate = ActgPeriod::determinePeriodRange()['startDate'];
@@ -99,6 +108,9 @@ class CommonPage extends Component
                 break;
             case 'financingRepayment':
                 $this->setupFinancingRepayment();
+                break;
+            case 'earlySettlementRepayment':
+                $this->setupEarlySettlementRepayment();
                 break;
             case 'miscellaneousIn':
                 $this->setupMiscellaneousIn();
@@ -150,6 +162,17 @@ class CommonPage extends Component
         $this->minFinRepay = (float) FmsGlobalParm::getAllFmsGlobalParm()->MIN_FIN_REPAYMENT;
     }
 
+    private function setupEarlySettlementRepayment()
+    {
+        $this->category = true;
+        $this->categoryList = [
+            ['name' => 'cheque', 'code' => '3921', 'icon' => 'credit-card'],
+            ['name' => 'cash/cdm', 'code' => '3922', 'icon' => 'cash'],
+            ['name' => 'ibt/si', 'code' => '3923', 'icon' => 'cash'],
+        ];
+        $this->setDefaultCategory();
+    }
+
     private function setupMiscellaneousIn()
     {
         $this->category = true;
@@ -192,6 +215,8 @@ class CommonPage extends Component
         switch ($this->module) {
             case 'financingRepayment':
                 return 'financingRepayment';
+            case 'earlySettlementRepayment':
+                return 'earlySettlementRepayment';
             case 'withdrawShare':
                 return 'withdrawShare';
             default:
@@ -202,10 +227,10 @@ class CommonPage extends Component
     #[On('customerSelected')]
     public function handleCustomerSelection($customer)
     {
-        $this->loading = true;
+        // $this->loading = true;
         $this->customer = $customer;
         $this->bankMember = $customer['bank_id'];
-        $this->refNo = (string) $customer['fms_membership']['ref_no'];
+        $this->mbrNo = (string) $customer['fms_membership']['mbr_no'];
 
         if($this->module == 'withdrawShare')
         {
@@ -215,11 +240,17 @@ class CommonPage extends Component
 
             $this->ic = $customer['identity_no'];
             $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
-            $this->docNo = SpFmsGenerateMbrWithdrawShare::handle(1, $this->refNo);
+            $this->docNo = SpFmsGenerateMbrWithdrawShare::handle(1, $this->mbrNo);
+
+        } elseif($this->module == 'earlySettlementRepayment') {
+            $this->idMsg = mt_rand(100000000, 999999999);
+            $this->accNo = $customer['fmsMembership']['fmsAccountMaster']['acaccount_no'];
+            $this->accId = $customer['fmsMembership']['fmsAccountMaster']['id'];
+
         } else {
             $this->saveButton = true;
         }
-        $this->dispatch('endProcessing');
+        // $this->dispatch('endProcessing');
     }
 
     #[On('accNoSelected')]
@@ -263,6 +294,9 @@ class CommonPage extends Component
             case 'financingRepayment':
                 $rules = $this->getFinancingRepayment();
                 break;
+            case 'earlySettlementRepayment':
+                $rules = $this->getEarlySettlementRepayment();
+                break;
             case 'miscellaneousIn':
                 $rules = $this->getMiscellaneousIn();
                 break;
@@ -285,7 +319,7 @@ class CommonPage extends Component
         if ($this->module == 'paymentContribution' || $this->module == 'purchaseShare' || $this->module == 'withdrawShare') {
             $result = SpFmsUpTrxContributionIn::handle([
                 'clientId' => $this->clientId,
-                'refNo' => $this->refNo,
+                'mbrNo' => $this->mbrNo,
                 'txnAmt' => $this->txnAmt,
                 'txnDate' => $this->txnDate,
                 'docNo' => $this->docNo,
@@ -312,10 +346,47 @@ class CommonPage extends Component
             ]);
         }
 
+        if ($this->module == 'earlySettlementRepayment') {
+            // pre Settlement
+            SpFmsUpTrxPreSettlemtPostn::handle([
+                'clientId' => $this->clientId,
+                'accNo' => $this->accNo,
+                'userId' => auth()->id(),
+                'msgId' => $this->idMsg,
+                'accId' => $this->accId,
+            ]);
+
+            $checkPreSettlement = SysMsgSp::select('MSG_ID', 'PROCESS_STATUS', 'MSG_TEXT')
+                ->where('sp_name', 'up_trx_pre_settlemt_postn')
+                ->where('MSG_ID', $this->id_msg)
+                ->orderBy('EVENT_TIMESTAMP', 'desc')
+                ->limit(1)
+                ->first();
+
+            if ($checkPreSettlement->PROCESS_STATUS == 'F' && $checkPreSettlement->MSG_ID == $this->idMsg) {
+                $this->dialog()->error(
+                    'Error!',
+                    $checkPreSettlement->MSG_TEXT . ' For This Account No ' . $this->accNo . ' Message ID ' . $checkPreSettlement->MSG_ID
+                );
+            } else {
+                $result = SpFmsUpTrx3920EarlySettlement::handle([
+                    'clientId' => $this->clientId,
+                    'accNo' => $this->accNo,
+                    'txnAmt' => $this->txnAmt,
+                    'txnCode' => $this->txnCode,
+                    'docNo' => $this->docNo,
+                    'txnDate' => $this->txnDate,
+                    'userId' => auth()->id(),
+                    'remarks' => $this->remarks,
+                    'bankClient' => $this->bankClient
+                ]);
+            }
+        }
+
         if ($this->module == 'miscellaneousIn') {
             $result = SpFmsUpTrxMiscInBk::handle([
                 'clientId' => $this->clientId,
-                'refNo' => $this->refNo,
+                'mbrNo' => $this->mbrNo,
                 'txnAmt' => $this->txnAmt,
                 'txnDate' => $this->txnDate,
                 'txnCode' => $this->txnCode,
@@ -329,7 +400,7 @@ class CommonPage extends Component
         if ($this->module == 'bulkPayment') {
             $result = SpFmsUpTrxPaymentAll::handle([
                 'clientId' => $this->clientId,
-                'refNo' => $this->refNo,
+                'mbrNo' => $this->mbrNo,
                 'txnAmt' => $this->txnAmt,
                 'txnDate' => $this->txnDate,
                 'docNo' => $this->docNo,

@@ -32,7 +32,7 @@ class Details extends Component
     {
         $this->customer = $customer;
         $this->name = (string) $customer['name'];
-        $this->refNo = (string) $customer['fms_membership']['ref_no'];
+        $this->refNo = (string) $customer['fms_membership']['mbr_no'];
         $this->totalContribution = (float) $customer['fms_membership']['total_contribution'];
         $this->saveButton = true;
     }

@@ -25,7 +25,7 @@ class TellerList extends Component
                 "value" => "Financing Repayment"
             ],
             (object)[
-                "value" => "Early Setllement Payment"
+                "value" => "Early Settlement Payment"
             ],
             (object)[
                 "value" => "Third Party"

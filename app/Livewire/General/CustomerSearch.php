@@ -14,12 +14,16 @@ class CustomerSearch extends Component
     use WithPagination;
 
     public $name;
-    public $searchRefNo, $searchRefNoValue;
+    public $searchMbrNo, $searchMbrNoValue;
     public $searchStaffNo, $searchStaffNoValue;
+    public $searchAccNo, $searchAccNoValue;
     public $searchTotContribution, $searchTotContributionAmt;
     public $searchTotShare, $searchTotShareAmt;
     public $searchMthInstallAmt, $searchMthInstallAmtValue;
     public $searchInstallAmtArear, $searchInstallAmtArearAmt;
+    public $searchBalOutstanding, $searchBalOutstandingAmt;
+    public $searchRebate, $searchRebateAmt;
+    public $searchSettleProfit, $searchSettleProfitAmt;
 
     public $customQuery = '';
 
@@ -34,7 +38,7 @@ class CustomerSearch extends Component
 
     public function setHeaders()
     {
-        if ($this->customQuery == 'financingRepayment') {
+        if ($this->customQuery == 'financingRepayment' || $this->customQuery == 'earlySettlementRepayment') {
             $this->headers = [
                 "IDENTITY NO.",
                 "NAME",
@@ -82,12 +86,16 @@ class CustomerSearch extends Component
 
         $this->name = $customer->name;
 
-        if ($this->searchRefNo) {
-            $this->searchRefNoValue = $customer->fmsMembership->ref_no;
+        if ($this->searchMbrNo) {
+            $this->searchMbrNoValue = $customer->fmsMembership->mbr_no;
         }
 
         if ($this->searchStaffNo) {
             $this->searchStaffNoValue = $customer->fmsMembership->staff_no;
+        }
+
+        if ($this->searchAccNo) {
+            $this->searchAccNoValue = $customer->fmsMembership->fmsAccountMaster->account_no;
         }
 
         if ($this->searchTotContribution) {
@@ -96,6 +104,18 @@ class CustomerSearch extends Component
 
         if ($this->searchTotShare) {
             $this->searchTotShareAmt = $customer->fmsMembership->total_share;
+        }
+
+        if ($this->searchBalOutstanding) {
+            $this->searchBalOutstandingAmt = $customer->fmsMembership->fmsAccountMaster->fmsAccountPosition->bal_outstanding;
+        }
+
+        if ($this->searchRebate) {
+            $this->searchRebateAmt = $customer->fmsMembership->fmsAccountMaster->rebate_amt;
+        }
+
+        if ($this->searchSettleProfit) {
+            $this->searchSettleProfitAmt = $customer->fmsMembership->fmsAccountMaster->settle_profit;
         }
 
         return $customer;
@@ -151,6 +171,9 @@ class CustomerSearch extends Component
         switch ($this->customQuery) {
             case 'financingRepayment':
                 $customers = GeneralCustomerSearch::getFinancingRepaymentData($this->searchBy, $this->search);
+                break;
+            case 'earlySettlementRepayment':
+                $customers = GeneralCustomerSearch::getEarlySettlementRepaymentData($this->searchBy, $this->search);
                 break;
             case 'withdrawShare':
                 $customers = GeneralCustomerSearch::getWithdrawShareData($this->searchBy, $this->search);

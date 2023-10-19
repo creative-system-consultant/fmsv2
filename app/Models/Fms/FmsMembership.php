@@ -16,7 +16,7 @@ class FmsMembership extends Model
     // Relationship
     public function fmsAccountMaster()
     {
-        return $this->hasOne(FmsAccountMaster::class,'mbr_no', 'ref_no');
+        return $this->hasOne(FmsAccountMaster::class,'mbr_no', 'mbr_no');
     }
 
     public function cifCustomer()
@@ -26,6 +26,6 @@ class FmsMembership extends Model
 
     public function fmsMiscAccount()
     {
-        return $this->hasOne(FmsMiscAccount::class, 'mbr_no', 'ref_no');
+        return $this->hasOne(FmsMiscAccount::class, 'mbr_no', 'mbr_no');
     }
 }
