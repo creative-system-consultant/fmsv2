@@ -4,15 +4,17 @@ namespace App\Livewire\Report\Operation\Share;
 
 use App\Action\StoredProcedure\SpFmsUpRptWithdrawalShare;
 use App\Services\General\ReportService;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
-
-class sharewithdrawal extends Component
+class ShareWithdrawal extends Component
 {
-    use WithPagination;
-    public $clientId = 1;
+    use Actions, WithPagination;
+
+    public $clientId;
 
     #[Rule('required')]
     public $startDate;
@@ -20,32 +22,47 @@ class sharewithdrawal extends Component
     #[Rule('required')]
     public $endDate;
 
-    public function generateExcel()
+    public function mount()
     {
-        $this->validate();
-        return $this->handleExcel();
+        $this->clientId = auth()->user()->client_id;
     }
 
-    private function handleDataTable()
+    protected function getRawData()
     {
-        $data = SpFmsUpRptWithdrawalShare::handleForTable([
+        return SpFmsUpRptWithdrawalShare::getRawData([
             'clientId' => $this->clientId,
             'startDate' => $this->startDate,
             'endDate' => $this->endDate,
         ], true);
+    }
+
+    public function generateExcel()
+    {
+        $this->validate();
+
+        $rawData = $this->getRawData();
+
+        if (count($rawData) > 0) {
+            $formattedData = [];
+            foreach ($rawData as $data) {
+                $formattedData[] = SpFmsUpRptWithdrawalShare::formatDataForExcel($data);
+            }
+            return $this->handleExcel($formattedData);
+        } else {
+            $this->dialog()->success('Process Complete!', 'No Data Found.');
+        }
+    }
+
+    private function handleDataTable($rawData)
+    {
+        $data = SpFmsUpRptWithdrawalShare::handleForTable($rawData, true);
 
         return ReportService::paginateData($data);
     }
 
-    private function handleExcel()
+    private function handleExcel($rawData)
     {
-        $dataGenerator = function () {
-            $rawData = SpFmsUpRptWithdrawalShare::handleForExcel([
-                'clientId' => $this->clientId,
-                'startDate' => $this->startDate,
-                'endDate' => $this->endDate,
-            ], true);
-
+        $dataGenerator = function () use ($rawData) {
             foreach ($rawData as $data) {
                 yield $data;
             }
@@ -64,7 +81,6 @@ class sharewithdrawal extends Component
 
         if($this->startDate && $this->endDate && count($rawData) <= 1000){
             $result = $this->handleDataTable($rawData);
-
         }
 
         return view('livewire.report.operation.share.sharewithdrawal', [
