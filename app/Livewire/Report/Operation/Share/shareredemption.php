@@ -60,9 +60,10 @@ class shareredemption extends Component
     public function render()
     {
         $result = null;
+        $rawData = $this->getRawData();
 
-        if ($this->startDate && $this->endDate) {
-            $result = $this->handleDataTable();
+        if($this->startDate && $this->endDate && count($rawData) <= 1000){
+            $result = $this->handleDataTable($rawData);
         }
 
         return view('livewire.report.operation.share.shareredemption', [
