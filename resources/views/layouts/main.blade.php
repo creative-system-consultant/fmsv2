@@ -3,11 +3,12 @@
 @section('body')
 
 <div x-data="{
+        openHoverMiniSidebar: false,
         toggleSidebarMobile:false,
         toggleSidebarDesktop:localStorage.getItem('toggleSidebarDesktop')  === 'true',
         toggleMiniSidebar:localStorage.getItem('toggleMiniSidebar')  === 'true',
     }">
-    <div class="flex w-full ">
+    <div class="flex w-full">
         @include('include.sidebar')
         <div
             x-on:click="toggleSidebarMobile = !toggleSidebarMobile"
@@ -19,6 +20,7 @@
             'block lg:ml-0': toggleSidebarDesktop && toggleMiniSidebar,
             'lg:ml-0': !toggleSidebarDesktop && !toggleMiniSidebar,
             'block lg:ml-[5rem]':  !toggleSidebarDesktop && toggleMiniSidebar,
+            'block lg:ml-[16rem]':  openHoverMiniSidebar,
             'lg:ml-64':  !toggleSidebarDesktop
         }" x-cloak>
         @include('include.navbar')

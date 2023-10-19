@@ -20,21 +20,16 @@
         <span class=" animate__animated animate__fadeInLeft animate__fast">
             {{$iconName}}
         </span>
-        <span class="ml-3 text-sm font-medium myFontSemibold "
-        :class="toggleMiniSidebar == true ? 'hidden' : 'block'"
-        >
-        {{$title}}
+        <span class="ml-3 text-sm font-medium myFontSemibold"
+            :class="{ 'hidden': toggleMiniSidebar, 'block': !toggleMiniSidebar }" x-cloak>
+            {{$title}}
+        </span>
+
+        <span class="ml-3 text-sm font-medium myFontSemibold"
+            :class="{ 'block': toggleMiniSidebar && openHoverMiniSidebar, 'hidden': !toggleMiniSidebar || !openHoverMiniSidebar }" x-cloak>
+            {{$title}}
         </span>
     </a>
-    <div
-        :class="toggleMiniSidebar == true ? 'block' : 'hidden'"
-        x-show="showDropdown"
-        x-cloak
-        x-ref="dropdownContent"
-        class="absolute px-4 py-2 w-40  bg-white rounded-md shadow-2xl top-1 text-primary-600 dark:bg-gray-900 dark:text-primary-500 left-[3.6rem] border dark:border-gray-800"
-        style="z-index: 9999 !important;">
-        {{$title}}
-    </div>
 </li>
 
 <!-- mobile -->
