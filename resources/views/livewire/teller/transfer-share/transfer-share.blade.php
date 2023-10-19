@@ -58,7 +58,7 @@
                         </x-table.table-body>
             
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <x-button sm  icon="eye" primary label="View"/>
+                            <x-button sm  icon="switch-horizontal" primary label="Transfer"/>
                         </x-table.table-body>
                     </tr>
                 </x-slot>

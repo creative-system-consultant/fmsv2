@@ -72,6 +72,9 @@ class TellerList extends Component
             (object)[
                 "value" => "Dividen Batch Widthdrawal"
             ],
+            (object)[
+                "value" => "Transfer Share"
+            ],
         ];
     }
 

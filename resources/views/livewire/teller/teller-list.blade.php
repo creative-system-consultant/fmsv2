@@ -143,6 +143,9 @@
 
                         @elseif($type_payment_out == 'Dividen Batch Widthdrawal')
                             <livewire:teller.dividen-batch.dividen-batch />
+                        
+                        @elseif($type_payment_out == 'Transfer Share')
+                            <livewire:teller.transfer-share.transfer-share />
 
                         @endif
                     </div>
