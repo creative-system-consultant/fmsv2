@@ -22,6 +22,7 @@ class ShareRedemption extends Component
     #[Rule('required')]
     public $endDate;
 
+
     public function mount()
     {
         $this->clientId = auth()->user()->client_id;
@@ -47,6 +48,7 @@ class ShareRedemption extends Component
             foreach ($rawData as $data) {
                 $formattedData[] = SpFmsUpRptShareRedemption::formatDataForExcel($data);
             }
+
             return $this->handleExcel($formattedData);
         } else {
             $this->dialog()->success('Process Complete!', 'No Data Found.');
@@ -77,13 +79,16 @@ class ShareRedemption extends Component
     public function render()
     {
         $result = null;
-        $rawData = $this->getRawData();
 
-        if($this->startDate && $this->endDate && count($rawData) <= 1000){
-            $result = $this->handleDataTable($rawData);
+        if($this->startDate && $this->endDate) {
+            $rawData = $this->getRawData();
+
+            if(count($rawData) <= 1000) {
+                $result = $this->handleDataTable($rawData);
+            }
         }
 
-        return view('livewire.report.operation.share.shareredemption', [
+        return view('livewire.report.operation.share.share-redemption', [
             'result' => $result
         ])->extends('layouts.main');
     }

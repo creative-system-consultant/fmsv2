@@ -22,6 +22,7 @@ class SumTotalShare extends Component
     #[Rule('required')]
     public $endDate;
 
+
     public function mount()
     {
         $this->clientId = auth()->user()->client_id;
@@ -47,6 +48,7 @@ class SumTotalShare extends Component
             foreach ($rawData as $data) {
                 $formattedData[] = SpUpRptSummaryTotalshare::formatDataForExcel($data);
             }
+
             return $this->handleExcel($formattedData);
         } else {
             $this->dialog()->success('Process Complete!', 'No Data Found.');
@@ -77,13 +79,16 @@ class SumTotalShare extends Component
     public function render()
     {
         $result = null;
-        $rawData = $this->getRawData();
 
-        if($this->startDate && $this->endDate && count($rawData) <= 1000){
-            $result = $this->handleDataTable($rawData);
+        if($this->startDate && $this->endDate) {
+            $rawData = $this->getRawData();
+
+            if(count($rawData) <= 1000) {
+                $result = $this->handleDataTable($rawData);
+            }
         }
 
-        return view('livewire.report.operation.summary.sumtotalshare', [
+        return view('livewire.report.operation.summary.sum-total-share', [
             'result' => $result
         ])->extends('layouts.main');
     }

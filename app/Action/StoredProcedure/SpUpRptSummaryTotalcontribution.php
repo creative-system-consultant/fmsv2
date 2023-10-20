@@ -35,7 +35,7 @@ class SpUpRptSummaryTotalcontribution
                 'value' =>$data->payment,
                 'align' => 'right'
             ],
-            'Withdrawal' => [
+            'Withrawal' => [
                 'value' =>$data->withrawal,
                 'align' => 'right'
             ],
@@ -75,9 +75,8 @@ class SpUpRptSummaryTotalcontribution
         }
     }
 
-    public static function handleForTable($input, $format = false)
+    public static function handleForTable($rawData, $format = false)
     {
-        $rawData = self::getRawData($input);
         $formattedData = [];
         foreach ($rawData as $data) {
             $formattedData[] = $format ? self::formatData($data) : $data;
