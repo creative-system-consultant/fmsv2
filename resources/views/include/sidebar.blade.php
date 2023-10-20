@@ -8,7 +8,7 @@
         :class="{
             'block lg:hidden ': toggleSidebarDesktop,
             'w-64 lg:w-[5rem]': toggleMiniSidebar,
-            'w-64 lg:w-[16rem]': openHoverMiniSidebar,
+            'w-64 lg:w-[16rem] z-10': openHoverMiniSidebar,
             'w-64 z-50 lg:z-0' : !toggleMiniSidebar,
             'animate__animated animate__slideInLeft': toggleSidebarMobile,
             'hidden lg:block': !toggleSidebarMobile,
@@ -19,7 +19,7 @@
                     <x-logo class="w-auto h-12" />
                 </div>
                 <div x-show="toggleMiniSidebar">
-                    <x-logo class="w-auto h-12 lg:h-6"  x-bind:class="openHoverMiniSidebar ? 'lg:h-12' : ''" />
+                    <x-logo class="w-auto h-12 "  x-bind:class="openHoverMiniSidebar ? 'lg:h-12' : 'lg:h-6'" />
                 </div>
             </a>
             <div class="flex flex-col flex-1 pt-5 pb-4 "
