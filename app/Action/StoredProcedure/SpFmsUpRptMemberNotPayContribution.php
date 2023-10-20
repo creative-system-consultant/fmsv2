@@ -5,11 +5,11 @@ use Illuminate\Support\Collection;
 
 use DB;
 
-class SpFmsUpRptMembersDormant
+class SpFmsUpRptMemberNotPayContribution
 {
     public static function getRawData($input)
     {
-        return DB::select("RPT.up_rpt_members_dormant :clientId, :reportDate", $input);
+        return DB::select("RPT.up_rpt_members_not_pay_contribution :clientId, :reportDate", $input);
     }
 
     public static function formatData($data)
@@ -79,8 +79,9 @@ class SpFmsUpRptMembersDormant
         }
     }
 
-    public static function handleForTable($rawData, $format = false)
+    public static function handleForTable($input, $format = false)
     {
+        $rawData = self::getRawData($input);
         $formattedData = [];
         foreach ($rawData as $data) {
             $formattedData[] = $format ? self::formatData($data) : $data;

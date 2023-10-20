@@ -152,23 +152,19 @@
                                             />
                                             <x-general.nav-item
                                                 title="List Of Closed Member"
-                                                href="#"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of BSKE Account"
-                                                href="#"
+                                                href="{{ route('report.operation.list.closed-member') }}"
                                             />
                                             <x-general.nav-item
                                                 title="List Of Bank"
-                                                href="#"
+                                                href="{{ route('report.operation.list.bank') }}"
                                             />
                                             <x-general.nav-item
                                                 title="List Of Member Not Pay Contribution"
-                                                href="#"
+                                                href="{{ route('report.operation.list.member-not-pay-contribution') }}"
                                             />
                                             <x-general.nav-item
                                                 title="List Of Dormant Member"
-                                                href="{{route('report.operation.list.dormant-member')}}"
+                                                href="{{ route('report.operation.list.dormant-member') }}"
                                             />
                                             <x-general.nav-item
                                                 title="List Of Entrance Fee"

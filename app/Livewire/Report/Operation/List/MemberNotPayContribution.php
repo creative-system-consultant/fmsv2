@@ -2,25 +2,19 @@
 
 namespace App\Livewire\Report\Operation\List;
 
-use App\Action\StoredProcedure\SpFmsUpRptAutopayList;
+use App\Action\StoredProcedure\SpFmsUpRptMemberNotPayContribution;
 use App\Services\General\ReportService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
-use WireUi\Traits\Actions;
 
-
-class Autopay extends Component
-{
-    use Actions, WithPagination;
-    
+class MemberNotPayContribution extends Component
+{   
+    use WithPagination;
     public $clientId;
 
     #[Rule('required')]
-    public $startDate;
-
-    #[Rule('required')]
-    public $endDate;
+    public $reportDate;
 
     public function mount()
     {
@@ -29,10 +23,9 @@ class Autopay extends Component
 
     protected function getRawData()
     {
-        return SpFmsUpRptAutopayList::getRawData([
+        return SpFmsUpRptMemberNotPayContribution::getRawData([
             'clientId' => $this->clientId,
-            'startDate' => $this->startDate,
-            'endDate' => $this->endDate,
+            'reportDate' => $this->reportDate
         ], true);
     }
 
@@ -45,7 +38,7 @@ class Autopay extends Component
         if(count($rawData) > 0) {
             $formattedData = [];
             foreach ($rawData as $data) {
-                $formattedData[] = SpFmsUpRptAutopayList::formatDataForExcel($data);
+                $formattedData[] = SpFmsUpRptMemberNotPayContribution::formatDataForExcel($data);
             }
             return $this->handleExcel($formattedData);
         } else {
@@ -55,7 +48,7 @@ class Autopay extends Component
 
     private function handleDataTable($rawData)
     {
-        $data = SpFmsUpRptAutopayList::handleForTable($rawData, true);
+        $data = SpFmsUpRptMemberNotPayContribution::handleForTable($rawData, true);
 
         return ReportService::paginateData($data);
     }
@@ -68,17 +61,17 @@ class Autopay extends Component
             }
         };
 
-        $filename = 'ListOfAutopay-%s.xlsx';
+        $filename = 'ListOfMemberNotPayContribution-%s.xlsx';
         $report = new ReportService();
 
-        return $report->generateExcelReport($dataGenerator, $filename, $this->startDate);
+        return $report->generateExcelReport($dataGenerator, $filename, $this->reportDate);
     }
 
     public function render()
     {
         $result = null;
 
-        if($this->startDate && $this->endDate) {
+        if($this->reportDate) {
             $rawData = $this->getRawData();
 
             if(count($rawData) <= 1000) {
@@ -86,7 +79,7 @@ class Autopay extends Component
             }
         }
 
-        return view('livewire.report.operation.list.autopay', [
+        return view('livewire.report.operation.list.member-not-pay-contribution', [
             'result' => $result
         ])->extends('layouts.main');
     }

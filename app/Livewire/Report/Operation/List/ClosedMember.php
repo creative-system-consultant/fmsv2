@@ -2,18 +2,16 @@
 
 namespace App\Livewire\Report\Operation\List;
 
-use App\Action\StoredProcedure\SpFmsUpRptAutopayList;
+use App\Action\StoredProcedure\SpFmsUpRptClosedMemberList;
 use App\Services\General\ReportService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
-
-class Autopay extends Component
-{
+class ClosedMember extends Component
+{   
     use Actions, WithPagination;
-    
     public $clientId;
 
     #[Rule('required')]
@@ -29,7 +27,7 @@ class Autopay extends Component
 
     protected function getRawData()
     {
-        return SpFmsUpRptAutopayList::getRawData([
+        return SpFmsUpRptClosedMemberList::getRawData([
             'clientId' => $this->clientId,
             'startDate' => $this->startDate,
             'endDate' => $this->endDate,
@@ -45,7 +43,7 @@ class Autopay extends Component
         if(count($rawData) > 0) {
             $formattedData = [];
             foreach ($rawData as $data) {
-                $formattedData[] = SpFmsUpRptAutopayList::formatDataForExcel($data);
+                $formattedData[] = SpFmsUpRptClosedMemberList::formatDataForExcel($data);
             }
             return $this->handleExcel($formattedData);
         } else {
@@ -55,7 +53,7 @@ class Autopay extends Component
 
     private function handleDataTable($rawData)
     {
-        $data = SpFmsUpRptAutopayList::handleForTable($rawData, true);
+        $data = SpFmsUpRptClosedMemberList::handleForTable($rawData, true);
 
         return ReportService::paginateData($data);
     }
@@ -68,7 +66,7 @@ class Autopay extends Component
             }
         };
 
-        $filename = 'ListOfAutopay-%s.xlsx';
+        $filename = 'ListOfClosedMember-%s.xlsx';
         $report = new ReportService();
 
         return $report->generateExcelReport($dataGenerator, $filename, $this->startDate);
@@ -86,7 +84,7 @@ class Autopay extends Component
             }
         }
 
-        return view('livewire.report.operation.list.autopay', [
+        return view('livewire.report.operation.list.closed-member', [
             'result' => $result
         ])->extends('layouts.main');
     }

@@ -52,6 +52,13 @@ class Member extends Component
         }
     }
 
+    private function handleDataTable($rawData)
+    {
+        $data = SpFmsUpRptMember::handleForTable($rawData, true);
+
+        return ReportService::paginateData($data);
+    }
+
     private function handleExcel($rawData)
     {
         $dataGenerator = function () use ($rawData) {
@@ -69,6 +76,14 @@ class Member extends Component
     public function render()
     {
         $result = null;
+
+        if($this->startDate && $this->endDate) {
+            $rawData = $this->getRawData();
+
+            if(count($rawData) <= 1000) {
+                $result = $this->handleDataTable($rawData);
+            }
+        }
 
         return view('livewire.report.operation.list.member', [
             'result' => $result
