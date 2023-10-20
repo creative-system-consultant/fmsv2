@@ -22,6 +22,7 @@ class SumTotalCont extends Component
     #[Rule('required')]
     public $endDate;
 
+
     public function mount()
     {
         $this->clientId = auth()->user()->client_id;
@@ -47,6 +48,7 @@ class SumTotalCont extends Component
             foreach ($rawData as $data) {
                 $formattedData[] = SpUpRptSummaryTotalcontribution::formatDataForExcel($data);
             }
+
             return $this->handleExcel($formattedData);
         } else {
             $this->dialog()->success('Process Complete!', 'No Data Found.');
@@ -77,14 +79,18 @@ class SumTotalCont extends Component
     public function render()
     {
         $result = null;
-        $rawData = $this->getRawData();
 
-        if($this->startDate && $this->endDate && count($rawData) <= 1000){
-            $result = $this->handleDataTable($rawData);
+        if($this->startDate && $this->endDate) {
+            $rawData = $this->getRawData();
+
+            if(count($rawData) <= 1000) {
+                $result = $this->handleDataTable($rawData);
+            }
         }
 
-        return view('livewire.report.operation.summary.sumtotalcont', [
+        return view('livewire.report.operation.summary.sum-total-cont', [
             'result' => $result
         ])->extends('layouts.main');
     }
 }
+

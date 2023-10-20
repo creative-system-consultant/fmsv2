@@ -4,22 +4,32 @@
 use App\Livewire\Report\Operation\List\Autopay;
 use App\Livewire\Report\Operation\List\DormantMember;
 use App\Livewire\Report\Operation\List\FinTrxBaseOnDisbursement;
+
+//member
+use App\Livewire\Report\Operation\Member\Byincome;
+use App\Livewire\Report\Operation\List\Member;
+
+//daily transaction
 use App\Livewire\Report\Operation\DailyTransaction\Listing;
 use App\Livewire\Report\Operation\DailyTransaction\Product;
-use App\Livewire\Report\Operation\List\Member;
-use App\Livewire\Report\Operation\Financing\CashDetail;
-use App\Livewire\Report\Operation\Financing\Disbursement;
+
+//financing
 use App\Livewire\Report\Operation\Financing\Summary;
-use App\Livewire\Report\Operation\Member\Byincome;
+use App\Livewire\Report\Operation\Financing\Disbursement;
+use App\Livewire\Report\Operation\Financing\CashDetail;
+
+//monthly
+use App\Livewire\Report\Operation\Monthly\MthlyNpfAcc;
 
 //summary
-use App\Livewire\Report\Operation\Summary\sumtotalshare;
-use App\Livewire\Report\Operation\Summary\sumtotalcont;
+use App\Livewire\Report\Operation\Summary\SumTotalShare;
+use App\Livewire\Report\Operation\Summary\SumTotalCont;
 
 //share
-use App\Livewire\Report\Operation\Share\sharewithdrawal;
-use App\Livewire\Report\Operation\Share\shareredemption;
-use App\Livewire\Report\Operation\Share\sharepurchase;
+use App\Livewire\Report\Operation\Share\SharePurchase;
+use App\Livewire\Report\Operation\Share\ShareRedemption;
+use App\Livewire\Report\Operation\Share\ShareWithdrawal;
+
 
 //list
 Route::get('list/autopay', Autopay::class)->name('list.autopay');
@@ -39,11 +49,14 @@ Route::get('financing/summary', Summary::class)->name('financing.summary');
 Route::get('financing/disbursement', Disbursement::class)->name('financing.disbursement');
 Route::get('financing/cashdetail', CashDetail::class)->name('financing.cashdetail');
 
+//monthly
+Route::get('monthly/mthlynpfacc', MthlyNpfAcc::class)->name('monthly.mthlynpfacc');
+
 //summary
-Route::get('sumtotalshare', sumtotalshare::class)->name('summary.sumtotalshare');
-Route::get('sumtotalcont', sumtotalcont::class)->name('summary.sumtotalcont');
+Route::get('summary/sum-total-share', SumTotalShare::class)->name('summary.sum-total-share');
+Route::get('summary/sum-total-cont', SumTotalCont::class)->name('summary.sum-total-cont');
 
 //share
-Route::get('sharewithdrawal', sharewithdrawal::class)->name('share.sharewithdrawal');
-Route::get('shareredemption', shareredemption::class)->name('share.shareredemption');
-Route::get('share/sharepurchase', sharepurchase::class)->name('share.sharepurchase');
+Route::get('share/share-purchase', SharePurchase::class)->name('share.share-purchase');
+Route::get('share/share-redemption', ShareRedemption::class)->name('share.share-redemption');
+Route::get('share/share-withdrawal', ShareWithdrawal::class)->name('share.share-withdrawal');
