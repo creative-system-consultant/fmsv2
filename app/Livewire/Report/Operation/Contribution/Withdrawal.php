@@ -4,6 +4,7 @@ namespace App\Livewire\Report\Operation\Contribution;
 
 use App\Action\StoredProcedure\SpFmsContributionWithdrawal;
 use App\Services\General\ReportService;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -34,18 +35,19 @@ class Withdrawal extends Component
             'endDate' => $this->endDate,
         ], true);
     }
-    
+
     public function generateExcel()
     {
         $this->validate();
 
         $rawData = $this->getRawData();
 
-        if(count($rawData) > 0) {
+        if (count($rawData) > 0) {
             $formattedData = [];
             foreach ($rawData as $data) {
                 $formattedData[] = SpFmsContributionWithdrawal::formatDataForExcel($data);
             }
+
             return $this->handleExcel($formattedData);
         } else {
             $this->dialog()->success('Process Complete!', 'No Data Found.');
@@ -84,7 +86,7 @@ class Withdrawal extends Component
                 $result = $this->handleDataTable($rawData);
             }
         }
-
+        
         return view('livewire.report.operation.contribution.withdrawal', [
             'result' => $result
         ])->extends('layouts.main');
