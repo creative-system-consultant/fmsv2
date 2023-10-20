@@ -9,7 +9,7 @@ class SpFmsUpRptMember
 {
     public static function getRawData($input)
     {
-        return DB::select("fms.up_rpt_all_members :clientId, :startDate, :endDate", $input);
+        return DB::select("RPT.up_rpt_all_members :clientId, :startDate, :endDate", $input);
     }
 
     public static function formatData($data)
