@@ -16,12 +16,12 @@
             x-bind:class="{ 'hidden': !toggleSidebarMobile, 'block': toggleSidebarMobile }" x-cloak>
         </div>
         <div class="relative z-0 w-full bg-white dark:bg-gray-900 "
-        :class="{
+        x-bind:class="{
             'block lg:ml-0': toggleSidebarDesktop && toggleMiniSidebar,
             'lg:ml-0': !toggleSidebarDesktop && !toggleMiniSidebar,
-            'block lg:ml-[5rem]':  !toggleSidebarDesktop && toggleMiniSidebar,
-            'block lg:ml-[16rem]':  openHoverMiniSidebar,
-            'lg:ml-64':  !toggleSidebarDesktop
+            'block lg:ml-[5rem]': !toggleSidebarDesktop && toggleMiniSidebar && !openHoverMiniSidebar,
+            'block lg:ml-[16rem]': openHoverMiniSidebar,
+            'lg:ml-64': !toggleSidebarDesktop
         }" x-cloak>
         @include('include.navbar')
         <div

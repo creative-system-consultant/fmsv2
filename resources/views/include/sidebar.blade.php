@@ -5,13 +5,13 @@
         @mouseover.away = "openHoverMiniSidebar = false"
         x-cloak
         class="fixed top-0  left-0 flex flex-col flex-shrink-0 h-full duration-75 lg:flex transition-width"
-        :class="{
-            'block lg:hidden ': toggleSidebarDesktop,
-            'w-64 lg:w-[5rem]': toggleMiniSidebar,
+        x-bind:class="{
+            'block lg:hidden': toggleSidebarDesktop,
+            'w-64 lg:w-[5rem]': toggleMiniSidebar && !openHoverMiniSidebar,
             'w-64 lg:w-[16rem] z-10': openHoverMiniSidebar,
-            'w-64 z-50 lg:z-0' : !toggleMiniSidebar,
+            'w-64 z-50 lg:z-0': !toggleMiniSidebar,
             'animate__animated animate__slideInLeft': toggleSidebarMobile,
-            'hidden lg:block': !toggleSidebarMobile,
+            'hidden lg:block': !toggleSidebarMobile
         }">
         <div class="relative flex flex-col flex-1 min-h-0 pt-0 border-r border-gray-200 backdrop-blur-xl bg-white/60 dark:bg-gray-900 dark:border-gray-800">
             <a href="{{ route('home') }}" class="flex items-center justify-center pt-4 text-xl font-bold">
