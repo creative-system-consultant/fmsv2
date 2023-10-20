@@ -74,12 +74,15 @@ class Disbursement extends Component
     }
 
     public function render()
-    {
+    { 
         $result = null;
-        $rawData = $this->getRawData();
 
-        if($this->startDate && $this->endDate && count($rawData) <= 1000){
-            $result = $this->handleDataTable($rawData);
+        if($this->startDate && $this->endDate) {
+            $rawData = $this->getRawData();
+
+            if(count($rawData) <= 1000) {
+                $result = $this->handleDataTable($rawData);
+            }
         }
         return view('livewire.report.operation.financing.disbursement', [
             'result' =>$result

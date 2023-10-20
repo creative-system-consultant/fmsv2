@@ -2,15 +2,16 @@
 
 namespace App\Livewire\Report\Operation\Member;
 
-use App\Action\StoredProcedure\SpFmsMemberIncome;
+use App\Action\StoredProcedure\SpFmsUpRptMemberByState;
 use App\Services\General\ReportService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
-class ByIncome extends Component
+class ByState extends Component
 {
+    
     use Actions, WithPagination;
 
     public $clientId;
@@ -28,7 +29,7 @@ class ByIncome extends Component
 
     protected function getRawData()
     {
-        return SpFmsMemberIncome::getRawData([
+        return SpFmsUpRptMemberByState::getRawData([
             'clientId' => $this->clientId,
             'startDate' => $this->startDate,
             'endDate' => $this->endDate,
@@ -44,7 +45,7 @@ class ByIncome extends Component
         if (count($rawData) > 0) {
             $formattedData = [];
             foreach ($rawData as $data) {
-                $formattedData[] = SpFmsMemberIncome::formatDataForExcel($data);
+                $formattedData[] = SpFmsUpRptMemberByState::formatDataForExcel($data);
             }
             return $this->handleExcel($formattedData);
         } else {
@@ -54,7 +55,7 @@ class ByIncome extends Component
 
     private function handleDataTable($rawData)
     {
-        $data = SpFmsMemberIncome::handleForTable($rawData, true);
+        $data = SpFmsUpRptMemberByState::handleForTable($rawData, true);
         return ReportService::paginateData($data);
     }
 
@@ -66,7 +67,7 @@ class ByIncome extends Component
             }
         };
 
-        $filename = 'MemberByIncome-%s.xlsx';
+        $filename = 'MemberByState-%s.xlsx';
         $report = new ReportService();
 
         return $report->generateExcelReport($dataGenerator, $filename, $this->startDate);
@@ -83,7 +84,8 @@ class ByIncome extends Component
                 $result = $this->handleDataTable($rawData);
             }
         }
-        return view('livewire.report.operation.member.byincome', [
+
+        return view('livewire.report.operation.member.by-state', [
             'result' => $result
         ])->extends('layouts.main');
     }

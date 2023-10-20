@@ -5,17 +5,16 @@ namespace App\Action\StoredProcedure;
 use DB;
 use Illuminate\Support\Collection;
 
-class SpFmsMemberIncome
-{
-    
+class SpFmsUpRptMemberByState
+{ 
     public static function getRawData($input)
     {
-        return DB::select("fms.up_rpt_members_byincome :clientId, :startDate, :endDate", $input);
+        return DB::select("fms.up_rpt_members_bystate :clientId, :startDate, :endDate", $input);
     }
         public static function formatData($data)
         {
             return [
-                'MEMBERSHIP NO'  => [
+                'MEMBER NO'  => [
                     'value' =>  $data->mbr_no,
                     'align' => 'right'
                 ],
@@ -69,6 +68,10 @@ class SpFmsMemberIncome
                 ],
                 'CURRENT EMPLOYMENT DATE' => [
                     'value' => date('d-m-Y', strtotime($data->current_employment_date)),
+                    'align' => 'left'
+                ],
+                'START DATE' => [
+                    'value' => date('d-m-Y', strtotime($data->start_date)),
                     'align' => 'left'
                 ],
                 'COMPANY ADDRESS' => [
@@ -141,7 +144,7 @@ class SpFmsMemberIncome
                 ],
             ];
         }
-    
+        
         public static function formatDataForExcel($data)
         {
             $formattedData = self::formatData($data);

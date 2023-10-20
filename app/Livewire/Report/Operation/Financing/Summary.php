@@ -6,34 +6,85 @@ use App\Action\StoredProcedure\SpFmsFinancingSummary;
 use App\Services\General\ReportService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
+use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
 class Summary extends Component
 {
-    public $clientId = 1;
+    use Actions, WithPagination;
+
+    public $clientId;
 
     #[Rule('required')]
-    public $startDate;
+    public $reportDate;
 
-    #[Rule('required')]
-    public $endDate;
+
+    public function mount()
+    {
+        $this->clientId = auth()->user()->client_id;
+    }
+
+    protected function getRawData()
+    {
+        return SpFmsFinancingSummary::getRawData([
+            'clientId' => $this->clientId,
+            'reportDate' => $this->reportDate,
+        ], true);
+    }
 
     public function generateExcel()
     {
         $this->validate();
 
-        $data = SpFmsFinancingSummary::handle([
-            'clientId' => $this->clientId,
-            'startDate' => $this->startDate,
-            'endDate' => $this->endDate,
-        ]);
+        $rawData = $this->getRawData();
+
+        if (count($rawData) > 0) {
+            $formattedData = [];
+            foreach ($rawData as $data) {
+                $formattedData[] = SpFmsFinancingSummary::formatDataForExcel($data);
+            }
+
+            return $this->handleExcel($formattedData);
+        } else {
+            $this->dialog()->success('Process Complete!', 'No Data Found.');
+        }
+    }
+
+    private function handleDataTable($rawData)
+    {
+        $data = SpFmsFinancingSummary::handleForTable($rawData, true);
+        
+        return ReportService::paginateData($data);
+    }
+
+    private function handleExcel($rawData)
+    {
+        $dataGenerator = function () use ($rawData) {
+            foreach ($rawData as $data) {
+                yield $data;
+            }
+        };
 
         $filename = 'FinancingSummary-%s.xlsx';
-        $report = new ReportService(); 
+        $report = new ReportService();
 
-        return $report->generateExcelReport($data, $filename, $this->startDate);
+        return $report->generateExcelReport($dataGenerator, $filename, $this->reportDate);
     }
+
     public function render()
     {
-        return view('livewire.report.operation.financing.summary')->extends('layouts.main');
+        $result = null;
+
+        if($this->reportDate) {
+            $rawData = $this->getRawData();
+
+            if(count($rawData) <= 1000) {
+                $result = $this->handleDataTable($rawData);
+            }
+        }
+
+        return view('livewire.report.operation.financing.summary', [
+            'result' => $result
+        ])->extends('layouts.main');
     }
 }

@@ -6,10 +6,14 @@ use App\Action\StoredProcedure\SpFmsDailyTransactionList;
 use App\Services\General\ReportService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
+use Livewire\WithPagination;
+use WireUi\Traits\Actions;
 
 class Listing extends Component
 {
-    public $clientId = 1;
+    use Actions, WithPagination;
+
+    public $clientId;
 
     #[Rule('required')]
     public $startDate;
@@ -17,24 +21,72 @@ class Listing extends Component
     #[Rule('required')]
     public $endDate;
 
+    public function mount()
+    {
+        $this->clientId = auth()->user()->client_id;
+    }
+
+    protected function getRawData()
+    {
+        return SpFmsDailyTransactionList::getRawData([
+            'clientId' => $this->clientId,
+            'startDate' => $this->startDate,
+            'endDate' => $this->endDate,
+        ], true);
+    }
+
     public function generateExcel()
     {
         $this->validate();
 
-        $data = SpFmsDailyTransactionList::handle([
-            'clientId' => $this->clientId,
-            'startDate' => $this->startDate,
-            'endDate' => $this->endDate,
-        ]);
+        $rawData = $this->getRawData();
 
-        $filename = 'DailyTransaction-%s.xlsx';
-        $report = new ReportService();
-
-        return $report->generateExcelReport($data, $filename, $this->startDate);
+        if(count($rawData) > 0) {
+            $formattedData = [];
+            foreach ($rawData as $data) {
+                $formattedData[] = SpFmsDailyTransactionList::formatDataForExcel($data);
+            }
+            return $this->handleExcel($formattedData);
+        } else {
+            $this->dialog()->success('Process Complete!', 'No Data Found.');
+        }
     }
 
-    public function render()
+    private function handleDataTable($rawData)
     {
-        return view('livewire.report.operation.dailytransaction.listing')->extends('layouts.main');
+        $data = SpFmsDailyTransactionList::handleForTable($rawData, true);
+
+        return ReportService::paginateData($data);
+    }
+
+    private function handleExcel($rawData)
+    {
+        $dataGenerator = function () use ($rawData) {
+            foreach ($rawData as $data) {
+                yield $data;
+            }
+        };
+
+        $filename = 'DailyTransactionListing-%s.xlsx';
+        $report = new ReportService();
+
+        return $report->generateExcelReport($dataGenerator, $filename, $this->startDate);
+    }
+
+
+    public function render()
+    {  
+        $result = null;
+
+        if($this->startDate && $this->endDate) {
+            $rawData = $this->getRawData();
+
+            if(count($rawData) <= 1000) {
+                $result = $this->handleDataTable($rawData);
+            }
+        }
+        return view('livewire.report.operation.dailytransaction.listing', [
+            'result' => $result
+        ])->extends('layouts.main');
     }
 }

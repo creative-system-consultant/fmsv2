@@ -56,7 +56,6 @@ class Product extends Component
     private function handleDataTable($rawData)
     {
         $data = SpFmsDailyTransactionProduct::handleForTable($rawData, true);
-
         return ReportService::paginateData($data);
     }
 
@@ -68,7 +67,7 @@ class Product extends Component
             }
         };
 
-        $filename = 'ListOfMember-%s.xlsx';
+        $filename = 'DailyTransactionProduct-%s.xlsx';
         $report = new ReportService();
 
         return $report->generateExcelReport($dataGenerator, $filename, $this->startDate);
@@ -78,9 +77,12 @@ class Product extends Component
     {
         $result = null;
 
-        if ($this->startDate && $this->endDate) {
+        if($this->startDate && $this->endDate) {
             $rawData = $this->getRawData();
-            $result = $this->handleDataTable($rawData);
+
+            if(count($rawData) <= 1000) {
+                $result = $this->handleDataTable($rawData);
+            }
         }
 
         return view('livewire.report.operation.dailytransaction.product', [
