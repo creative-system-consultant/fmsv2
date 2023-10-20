@@ -1,7 +1,6 @@
 <?php
 
-//Cntribution
-
+//Contribution
 use App\Livewire\Report\Operation\Contribution\Payment;
 use App\Livewire\Report\Operation\Contribution\Withdrawal;
 
@@ -28,15 +27,6 @@ use App\Livewire\Report\Operation\List\MemberNotPayContribution;
 use App\Livewire\Report\Operation\Member\Byincome;
 use App\Livewire\Report\Operation\Member\ByState;
 
-//daily transaction
-use App\Livewire\Report\Operation\DailyTransaction\Listing;
-use App\Livewire\Report\Operation\DailyTransaction\Product;
-
-//financing
-use App\Livewire\Report\Operation\Financing\Summary;
-use App\Livewire\Report\Operation\Financing\Disbursement;
-use App\Livewire\Report\Operation\Financing\CashDetail;
-
 //monthly
 use App\Livewire\Report\Operation\Monthly\MthlyNpfAcc;
 
@@ -49,6 +39,10 @@ use App\Livewire\Report\Operation\Share\ShareWithdrawal;
 use App\Livewire\Report\Operation\Summary\SumTotalShare;
 use App\Livewire\Report\Operation\Summary\SumTotalCont;
 
+//contribution
+Route::get('contribution/payment', Payment::class)->name('contribution.payment');
+Route::get('contribution/withdrawal', Withdrawal::class)->name('contribution.withdrawal');
+
 //list
 Route::get('list/autopay', Autopay::class)->name('list.autopay');
 Route::get('list/member', Member::class)->name('list.member');
@@ -57,10 +51,6 @@ Route::get('list/bank', Bank::class)->name('list.bank');
 Route::get('list/dormant-member', DormantMember::class)->name('list.dormant-member');
 Route::get('list/fin-trx-base-disbursement', FinTrxBaseOnDisbursement::class)->name('list.fin-trx-base-disbursement');
 Route::get('list/member-not-pay-contribution', MemberNotPayContribution::class)->name('list.member-not-pay-contribution');
-
-//member
-Route::get('member/byincome', Byincome::class)->name('member.byincome');
-Route::get('list/member', Member::class)->name('list.member');
 
 //daily transaction
 Route::get('dailytransaction/listing', Listing::class)->name('dailytransaction.listing');
@@ -83,3 +73,7 @@ Route::get('monthly/mthlynpfacc', MthlyNpfAcc::class)->name('monthly.mthlynpfacc
 Route::get('share/share-purchase', SharePurchase::class)->name('share.share-purchase');
 Route::get('share/share-redemption', ShareRedemption::class)->name('share.share-redemption');
 Route::get('share/share-withdrawal', ShareWithdrawal::class)->name('share.share-withdrawal');
+
+//summary
+Route::get('summary/sum-total-share', SumTotalShare::class)->name('summary.sum-total-share');
+Route::get('summary/sum-total-cont', SumTotalCont::class)->name('summary.sum-total-cont');
