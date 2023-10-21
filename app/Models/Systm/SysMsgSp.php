@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class SysMsgSp extends Model
 {
     use HasFactory;
+
+    protected $connection = 'fms';
 }

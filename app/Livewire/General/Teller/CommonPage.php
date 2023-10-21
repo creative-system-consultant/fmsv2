@@ -109,8 +109,8 @@ class CommonPage extends Component
             case 'financingRepayment':
                 $this->setupFinancingRepayment();
                 break;
-            case 'earlySettlementRepayment':
-                $this->setupEarlySettlementRepayment();
+            case 'earlySettlementPayment':
+                $this->setupEarlySettlementPayment();
                 break;
             case 'miscellaneousIn':
                 $this->setupMiscellaneousIn();
@@ -162,7 +162,7 @@ class CommonPage extends Component
         $this->minFinRepay = (float) FmsGlobalParm::getAllFmsGlobalParm()->MIN_FIN_REPAYMENT;
     }
 
-    private function setupEarlySettlementRepayment()
+    private function setupEarlySettlementPayment()
     {
         $this->category = true;
         $this->categoryList = [
@@ -215,8 +215,8 @@ class CommonPage extends Component
         switch ($this->module) {
             case 'financingRepayment':
                 return 'financingRepayment';
-            case 'earlySettlementRepayment':
-                return 'earlySettlementRepayment';
+            case 'earlySettlementPayment':
+                return 'earlySettlementPayment';
             case 'withdrawShare':
                 return 'withdrawShare';
             default:
@@ -242,7 +242,7 @@ class CommonPage extends Component
             $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
             $this->docNo = SpFmsGenerateMbrWithdrawShare::handle(1, $this->mbrNo);
 
-        } elseif($this->module == 'earlySettlementRepayment') {
+        } elseif($this->module == 'earlySettlementPayment') {
             $this->idMsg = mt_rand(100000000, 999999999);
             $this->accNo = $customer['fmsMembership']['fmsAccountMaster']['acaccount_no'];
             $this->accId = $customer['fmsMembership']['fmsAccountMaster']['id'];
@@ -294,8 +294,8 @@ class CommonPage extends Component
             case 'financingRepayment':
                 $rules = $this->getFinancingRepayment();
                 break;
-            case 'earlySettlementRepayment':
-                $rules = $this->getEarlySettlementRepayment();
+            case 'earlySettlementPayment':
+                $rules = $this->getEarlySettlementPayment();
                 break;
             case 'miscellaneousIn':
                 $rules = $this->getMiscellaneousIn();
@@ -346,7 +346,7 @@ class CommonPage extends Component
             ]);
         }
 
-        if ($this->module == 'earlySettlementRepayment') {
+        if ($this->module == 'earlySettlementPayment') {
             // pre Settlement
             SpFmsUpTrxPreSettlemtPostn::handle([
                 'clientId' => $this->clientId,

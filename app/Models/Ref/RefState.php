@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class RefState extends Model
 {
     use SoftDeletes;
+
+    protected $connection = 'fms';
     protected $table   = 'ref.states';
     protected $guarded = [];
     protected $casts   = [

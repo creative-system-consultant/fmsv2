@@ -41,21 +41,18 @@
 
                     <div class="mt-5">
                         @if($type_payment_in == 'Payment Contribution')
-                            {{-- <livewire:teller.payment-contribution.payment-contribution /> --}}
                             <livewire:general.teller.common-page
                                 module='paymentContribution'
                                 searchMbrNo=true
                                 searchTotContribution=true
                             />
                         @elseif($type_payment_in == 'Purchase Share')
-                            {{-- <livewire:teller.purchase-share.purchase-share /> --}}
                             <livewire:general.teller.common-page
                                 module='purchaseShare'
                                 searchMbrNo=true
                                 searchTotShare=true
                             />
                         @elseif($type_payment_in == 'Financing Repayment')
-                            {{-- <livewire:teller.financing-repayment.financing-repayment /> --}}
                             <livewire:general.teller.common-page
                                 module='financingRepayment'
                                 searchMthInstallAmt=true
@@ -63,9 +60,8 @@
                                 searchTotContribution=true
                             />
                         @elseif($type_payment_in == 'Early Settlement Payment')
-                            {{-- <livewire:teller.settlement-payment.settlement-payment /> --}}
                             <livewire:general.teller.common-page
-                                module='earlySettlementRepayment'
+                                module='earlySettlementPayment'
                                 searchAccNo=true
                                 searchBalOutstanding=true
                                 searchRebate=true
@@ -76,7 +72,6 @@
                             <livewire:teller.third-party.third-party />
 
                         @elseif($type_payment_in == 'Miscellaneous in')
-                            {{-- <livewire:teller.miscellaneous-in.miscellaneous-in /> --}}
                             <livewire:general.teller.common-page
                                 module='miscellaneousIn'
                                 searchMbrNo=true
@@ -117,7 +112,6 @@
                             <livewire:teller.withdraw-contribution.withdraw-contribution />
 
                         @elseif($type_payment_out == 'Withdraw Share')
-                            {{-- <livewire:teller.withdraw-share.withdraw-share /> --}}
                             <livewire:general.teller.common-page
                                 module='withdrawShare'
                                 searchMbrNo=true
@@ -143,7 +137,7 @@
 
                         @elseif($type_payment_out == 'Dividen Batch Widthdrawal')
                             <livewire:teller.dividen-batch.dividen-batch />
-                        
+
                         @elseif($type_payment_out == 'Transfer Share')
                             <livewire:teller.transfer-share.transfer-share />
 

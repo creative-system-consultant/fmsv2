@@ -38,7 +38,7 @@ class CustomerSearch extends Component
 
     public function setHeaders()
     {
-        if ($this->customQuery == 'financingRepayment' || $this->customQuery == 'earlySettlementRepayment') {
+        if ($this->customQuery == 'financingRepayment' || $this->customQuery == 'earlySettlementPayment') {
             $this->headers = [
                 "IDENTITY NO.",
                 "NAME",
@@ -172,8 +172,8 @@ class CustomerSearch extends Component
             case 'financingRepayment':
                 $customers = GeneralCustomerSearch::getFinancingRepaymentData($this->searchBy, $this->search);
                 break;
-            case 'earlySettlementRepayment':
-                $customers = GeneralCustomerSearch::getEarlySettlementRepaymentData($this->searchBy, $this->search);
+            case 'earlySettlementPayment':
+                $customers = GeneralCustomerSearch::getEarlySettlementPaymentData($this->searchBy, $this->search);
                 break;
             case 'withdrawShare':
                 $customers = GeneralCustomerSearch::getWithdrawShareData($this->searchBy, $this->search);

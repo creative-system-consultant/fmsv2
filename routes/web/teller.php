@@ -7,7 +7,6 @@ use App\Livewire\Teller\MiscellaneousOut\MiscellaneousOutList;
 use App\Livewire\Teller\MiscellaneousOut\MiscellaneousOutCreate;
 use App\Livewire\Teller\Disbursement\DisbursementTransaction;
 use App\Livewire\Teller\WithdrawContribution\WithdrawContribution;
-use App\Livewire\Teller\WithdrawShare\WithdrawShare;
 use App\Livewire\Teller\CloseMembership\CloseMembership;
 use App\Livewire\Teller\TransferShare\TransferShare;
 use App\Livewire\Teller\PaymentMember\PaymentMember;

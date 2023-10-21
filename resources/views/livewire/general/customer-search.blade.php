@@ -168,14 +168,14 @@
                             <x-slot name="tbody">
                                 @forelse ($customers as $item)
                                     <tr>
-                                        @if($customQuery == 'financingRepayment' || $customQuery == 'earlySettlementRepayment')
+                                        @if($customQuery == 'financingRepayment' || $customQuery == 'earlySettlementPayment')
                                             @php
                                             $values = [
                                                 $item->identity_no,
                                                 $item->name,
                                                 $item->account_no,
                                                 $item->approved_limit,
-                                                '-',
+                                                $item->product,
                                                 null // placeholder for the button
                                             ];
                                             @endphp

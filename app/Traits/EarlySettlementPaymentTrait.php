@@ -4,7 +4,7 @@ namespace App\Traits;
 
 trait EarlySettlementPaymentTrait
 {
-    public function getEarlySettlementRepayment()
+    public function getEarlySettlementPayment()
     {
         if ($this->selectedType == 'cheque') {
             return [

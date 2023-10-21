@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class RefRelationship extends Model
 {
     use SoftDeletes;
+
+    protected $connection = 'fms';
     protected $table   = 'ref.relationships';
     protected $guarded = [];
     protected $casts   = [
