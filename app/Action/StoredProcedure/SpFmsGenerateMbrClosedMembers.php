@@ -4,12 +4,12 @@ namespace App\Action\StoredProcedure;
 
 use DB;
 
-class SpFmsGenerateMbrWithdrawShare
+class SpFmsGenerateMbrClosedMembers
 {
     public static function handle($clientId, $refNo)
     {
         // Define the stored procedure name
-        $sp = 'FMS.generate_mbr_withdraw_share';
+        $sp = 'FMS.generate_mbr_closed_members';
 
         // Construct the SQL command to execute the stored procedure
         $sql = "exec " . $sp . " :clientId, :refNo";

@@ -21,7 +21,7 @@ class SpFmsUpTrx3800FinancingPayment
         $sql = "SET NOCOUNT ON; exec " . $sp . "  :clientId, :accNo, :txnAmt, :txnCode, :docNo, :txnDate, :remarks, :bankClient, :userId";
 
         // Execute the statement using Laravel's database query builder and capture the result.
-        $result = DB::statement($sql, $data);
+        $result = DB::connection('fms')->statement($sql, $data);
 
         // Return the result of the statement execution.
         return $result;

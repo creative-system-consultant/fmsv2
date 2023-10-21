@@ -24,7 +24,7 @@ class SpFmsUpTrx3950RefundAdvance
         $sql = "exec " . $sp . " :clientId, :accountNo, :amount, :transactionDate, :txnCode, :remark, :documentNo, :userId, :bank, :bankIbt";
 
         // Execute the SQL statement using Laravel's database facade.
-        DB::statement($sql, $data);
+        DB::connection('fms')->statement($sql, $data);
 
         // Return 'DONE' upon successful execution.
         return 'DONE';

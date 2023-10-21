@@ -76,6 +76,7 @@
                                 module='miscellaneousIn'
                                 searchMbrNo=true
                                 searchStaffNo=true
+                                searchMiscAmt=true
                             />
 
                         @elseif($type_payment_in == 'Autopay')
@@ -85,7 +86,9 @@
                             <livewire:teller.settlement-overlap.settlement-overlap />
 
                         @elseif($type_payment_in == 'Bulk Payment')
-                            <livewire:general.teller.common-page module='bulkPayment' />
+                            <livewire:general.teller.common-page
+                                module='bulkPayment'
+                            />
                         @endif
                     </div>
                 </div>
@@ -118,7 +121,17 @@
                                 searchTotShare=true
                             />
                         @elseif($type_payment_out == 'Close Membership')
-                            <livewire:teller.close-membership.close-membership />
+                            {{-- <livewire:teller.close-membership.close-membership /> --}}
+                            <livewire:general.teller.common-page
+                                module='closeMembership'
+                                searchMbrNo=true
+                                searchTotShare=true
+                                searchTotContribution=true
+                                searchFee=true
+                                searchMiscAmt=true
+                                searchBalDividen=true
+                                searchAdvPayment=true
+                            />
 
                         @elseif($type_payment_out == 'Payment to Members')
                             <livewire:teller.payment-member.payment-member />

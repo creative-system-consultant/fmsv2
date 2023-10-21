@@ -17,6 +17,10 @@
             :searchBalOutstanding="$searchBalOutstanding"
             :searchRebate="$searchRebate"
             :searchSettleProfit="$searchSettleProfit"
+            :searchMiscAmt="$searchMiscAmt"
+            :searchFee="$searchFee"
+            :searchBalDividen="$searchBalDividen"
+            :searchAdvPayment="$searchAdvPayment"
             :customQuery="$this->customQuery"
         />
 
@@ -94,7 +98,7 @@
                                 @endforeach
                             </x-select>
 
-                            @if($module == 'withdrawShare')
+                            @if($module == 'withdrawShare' || $module == 'closeMembership')
                                 <x-input label="Document No" wire:model="docNo" disabled />
                             @else
                                 <x-input label="Document No" wire:model="docNo" />

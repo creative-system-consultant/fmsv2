@@ -2,6 +2,7 @@
 
 namespace App\Livewire\General\Teller;
 
+use App\Action\StoredProcedure\SpFmsGenerateMbrClosedMembers;
 use App\Action\StoredProcedure\SpFmsGenerateMbrWithdrawShare;
 use App\Action\StoredProcedure\SpFmsUpTrx3800FinancingPayment;
 use App\Action\StoredProcedure\SpFmsUpTrx3920EarlySettlement;
@@ -9,6 +10,7 @@ use App\Action\StoredProcedure\SpFmsUpTrxContributionIn;
 use App\Action\StoredProcedure\SpFmsUpTrxMiscInBk;
 use App\Action\StoredProcedure\SpFmsUpTrxPaymentAll;
 use App\Action\StoredProcedure\SpFmsUpTrxPreSettlemtPostn;
+use App\Action\StoredProcedure\SpFmsUpTrxRetirementProcess;
 use App\Livewire\General\CustomerSearch;
 use App\Livewire\Teller\General\MembersBankInfo;
 use App\Models\Systm\SysMsgSp;
@@ -19,6 +21,7 @@ use App\Services\General\PopupService;
 use App\Services\Model\BankIbtService;
 use App\Services\Model\BankService;
 use App\Services\Model\FmsGlobalParm;
+use App\Traits\CloseMembershipRulesTrait;
 use App\Traits\EarlySettlementPaymentTrait;
 use App\Traits\FinancingRepaymentRulesTrait;
 use App\Traits\MiscellaneousInRulesTrait;
@@ -34,7 +37,7 @@ class CommonPage extends Component
         // payment in
         PaymentContributionRulesTrait, PurchaseShareRulesTrait, FinancingRepaymentRulesTrait, EarlySettlementPaymentTrait, MiscellaneousInRulesTrait, BulkPaymentRulesTrait,
         // payment out
-        WithdrawShareRulesTrait;
+        WithdrawShareRulesTrait, CloseMembershipRulesTrait;
 
     public $module = '';
     public $category = false;
@@ -54,6 +57,10 @@ class CommonPage extends Component
     public $searchBalOutstanding = false;
     public $searchRebate = false;
     public $searchSettleProfit = false;
+    public $searchMiscAmt = false;
+    public $searchFee = false;
+    public $searchBalDividen = false;
+    public $searchAdvPayment = false;
 
     // mount variable
     public $startDate, $endDate, $refBank, $refBankIbt;
@@ -121,6 +128,9 @@ class CommonPage extends Component
             // payment out
             case 'withdrawShare':
                 $this->setupWithdrawShare();
+                break;
+            case 'closeMembership':
+                $this->setupCloseMembership();
                 break;
         }
     }
@@ -202,6 +212,11 @@ class CommonPage extends Component
         $this->txnCode = '3104';
     }
 
+    private function setupCloseMembership()
+    {
+        $this->txnCode = '3101';
+    }
+
     private function setDefaultCategory()
     {
         if (!empty($this->categoryList)) {
@@ -219,6 +234,8 @@ class CommonPage extends Component
                 return 'earlySettlementPayment';
             case 'withdrawShare':
                 return 'withdrawShare';
+            case 'closeMembership':
+                return 'closeMembership';
             default:
                 return '';
         }
@@ -230,11 +247,11 @@ class CommonPage extends Component
         // $this->loading = true;
         $this->customer = $customer;
         $this->bankMember = $customer['bank_id'];
-        $this->mbrNo = (string) $customer['fms_membership']['mbr_no'];
+        $this->mbrNo = (string) $customer['mbr_no'];
 
         if($this->module == 'withdrawShare')
         {
-            $this->totalShareValid = $customer['fms_membership']['total_share'] - $this->minShare;
+            $this->totalShareValid = $customer['total_share'] - $this->minShare;
             $this->txnAmt = $this->totalShareValid;
             $this->saveButton = $this->bankMember && $customer['bank_acct_no'];
 
@@ -242,10 +259,17 @@ class CommonPage extends Component
             $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
             $this->docNo = SpFmsGenerateMbrWithdrawShare::handle(1, $this->mbrNo);
 
+        } elseif($this->module == 'closeMembership') {
+            $this->saveButton = $this->bankMember && $customer['bank_acct_no'];
+            $this->ic = $customer['identity_no'];
+            $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
+            // $this->docNo = SpFmsGenerateMbrClosedMembers::handle(1, $this->mbrNo);
+            $this->docNo = 'PV/123';
+
         } elseif($this->module == 'earlySettlementPayment') {
             $this->idMsg = mt_rand(100000000, 999999999);
-            $this->accNo = $customer['fmsMembership']['fmsAccountMaster']['acaccount_no'];
-            $this->accId = $customer['fmsMembership']['fmsAccountMaster']['id'];
+            $this->accNo = $customer['acaccount_no'];
+            $this->accId = $customer['id'];
 
         } else {
             $this->saveButton = true;
@@ -306,6 +330,9 @@ class CommonPage extends Component
             // payment out
             case 'withdrawShare':
                 $rules = $this->getWithdrawShareRules();
+                break;
+            case 'closeMembership':
+                $rules = $this->getCloseMembershipRules();
                 break;
         }
 
@@ -409,6 +436,19 @@ class CommonPage extends Component
                 'bankMember' => $this->bankMember,
                 'userId' => auth()->id(),
                 'chequeDate' => $this->chequeDate
+            ]);
+        }
+
+        if ($this->module == 'closeMembership') {
+            $result = SpFmsUpTrxRetirementProcess::handle([
+                'clientId' => $this->clientId,
+                'mbrNo' => $this->mbrNo,
+                'txnAmt' => $this->txnAmt,
+                'txnDate' => $this->txnDate,
+                'docNo' => $this->docNo,
+                'remarks' => $this->remarks,
+                'userId' => auth()->id(),
+                'bankClient' => $this->bankClient
             ]);
         }
 

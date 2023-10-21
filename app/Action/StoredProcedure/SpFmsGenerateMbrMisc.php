@@ -20,7 +20,7 @@ class SpFmsGenerateMbrMisc
         $sql = "exec " . $sp . " :clientId, :mbrNo";
 
         // Execute the statement using Laravel's database query builder and capture the result.
-        $result = DB::statement($sql, $data);
+        $result = DB::connection('fms')->statement($sql, $data);
 
         // Return the result of the statement execution.
         return $result;

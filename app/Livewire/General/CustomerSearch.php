@@ -24,6 +24,10 @@ class CustomerSearch extends Component
     public $searchBalOutstanding, $searchBalOutstandingAmt;
     public $searchRebate, $searchRebateAmt;
     public $searchSettleProfit, $searchSettleProfitAmt;
+    public $searchMiscAmt, $searchMiscAmtValue;
+    public $searchFee, $searchFeeValue = 10;
+    public $searchBalDividen, $searchBalDividenValue;
+    public $searchAdvPayment, $searchAdvPaymentValue;
 
     public $customQuery = '';
 
@@ -55,6 +59,13 @@ class CustomerSearch extends Component
                 "LAST PAYMENT DATE",
                 "ACTION"
             ];
+        } elseif ($this->customQuery == 'closeMembership') {
+            $this->headers = [
+                "MEMBERSHIP NO",
+                "IDENTITY NO",
+                "NAME",
+                "ACTION"
+            ];
         } else {
             $this->headers = [
                 "STAFF NO",
@@ -82,40 +93,56 @@ class CustomerSearch extends Component
 
     private function getData($uuid)
     {
-        $customer = CifCustomer::getCustomerSearchData($uuid);
+        if($this->customQuery == 'closeMembership') {
+            $customer = GeneralCustomerSearch::getCloseMembership($uuid);
+        } else {
+            $customer = CifCustomer::getCustomerSearchData($uuid);
+        }
 
         $this->name = $customer->name;
 
         if ($this->searchMbrNo) {
-            $this->searchMbrNoValue = $customer->fmsMembership->mbr_no;
+            $this->searchMbrNoValue = $customer->mbr_no;
         }
 
         if ($this->searchStaffNo) {
-            $this->searchStaffNoValue = $customer->fmsMembership->staff_no;
+            $this->searchStaffNoValue = $customer->staff_no;
         }
 
         if ($this->searchAccNo) {
-            $this->searchAccNoValue = $customer->fmsMembership->fmsAccountMaster->account_no;
+            $this->searchAccNoValue = $customer->account_no;
         }
 
         if ($this->searchTotContribution) {
-            $this->searchTotContributionAmt = number_format($customer->fmsMembership->total_contribution, 2);
+            $this->searchTotContributionAmt = number_format($customer->total_contribution, 2) ?? 0;
         }
 
         if ($this->searchTotShare) {
-            $this->searchTotShareAmt = number_format($customer->fmsMembership->total_share, 2);
+            $this->searchTotShareAmt = number_format($customer->total_share, 2) ?? 0;
         }
 
         if ($this->searchBalOutstanding) {
-            $this->searchBalOutstandingAmt = number_format($customer->fmsMembership->fmsAccountMaster->fmsAccountPosition->bal_outstanding, 2);
+            $this->searchBalOutstandingAmt = number_format($customer->bal_outstanding, 2) ?? 0;
         }
 
         if ($this->searchRebate) {
-            $this->searchRebateAmt = number_format($customer->fmsMembership->fmsAccountMaster->rebate_amt, 2);
+            $this->searchRebateAmt = number_format($customer->rebate_amt, 2) ?? 0;
         }
 
         if ($this->searchSettleProfit) {
-            $this->searchSettleProfitAmt = number_format($customer->fmsMembership->fmsAccountMaster->settle_profit, 2);
+            $this->searchSettleProfitAmt = number_format($customer->settle_profit, 2) ?? 0;
+        }
+
+        if ($this->searchMiscAmt) {
+            $this->searchMiscAmtValue = number_format($customer->misc_amt, 2) ?? 0;
+        }
+
+        if ($this->searchBalDividen) {
+            $this->searchBalDividenValue = number_format($customer->bal_dividen, 2) ?? 0;
+        }
+
+        if ($this->searchAdvPayment) {
+            $this->searchAdvPaymentValue = number_format($customer->advance_payment, 2) ?? 0;
         }
 
         return $customer;
@@ -177,6 +204,9 @@ class CustomerSearch extends Component
                 break;
             case 'withdrawShare':
                 $customers = GeneralCustomerSearch::getWithdrawShareData($this->searchBy, $this->search);
+                break;
+            case 'closeMembership':
+                $customers = GeneralCustomerSearch::getAllCloseMembership($this->searchBy, $this->search);
                 break;
             default:
                 $customers = GeneralCustomerSearch::getData($this->searchBy, $this->search);

@@ -4,20 +4,15 @@ namespace App\Action\StoredProcedure;
 
 use DB;
 
-class SpFmsUpTrxPreSettlemtPostn
+class SpFmsUpTrxRetirementProcess
 {
-    public function __construct()
-    {
-        //
-    }
-
     public static function handle($data)
     {
         // Define the name of the stored procedure.
-        $sp = 'FMS.up_trx_pre_settlemt_postn';
+        $sp = 'FMS.up_trx_retirement_process';
 
         // Construct the SQL statement to execute the stored procedure with provided parameters.
-        $sql = "exec " . $sp . " :clientId, :accNo, :userId, :idMsg, :accId";
+        $sql = "exec " . $sp . " :clientId, :mbrNo, :txnAmt, :txnDate, :docNo, :remarks, :userId, :bankClient";
 
         // Execute the statement using Laravel's database query builder and capture the result.
         $result = DB::connection('fms')->statement($sql, $data);

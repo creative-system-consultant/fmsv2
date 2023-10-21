@@ -11,69 +11,69 @@
                 </div>
 
                 @if($searchMbrNo)
-                <div class="w-full md:w-64">
-                    <x-input
-                        label="Membership No :"
-                        wire:model="searchMbrNoValue"
-                        disabled
-                    />
-                </div>
+                    <div class="w-full md:w-64">
+                        <x-input
+                            label="Membership No :"
+                            wire:model="searchMbrNoValue"
+                            disabled
+                        />
+                    </div>
                 @endif
 
                 @if($searchStaffNo)
-                <div class="w-full md:w-64">
-                    <x-input
-                        label="Staff No :"
-                        wire:model="searchStaffNoValue"
-                        disabled
-                    />
-                </div>
+                    <div class="w-full md:w-64">
+                        <x-input
+                            label="Staff No :"
+                            wire:model="searchStaffNoValue"
+                            disabled
+                        />
+                    </div>
                 @endif
 
                 @if($searchAccNo)
-                <div class="w-full md:w-64">
-                    <x-input
-                        label="Staff No :"
-                        wire:model="searchAccNoValue"
-                        disabled
-                    />
-                </div>
+                    <div class="w-full md:w-64">
+                        <x-input
+                            label="Staff No :"
+                            wire:model="searchAccNoValue"
+                            disabled
+                        />
+                    </div>
                 @endif
 
                 @if($searchMthInstallAmt)
-                <x-inputs.currency
-                    class="!pl-[2.5rem]"
-                    label="Monthly Installment Amount"
-                    prefix="RM"
-                    thousands=","
-                    decimal="."
-                    wire:model="searchMthInstallAmtValue"
-                    disabled
-                />
+                    <x-inputs.currency
+                        class="!pl-[2.5rem]"
+                        label="Monthly Installment Amount"
+                        prefix="RM"
+                        thousands=","
+                        decimal="."
+                        wire:model="searchMthInstallAmtValue"
+                        disabled
+                    />
                 @endif
 
                 @if($searchInstallAmtArear)
-                <x-inputs.currency
-                    class="!pl-[2.5rem]"
-                    label="Installment Amount in Arrears"
-                    prefix="RM"
-                    thousands=","
-                    decimal="."
-                    wire:model="searchInstallAmtArearAmt"
-                    disabled
-                />
+                    <x-inputs.currency
+                        class="!pl-[2.5rem]"
+                        label="Installment Amount in Arrears"
+                        prefix="RM"
+                        thousands=","
+                        decimal="."
+                        wire:model="searchInstallAmtArearAmt"
+                        disabled
+                    />
                 @endif
 
                 @if($searchTotContribution)
-                <x-inputs.currency
-                    class="!pl-[2.5rem]"
-                    label="Amount"
-                    prefix="RM"
-                    thousands=","
-                    decimal="."
-                    wire:model="searchTotContributionAmt"
-                    disabled
-                />
+                    <x-inputs.currency
+                        class="!pl-[2.5rem]"
+                        label="Total Contribution"
+                        prefix="RM"
+                        thousands=","
+                        decimal="."
+                        wire:model="searchTotContributionAmt"
+                        disabled
+                    />
                 @endif
 
                 @if($searchTotShare)
@@ -91,7 +91,7 @@
                 @if($searchBalOutstanding)
                     <x-inputs.currency
                         class="!pl-[2.5rem]"
-                        label="Total Share"
+                        label="Total Balance Outstanding"
                         prefix="RM"
                         thousands=","
                         decimal="."
@@ -103,7 +103,7 @@
                 @if($searchRebate)
                     <x-inputs.currency
                         class="!pl-[2.5rem]"
-                        label="Total Share"
+                        label="Total Rebate"
                         prefix="RM"
                         thousands=","
                         decimal="."
@@ -115,11 +115,59 @@
                 @if($searchSettleProfit)
                     <x-inputs.currency
                         class="!pl-[2.5rem]"
-                        label="Total Share"
+                        label="Total Settle Profit"
                         prefix="RM"
                         thousands=","
                         decimal="."
                         wire:model="searchSettleProfitAmt"
+                        disabled
+                    />
+                @endif
+
+                @if($searchMiscAmt)
+                    <x-inputs.currency
+                        class="!pl-[2.5rem]"
+                        label="Total Misc Amount"
+                        prefix="RM"
+                        thousands=","
+                        decimal="."
+                        wire:model="searchMiscAmtValue"
+                        disabled
+                    />
+                @endif
+
+                @if($searchFee)
+                    <x-inputs.currency
+                        class="!pl-[2.5rem]"
+                        label="Fee"
+                        prefix="RM"
+                        thousands=","
+                        decimal="."
+                        wire:model="searchFeeValue"
+                        disabled
+                    />
+                @endif
+
+                @if($searchBalDividen)
+                    <x-inputs.currency
+                        class="!pl-[2.5rem]"
+                        label="Total Dividen"
+                        prefix="RM"
+                        thousands=","
+                        decimal="."
+                        wire:model="searchBalDividenValue"
+                        disabled
+                    />
+                @endif
+
+                @if($searchAdvPayment)
+                    <x-inputs.currency
+                        class="!pl-[2.5rem]"
+                        label="Total Advance Payment"
+                        prefix="RM"
+                        thousands=","
+                        decimal="."
+                        wire:model="searchAdvPaymentValue"
                         disabled
                     />
                 @endif
@@ -189,6 +237,15 @@
                                                 null // placeholder for the button
                                             ];
                                             @endphp
+                                        @elseif($customQuery == 'closeMembership')
+                                            @php
+                                            $values = [
+                                                $item->mbr_no,
+                                                $item->identity_no,
+                                                $item->name,
+                                                null // placeholder for the button
+                                            ];
+                                            @endphp
                                         @else
                                             @php
                                             $values = [
@@ -206,8 +263,6 @@
 
                                             if($customQuery == 'financingRepayment') {
                                                 $wireClickFunction = 'selectedAccNo(\''.$item->account_no.'\')';
-                                            // } elseif($customQuery == 'withdrawShare') {
-                                            //     $wireClickFunction = 'selectedUuid(\''.$item->uuid.'\')';
                                             } else {
                                                 $wireClickFunction = 'selectedUuid(\''.$item->uuid.'\')';
                                             }
