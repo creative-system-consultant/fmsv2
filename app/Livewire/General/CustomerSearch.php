@@ -13,6 +13,8 @@ class CustomerSearch extends Component
 {
     use WithPagination;
 
+    public $clientId;
+
     public $name;
     public $searchMbrNo, $searchMbrNoValue;
     public $searchStaffNo, $searchStaffNoValue;
@@ -37,6 +39,7 @@ class CustomerSearch extends Component
 
     public function mount()
     {
+        $this->clientId = auth()->user()->client_id;
         $this->setHeaders();
     }
 
@@ -64,6 +67,20 @@ class CustomerSearch extends Component
                 "MEMBERSHIP NO",
                 "IDENTITY NO",
                 "NAME",
+                "ACTION"
+            ];
+        } elseif ($this->customQuery == 'refundAdvance') {
+            $this->headers = [
+                "IC NO",
+                "MEMBERSHIP NO",
+                "NAME",
+                "ACCOUNT NO",
+                "PRODUCT",
+                "DISBURSED AMOUNT",
+                "PRIN OUTSTANDING",
+                "UEI OUTSTANDING",
+                "ADV AMOUNT",
+                "BAL OUTS",
                 "ACTION"
             ];
         } else {
@@ -153,29 +170,47 @@ class CustomerSearch extends Component
         $accMaster = $this->getFmsData($accNo);
         $this->dispatch(
             'accNoSelected',
-            bankMember: $accMaster->fmsMembership->cifCustomer->bank_id,
-            accNo: $accNo,
-            mthInstallAmtValue: $accMaster->instal_amount,
-            totalContribution: $accMaster->fmsMembership->total_contribution
+            accMaster: $accMaster,
+            accNo: $accNo
         );
     }
 
     private function getFmsData($accNo)
     {
-        $accMaster = FmsAccountMaster::getAccountData($accNo);
+        if ($this->customQuery == 'financingRepayment') {
+            $accMaster = FmsAccountMaster::getAccountData($accNo);
 
-        $this->name = $accMaster->fmsMembership->cifCustomer->name;
+            $this->name = $accMaster->fmsMembership->cifCustomer->name;
 
-        if ($this->searchMthInstallAmt) {
-            $this->searchMthInstallAmtValue = number_format($accMaster->instal_amount, 2);
+            if ($this->searchMthInstallAmt) {
+                $this->searchMthInstallAmtValue = number_format($accMaster->instal_amount, 2);
+            }
+
+            if ($this->searchInstallAmtArear) {
+                $this->searchInstallAmtArearAmt = number_format($accMaster->fmsAccountPosition->instal_arrears, 2);
+            }
+
+            if ($this->searchTotContribution) {
+                $this->searchTotContributionAmt = number_format($accMaster->fmsMembership->total_contribution, 2);
+            }
         }
 
-        if ($this->searchInstallAmtArear) {
-            $this->searchInstallAmtArearAmt = number_format($accMaster->fmsAccountPosition->instal_arrears, 2);
-        }
+        if ($this->customQuery == 'refundAdvance') {
+            $accMaster = GeneralCustomerSearch::getRrefundAdvance($accNo);
 
-        if ($this->searchTotContribution) {
-            $this->searchTotContributionAmt = number_format($accMaster->fmsMembership->total_contribution, 2);
+            $this->name = $accMaster->name;
+
+            if ($this->searchAdvPayment) {
+                $this->searchAdvPaymentValue = number_format($accMaster->advance_payment, 2) ?? 0;
+            }
+
+            if ($this->searchAccNo) {
+                $this->searchAccNoValue = $accMaster->account_no;
+            }
+
+            if ($this->searchAdvPayment) {
+                $this->searchAdvPaymentValue = number_format($accMaster->advance_payment, 2) ?? 0;
+            }
         }
 
         return $accMaster;
@@ -207,6 +242,9 @@ class CustomerSearch extends Component
                 break;
             case 'closeMembership':
                 $customers = GeneralCustomerSearch::getAllCloseMembership($this->searchBy, $this->search);
+                break;
+            case 'refundAdvance':
+                $customers = GeneralCustomerSearch::getAllRrefundAdvance($this->clientId, $this->searchBy, $this->search);
                 break;
             default:
                 $customers = GeneralCustomerSearch::getData($this->searchBy, $this->search);

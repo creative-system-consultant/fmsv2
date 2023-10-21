@@ -33,7 +33,7 @@
                 @if($searchAccNo)
                     <div class="w-full md:w-64">
                         <x-input
-                            label="Staff No :"
+                            label="Account No :"
                             wire:model="searchAccNoValue"
                             disabled
                         />
@@ -246,6 +246,22 @@
                                                 null // placeholder for the button
                                             ];
                                             @endphp
+                                        @elseif($customQuery == 'refundAdvance')
+                                            @php
+                                            $values = [
+                                                $item->identity_no,
+                                                $item->mbr_no,
+                                                $item->name,
+                                                $item->account_no,
+                                                $item->products,
+                                                $item->disbursed_amount,
+                                                $item->prin_outstanding,
+                                                $item->uei_outstanding,
+                                                $item->advance_payment,
+                                                $item->bal_outstanding,
+                                                null // placeholder for the button
+                                            ];
+                                            @endphp
                                         @else
                                             @php
                                             $values = [
@@ -261,7 +277,7 @@
                                         @php
                                             $wireClickFunction = '';
 
-                                            if($customQuery == 'financingRepayment') {
+                                            if($customQuery == 'financingRepayment' || $customQuery == 'refundAdvance') {
                                                 $wireClickFunction = 'selectedAccNo(\''.$item->account_no.'\')';
                                             } else {
                                                 $wireClickFunction = 'selectedUuid(\''.$item->uuid.'\')';

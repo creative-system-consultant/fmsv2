@@ -183,4 +183,62 @@ class CustomerSearch
 
         return $query;
     }
+
+    public static function getAllRrefundAdvance(
+        $clientId = null,
+        $searchBy = null,
+        $search = null
+    ) {
+        $query = CifCustomer::select([
+                'CIF.CUSTOMERS.uuid',
+                'CIF.CUSTOMERS.identity_no',
+                'CIF.CUSTOMERS.name',
+                'FMS.MEMBERSHIP.mbr_no',
+                'FMS.ACCOUNT_MASTERS.account_no',
+                DB::raw('products = FMS.uf_get_product('. $clientId .', FMS.ACCOUNT_MASTERS.product_id)'),
+                'FMS.ACCOUNT_POSITIONS.disbursed_amount',
+                'FMS.ACCOUNT_POSITIONS.prin_outstanding',
+                'FMS.ACCOUNT_POSITIONS.uei_outstanding',
+                'FMS.ACCOUNT_POSITIONS.advance_payment',
+                'FMS.ACCOUNT_POSITIONS.bal_outstanding'
+            ])
+            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', '=', 'CIF.CUSTOMERS.id')
+            ->join('FMS.ACCOUNT_MASTERS', 'FMS.ACCOUNT_MASTERS.mbr_no', '=', 'FMS.MEMBERSHIP.mbr_no')
+            ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_MASTERS.ACCOUNT_NO', 'FMS.ACCOUNT_POSITIONS.ACCOUNT_NO')
+            ->where(function ($query) {
+                $query->where('FMS.ACCOUNT_POSITIONS.disbursed_amount', '>', 0)
+                    ->orWhereNull('FMS.ACCOUNT_POSITIONS.disbursed_amount');
+            })
+            ->where('FMS.ACCOUNT_POSITIONS.advance_payment', '>', 0);
+
+        if ($search && $searchBy) {
+            $query->where($searchBy, 'like', '%' . $search . '%');
+        }
+
+        return $query->paginate(10);
+    }
+
+    public static function getRrefundAdvance($accNo)
+    {
+        $query = CifCustomer::select([
+            'CIF.CUSTOMERS.identity_no',
+            'CIF.CUSTOMERS.name',
+            'CIF.CUSTOMERS.bank_id',
+            'CIF.CUSTOMERS.bank_acct_no',
+            'FMS.ACCOUNT_MASTERS.account_no',
+            'FMS.ACCOUNT_POSITIONS.advance_payment',
+        ])
+        ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', '=', 'CIF.CUSTOMERS.id')
+        ->join('FMS.ACCOUNT_MASTERS', 'FMS.ACCOUNT_MASTERS.mbr_no', '=', 'FMS.MEMBERSHIP.mbr_no')
+        ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_MASTERS.ACCOUNT_NO', 'FMS.ACCOUNT_POSITIONS.ACCOUNT_NO')
+        ->where(function ($query) {
+            $query->where('FMS.ACCOUNT_POSITIONS.disbursed_amount', '>', 0)
+                ->orWhereNull('FMS.ACCOUNT_POSITIONS.disbursed_amount');
+        })
+        ->where('FMS.ACCOUNT_POSITIONS.advance_payment', '>', 0)
+        ->where('FMS.ACCOUNT_MASTERS.account_no', $accNo)
+        ->first();
+
+        return $query;
+    }
 }

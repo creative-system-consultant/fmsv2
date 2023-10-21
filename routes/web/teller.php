@@ -1,8 +1,6 @@
 <?php
 
 use App\Livewire\Teller\TellerList;
-use App\Livewire\Teller\Refundadvance\RefundAdvanceList;
-use App\Livewire\Teller\Refundadvance\RefundAdvanceCreate;
 use App\Livewire\Teller\MiscellaneousOut\MiscellaneousOutList;
 use App\Livewire\Teller\MiscellaneousOut\MiscellaneousOutCreate;
 use App\Livewire\Teller\Disbursement\DisbursementTransaction;
@@ -21,8 +19,6 @@ use App\Livewire\Teller\DividenApproval\DividenApproval;
 use App\Livewire\Teller\DividenBatch\DividenBatch;
 
 Route::get('list', TellerList::class)->name('teller-list');
-Route::get('refund-advance-list', RefundAdvanceList::class)->name('teller-refund-advance-list');
-Route::get('refund-advance-create/{account_no}', RefundAdvanceCreate::class)->name('teller-refund-advance-create');
 Route::get('miscellaneous-out-list', MiscellaneousOutList::class)->name('teller-miscellaneous-out-list');
 Route::get('miscellaneous-out-create/{id}', MiscellaneousOutCreate::class)->name('teller-miscellaneous-out-create');
 Route::get('disbursement', DisbursementTransaction::class)->name('teller-disbursement');

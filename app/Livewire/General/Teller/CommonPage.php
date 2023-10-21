@@ -6,6 +6,7 @@ use App\Action\StoredProcedure\SpFmsGenerateMbrClosedMembers;
 use App\Action\StoredProcedure\SpFmsGenerateMbrWithdrawShare;
 use App\Action\StoredProcedure\SpFmsUpTrx3800FinancingPayment;
 use App\Action\StoredProcedure\SpFmsUpTrx3920EarlySettlement;
+use App\Action\StoredProcedure\SpFmsUpTrx3950RefundAdvance;
 use App\Action\StoredProcedure\SpFmsUpTrxContributionIn;
 use App\Action\StoredProcedure\SpFmsUpTrxMiscInBk;
 use App\Action\StoredProcedure\SpFmsUpTrxPaymentAll;
@@ -26,6 +27,7 @@ use App\Traits\EarlySettlementPaymentTrait;
 use App\Traits\FinancingRepaymentRulesTrait;
 use App\Traits\MiscellaneousInRulesTrait;
 use App\Traits\PurchaseShareRulesTrait;
+use App\Traits\RefundAdvanceRulesTrait;
 use App\Traits\WithdrawShareRulesTrait;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -37,7 +39,7 @@ class CommonPage extends Component
         // payment in
         PaymentContributionRulesTrait, PurchaseShareRulesTrait, FinancingRepaymentRulesTrait, EarlySettlementPaymentTrait, MiscellaneousInRulesTrait, BulkPaymentRulesTrait,
         // payment out
-        WithdrawShareRulesTrait, CloseMembershipRulesTrait;
+        WithdrawShareRulesTrait, CloseMembershipRulesTrait, RefundAdvanceRulesTrait;
 
     public $module = '';
     public $category = false;
@@ -68,6 +70,7 @@ class CommonPage extends Component
     public $minShare;
     public $minFinRepay;
     public $totalShareValid;
+    public $advancePayment;
 
     // fetch variable
     public $customer, $ic, $mbrNo, $accId, $accNo, $totalContribution, $idMsg;
@@ -88,6 +91,7 @@ class CommonPage extends Component
         $this->startDate = ActgPeriod::determinePeriodRange()['startDate'];
         $this->endDate = ActgPeriod::determinePeriodRange()['endDate'];
 
+        //list all module do not use category
         $this->tellerOutModule = [
             "withdrawContribution",
             "withdrawShare",
@@ -131,6 +135,9 @@ class CommonPage extends Component
                 break;
             case 'closeMembership':
                 $this->setupCloseMembership();
+                break;
+            case 'refundAdvance':
+                $this->setupRefundAdvance();
                 break;
         }
     }
@@ -217,6 +224,15 @@ class CommonPage extends Component
         $this->txnCode = '3101';
     }
 
+    private function setupRefundAdvance()
+    {
+        $this->category = true;
+        $this->categoryList = [
+            ['name' => 'Pay to Members', 'code' => '3950', 'icon' => 'cash'],
+        ];
+        $this->setDefaultCategory();
+    }
+
     private function setDefaultCategory()
     {
         if (!empty($this->categoryList)) {
@@ -236,6 +252,8 @@ class CommonPage extends Component
                 return 'withdrawShare';
             case 'closeMembership':
                 return 'closeMembership';
+            case 'refundAdvance':
+                return 'refundAdvance';
             default:
                 return '';
         }
@@ -278,15 +296,25 @@ class CommonPage extends Component
     }
 
     #[On('accNoSelected')]
-    public function handleAccNoSelection($bankMember, $accNo, $mthInstallAmtValue, $totalContribution)
+    public function handleAccNoSelection($accMaster, $accNo)
     {
-        $this->additionalField = true;
-        $this->saveButton = true;
+        if($this->module == 'financingRepayment') {
+            $this->accNo = (string) $accNo;
+            $this->additionalField = true;
+            $this->bankMember = $accMaster['fms_membership']['cif_customer']['bank_id'];
+            $this->txnAmt = $accMaster['instal_amount'];
+            $this->totalContribution = $accMaster['fms_membership']['total_contribution'];
+            $this->saveButton = true;
+        }
 
-        $this->bankMember = $bankMember;
-        $this->accNo = (string) $accNo;
-        $this->txnAmt = $mthInstallAmtValue;
-        $this->totalContribution = $totalContribution;
+        if($this->module == 'refundAdvance') {
+            $this->accNo = (string) $accMaster['account_no'];
+            $this->advancePayment = $accMaster['advance_payment'];
+            $this->bankMember = $accMaster['bank_id'];
+            $this->ic = $accMaster['identity_no'];
+            $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
+            $this->saveButton = $this->bankMember && $accMaster['bank_acct_no'];
+        }
     }
 
     #[On('updatePayButton')]
@@ -333,6 +361,9 @@ class CommonPage extends Component
                 break;
             case 'closeMembership':
                 $rules = $this->getCloseMembershipRules();
+                break;
+            case 'refundAdvance':
+                $rules = $this->getRefundAdvanceRules();
                 break;
         }
 
@@ -452,11 +483,26 @@ class CommonPage extends Component
             ]);
         }
 
+        if ($this->module == 'refundAdvance') {
+            $result = SpFmsUpTrx3950RefundAdvance::handle([
+                'clientId' => $this->clientId,
+                'accNo' => $this->accNo,
+                'txnAmt' => $this->txnAmt,
+                'txnDate' => $this->txnDate,
+                'txnCode' => $this->txnCode,
+                'remarks' => $this->remarks,
+                'docNo' => $this->docNo,
+                'userId' => auth()->id(),
+                'bankMember' => $this->bankMember,
+                'bankClient' => $this->bankClient
+            ]);
+        }
+
         $result
             ? $this->dialog()->success('Success!', 'The transaction has been recorded.')
             : $this->dialog()->error('Error!', 'Something went wrong.');
 
-        if ($this->module == 'financingRepayment') {
+        if ($this->module == 'financingRepayment' || $this->module == 'refundAdvance') {
             $this->dispatch('refreshComponentAccNo', accNo: $this->accNo)->to(CustomerSearch::class);
         } else {
             $this->dispatch('refreshComponent', uuid: $this->customer['uuid'])->to(CustomerSearch::class);

@@ -121,7 +121,6 @@
                                 searchTotShare=true
                             />
                         @elseif($type_payment_out == 'Close Membership')
-                            {{-- <livewire:teller.close-membership.close-membership /> --}}
                             <livewire:general.teller.common-page
                                 module='closeMembership'
                                 searchMbrNo=true
@@ -146,7 +145,11 @@
                             <livewire:teller.miscellaneous-out.miscellaneous-out-list />
 
                         @elseif($type_payment_out == 'Refund Advance')
-                            <livewire:teller.refund-advance.refund-advance-list />
+                            <livewire:general.teller.common-page
+                                module='refundAdvance'
+                                searchAccNo=true
+                                searchAdvPayment=true
+                            />
 
                         @elseif($type_payment_out == 'Dividen Batch Widthdrawal')
                             <livewire:teller.dividen-batch.dividen-batch />
