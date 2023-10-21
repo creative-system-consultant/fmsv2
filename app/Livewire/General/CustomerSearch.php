@@ -232,10 +232,10 @@ class CustomerSearch extends Component
     {
         switch ($this->customQuery) {
             case 'financingRepayment':
-                $customers = GeneralCustomerSearch::getFinancingRepaymentData($this->searchBy, $this->search);
+                $customers = GeneralCustomerSearch::getFinancingRepaymentData($this->clientId, $this->searchBy, $this->search);
                 break;
             case 'earlySettlementPayment':
-                $customers = GeneralCustomerSearch::getEarlySettlementPaymentData($this->searchBy, $this->search);
+                $customers = GeneralCustomerSearch::getEarlySettlementPaymentData($this->clientId, $this->searchBy, $this->search);
                 break;
             case 'withdrawShare':
                 $customers = GeneralCustomerSearch::getWithdrawShareData($this->searchBy, $this->search);
