@@ -12,6 +12,7 @@ use App\Action\StoredProcedure\SpFmsUpTrxMiscInBk;
 use App\Action\StoredProcedure\SpFmsUpTrxPaymentAll;
 use App\Action\StoredProcedure\SpFmsUpTrxPreSettlemtPostn;
 use App\Action\StoredProcedure\SpFmsUpTrxRetirementProcess;
+use App\Action\StoredProcedure\SpFmsUpTrxThirdparty;
 use App\Livewire\General\CustomerSearch;
 use App\Livewire\Teller\General\MembersBankInfo;
 use App\Models\Systm\SysMsgSp;
@@ -28,6 +29,7 @@ use App\Traits\FinancingRepaymentRulesTrait;
 use App\Traits\MiscellaneousInRulesTrait;
 use App\Traits\PurchaseShareRulesTrait;
 use App\Traits\RefundAdvanceRulesTrait;
+use App\Traits\ThirdPartyRulesTrait;
 use App\Traits\WithdrawShareRulesTrait;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -37,7 +39,7 @@ class CommonPage extends Component
 {
     use Actions,
         // payment in
-        PaymentContributionRulesTrait, PurchaseShareRulesTrait, FinancingRepaymentRulesTrait, EarlySettlementPaymentTrait, MiscellaneousInRulesTrait, BulkPaymentRulesTrait,
+        PaymentContributionRulesTrait, PurchaseShareRulesTrait, FinancingRepaymentRulesTrait, EarlySettlementPaymentTrait, ThirdPartyRulesTrait, MiscellaneousInRulesTrait, BulkPaymentRulesTrait,
         // payment out
         WithdrawShareRulesTrait, CloseMembershipRulesTrait, RefundAdvanceRulesTrait;
 
@@ -63,21 +65,25 @@ class CommonPage extends Component
     public $searchFee = false;
     public $searchBalDividen = false;
     public $searchAdvPayment = false;
+    public $searchInstitute = false;
+    public $searchTrxAmt = false;
+    public $searchModeId = false;
 
     // mount variable
     public $startDate, $endDate, $refBank, $refBankIbt;
     public $minContribution;
     public $minShare;
+    public $minThirdparty;
     public $minFinRepay;
     public $totalShareValid;
     public $advancePayment;
 
     // fetch variable
-    public $customer, $ic, $mbrNo, $accId, $accNo, $totalContribution, $idMsg;
+    public $customer, $ic, $mbrNo, $accId, $accNo, $totalContribution, $idMsg, $instiCode, $mode, $idThirdParty;
     public $saveButton = false;
 
     // input variable
-    public $clientId, $chequeDate, $bankMember, $bankClient, $docNo, $txnAmt, $txnDate, $remarks;
+    public $clientId, $chequeDate, $chequeNo, $bankMember, $bankClient, $docNo, $txnAmt, $txnDate, $remarks;
 
     public $additionalField = false;
 
@@ -122,6 +128,9 @@ class CommonPage extends Component
                 break;
             case 'earlySettlementPayment':
                 $this->setupEarlySettlementPayment();
+                break;
+            case 'thirdParty':
+                $this->setupThirdParty();
                 break;
             case 'miscellaneousIn':
                 $this->setupMiscellaneousIn();
@@ -190,6 +199,20 @@ class CommonPage extends Component
         $this->setDefaultCategory();
     }
 
+    private function setupThirdParty()
+    {
+        $this->category = true;
+        $this->categoryList = [
+            ['name' => 'cheque', 'code' => '1', 'icon' => 'credit-card'],
+            ['name' => 'cash/cdm', 'code' => '2', 'icon' => 'cash'],
+            ['name' => 'ibt', 'code' => '3', 'icon' => 'cash'],
+            ['name' => 'contribution', 'code' => '4', 'icon' => 'cash'],
+            ['name' => 'misc', 'code' => '5', 'icon' => 'cash'],
+        ];
+        $this->minThirdparty = (float) FmsGlobalParm::getAllFmsGlobalParm()->MIN_THIRDPARTY;
+        $this->setDefaultCategory();
+    }
+
     private function setupMiscellaneousIn()
     {
         $this->category = true;
@@ -248,6 +271,8 @@ class CommonPage extends Component
                 return 'financingRepayment';
             case 'earlySettlementPayment':
                 return 'earlySettlementPayment';
+            case 'thirdParty':
+                return 'thirdParty';
             case 'withdrawShare':
                 return 'withdrawShare';
             case 'closeMembership':
@@ -292,6 +317,24 @@ class CommonPage extends Component
         } else {
             $this->saveButton = true;
         }
+        // $this->dispatch('endProcessing');
+    }
+
+    #[On('idSelected')]
+    public function handleIdSelection($customer)
+    {
+        // $this->loading = true;
+        $this->customer = $customer;
+        $this->bankMember = $customer['bank_id'];
+        $this->mbrNo = (string) $customer['mbr_no'];
+
+        if($this->module == 'thirdParty') {
+            $this->idThirdParty = $customer['id'];
+            $this->instiCode = $customer['institution_code'];
+            $this->mode = $customer['mode'];
+        }
+
+        $this->saveButton = true;
         // $this->dispatch('endProcessing');
     }
 
@@ -348,6 +391,9 @@ class CommonPage extends Component
                 break;
             case 'earlySettlementPayment':
                 $rules = $this->getEarlySettlementPayment();
+                break;
+            case 'thirdParty':
+                $rules = $this->getThirdParty();
                 break;
             case 'miscellaneousIn':
                 $rules = $this->getMiscellaneousIn();
@@ -441,6 +487,26 @@ class CommonPage extends Component
             }
         }
 
+        if ($this->module == 'thirdParty') {
+            $result = SpFmsUpTrxThirdparty::handle([
+                'clientId' => $this->clientId,
+                'mbrNo' => $this->mbrNo,
+                'instiCode' => $this->instiCode,
+                'paymentMode' => $this->txnCode,
+                'txnAmt' => $this->txnAmt,
+                'txnDate' => $this->txnDate,
+                'docNo' => $this->docNo,
+                'bankMember' => $this->bankMember,
+                'chequeNo' => $this->chequeNo,
+                'chequeDate' => $this->chequeDate,
+                'remarks' => $this->remarks,
+                'userId' => auth()->id(),
+                'mode' => $this->mode,
+                'bankClient' => $this->bankClient,
+                'idThirdParty' => $this->idThirdParty
+            ]);
+        }
+
         if ($this->module == 'miscellaneousIn') {
             $result = SpFmsUpTrxMiscInBk::handle([
                 'clientId' => $this->clientId,
@@ -504,6 +570,8 @@ class CommonPage extends Component
 
         if ($this->module == 'financingRepayment' || $this->module == 'refundAdvance') {
             $this->dispatch('refreshComponentAccNo', accNo: $this->accNo)->to(CustomerSearch::class);
+        } elseif($this->module == 'thirdParty') {
+            $this->dispatch('refreshComponentId', id: $this->customer['id'])->to(CustomerSearch::class);
         } else {
             $this->dispatch('refreshComponent', uuid: $this->customer['uuid'])->to(CustomerSearch::class);
         }

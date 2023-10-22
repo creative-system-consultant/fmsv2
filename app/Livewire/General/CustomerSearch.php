@@ -30,6 +30,9 @@ class CustomerSearch extends Component
     public $searchFee, $searchFeeValue = 10;
     public $searchBalDividen, $searchBalDividenValue;
     public $searchAdvPayment, $searchAdvPaymentValue;
+    public $searchInstitute, $searchInstituteValue;
+    public $searchTrxAmt, $searchTrxAmtValue;
+    public $searchModeId, $searchModeIdValue;
 
     public $customQuery = '';
 
@@ -52,6 +55,19 @@ class CustomerSearch extends Component
                 "ACCOUNT NO",
                 "APPROVED AMOUNT",
                 "FINANCING",
+                "ACTION"
+            ];
+        } elseif ($this->customQuery == 'thirdParty') {
+            $this->headers = [
+                "NAME",
+                "RECORDED AMOUNT",
+                "TOTAL CONTRIBUTION",
+                "TOTAL MISC",
+                "INSTITUTE",
+                "MODE",
+                "STATUS",
+                "EFFECTIVE DATE",
+                "REMARKS",
                 "ACTION"
             ];
         } elseif ($this->customQuery == 'withdrawShare') {
@@ -165,6 +181,42 @@ class CustomerSearch extends Component
         return $customer;
     }
 
+    public function selectedId($id)
+    {
+        $customer = $this->getIdData($id);
+        $this->dispatch(
+            'idSelected',
+            customer: $customer,
+        );
+    }
+
+    private function getIdData($id)
+    {
+        if($this->customQuery == 'thirdParty') {
+            $customer = GeneralCustomerSearch::getThirdPartyIdData($id);
+        }
+
+        $this->name = $customer->name;
+
+        if ($this->searchMbrNo) {
+            $this->searchMbrNoValue = $customer->mbr_no;
+        }
+
+        if ($this->searchInstitute) {
+            $this->searchInstituteValue = $customer->description;
+        }
+
+        if ($this->searchTrxAmt) {
+            $this->searchTrxAmtValue = number_format($customer-> transaction_amt, 2) ?? 0;
+        }
+
+        if ($this->searchModeId) {
+            $this->searchModeIdValue = $customer->mode;
+        }
+
+        return $customer;
+    }
+
     public function selectedAccNo($accNo)
     {
         $accMaster = $this->getFmsData($accNo);
@@ -228,6 +280,12 @@ class CustomerSearch extends Component
         $this->getFmsData($accNo);
     }
 
+    #[On('refreshComponentId')]
+    public function reloadIdData($id)
+    {
+        $this->getIdData($id);
+    }
+
     public function render()
     {
         switch ($this->customQuery) {
@@ -236,6 +294,9 @@ class CustomerSearch extends Component
                 break;
             case 'earlySettlementPayment':
                 $customers = GeneralCustomerSearch::getEarlySettlementPaymentData($this->clientId, $this->searchBy, $this->search);
+                break;
+            case 'thirdParty':
+                $customers = GeneralCustomerSearch::getThirdPartyData($this->clientId, $this->searchBy, $this->search);
                 break;
             case 'withdrawShare':
                 $customers = GeneralCustomerSearch::getWithdrawShareData($this->searchBy, $this->search);

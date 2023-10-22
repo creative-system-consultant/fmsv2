@@ -3,6 +3,7 @@
 namespace App\Services\Module\General;
 
 use App\Models\Cif\CifCustomer;
+use App\Models\Fms\FmsThirdParty;
 use DB;
 
 class CustomerSearch
@@ -95,6 +96,59 @@ class CustomerSearch
         }
 
         return $query->paginate(10);
+    }
+
+    public static function getThirdPartyData(
+        $clientId = null,
+        $searchBy = null,
+        $search = null,
+    ) {
+        $query = FmsThirdParty::select(
+            'FMS.THIRDPARTY_LIST.id',
+            'CIF.CUSTOMERS.name',
+            'FMS.THIRDPARTY_LIST.transaction_amt',
+            'FMS.MEMBERSHIP.total_contribution',
+            'FMS.MISC_ACCOUNT.misc_amt',
+            'REF.THIRDPARTY.description',
+            'FMS.THIRDPARTY_LIST.mode',
+            'FMS.THIRDPARTY_LIST.status',
+            'FMS.THIRDPARTY_LIST.status_effective_dt',
+            'FMS.THIRDPARTY_LIST.remarks',
+        )
+        ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', 'FMS.THIRDPARTY_LIST.mbr_no')
+        ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', 'FMS.MEMBERSHIP.cif_id')
+        ->join('REF.THIRDPARTY', 'REF.THIRDPARTY.id', 'FMS.THIRDPARTY_LIST.institution_code')
+        ->join('FMS.MISC_ACCOUNT', 'FMS.MISC_ACCOUNT.mbr_no', 'FMS.THIRDPARTY_LIST.mbr_no')
+        ->where('REF.THIRDPARTY.client_id', $clientId)
+        ->where('flag', NULL)
+        ->where('status', '<>', '2');
+
+        if ($search && $searchBy) {
+            $query->where($searchBy, 'like', '%' . $search . '%');
+        }
+
+        return $query->paginate(10);
+    }
+
+    public static function getThirdPartyIdData($id)
+    {
+        $query = FmsThirdParty::select(
+            'FMS.THIRDPARTY_LIST.id',
+            'CIF.CUSTOMERS.name',
+            'CIF.CUSTOMERS.bank_id',
+            'CIF.CUSTOMERS.bank_acct_no',
+            'FMS.THIRDPARTY_LIST.mbr_no',
+            'REF.THIRDPARTY.description',
+            'FMS.THIRDPARTY_LIST.transaction_amt',
+            'FMS.THIRDPARTY_LIST.mode',
+            'FMS.THIRDPARTY_LIST.institution_code'
+        )
+        ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', 'FMS.THIRDPARTY_LIST.mbr_no')
+        ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', 'FMS.MEMBERSHIP.cif_id')
+        ->join('REF.THIRDPARTY', 'REF.THIRDPARTY.id', 'FMS.THIRDPARTY_LIST.institution_code')
+        ->where('FMS.THIRDPARTY_LIST.id', $id);
+
+        return $query->first();
     }
 
     public static function getWithdrawShareData(

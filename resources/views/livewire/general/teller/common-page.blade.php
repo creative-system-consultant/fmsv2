@@ -21,6 +21,9 @@
             :searchFee="$searchFee"
             :searchBalDividen="$searchBalDividen"
             :searchAdvPayment="$searchAdvPayment"
+            :searchInstitute="$searchInstitute"
+            :searchTrxAmt="$searchTrxAmt"
+            :searchModeId="$searchModeId"
             :customQuery="$this->customQuery"
         />
 
@@ -72,6 +75,16 @@
                                 </div>
 
                                 @if($category)
+                                <div class=" {{ $selectedType == 'cheque' && $module == 'thirdParty' ? ' block' : 'hidden'}}">
+                                @endif
+                                    @if($module == 'thirdParty')
+                                        <x-input label="Cheque No" wire:model="chequeNo" />
+                                    @endif
+                                @if($category)
+                                </div>
+                                @endif
+
+                                @if($category)
                                 <div class=" {{ $selectedType == 'cheque' ? ' block' : 'hidden'}}">
                                 @endif
                                     @if($module != 'withdrawShare')
@@ -89,15 +102,18 @@
                                 </div>
                                 @endif
 
-                                <x-select
-                                    label="Bank Client"
-                                    placeholder="-- PLEASE SELECT --"
-                                    wire:model="bankClient"
-                                >
-                                    @foreach ($refBankIbt as $bankIbt)
-                                        <x-select.option label="{{ $bankIbt->description }}" value="{{ $bankIbt->id }}" />
-                                    @endforeach
-                                </x-select>
+                                @if ($module == 'thirdParty' && ($selectedType == 'contribution' || $selectedType == 'misc'))
+                                @else
+                                    <x-select
+                                        label="Bank Client"
+                                        placeholder="-- PLEASE SELECT --"
+                                        wire:model="bankClient"
+                                    >
+                                        @foreach ($refBankIbt as $bankIbt)
+                                            <x-select.option label="{{ $bankIbt->description }}" value="{{ $bankIbt->id }}" />
+                                        @endforeach
+                                    </x-select>
+                                @endif
 
                                 @if($module == 'withdrawShare' || $module == 'closeMembership')
                                     <x-input label="Document No" wire:model="docNo" disabled />

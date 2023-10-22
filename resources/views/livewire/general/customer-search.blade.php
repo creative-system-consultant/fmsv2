@@ -4,7 +4,7 @@
             <div class="flex flex-col items-start w-full space-x-0 space-y-2 md:flex-row md:items-center md:space-x-2 md:space-y-0">
                 <div class="w-full md:w-96">
                     <x-input
-                        label="Name :"
+                        label="Name"
                         wire:model="name"
                         disabled
                     />
@@ -13,7 +13,7 @@
                 @if($searchMbrNo)
                     <div class="w-full md:w-64">
                         <x-input
-                            label="Membership No :"
+                            label="Membership No"
                             wire:model="searchMbrNoValue"
                             disabled
                         />
@@ -23,7 +23,7 @@
                 @if($searchStaffNo)
                     <div class="w-full md:w-64">
                         <x-input
-                            label="Staff No :"
+                            label="Staff No"
                             wire:model="searchStaffNoValue"
                             disabled
                         />
@@ -33,7 +33,7 @@
                 @if($searchAccNo)
                     <div class="w-full md:w-64">
                         <x-input
-                            label="Account No :"
+                            label="Account No"
                             wire:model="searchAccNoValue"
                             disabled
                         />
@@ -171,6 +171,34 @@
                         disabled
                     />
                 @endif
+
+                @if($searchInstitute)
+                    <x-input
+                        label="Institution"
+                        wire:model="searchInstituteValue"
+                        disabled
+                    />
+                @endif
+
+                @if($searchTrxAmt)
+                    <x-inputs.currency
+                        class="!pl-[2.5rem]"
+                        label="Recorded Amount"
+                        prefix="RM"
+                        thousands=","
+                        decimal="."
+                        wire:model="searchTrxAmtValue"
+                        disabled
+                    />
+                @endif
+
+                @if($searchModeId)
+                    <x-input
+                        label="Mode Id"
+                        wire:model="searchModeIdValue"
+                        disabled
+                    />
+                @endif
             </div>
             <div class="mt-3">
                 <x-button
@@ -227,6 +255,40 @@
                                                 null // placeholder for the button
                                             ];
                                             @endphp
+                                        @elseif($customQuery == 'thirdParty')
+                                            @php
+                                            $mode = '';
+                                            $status = '';
+
+                                            if ($item->mode == '1') {
+                                                $mode = 'One Of Payment';
+                                            } elseif ($item->mode == '2') {
+                                                $mode = 'No Expiry';
+                                            } elseif ($item->mode == '3') {
+                                                $mode = 'Period';
+                                            }
+
+                                            if($item->status == '1') {
+                                                $status = 'ACTIVE';
+                                            } elseif($item->status == '2') {
+                                                $status = 'CLOSED';
+                                            } elseif($item->status == '3') {
+                                                $status = 'FREEZE';
+                                            }
+
+                                            $values = [
+                                                $item->name,
+                                                number_format($item->transaction_amt, 2),
+                                                number_format($item->total_contribution, 2),
+                                                number_format($item->misc_amt, 2) ?? 0,
+                                                $item->description,
+                                                $mode,
+                                                $status,
+                                                date('d-m-Y', strtotime($item->status_effective_dt)) ?? 'N/A',
+                                                $item->remarks ?? '',
+                                                null // placeholder for the button
+                                            ];
+                                            @endphp
                                         @elseif($customQuery == 'withdrawShare')
                                             @php
                                             $values = [
@@ -279,7 +341,9 @@
 
                                             if($customQuery == 'financingRepayment' || $customQuery == 'refundAdvance') {
                                                 $wireClickFunction = 'selectedAccNo(\''.$item->account_no.'\')';
-                                            } else {
+                                            } elseif($customQuery == 'thirdParty') {
+                                                $wireClickFunction = 'selectedId(\''.$item->id.'\')';
+                                            }  else {
                                                 $wireClickFunction = 'selectedUuid(\''.$item->uuid.'\')';
                                             }
                                         @endphp

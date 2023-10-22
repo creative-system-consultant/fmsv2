@@ -69,7 +69,13 @@
                             />
 
                         @elseif($type_payment_in == 'Third Party')
-                            <livewire:teller.third-party.third-party />
+                            <livewire:general.teller.common-page
+                                module='thirdParty'
+                                searchMbrNo=true
+                                searchInstitute=true
+                                searchTrxAmt=true
+                                searchModeId=true
+                            />
 
                         @elseif($type_payment_in == 'Miscellaneous in')
                             <livewire:general.teller.common-page
