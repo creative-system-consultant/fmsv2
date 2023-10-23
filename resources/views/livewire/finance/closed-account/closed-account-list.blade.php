@@ -1,7 +1,7 @@
 <div>
     <div class="grid grid-cols-1">
         <x-card title="List of Closed Account">
-            <div class="flex items-center space-x-2">
+            <div class="flex sm:items-center space-y-2 sm:space-x-2 flex-col sm:flex-row">
                 <x-label label="Search :"/>
                 <div>
                     <x-native-select  wire:model="model">
@@ -12,7 +12,7 @@
                     </x-native-select>
                 </div>
 
-                <div class="w-64">
+                <div class="w-full sm:w-64">
                     <x-input 
                         wire:model="search"
                         placeholder="Search"
