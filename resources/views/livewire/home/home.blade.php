@@ -18,7 +18,7 @@
                                 </div>
                             </div>
                             <div class="flex justify-center items-center ml-0 sm:-ml-6">
-                                <img src="{{asset('herodashboard.png')}}" class="w-auto h-64 sm:h-80"/>
+                                <img src="{{asset('herodashboard.png')}}" class="w-auto h-64 sm:h-80" alt="Hero"/>
                             </div>
                         </div>
                     </div>

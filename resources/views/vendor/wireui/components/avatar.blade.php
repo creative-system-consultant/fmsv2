@@ -13,6 +13,7 @@
                 $size,
             ])
             src="{{ $src }}"
+            alt="avatar"
         />
     @endif
 

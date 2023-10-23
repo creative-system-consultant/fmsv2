@@ -4,6 +4,10 @@
         <meta charset="utf-8">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta
+            name="description"
+            content="FMS - Also known as “KOPERASI Financing Management” Used to manage information of “KOPERASI members and their financing."
+        />
         @hasSection('title')
             <title>@yield('title') - {{ config('app.name') }}</title>
         @else
@@ -19,6 +23,7 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+
         <!-- sweet alert 2 -->
         <link href="{{ asset('assets') }}/css/sweetalert2.css" rel="stylesheet" />
 
@@ -36,7 +41,7 @@
         <!-- lineicons -->
         <link rel="stylesheet" href="https://cdn.lineicons.com/4.0/lineicons.css" />
 
-        <wireui:scripts />
+        @wireUiScripts
         @livewireStyles
         @livewireScripts
         <!-- plugin for sweetalert2  -->
@@ -66,11 +71,13 @@
 
         <! -- poper js -->
         <script src="{{ asset('assets') }}/js/popper.js"></script>
+        
         <! -- filepond -->
         <script src="{{ asset('assets') }}/js/filepond.js"></script>
         <script src="{{ asset('assets') }}/js/filepondimagepreview.js"></script>
         <script src="{{ asset('assets') }}/js/filepondvalidatesize.js"></script>
         <script src="{{ asset('assets') }}/js/filepondvalidatetype.js"></script>
+
         <!-- sweetalert -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
