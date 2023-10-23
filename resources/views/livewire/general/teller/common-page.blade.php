@@ -51,6 +51,58 @@
                     </div>
                 @endif
 
+                @if ($module == 'miscellaneousOut' && $selectedType == 'financing')
+                    <div class="mb-4">
+                        <x-card title="FINANCING LIST">
+                            <div class="grid grid-cols-1 gap-4 ">
+                                <x-table.table>
+                                    <x-slot name="thead">
+                                        <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
+                                        <x-table.table-header class="text-left" value="PRODUCT" sort="" />
+                                        <x-table.table-header class="text-left" value="INSTALLMENT" sort="" />
+                                        <x-table.table-header class="text-left" value="ACTION" sort="" />
+                                    </x-slot>
+                                    <x-slot name="tbody">
+                                        @forelse ($financing as $item)
+                                            <tr class="{{ ($selectedMiscOutFinancing == $item->account_no) ? 'bg-primary-200' : '' }}">
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700">
+                                                    <p>{{ $item->account_no }}</p>
+                                                </x-table.table-body>
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700">
+                                                    <p>{{ $item->product }}</p>
+                                                </x-table.table-body>
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700">
+                                                    <p>{{ number_format($item->instal_amount, 2) }}</p>
+                                                </x-table.table-body>
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                    @if($selectedMiscOutFinancing != $item->account_no)
+                                                        <x-button
+                                                            x-on:click="close"
+                                                            sm
+                                                            icon="plus"
+                                                            primary
+                                                            label="Select"
+                                                            wire:click="miscOutSelectedFinancing('{{ $item->account_no }}')"
+                                                        />
+                                                    @endif
+                                                </x-table.table-body>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <x-table.table-body colspan="4" class="text-xs font-medium text-gray-700 ">
+                                                    <div class="flex justify-center text-center">
+                                                        <p>No data</p>
+                                                    </div>
+                                                </x-table.table-body>
+                                            </tr>
+                                        @endforelse
+                                    </x-slot>
+                                </x-table.table>
+                            </div>
+                        </x-card>
+                    </div>
+                @endif
+
                 <div>
                     <div>
                         <div wire:loading wire:target="saveTransaction,confirmSaveTransaction">

@@ -3,18 +3,21 @@
 namespace App\Livewire\General\Teller;
 
 use App\Action\StoredProcedure\SpFmsGenerateMbrClosedMembers;
+use App\Action\StoredProcedure\SpFmsGenerateMbrMisc;
 use App\Action\StoredProcedure\SpFmsGenerateMbrWithdrawShare;
 use App\Action\StoredProcedure\SpFmsUpTrx3800FinancingPayment;
 use App\Action\StoredProcedure\SpFmsUpTrx3920EarlySettlement;
 use App\Action\StoredProcedure\SpFmsUpTrx3950RefundAdvance;
 use App\Action\StoredProcedure\SpFmsUpTrxContributionIn;
 use App\Action\StoredProcedure\SpFmsUpTrxMiscInBk;
+use App\Action\StoredProcedure\SpFmsUpTrxMiscOut;
 use App\Action\StoredProcedure\SpFmsUpTrxPaymentAll;
 use App\Action\StoredProcedure\SpFmsUpTrxPreSettlemtPostn;
 use App\Action\StoredProcedure\SpFmsUpTrxRetirementProcess;
 use App\Action\StoredProcedure\SpFmsUpTrxThirdparty;
 use App\Livewire\General\CustomerSearch;
 use App\Livewire\Teller\General\MembersBankInfo;
+use App\Models\Fms\FmsAccountMaster;
 use App\Models\Systm\SysMsgSp;
 use App\Traits\PaymentContributionRulesTrait;
 use App\Traits\BulkPaymentRulesTrait;
@@ -23,10 +26,12 @@ use App\Services\General\PopupService;
 use App\Services\Model\BankIbtService;
 use App\Services\Model\BankService;
 use App\Services\Model\FmsGlobalParm;
+use App\Services\Module\General\CustomerSearch as GeneralCustomerSearch;
 use App\Traits\CloseMembershipRulesTrait;
 use App\Traits\EarlySettlementPaymentTrait;
 use App\Traits\FinancingRepaymentRulesTrait;
 use App\Traits\MiscellaneousInRulesTrait;
+use App\Traits\MiscellaneousOutRulesTrait;
 use App\Traits\PurchaseShareRulesTrait;
 use App\Traits\RefundAdvanceRulesTrait;
 use App\Traits\ThirdPartyRulesTrait;
@@ -41,7 +46,7 @@ class CommonPage extends Component
         // payment in
         PaymentContributionRulesTrait, PurchaseShareRulesTrait, FinancingRepaymentRulesTrait, EarlySettlementPaymentTrait, ThirdPartyRulesTrait, MiscellaneousInRulesTrait, BulkPaymentRulesTrait,
         // payment out
-        WithdrawShareRulesTrait, CloseMembershipRulesTrait, RefundAdvanceRulesTrait;
+        WithdrawShareRulesTrait, CloseMembershipRulesTrait, MiscellaneousOutRulesTrait, RefundAdvanceRulesTrait;
 
     public $module = '';
     public $category = false;
@@ -77,6 +82,8 @@ class CommonPage extends Component
     public $minFinRepay;
     public $totalShareValid;
     public $advancePayment;
+    public $miscAmt;
+    public $instalAmt;
 
     // fetch variable
     public $customer, $ic, $mbrNo, $accId, $accNo, $totalContribution, $idMsg, $instiCode, $mode, $idThirdParty;
@@ -86,6 +93,7 @@ class CommonPage extends Component
     public $clientId, $chequeDate, $chequeNo, $bankMember, $bankClient, $docNo, $txnAmt, $txnDate, $remarks;
 
     public $additionalField = false;
+    public $selectedMiscOutFinancing;
 
     // public $loading = false;
 
@@ -144,6 +152,9 @@ class CommonPage extends Component
                 break;
             case 'closeMembership':
                 $this->setupCloseMembership();
+                break;
+            case 'miscellaneousOut':
+                $this->setupMiscellaneousOut();
                 break;
             case 'refundAdvance':
                 $this->setupRefundAdvance();
@@ -247,6 +258,18 @@ class CommonPage extends Component
         $this->txnCode = '3101';
     }
 
+    private function setupMiscellaneousOut()
+    {
+        $this->category = true;
+        $this->categoryList = [
+            ['name' => 'contribution', 'code' => '2220', 'icon' => 'credit-card'],
+            ['name' => 'members', 'code' => '2210', 'icon' => 'cash'],
+            ['name' => 'financing', 'code' => '2230', 'icon' => 'cash'],
+            ['name' => 'share', 'code' => '2250', 'icon' => 'cash'],
+        ];
+        $this->setDefaultCategory();
+    }
+
     private function setupRefundAdvance()
     {
         $this->category = true;
@@ -277,6 +300,8 @@ class CommonPage extends Component
                 return 'withdrawShare';
             case 'closeMembership':
                 return 'closeMembership';
+            case 'miscellaneousOut':
+                return 'miscellaneousOut';
             case 'refundAdvance':
                 return 'refundAdvance';
             default:
@@ -316,6 +341,25 @@ class CommonPage extends Component
 
         } else {
             $this->saveButton = true;
+        }
+        // $this->dispatch('endProcessing');
+    }
+
+    #[On('mbrSelected')]
+    public function handleMbrNoSelection($customer)
+    {
+        // $this->loading = true;
+        $this->customer = $customer;
+        $this->bankMember = $customer['bank_id'];
+        $this->mbrNo = (string) $customer['mbr_no'];
+        $this->docNo = "N/A";
+
+        if($this->module == 'miscellaneousOut') {
+            $this->miscAmt = (float) $customer['misc_amt'];
+            $this->ic = $customer['identity_no'];
+            $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
+            $this->saveButton = $this->bankMember && $customer['bank_acct_no'];
+            // dd($this->financing);
         }
         // $this->dispatch('endProcessing');
     }
@@ -370,8 +414,29 @@ class CommonPage extends Component
     {
         $this->selectedType = $name;
         $this->txnCode = $code;
+
+        if ($this->module == 'miscellaneousOut') {
+            if($this->txnCode == '2210') {
+                $this->docNo = SpFmsGenerateMbrMisc::handle([
+                    'clientId' => $this->clientId,
+                    'mbrNo' => $this->mbrNo
+                ]);
+            } else {
+                $this->docNo = "N/A";
+            }
+        }
         // $this->reset();  need to reset input field when change type
         $this->resetValidation();
+    }
+
+    public function miscOutSelectedFinancing($accNo)
+    {
+        $this->accNo = strval($accNo);
+        $this->selectedMiscOutFinancing = $accNo;
+
+        $account = FmsAccountMaster::where('account_no', $accNo)->first();
+        $this->txnAmt = $account->instal_amount;
+        $this->instalAmt = $account->instal_amount;
     }
 
     public function saveTransaction()
@@ -407,6 +472,9 @@ class CommonPage extends Component
                 break;
             case 'closeMembership':
                 $rules = $this->getCloseMembershipRules();
+                break;
+            case 'miscellaneousOut':
+                $rules = $this->getMiscellaneousOutRules();
                 break;
             case 'refundAdvance':
                 $rules = $this->getRefundAdvanceRules();
@@ -549,6 +617,23 @@ class CommonPage extends Component
             ]);
         }
 
+        if ($this->module == 'miscellaneousOut') {
+            $result = SpFmsUpTrxMiscOut::handle([
+                'clientId' => $this->clientId,
+                'mbrNo' => $this->mbrNo,
+                'txnAmt' => $this->txnAmt,
+                'txnDate' => $this->txnDate,
+                'txnCode' => $this->txnCode,
+                'remarks' => $this->remarks,
+                'docNo' => $this->docNo,
+                'userId' => auth()->id(),
+                'bankMember' => $this->bankMember,
+                'accNo' => $this->accNo,
+                'instiCode' => $this->instiCode,
+                'bankClient' => $this->bankClient
+            ]);
+        }
+
         if ($this->module == 'refundAdvance') {
             $result = SpFmsUpTrx3950RefundAdvance::handle([
                 'clientId' => $this->clientId,
@@ -572,6 +657,8 @@ class CommonPage extends Component
             $this->dispatch('refreshComponentAccNo', accNo: $this->accNo)->to(CustomerSearch::class);
         } elseif($this->module == 'thirdParty') {
             $this->dispatch('refreshComponentId', id: $this->customer['id'])->to(CustomerSearch::class);
+        } elseif($this->module == 'miscellaneousOut') {
+            $this->dispatch('refreshComponentMbrNo', mbrNo: $this->customer['mbr_no'])->to(CustomerSearch::class);
         } else {
             $this->dispatch('refreshComponent', uuid: $this->customer['uuid'])->to(CustomerSearch::class);
         }
@@ -582,6 +669,14 @@ class CommonPage extends Component
 
     public function render()
     {
-        return view('livewire.general.teller.common-page');
+        $financing = null;
+
+        if ($this->module == 'miscellaneousOut') {
+            $financing = GeneralCustomerSearch::getMiscellaneousOutFinancingData($this->clientId, $this->mbrNo);
+        }
+
+        return view('livewire.general.teller.common-page', [
+            'financing' => $financing
+        ]);
     }
 }

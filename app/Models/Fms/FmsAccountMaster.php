@@ -15,12 +15,6 @@ class FmsAccountMaster extends Model
     protected $table   = 'FMS.ACCOUNT_MASTERS';
     protected $guarded = [];
 
-    // Functions
-    public function getProductAttribute()
-    {
-        return DB::select(DB::raw("FMS.uf_get_product(?)", [$this->product_id]))[0]->products ?? null;
-    }
-
     // Relationship
     public function fmsMembership()
     {

@@ -148,7 +148,11 @@
                             <livewire:teller.disbursement.disbursement-transaction />
 
                         @elseif($type_payment_out == 'Miscellaneous Out')
-                            <livewire:teller.miscellaneous-out.miscellaneous-out-list />
+                            <livewire:general.teller.common-page
+                                module='miscellaneousOut'
+                                searchMbrNo=true
+                                searchMiscAmt=true
+                            />
 
                         @elseif($type_payment_out == 'Refund Advance')
                             <livewire:general.teller.common-page

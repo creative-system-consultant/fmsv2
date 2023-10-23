@@ -3,6 +3,8 @@
 namespace App\Services\Module\General;
 
 use App\Models\Cif\CifCustomer;
+use App\Models\Fms\FmsAccountMaster;
+use App\Models\Fms\FmsMiscAccount;
 use App\Models\Fms\FmsThirdParty;
 use DB;
 
@@ -238,7 +240,80 @@ class CustomerSearch
         return $query;
     }
 
-    public static function getAllRrefundAdvance(
+    public static function getAllMiscellaneousOut(
+        $clientId = null,
+        $searchBy = null,
+        $search = null
+    ) {
+        $query = FmsMiscAccount::select([
+                'FMS.MISC_ACCOUNT.mbr_no',
+                'CIF.CUSTOMERS.identity_no',
+                'CIF.CUSTOMERS.name',
+                'FMS.MISC_ACCOUNT.misc_amt'
+            ])
+            ->leftJoin('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.MISC_ACCOUNT.mbr_no')
+            ->leftJoin('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'FMS.MEMBERSHIP.cif_id')
+            ->where('FMS.MISC_ACCOUNT.misc_amt', '>', 0);
+
+        if ($search && $searchBy) {
+            $query->where($searchBy, 'like', '%' . $search . '%');
+        }
+
+        return $query->paginate(10);
+    }
+
+    public static function getMiscellaneousOutMbrData(
+        $clientId = null,
+        $mbrNo = null,
+        $condition = true
+    ) {
+        $query = FmsMiscAccount::select([
+                'FMS.MISC_ACCOUNT.mbr_no',
+                'CIF.CUSTOMERS.identity_no',
+                'CIF.CUSTOMERS.name',
+                'CIF.CUSTOMERS.bank_id',
+                'CIF.CUSTOMERS.bank_acct_no',
+                'FMS.MISC_ACCOUNT.misc_amt',
+                'FMS.ACCOUNT_MASTERS.instal_amount',
+            ])
+            ->leftJoin('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.MISC_ACCOUNT.mbr_no')
+            ->leftJoin('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'FMS.MEMBERSHIP.cif_id')
+            ->leftJoin('FMS.ACCOUNT_MASTERS', 'FMS.ACCOUNT_MASTERS.mbr_no', '=', 'FMS.MISC_ACCOUNT.mbr_no');
+
+        if(!$condition) {
+            $query->where('FMS.MISC_ACCOUNT.misc_amt', '>', 0);
+        }
+
+        $query->where('FMS.MISC_ACCOUNT.client_id', $clientId)
+            ->where('FMS.MISC_ACCOUNT.mbr_no', $mbrNo);
+
+        return $query->first();
+    }
+
+    //this for get financing each mbrno
+    public static function getMiscellaneousOutFinancingData(
+        $clientId = null,
+        $mbrNo = null
+    ) {
+        $query = FmsAccountMaster::select([
+            'FMS.ACCOUNT_MASTERS.account_no',
+            DB::connection('siskop')->raw('SISKOPv3B.SISKOP.Account_Products.name as product'),
+            'FMS.ACCOUNT_MASTERS.instal_amount'
+        ])
+        ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_POSITIONS.account_no', '=', 'FMS.ACCOUNT_MASTERS.account_no')
+        ->join('CIF.ACCOUNT_STATUSES', 'CIF.ACCOUNT_STATUSES.id', '=', 'FMS.ACCOUNT_MASTERS.account_status')
+        ->join(DB::connection('siskop')->raw('SISKOPv3B.SISKOP.Account_Products'), 'SISKOPv3B.SISKOP.Account_Products.id', '=', 'FMS.ACCOUNT_MASTERS.product_id')
+        ->whereNotNull('FMS.ACCOUNT_POSITIONS.disbursed_amount')
+        ->where('FMS.ACCOUNT_MASTERS.client_id', $clientId)
+        ->where('FMS.ACCOUNT_MASTERS.account_status', 1)
+        ->where('FMS.ACCOUNT_MASTERS.mbr_no', $mbrNo)
+        ->orderBy('FMS.ACCOUNT_MASTERS.account_no')
+        ->get();
+
+        return $query;
+    }
+
+    public static function getAllRefundAdvance(
         $clientId = null,
         $searchBy = null,
         $search = null

@@ -15,6 +15,7 @@ class CustomerSearch extends Component
 
     public $clientId;
 
+    public $complete = false;
     public $name;
     public $searchMbrNo, $searchMbrNoValue;
     public $searchStaffNo, $searchStaffNoValue;
@@ -83,6 +84,14 @@ class CustomerSearch extends Component
                 "MEMBERSHIP NO",
                 "IDENTITY NO",
                 "NAME",
+                "ACTION"
+            ];
+        } elseif ($this->customQuery == 'miscellaneousOut') {
+            $this->headers = [
+                "MEMBERSHIP NO",
+                "IDENTITY NO",
+                "NAME",
+                "MISCELLANEOUS AMOUNT",
                 "ACTION"
             ];
         } elseif ($this->customQuery == 'refundAdvance') {
@@ -217,6 +226,35 @@ class CustomerSearch extends Component
         return $customer;
     }
 
+    public function selectedMbr($mbrNo)
+    {
+        $customer = $this->getMbrData($mbrNo);
+        $this->dispatch(
+            'mbrSelected',
+            customer: $customer,
+        );
+    }
+
+    private function getMbrData($mbrNo)
+    {
+        if($this->customQuery == 'miscellaneousOut') {
+            $customer = GeneralCustomerSearch::getMiscellaneousOutMbrData($this->clientId, $mbrNo, $this->complete);
+            \Log::info($customer);
+        }
+
+        $this->name = $customer->name;
+
+        if ($this->searchMbrNo) {
+            $this->searchMbrNoValue = $customer->mbr_no;
+        }
+
+        if ($this->searchMiscAmt) {
+            $this->searchMiscAmtValue = number_format($customer->misc_amt, 2) ?? 0;
+        }
+
+        return $customer;
+    }
+
     public function selectedAccNo($accNo)
     {
         $accMaster = $this->getFmsData($accNo);
@@ -286,6 +324,13 @@ class CustomerSearch extends Component
         $this->getIdData($id);
     }
 
+    #[On('refreshComponentMbrNo')]
+    public function reloadMbrNoData($mbrNo)
+    {
+        $this->complete = true;
+        $this->getMbrData($mbrNo);
+    }
+
     public function render()
     {
         switch ($this->customQuery) {
@@ -304,8 +349,11 @@ class CustomerSearch extends Component
             case 'closeMembership':
                 $customers = GeneralCustomerSearch::getAllCloseMembership($this->searchBy, $this->search);
                 break;
+            case 'miscellaneousOut':
+                $customers = GeneralCustomerSearch::getAllMiscellaneousOut($this->clientId, $this->searchBy, $this->search);
+                break;
             case 'refundAdvance':
-                $customers = GeneralCustomerSearch::getAllRrefundAdvance($this->clientId, $this->searchBy, $this->search);
+                $customers = GeneralCustomerSearch::getAllRefundAdvance($this->clientId, $this->searchBy, $this->search);
                 break;
             default:
                 $customers = GeneralCustomerSearch::getData($this->searchBy, $this->search);

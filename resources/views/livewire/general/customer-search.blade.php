@@ -308,6 +308,16 @@
                                                 null // placeholder for the button
                                             ];
                                             @endphp
+                                        @elseif($customQuery == 'miscellaneousOut')
+                                            @php
+                                            $values = [
+                                                $item->mbr_no,
+                                                $item->identity_no,
+                                                $item->name,
+                                                number_format($item->misc_amt, 2),
+                                                null // placeholder for the button
+                                            ];
+                                            @endphp
                                         @elseif($customQuery == 'refundAdvance')
                                             @php
                                             $values = [
@@ -343,6 +353,8 @@
                                                 $wireClickFunction = 'selectedAccNo(\''.$item->account_no.'\')';
                                             } elseif($customQuery == 'thirdParty') {
                                                 $wireClickFunction = 'selectedId(\''.$item->id.'\')';
+                                            } elseif($customQuery == 'miscellaneousOut') {
+                                                $wireClickFunction = 'selectedMbr(\''.$item->mbr_no.'\')';
                                             }  else {
                                                 $wireClickFunction = 'selectedUuid(\''.$item->uuid.'\')';
                                             }
