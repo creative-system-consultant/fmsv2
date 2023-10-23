@@ -27,8 +27,8 @@
                 </span>
             </div>
 
-            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                <div>
+            <div class="hidden flex-1 md:flex items-end xl:items-center justify-normal xl:justify-between  xl:flex-row flex-col-reverse">
+                <div class=" xl:pt-0 pt-2 flex justify-end ">
                     <p class="text-xs leading-5 text-gray-700 dark:text-white">
                         <span>{!! __('Showing') !!}</span>
                         <span class="font-medium">{{ $paginator->firstItem() }}</span>

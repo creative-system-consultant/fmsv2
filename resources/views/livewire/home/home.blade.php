@@ -1,8 +1,8 @@
 <div>
     <div class="container mx-auto mt-4" x-data="{tab:0}">
-        <div class="grid grid-cols-1 px-4 sm:px-6 mb-20 sm:mb-0">
+        <div class="grid grid-cols-1 px-4 sm:px-6 mb-20 xl:mb-0">
             <div class="grid grid-cols-12 gap-6">
-                <div class="col-span-12 sm:col-span-12 md:col-span-7 lg:col-span-8 xxl:col-span-8">
+                <div class="col-span-12 sm:col-span-12 md:col-span-12 xl:col-span-8 2xl:col-span-8">
                     <div class="bg-white/70 backdrop-blur-lg py-8 px-6 md:px-12 2xl:px-24 sm:py-4  shadow-lg rounded-lg  sm:h-72 flex flex-col items-center justify-center border dark:bg-gray-900/50 dark:border-black">
                         <div class="grid grid-cols-1 md:grid-cols-2 items-center justify-center dark:text-white">
                             <div class="space-y-2 flex flex-col order-last sm:order-first">
@@ -184,9 +184,9 @@
                 </div>
 
 
-                <div class="col-span-12 sm:col-span-12 md:col-span-5 lg:col-span-4 xxl:col-span-4">
+                <div class="col-span-12 sm:col-span-12 md:col-span-12 xl:col-span-4 2xl:col-span-4">
 
-                    <div class="hidden sm:block">
+                    <div class="hidden xl:block">
                         <div class="bg-white/70 dark:bg-gray-900/50 dark:border-black  dark:text-white backdrop-blur-lg p-4 shadow-lg rounded-lg h-72 flex flex-col items-center justify-center px-12 border">
                             <x-avatar size="w-24 h-24" class="border-primary-700 border-2" src="https://picsum.photos/300?size=lg" />
                             <h1 class="pt-2">
@@ -201,36 +201,38 @@
                         </div>
                     </div>
 
-                    <div class="bg-white dark:bg-gray-800 dark:border-black dark:text-white py-6 shadow-lg rounded-lg flex flex-col px-4 border mt-6 relative">
-                        <div class="flex items-center space-x-4">
-                            <div class="relative">
-                                <div class="bg-gradient-to-r from-primary-500 to-cyan-400 rounded-full w-32 h-32 relative"
-                                    :class="tab == 0 ? 'animate-spin' : ''">
+                    <div class="grid grid-cols-1  md:grid-cols-2 xl:grid-cols-1 gap-2">
+                        <div class="bg-white dark:bg-gray-800 dark:border-black dark:text-white py-6 shadow-lg rounded-lg flex flex-col px-4 border mt-6 relative">
+                            <div class="flex items-center space-x-4">
+                                <div class="relative">
+                                    <div class="bg-gradient-to-r from-primary-500 to-cyan-400 rounded-full w-32 h-32 relative"
+                                        :class="tab == 0 ? 'animate-spin' : ''">
+                                    </div>
+                                    <div class="bg-white dark:bg-gray-800 rounded-full w-24 h-24 absolute  top-4 inset-x-0 mx-auto flex items-center justify-center">
+                                        <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">84</h1>
+                                    </div>
                                 </div>
-                                <div class="bg-white dark:bg-gray-800 rounded-full w-24 h-24 absolute  top-4 inset-x-0 mx-auto flex items-center justify-center">
-                                    <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">84</h1>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="space-y-1 text-xl">
-                                    <h1>Disbursement Listing</h1>
+                                <div>
+                                    <div class="space-y-1 text-xl">
+                                        <h1>Disbursement Listing</h1>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="dark:bg-gray-800 dark:text-white dark:border-black py-6 shadow-lg rounded-lg flex flex-col px-4 border mt-6">
-                        <div class="flex items-center space-x-4">
-                            <div class="relative">
-                                <div class="bg-gradient-to-r  from-cyan-400 to-primary-500 rounded-full w-32 h-32 relative"
-                                :class="tab == 1 ? 'animate-spin' : ''">
+                        <div class="dark:bg-gray-800 dark:text-white dark:border-black py-6 shadow-lg rounded-lg flex flex-col px-4 border mt-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="relative">
+                                    <div class="bg-gradient-to-r  from-cyan-400 to-primary-500 rounded-full w-32 h-32 relative"
+                                    :class="tab == 1 ? 'animate-spin' : ''">
+                                    </div>
+                                    <div class="bg-white  dark:bg-gray-800 rounded-full w-24 h-24 absolute  top-4 inset-x-0 mx-auto flex items-center justify-center">
+                                        <h1 class="text-2xl font-semibold text-primary-500  dark:text-primary-200">56</h1>
+                                    </div>
                                 </div>
-                                <div class="bg-white  dark:bg-gray-800 rounded-full w-24 h-24 absolute  top-4 inset-x-0 mx-auto flex items-center justify-center">
-                                    <h1 class="text-2xl font-semibold text-primary-500  dark:text-primary-200">56</h1>
+                                <div class="space-y-1 text-xl">
+                                    <h1>Pre Disbursement Listing</h1>
                                 </div>
-                            </div>
-                            <div class="space-y-1 text-xl">
-                                <h1>Pre Disbursement Listing</h1>
                             </div>
                         </div>
                     </div>
