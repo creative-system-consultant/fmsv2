@@ -44,7 +44,7 @@
                                         <x-general.dropdown-item icon="collection" title="Monthly Arreas" index="1">
                                             <x-general.nav-item
                                                 title="Monthly Arrears Account By Age"
-                                                href="{{route('report.management.report-ma-age')}}"
+                                                href="{{ route('report.management.monthly-arrears.mth-by-age') }}"
                                             />
                                             <x-general.nav-item
                                                 title="Monthly Arrears Account By Employer"

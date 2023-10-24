@@ -9,7 +9,7 @@ class SpFmsFinancingApproval
 {
     public static function getRawData($input)
 {
-    return DB::select("fms.up_rpt_financing_approval :clientId, :startDate, :endDate", $input);
+    return DB::select("rpt.up_rpt_financing_approval :clientId, :startDate, :endDate", $input);
 }
     public static function formatData($data)
     {
@@ -36,7 +36,7 @@ class SpFmsFinancingApproval
             ],
             'FINANCING_NAME' => [
                 'value' => $data->financing_name,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'APPLY_AMOUNT' => [
                 'value' => number_format($data->apply_amount,2),
@@ -56,19 +56,19 @@ class SpFmsFinancingApproval
             ],
             'PROFIT RATE' => [
                 'value' => $data->profit_rate,
-                'align' => 'left'
+                'align' => 'right'
             ],
             'DURATION'   => [
                 'value' => $data->duration,
-                'align' => 'left'
+                'align' => 'right'
             ],
             'SELLING PRICE' => [
                 'value' => number_format($data->selling_price,2),
-                'align' => 'left'
+                'align' => 'right'
             ],
             'INSTALL AMOUNT' => [
                 'value' => number_format($data->instal_amount,2),
-                'align' => 'left'
+                'align' => 'right'
             ],
         ];
     }
@@ -85,8 +85,9 @@ class SpFmsFinancingApproval
         return $excelData;
     }
 
-    public static function handleForExcel($rawData, $format = false)
+    public static function handleForExcel($input, $format = false)
     {
+        $rawData = self::getRawData($input);
         foreach ($rawData as $data) {
             $formattedData = $format ? self::formatDataForExcel($data) : $data;
             yield $formattedData;
