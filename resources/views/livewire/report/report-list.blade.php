@@ -48,47 +48,47 @@
                                             />
                                             <x-general.nav-item
                                                 title="Monthly Arrears Account By Employer"
-                                                href="{{route('report.management.report-ma-employer')}}"
+                                                href="{{route('report.management.monthly-arrears.mth-by-employer')}}"
                                             />
                                             <x-general.nav-item
                                                 title="Monthly Arrears Account By State"
-                                                href="{{route('report.management.report-ma-state')}}"
+                                                href="{{ route('report.management.monthly-arrears.mth-by-state') }}"
                                             />
                                             <x-general.nav-item
                                                 title="Monthly Arrears Account By Product"
-                                                href="{{route('report.management.report-ma-product')}}"
+                                                href="{{route('report.management.monthly-arrears.mth-by-product')}}"
                                             />
                                             <x-general.nav-item
                                                 title="Monthly Arrears Ageing"
-                                                href="{{route('report.management.report-ma-ageing')}}"
+                                                href="{{route('report.management.monthly-arrears.mth-ageing')}}"
                                             />
                                         </x-general.nav-item>
 
                                         <x-general.dropdown-item icon="collection" title="Monthly Contribution" index="2">
                                             <x-general.nav-item
                                                 title="Monthly Contribution Summary"
-                                                href="{{route('report.management.report-mc-summary')}}"
+                                                href="{{ route('report.management.monthly-contribution.contribution-summary') }}"
                                             />
                                         </x-general.dropdown-item>
 
                                         <x-general.dropdown-item icon="collection" title="Monthly Financing Position" index="3">
                                             <x-general.nav-item
                                                 title="Monthly Financing Position Summary"
-                                                href="{{route('report.management.report-mfp-summary')}}"
+                                                href="{{ route('report.management.monthly-financing-position.financing-position') }}"
                                             />
                                         </x-general.dropdown-item>
 
                                         <x-general.dropdown-item icon="collection" title="Monthly Npf" index="4">
                                             <x-general.nav-item
                                                 title="Monthly Npf Summary"
-                                                href="{{route('report.management.report-mnpf-summary')}}"
+                                                href="{{ route('report.management.monthly-npf.monthly-npf-summary') }}"
                                             />
                                         </x-general.dropdown-item>
 
                                         <x-general.dropdown-item icon="collection" title="Monthly Share" index="5">
                                             <x-general.nav-item
                                                 title="Monthly Share Summary"
-                                                href="{{route('report.management.report-ms-summary')}}"
+                                                href="{{ route('report.management.monthly-share.mth-share-summary') }}"
                                             />
                                         </x-general.dropdown-item>
 
