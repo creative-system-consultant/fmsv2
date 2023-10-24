@@ -3,6 +3,7 @@
 namespace App\Livewire\Report\Operation\Member;
 
 use App\Action\StoredProcedure\SpFmsUpRptMemberByState;
+use App\Models\Ref\RefState;
 use App\Services\General\ReportService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -11,7 +12,7 @@ use WireUi\Traits\Actions;
 
 class ByState extends Component
 {
-    
+
     use Actions, WithPagination;
 
     public $clientId;
@@ -22,6 +23,9 @@ class ByState extends Component
     #[Rule('required')]
     public $endDate;
 
+    #[Rule('required')]
+    public $state;
+
     public function mount()
     {
         $this->clientId = auth()->user()->client_id;
@@ -31,6 +35,7 @@ class ByState extends Component
     {
         return SpFmsUpRptMemberByState::getRawData([
             'clientId' => $this->clientId,
+            'state' => $this->state,
             'startDate' => $this->startDate,
             'endDate' => $this->endDate,
         ], true);
@@ -39,7 +44,6 @@ class ByState extends Component
     public function generateExcel()
     {
         $this->validate();
-
         $rawData = $this->getRawData();
 
         if (count($rawData) > 0) {
@@ -85,8 +89,11 @@ class ByState extends Component
             }
         }
 
+        $states = RefState::all();
+
         return view('livewire.report.operation.member.by-state', [
-            'result' => $result
+            'result' => $result,
+            'states' => $states
         ])->extends('layouts.main');
     }
 }
