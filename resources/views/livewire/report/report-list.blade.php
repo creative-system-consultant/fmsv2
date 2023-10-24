@@ -238,7 +238,7 @@
                                             />
                                             <x-general.nav-item
                                                 title="Monthly Financing Position"
-                                                href="#"
+                                                href="{{ route('report.operation.monthly.mthly-fin-position') }}"
                                             />
                                             <x-general.nav-item
                                                 title="List Of Share Details"
@@ -258,19 +258,19 @@
                                             />
                                             <x-general.nav-item
                                                 title="Details Yearly Contributions"
-                                                href="#"
+                                                href="{{ route('report.operation.monthly.details-yrly-cont') }}"
                                             />
                                             <x-general.nav-item
                                                 title="Details Financing Monthly"
-                                                href="#"
+                                                href="{{ route('report.operation.monthly.details-fin-mthly') }}"
                                             />  
                                             <x-general.nav-item
                                                 title="Details Financing Yearly"
-                                                href="#"
+                                                href="{{ route('report.operation.monthly.details-fin-yrly') }}"
                                             /> 
                                             <x-general.nav-item
                                                 title="Month Arrears Report(Rescheduled) - Monthly"
-                                                href="#"
+                                                href="{{ route('report.operation.monthly.report-resc') }}"
                                             />
                                         </x-general.dropdown-item>
 
