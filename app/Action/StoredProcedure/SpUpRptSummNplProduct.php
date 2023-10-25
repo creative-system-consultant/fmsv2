@@ -5,45 +5,46 @@ namespace App\Action\StoredProcedure;
 use DB;
 use Illuminate\Support\Collection;
 
-class SpFmsUpRptMthNpfSummary
+class SpUpRptSummNplProduct
 {
     public static function getRawData($input)
     {
-        return DB::select("RPT.up_rpt_summ_npl_product :clientId, :reportDate", $input);   
+        return DB::select("rpt.up_rpt_summ_npl_product :clientId, :reportDate", $input);
     }
+
     public static function formatData($data)
     {
         return [
-            'TOTAL_ACCT' => [
-                'value' => number_format($data->TOTAL_ACCT, 2),
+            'Total Account'  => [
+                'value' =>  $data->TOTAL_ACCT,
                 'align' => 'left'
             ],
-            'PRODUCT ID' => [
+            'Product Id' => [
                 'value' => $data->product_id,
+                'align' => 'right'
+            ],
+            'No of Account' => [
+                'value' => $data->NO_OFACCT,
+                'align' => 'right'
+            ],
+            'Balance Outstanding' => [
+                'value' => $data->BAL_OUT,
+                'align' => 'right'
+            ],
+            'Principal Outstanding'  => [
+                'value' =>  $data->PRIN_OUT,
                 'align' => 'left'
             ],
-            'NO_OFACCT' => [
-                'value' => number_format($data->NO_OFACCT, 2),
+            'Profit Amount' => [
+                'value' => $data->PROFIT_AMT,
                 'align' => 'right'
             ],
-            'BAL_OUT' => [
-                'value' => number_format($data->BAL_OUT, 2),
+            'Arrears Amount' => [
+                'value' => $data->ARREARS_AMT,
                 'align' => 'right'
             ],
-            'PRIN_OUT' => [
-                'value' => number_format($data->PRIN_OUT, 2),
-                'align' => 'right'
-            ],
-            'PROFIT_AMT' => [
-                'value' => number_format($data->PROFIT_AMT, 2),
-                'align' => 'right'
-            ],
-            'ARREARS_AMT' => [
-                'value' => number_format($data->ARREARS_AMT, 2),
-                'align' => 'right'
-            ],
-            'PROVISION' => [
-                'value' => number_format($data->provision, 0),
+            'Provision' => [
+                'value' => $data->provision,
                 'align' => 'right'
             ],
         ];

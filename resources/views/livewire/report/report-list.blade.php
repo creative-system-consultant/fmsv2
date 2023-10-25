@@ -81,7 +81,7 @@
                                         <x-general.dropdown-item icon="collection" title="Monthly Npf" index="4">
                                             <x-general.nav-item
                                                 title="Monthly Npf Summary"
-                                                href="{{ route('report.management.monthly-npf.monthly-npf-summary') }}"
+                                                href="{{ route('report.management.monthly-npf.mthly-npf-sum') }}"
                                             />
                                         </x-general.dropdown-item>
 

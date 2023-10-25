@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Report\Management\MonthlyNpf;
 
-use App\Action\StoredProcedure\SpFmsUpRptMthNpfSummary;
+use App\Action\StoredProcedure\SpUpRptSummNplProduct;
 use App\Services\General\ReportService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\Rule;
@@ -10,7 +10,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
-class MonthlyNpfSummary extends Component
+class MthlyNpfSum extends Component
 {
     use Actions, WithPagination;
 
@@ -18,7 +18,7 @@ class MonthlyNpfSummary extends Component
 
     #[Rule('required')]
     public $reportDate;
-    
+
     public function mount()
     {
         $this->clientId = auth()->user()->client_id;
@@ -26,7 +26,7 @@ class MonthlyNpfSummary extends Component
 
     protected function getRawData()
     {
-        return SpFmsUpRptMthNpfSummary::getRawData([
+        return SpUpRptSummNplProduct::getRawData([
             'clientId' => $this->clientId,
             'reportDate' => $this->reportDate,
         ], true);
@@ -41,9 +41,8 @@ class MonthlyNpfSummary extends Component
         if (count($rawData) > 0) {
             $formattedData = [];
             foreach ($rawData as $data) {
-                $formattedData[] = SpFmsUpRptMthNpfSummary::formatDataForExcel($data);
+                $formattedData[] = SpUpRptSummNplProduct::formatDataForExcel($data);
             }
-
             return $this->handleExcel($formattedData);
         } else {
             $this->dialog()->success('Process Complete!', 'No Data Found.');
@@ -52,11 +51,10 @@ class MonthlyNpfSummary extends Component
 
     private function handleDataTable($rawData)
     {
-        $data = SpFmsUpRptMthNpfSummary::handleForTable($rawData, true);
+        $data = SpUpRptSummNplProduct::handleForTable($rawData, true);
 
         return ReportService::paginateData($data);
     }
-
     private function handleExcel($rawData)
     {
         $dataGenerator = function () use ($rawData) {
@@ -82,7 +80,8 @@ class MonthlyNpfSummary extends Component
                 $result = $this->handleDataTable($rawData);
             }
         }
-        return view('livewire.report.management.monthly-npf.monthly-npf-summary', [
+
+        return view('livewire.report.management.monthly-npf.mthly-npf-sum', [
             'result' => $result
         ])->extends('layouts.main');
     }
