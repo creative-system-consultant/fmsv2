@@ -258,7 +258,7 @@
                                             />
                                             <x-general.nav-item
                                                 title="Financing Summary Yearly"
-                                                href="#"
+                                                href="{{ route('report.operation.monthly.financing-summary-yearly') }}"
                                             />
                                             <x-general.nav-item
                                                 title="Details Yearly Share"
