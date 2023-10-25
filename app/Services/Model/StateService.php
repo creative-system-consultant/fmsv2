@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Maintenance;
+namespace App\Services\Model;
 
 use App\Models\Ref\RefState;
 
@@ -8,7 +8,7 @@ class StateService
 {
     public function isCodeExists($code)
     {
-        return RefState::whereCoopId(auth()->user()->coop_id)->whereCode($code)->exists();
+        return RefState::whereClientId(auth()->user()->client_id)->whereCode($code)->exists();
     }
 
     public function createState($description, $code, $status)
@@ -16,7 +16,7 @@ class StateService
         RefState::create([
             'description' => trim(strtoupper($description)),
             'code' => trim(strtoupper($code)),
-            'coop_id' => auth()->user()->coop_id,
+            'client_id' => auth()->user()->client_id,
             'status' => $status == true ? '1' : '0',
             'created_at' => now(),
             'created_by' => auth()->user()->name,
@@ -25,7 +25,7 @@ class StateService
 
     public function canUpdateCode($id, $code)
     {
-        $existingCode = RefState::whereCoopId(auth()->user()->coop_id)->whereCode($code);
+        $existingCode = RefState::whereClientId(auth()->user()->client_id)->whereCode($code);
 
         return !$existingCode->exists() || $existingCode->value('id') == $id;
     }
@@ -48,6 +48,6 @@ class StateService
 
     public function getPaginatedState($perPage = 10)
     {
-        return RefState::whereCoopId(auth()->user()->coop_id)->paginate($perPage);
+        return RefState::whereClientId(auth()->user()->client_id)->paginate($perPage);
     }
 }

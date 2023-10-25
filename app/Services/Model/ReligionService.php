@@ -5,6 +5,7 @@ namespace App\Services\Model;
 use App\Models\Ref\RefReligion;
 
 class ReligionService
+
 {
     public function isCodeExists($code)
     {

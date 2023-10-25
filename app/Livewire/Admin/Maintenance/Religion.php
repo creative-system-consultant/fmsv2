@@ -6,7 +6,6 @@ use App\Models\Ref\RefReligion;
 use App\Services\Model\ReligionService;
 use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;

@@ -3,10 +3,9 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefState;
-use App\Services\Maintenance\StateService;
+use App\Services\Model\StateService;
 use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -30,7 +29,6 @@ class State extends Component
     public $modalDescription;
     public $modalMethod;
     public $state;
-    public $clientId;
     public $paginated;
 
     protected $stateService;
