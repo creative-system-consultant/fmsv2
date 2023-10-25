@@ -5,11 +5,11 @@ namespace App\Action\StoredProcedure;
 use DB;
 use Illuminate\Support\Collection;
 
-class SpFmsUpRptClosedMemberList
+class SpFmsUpRptEntranceFeeList
 {
     public static function getRawData($input)
     {
-        return DB::select("RPT.up_rpt_list_closed_membership :clientId, :startDate, :endDate", $input);
+        return DB::select("RPT.up_rpt_list_entrance_fee :clientId, :startDate, :endDate", $input);
     }
 
     public static function formatData($data)
@@ -19,40 +19,20 @@ class SpFmsUpRptClosedMemberList
                 'value' => $data->mbr_no,
                 'align' => 'left'
             ],
-            'IC NO'  => [
-                'value' => $data->identity_no,
-                'align' => 'right'
-            ],
             'NAME' => [
                 'value' => $data->name,
                 'align' => 'left'
             ],
-            'MEMBERS STATUS' => [
+            'ENTRANCE FEE' => [
+                'value' => $data->entrance_fee,
+                'align' => 'right'
+            ],
+            'START DATE' => [
+                'value' => date('d-m-Y', strtotime($data->start_date)),
+                'align' => 'left'
+            ],
+            'STATUS' => [
                 'value' => $data->status,
-                'align' => 'right'
-            ],
-            'TOTAL CONTRIBUTION' => [
-                'value' => sprintf("%40s",$data->total_contribution),
-                'align' => 'right'
-            ],
-            'TOTAL SHARE' => [
-                'value' => sprintf("%40s",$data->total_share),
-                'align' => 'right'
-            ],
-            'NOTICED RETIREMENT DATE' => [
-                'value' => $data->notice_date,
-                'align' => 'right'
-            ],
-            'EFFECTIVE RETIREMENT DATE' => [
-                'value' => $data->effective_retirement_date,
-                'align' => 'right'
-            ],
-            'EMPLOYER'                  => [
-                'value' => $data->current_employer_name,
-                'align' => 'right'
-            ],
-            'REMARKS' => [
-                'value' => $data->remarks,
                 'align' => 'right'
             ],
         ];

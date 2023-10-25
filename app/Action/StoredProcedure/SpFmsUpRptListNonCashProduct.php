@@ -5,11 +5,11 @@ namespace App\Action\StoredProcedure;
 use DB;
 use Illuminate\Support\Collection;
 
-class SpFmsUpRptClosedMemberList
+class SpFmsUpRptListNonCashProduct
 {
     public static function getRawData($input)
     {
-        return DB::select("RPT.up_rpt_list_closed_membership :clientId, :startDate, :endDate", $input);
+        return DB::select("RPT.up_rpt_list_non_cash_products :clientId, :startDate, :endDate", $input);
     }
 
     public static function formatData($data)
@@ -19,40 +19,48 @@ class SpFmsUpRptClosedMemberList
                 'value' => $data->mbr_no,
                 'align' => 'left'
             ],
-            'IC NO'  => [
+            'IDENTITY NO'  => [
                 'value' => $data->identity_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'NAME' => [
                 'value' => $data->name,
                 'align' => 'left'
             ],
-            'MEMBERS STATUS' => [
+            'PRODUCTS' => [
+                'value' => $data->products,
+                'align' => 'left'
+            ],
+            'ACCOUNT NO' => [
+                'value' => $data->account_no,
+                'align' => 'left'
+            ],
+            'APPROVED LIMIT' => [
+                'value' => $data->approved_limit,
+                'align' => 'left'
+            ],
+            'DISBURSED AMOUNT' => [
+                'value' => $data->disbursed_amount,
+                'align' => 'right'
+            ],
+            'BALANCE OUTSTANDING' => [
+                'value' => $data->bal_outstanding,
+                'align' => 'right'
+            ],
+            'STATUS' => [
                 'value' => $data->status,
+                'align' => 'left'
+            ],
+            'PROFIT RATE' => [
+                'value' => $data->profit_rate,
                 'align' => 'right'
             ],
-            'TOTAL CONTRIBUTION' => [
-                'value' => sprintf("%40s",$data->total_contribution),
+            'DURATION' => [
+                'value' => $data->duration,
                 'align' => 'right'
             ],
-            'TOTAL SHARE' => [
-                'value' => sprintf("%40s",$data->total_share),
-                'align' => 'right'
-            ],
-            'NOTICED RETIREMENT DATE' => [
-                'value' => $data->notice_date,
-                'align' => 'right'
-            ],
-            'EFFECTIVE RETIREMENT DATE' => [
-                'value' => $data->effective_retirement_date,
-                'align' => 'right'
-            ],
-            'EMPLOYER'                  => [
-                'value' => $data->current_employer_name,
-                'align' => 'right'
-            ],
-            'REMARKS' => [
-                'value' => $data->remarks,
+            'PROFIT' => [
+                'value' => $data->profit,
                 'align' => 'right'
             ],
         ];

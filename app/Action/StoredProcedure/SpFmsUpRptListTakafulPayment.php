@@ -2,58 +2,62 @@
 
 namespace App\Action\StoredProcedure;
 
-use DB;
 use Illuminate\Support\Collection;
+use DB;
 
-class SpFmsUpRptClosedMemberList
+class SpFmsUpRptListTakafulPayment
 {
     public static function getRawData($input)
     {
-        return DB::select("RPT.up_rpt_list_closed_membership :clientId, :startDate, :endDate", $input);
+        return DB::select("FMS.UP_RPT_LIST_OF_TAKAFUL_PAYMENT :clientId, :reportDate", $input);
     }
 
     public static function formatData($data)
     {
         return [
-            'MEMBERSHIP NO'   => [
-                'value' => $data->mbr_no,
+            'Member No'  => [
+                'value' =>  $data->mbr_no,
                 'align' => 'left'
             ],
-            'IC NO'  => [
-                'value' => $data->identity_no,
-                'align' => 'right'
-            ],
-            'NAME' => [
+            'Name' => [
                 'value' => $data->name,
                 'align' => 'left'
             ],
-            'MEMBERS STATUS' => [
-                'value' => $data->status,
+            'Account No' => [
+                'value' =>$data->account_no,
+                'align' => 'left'
+            ],
+            'Balance Outstanding'  => [
+                'value' => $data->bal_outstanding,
                 'align' => 'right'
             ],
-            'TOTAL CONTRIBUTION' => [
-                'value' => sprintf("%40s",$data->total_contribution),
+            'Print Outstanding'  => [
+                'value' =>$data->prin_outstanding,
                 'align' => 'right'
             ],
-            'TOTAL SHARE' => [
-                'value' => sprintf("%40s",$data->total_share),
+            'Uei Outstanding'  => [
+                'value' =>$data->uei_outstanding,
                 'align' => 'right'
             ],
-            'NOTICED RETIREMENT DATE' => [
-                'value' => $data->notice_date,
+            'Month Arrears' => [
+                'value' =>$data->month_arrears,
                 'align' => 'right'
             ],
-            'EFFECTIVE RETIREMENT DATE' => [
-                'value' => $data->effective_retirement_date,
+            'Installment Arrears' => [
+                'value' =>$data->instal_arrears,
                 'align' => 'right'
             ],
-            'EMPLOYER'                  => [
-                'value' => $data->current_employer_name,
-                'align' => 'right'
+            'Payment Type' => [
+                'value' =>$data->payment_type,
+                'align' => 'left'
             ],
-            'REMARKS' => [
-                'value' => $data->remarks,
-                'align' => 'right'
+            'NPF Status' => [
+                'value' =>$data->npf_status,
+                'align' => 'left'
+            ],
+            'Product' => [
+                'value' =>$data->product,
+                'align' => 'left'
             ],
         ];
     }

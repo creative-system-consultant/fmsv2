@@ -5,55 +5,59 @@ namespace App\Action\StoredProcedure;
 use DB;
 use Illuminate\Support\Collection;
 
-class SpFmsUpRptClosedMemberList
+class SpFmsUpRptDeductionList
 {
     public static function getRawData($input)
     {
-        return DB::select("RPT.up_rpt_list_closed_membership :clientId, :startDate, :endDate", $input);
+        return DB::select("RPT.up_rpt_list_of_deduction :clientId, :startDate, :endDate", $input);
     }
 
     public static function formatData($data)
     {
         return [
             'MEMBERSHIP NO'   => [
-                'value' => $data->mbr_no,
+                'value' => $data->MBR_NO,
                 'align' => 'left'
             ],
-            'IC NO'  => [
-                'value' => $data->identity_no,
-                'align' => 'right'
-            ],
-            'NAME' => [
-                'value' => $data->name,
+            'ID' => [
+                'value' => $data->ID,
                 'align' => 'left'
             ],
-            'MEMBERS STATUS' => [
-                'value' => $data->status,
+            'TRANSACTIONS'   => [
+                'value' => $data->TRANSACTIONS,
+                'align' => 'left'
+            ],
+            'NAME'                  => [
+                'value' => $data->NAME,
+                'align' => 'left'
+            ],
+            'MODE' => [
+                'value' => $data->MODE,
                 'align' => 'right'
             ],
-            'TOTAL CONTRIBUTION' => [
-                'value' => sprintf("%40s",$data->total_contribution),
+            'DISBURSED AMOUNT' => [
+                'value' => $data->disbursed_amount,
                 'align' => 'right'
             ],
-            'TOTAL SHARE' => [
-                'value' => sprintf("%40s",$data->total_share),
+            'DEBIT' => [
+                'value' => $data->DEBIT,
                 'align' => 'right'
             ],
-            'NOTICED RETIREMENT DATE' => [
-                'value' => $data->notice_date,
+            'CREDIT' => [
+                'value' => $data->CREDIT,
                 'align' => 'right'
             ],
-            'EFFECTIVE RETIREMENT DATE' => [
-                'value' => $data->effective_retirement_date,
+            'DATE' => [
+                'value' => $data->DATE,
                 'align' => 'right'
             ],
-            'EMPLOYER'                  => [
-                'value' => $data->current_employer_name,
-                'align' => 'right'
+            'PRODUCT' => [
+                'value' => $data->PRODUCT,
+                'align' => 'left'
             ],
-            'REMARKS' => [
-                'value' => $data->remarks,
-                'align' => 'right'
+            'START DISBURSED DATE' => [
+                'value' => $data->start_disbursed_date,
+                'align' => 'left'
             ],
         ];
     }

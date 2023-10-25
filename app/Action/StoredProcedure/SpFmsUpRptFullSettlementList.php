@@ -5,54 +5,62 @@ namespace App\Action\StoredProcedure;
 use DB;
 use Illuminate\Support\Collection;
 
-class SpFmsUpRptClosedMemberList
+class SpFmsUpRptFullSettlementList
 {
     public static function getRawData($input)
     {
-        return DB::select("RPT.up_rpt_list_closed_membership :clientId, :startDate, :endDate", $input);
+        return DB::select("RPT.up_rpt_full_settlement_fin :clientId, :startDate, :endDate", $input);
     }
 
     public static function formatData($data)
     {
         return [
-            'MEMBERSHIP NO'   => [
-                'value' => $data->mbr_no,
-                'align' => 'left'
-            ],
-            'IC NO'  => [
-                'value' => $data->identity_no,
-                'align' => 'right'
-            ],
             'NAME' => [
                 'value' => $data->name,
                 'align' => 'left'
             ],
-            'MEMBERS STATUS' => [
-                'value' => $data->status,
-                'align' => 'right'
-            ],
-            'TOTAL CONTRIBUTION' => [
-                'value' => sprintf("%40s",$data->total_contribution),
-                'align' => 'right'
-            ],
-            'TOTAL SHARE' => [
-                'value' => sprintf("%40s",$data->total_share),
-                'align' => 'right'
-            ],
-            'NOTICED RETIREMENT DATE' => [
-                'value' => $data->notice_date,
-                'align' => 'right'
-            ],
-            'EFFECTIVE RETIREMENT DATE' => [
-                'value' => $data->effective_retirement_date,
-                'align' => 'right'
+            'MEMBERSHIP NO'   => [
+                'value' => $data->mbr_no,
+                'align' => 'left'
             ],
             'EMPLOYER'                  => [
                 'value' => $data->current_employer_name,
+                'align' => 'left'
+            ],
+            'ACCOUNT NO' => [
+                'value' => $data->account_no,
                 'align' => 'right'
             ],
-            'REMARKS' => [
-                'value' => $data->remarks,
+            'EARLY SETTLEMENT' => [
+                'value' => $data->early_settle_date,
+                'align' => 'right'
+            ],
+            'PRODUCT' => [
+                'value' => $data->product,
+                'align' => 'left'
+            ],
+            'DIBURSEMENT AMOUNT' => [
+                'value' => $data->disbursed_amount,
+                'align' => 'right'
+            ],
+            'MODE' => [
+                'value' => $data->mode,
+                'align' => 'right'
+            ],
+            'AMOUNT SETTLEMENT' => [
+                'value' => $data->amt_settlement,
+                'align' => 'right'
+            ],
+            'PRINT AMOUNT' => [
+                'value' => $data->prin_amt,
+                'align' => 'right'
+            ],
+            'PROFIT AMOUNT' => [
+                'value' => $data->profit_amt,
+                'align' => 'right'
+            ],
+            'REBATE AMOUNT' => [
+                'value' => $data->rebate_amount,
                 'align' => 'right'
             ],
         ];

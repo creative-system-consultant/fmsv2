@@ -2,36 +2,31 @@
 
 namespace App\Livewire\Report\Operation\List;
 
-use App\Action\StoredProcedure\SpFmsUpRptListFinancingTrxOnDisb;
+use App\Action\StoredProcedure\SpFmsUpRptListTakafulPayment;
 use App\Services\General\ReportService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
-class FinTrxBaseOnDisbursement extends Component
-{   
+class TakafulPayment extends Component
+{
     use Actions, WithPagination;
-
     public $clientId;
 
     #[Rule('required')]
-    public $startDate;
-
-    #[Rule('required')]
-    public $endDate;
+    public $reportDate;
 
     public function mount()
     {
         $this->clientId = auth()->user()->client_id;
     }
-
+    
     protected function getRawData()
     {
-        return SpFmsUpRptListFinancingTrxOnDisb::getRawData([
+        return SpFmsUpRptListTakafulPayment::getRawData([
             'clientId' => $this->clientId,
-            'startDate' => $this->startDate,
-            'endDate' => $this->endDate,
+            'reportDate' => $this->reportDate
         ], true);
     }
 
@@ -44,7 +39,7 @@ class FinTrxBaseOnDisbursement extends Component
         if(count($rawData) > 0) {
             $formattedData = [];
             foreach ($rawData as $data) {
-                $formattedData[] = SpFmsUpRptListFinancingTrxOnDisb::formatDataForExcel($data);
+                $formattedData[] = SpFmsUpRptListTakafulPayment::formatDataForExcel($data);
             }
             return $this->handleExcel($formattedData);
         } else {
@@ -54,7 +49,7 @@ class FinTrxBaseOnDisbursement extends Component
 
     private function handleDataTable($rawData)
     {
-        $data = SpFmsUpRptListFinancingTrxOnDisb::handleForTable($rawData, true);
+        $data = SpFmsUpRptListTakafulPayment::handleForTable($rawData, true);
 
         return ReportService::paginateData($data);
     }
@@ -67,17 +62,17 @@ class FinTrxBaseOnDisbursement extends Component
             }
         };
 
-        $filename = 'ListOfFinancingTrxOnDisb-%s.xlsx';
+        $filename = 'ListOfTakafulPayment-%s.xlsx';
         $report = new ReportService();
 
-        return $report->generateExcelReport($dataGenerator, $filename, $this->startDate);
+        return $report->generateExcelReport($dataGenerator, $filename, $this->reportDate);
     }
 
     public function render()
     {
         $result = null;
 
-        if($this->startDate && $this->endDate) {
+        if($this->reportDate) {
             $rawData = $this->getRawData();
 
             if(count($rawData) <= 1000) {
@@ -85,7 +80,7 @@ class FinTrxBaseOnDisbursement extends Component
             }
         }
 
-        return view('livewire.report.operation.list.fin-trx-base-on-disbursement', [
+        return view('livewire.report.operation.list.takaful-payment', [
             'result' => $result
         ])->extends('layouts.main');
     }
