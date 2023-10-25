@@ -17,12 +17,21 @@ use App\Livewire\Report\Operation\Financing\Approval;
 //list
 use App\Livewire\Report\Operation\List\Autopay;
 use App\Livewire\Report\Operation\List\Bank;
+use App\Livewire\Report\Operation\List\BskeGoldbarTrx;
 use App\Livewire\Report\Operation\List\DormantMember;
 use App\Livewire\Report\Operation\List\ClosedMember;
+use App\Livewire\Report\Operation\List\Deduction;
+use App\Livewire\Report\Operation\List\DetailForCashDisbursement;
+use App\Livewire\Report\Operation\List\EntranceFee;
+use App\Livewire\Report\Operation\List\Financing;
 use App\Livewire\Report\Operation\List\FinTrxBaseOnDisbursement;
+use App\Livewire\Report\Operation\List\FullSettlement;
+use App\Livewire\Report\Operation\List\Introducer;
 use App\Livewire\Report\Operation\List\Member;
 use App\Livewire\Report\Operation\List\MemberNotPayContribution;
-
+use App\Livewire\Report\Operation\List\NonCashProduct;
+use App\Livewire\Report\Operation\List\Retirement;
+use App\Livewire\Report\Operation\List\TakafulPayment;
 //member
 use App\Livewire\Report\Operation\Member\Byincome;
 use App\Livewire\Report\Operation\Member\ByState;
@@ -62,6 +71,16 @@ Route::get('list/bank', Bank::class)->name('list.bank');
 Route::get('list/dormant-member', DormantMember::class)->name('list.dormant-member');
 Route::get('list/fin-trx-base-disbursement', FinTrxBaseOnDisbursement::class)->name('list.fin-trx-base-disbursement');
 Route::get('list/member-not-pay-contribution', MemberNotPayContribution::class)->name('list.member-not-pay-contribution');
+Route::get('list/entrance-fee', EntranceFee::class)->name('list.entrance-fee');
+Route::get('list/full-settlement', FullSettlement::class)->name('list.full-settlement');
+Route::get('list/deduction', Deduction::class)->name('list.deduction');
+Route::get('list/retirement', Retirement::class)->name('list.retirement');
+Route::get('list/detail-for-cash-disbursement', DetailForCashDisbursement::class)->name('list.detail-for-cash-disbursement');
+Route::get('list/Bske-Goldbar-Trax', BskeGoldbarTrx::class)->name('list.Bske-Goldbar-Trax');
+Route::get('list/financing', Financing::class)->name('list.financing');
+Route::get('list/introducer', Introducer::class)->name('list.introducer');
+Route::get('list/non-cash-product', NonCashProduct::class)->name('list.non-cash-product');
+Route::get('list/takaful-payment', TakafulPayment::class)->name('list.takaful-payment');
 
 //daily transaction
 Route::get('dailytransaction/listing', Listing::class)->name('dailytransaction.listing');

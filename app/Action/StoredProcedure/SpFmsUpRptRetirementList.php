@@ -5,11 +5,11 @@ namespace App\Action\StoredProcedure;
 use DB;
 use Illuminate\Support\Collection;
 
-class SpFmsUpRptClosedMemberList
+class SpFmsUpRptRetirementList
 {
     public static function getRawData($input)
     {
-        return DB::select("RPT.up_rpt_list_closed_membership :clientId, :startDate, :endDate", $input);
+        return DB::select("FMS.up_rpt_list_retirement :clientId, :startDate, :endDate", $input);
     }
 
     public static function formatData($data)
@@ -21,7 +21,7 @@ class SpFmsUpRptClosedMemberList
             ],
             'IC NO'  => [
                 'value' => $data->identity_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'NAME' => [
                 'value' => $data->name,
@@ -29,7 +29,7 @@ class SpFmsUpRptClosedMemberList
             ],
             'MEMBERS STATUS' => [
                 'value' => $data->status,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'TOTAL CONTRIBUTION' => [
                 'value' => sprintf("%40s",$data->total_contribution),
@@ -45,10 +45,6 @@ class SpFmsUpRptClosedMemberList
             ],
             'EFFECTIVE RETIREMENT DATE' => [
                 'value' => $data->effective_retirement_date,
-                'align' => 'right'
-            ],
-            'EMPLOYER'                  => [
-                'value' => $data->current_employer_name,
                 'align' => 'right'
             ],
             'REMARKS' => [

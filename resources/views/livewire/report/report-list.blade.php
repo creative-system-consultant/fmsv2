@@ -168,39 +168,39 @@
                                             />
                                             <x-general.nav-item
                                                 title="List Of Entrance Fee"
-                                                href="#"
+                                                href="{{ route('report.operation.list.entrance-fee') }}"
                                             />
                                             <x-general.nav-item
                                                 title="List Of Financing"
-                                                href="#"
+                                                href="{{ route('report.operation.list.financing') }}"
                                             />
                                             <x-general.nav-item
                                                 title="List Of Full Settlement"
-                                                href="#"
+                                                href="{{ route('report.operation.list.full-settlement') }}"
                                             />
                                             <x-general.nav-item
                                                 title="List Of Introducer"
-                                                href="#"
+                                                href="{{ route('report.operation.list.introducer') }}"
                                             />
                                             <x-general.nav-item
                                                 title="List Of Deduction"
-                                                href="#"
+                                                href="{{ route('report.operation.list.deduction') }}"
                                             />
                                             <x-general.nav-item
                                                 title="List Of Retirement"
-                                                href="#"
+                                                href="{{ route('report.operation.list.retirement') }}"
                                             />
                                             <x-general.nav-item
                                                 title="List Of Non-Cash Products"
-                                                href="#"
+                                                href="{{ route('report.operation.list.non-cash-product') }}"
                                             />
                                             <x-general.nav-item
                                                 title="List Of Detail Cash Disbursement"
-                                                href="#"
+                                                href="{{ route('report.operation.list.detail-for-cash-disbursement') }}"
                                             />
                                             <x-general.nav-item
                                                 title="List Of Takaful Payment"
-                                                href="#"
+                                                href="{{ route('report.operation.list.takaful-payment') }}"
                                             />
                                             <x-general.nav-item
                                                 title="List Of Dividend Payment"
@@ -212,7 +212,7 @@
                                             />
                                             <x-general.nav-item
                                                 title="List Of BSKE & GOLDBAR Transactions"
-                                                href="#"
+                                                href="{{ route('report.operation.list.Bske-Goldbar-Trax') }}"
                                             />
                                         </x-general.dropdown-item>
 

@@ -2,57 +2,37 @@
 
 namespace App\Action\StoredProcedure;
 
-use Illuminate\Support\Collection;
 use DB;
+use Illuminate\Support\Collection;
 
-class SpFmsUpRptMembersDormant
+class SpFmsUpRptListIntroducer
 {
     public static function getRawData($input)
     {
-        return DB::select("RPT.up_rpt_members_dormant :clientId, :reportDate", $input);
+        return DB::select("RPT.up_rpt_list_introducer :clientId, :startDate, :endDate", $input);
     }
 
     public static function formatData($data)
     {
         return [
-            'Staff No'  => [
-                'value' =>  $data->staff_no,
+            'APPLICANT MEMBERSHIP NO'   => [
+                'value' => $data->applicant_mbr_no,
                 'align' => 'left'
             ],
-            'Member No'  => [
-                'value' =>  $data->mbr_no,
+            'APPLICANT NAME' => [
+                'value' => $data->applicant_name,
                 'align' => 'left'
             ],
-            'IC No'  => [
-                'value' =>  $data->ic,
+            'INTRODUCER MEMBERSHIP NO' => [
+                'value' => $data->introducer_mbr_no,
                 'align' => 'left'
             ],
-            'Name' => [
-                'value' => $data->name,
+            'INTRODUCER NAME' => [
+                'value' => $data->introducer_name,
                 'align' => 'left'
             ],
-            'Monthly Contribution' => [
-                'value' =>number_format($data->monthly_contribution,2),
-                'align' => 'left'
-            ],
-            'Transaction Date'  => [
-                'value' => date('d-m-Y', strtotime($data->transaction_date)),
-                'align' => 'right'
-            ],
-            'Last Pay Date'  => [
-                'value' =>date('d-m-Y', strtotime($data->last_pay_date)),
-                'align' => 'right'
-            ],
-            'Amount' => [
-                'value' =>number_format($data->amount,2),
-                'align' => 'right'
-            ],
-            'Total Contribution' => [
-                'value' =>number_format($data->total_contribution,2),
-                'align' => 'left'
-            ],
-            'Total Share' => [
-                'value' =>number_format($data->total_share,2),
+            'INTRODUCER BANK ACCOUNT NO' => [
+                'value' => $data->introducer_bank_account_no,
                 'align' => 'left'
             ],
         ];

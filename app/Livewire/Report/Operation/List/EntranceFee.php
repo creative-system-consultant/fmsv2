@@ -2,17 +2,16 @@
 
 namespace App\Livewire\Report\Operation\List;
 
-use App\Action\StoredProcedure\SpFmsUpRptListFinancingTrxOnDisb;
+use App\Action\StoredProcedure\SpFmsUpRptEntranceFeeList;
 use App\Services\General\ReportService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
-class FinTrxBaseOnDisbursement extends Component
+class EntranceFee extends Component
 {   
     use Actions, WithPagination;
-
     public $clientId;
 
     #[Rule('required')]
@@ -28,7 +27,7 @@ class FinTrxBaseOnDisbursement extends Component
 
     protected function getRawData()
     {
-        return SpFmsUpRptListFinancingTrxOnDisb::getRawData([
+        return SpFmsUpRptEntranceFeeList::getRawData([
             'clientId' => $this->clientId,
             'startDate' => $this->startDate,
             'endDate' => $this->endDate,
@@ -44,7 +43,7 @@ class FinTrxBaseOnDisbursement extends Component
         if(count($rawData) > 0) {
             $formattedData = [];
             foreach ($rawData as $data) {
-                $formattedData[] = SpFmsUpRptListFinancingTrxOnDisb::formatDataForExcel($data);
+                $formattedData[] = SpFmsUpRptEntranceFeeList::formatDataForExcel($data);
             }
             return $this->handleExcel($formattedData);
         } else {
@@ -54,7 +53,7 @@ class FinTrxBaseOnDisbursement extends Component
 
     private function handleDataTable($rawData)
     {
-        $data = SpFmsUpRptListFinancingTrxOnDisb::handleForTable($rawData, true);
+        $data = SpFmsUpRptEntranceFeeList::handleForTable($rawData, true);
 
         return ReportService::paginateData($data);
     }
@@ -67,7 +66,7 @@ class FinTrxBaseOnDisbursement extends Component
             }
         };
 
-        $filename = 'ListOfFinancingTrxOnDisb-%s.xlsx';
+        $filename = 'ListOfEntranceFee-%s.xlsx';
         $report = new ReportService();
 
         return $report->generateExcelReport($dataGenerator, $filename, $this->startDate);
@@ -85,7 +84,7 @@ class FinTrxBaseOnDisbursement extends Component
             }
         }
 
-        return view('livewire.report.operation.list.fin-trx-base-on-disbursement', [
+        return view('livewire.report.operation.list.entrance-fee', [
             'result' => $result
         ])->extends('layouts.main');
     }
