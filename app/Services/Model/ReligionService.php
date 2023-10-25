@@ -8,7 +8,7 @@ class ReligionService
 {
     public function isCodeExists($code)
     {
-        return RefReligion::whereCoopId(auth()->user()->coop_id)->whereCode($code)->exists();
+        return RefReligion::whereClientId(auth()->user()->client_id)->whereCode($code)->exists();
     }
 
     public function createReligion($description, $code, $status)
@@ -16,7 +16,7 @@ class ReligionService
         RefReligion::create([
             'description' => trim(strtoupper($description)),
             'code' => trim(strtoupper($code)),
-            'coop_id' => auth()->user()->coop_id,
+            'client_id' => auth()->user()->client_id,
             'status' => $status == true ? '1' : '0',
             'created_at' => now(),
             'created_by' => auth()->user()->name,
@@ -25,7 +25,7 @@ class ReligionService
 
     public function canUpdateCode($id, $code)
     {
-        $existingCode = RefReligion::whereCoopId(auth()->user()->coop_id)->whereCode($code);
+        $existingCode = RefReligion::whereClientId(auth()->user()->client_id)->whereCode($code);
 
         return !$existingCode->exists() || $existingCode->value('id') == $id;
     }
@@ -48,6 +48,6 @@ class ReligionService
 
     public function getPaginatedReligions($perPage = 10)
     {
-        return RefReligion::whereCoopId(auth()->user()->coop_id)->paginate($perPage);
+        return RefReligion::whereClientId(auth()->user()->client_id)->paginate($perPage);
     }
 }

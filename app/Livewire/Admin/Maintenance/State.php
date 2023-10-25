@@ -30,7 +30,7 @@ class State extends Component
     public $modalDescription;
     public $modalMethod;
     public $state;
-    public $coopId;
+    public $clientId;
     public $paginated;
 
     protected $stateService;

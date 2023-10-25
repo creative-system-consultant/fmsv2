@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefReligion;
-use App\Services\Maintenance\ReligionService;
+use App\Services\Model\ReligionService;
 use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
 use Livewire\Attributes\Layout;
@@ -96,7 +96,7 @@ class Religion extends Component
 
     public function render()
     {
-        $data = $this->religionService->getPaginatedReligion($this->paginated);
+        $data = $this->religionService->getPaginatedReligions($this->paginated);
 
         return view('livewire.admin.maintenance.religion', [
             'data' => $data,
