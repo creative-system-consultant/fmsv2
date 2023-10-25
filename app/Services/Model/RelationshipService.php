@@ -8,7 +8,7 @@ class RelationshipService
 {
     public static function isCodeExists($code)
     {
-        return RefRelationship::whereCoopId(auth()->user()->coop_id)->whereCode($code)->exists();
+        return RefRelationship::whereClientId(auth()->user()->client_id)->whereCode($code)->exists();
     }
 
     public static function getAllRelationship()
@@ -19,7 +19,7 @@ class RelationshipService
     public static function createRelationship($data)
     {
         $defaultData = [
-            'coop_id' => auth()->user()->coop_id,
+            'client_id' => auth()->user()->client_id,
             'updated_at' => now(),
             'updated_by' => auth()->user()->name,
         ];
@@ -31,7 +31,7 @@ class RelationshipService
 
     public static function canUpdateCode($id, $code)
     {
-        $existingCode = RefRelationship::whereCoopId(auth()->user()->coop_id)->whereCode($code);
+        $existingCode = RefRelationship::whereClientId(auth()->user()->client_id)->whereCode($code);
 
         return !$existingCode->exists() || $existingCode->value('id') == $id;
     }
@@ -55,6 +55,6 @@ class RelationshipService
 
     public static function getPaginatedRelationships($perPage = 10)
     {
-        return RefRelationship::whereCoopId(auth()->user()->coop_id)->paginate($perPage);
+        return RefRelationship::whereClientId(auth()->user()->client_id)->paginate($perPage);
     }
 }

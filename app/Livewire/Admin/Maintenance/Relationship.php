@@ -6,7 +6,6 @@ use App\Models\Ref\RefRelationship;
 use App\Services\General\PopupService;
 use App\Services\Model\RelationshipService;
 use App\Traits\MaintenanceModalTrait;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -30,7 +29,6 @@ class Relationship extends Component
     public $modalDescription;
     public $modalMethod;
     public $relationship;
-    public $coopId;
     public $paginated;
 
     protected $relationshipService;
@@ -107,7 +105,7 @@ class Relationship extends Component
 
     public function render()
     {
-        $data = RelationshipService::getPaginatedRelationships($this->paginated);
+        $data = $this->relationshipService::getPaginatedRelationships($this->paginated);
 
         return view('livewire.admin.maintenance.relationship', [
             'data' => $data,
