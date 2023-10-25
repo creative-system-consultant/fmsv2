@@ -14,100 +14,148 @@ class SpFmsUpRptMthContributionSummary
     public static function formatData($data)
     {
         return [
-            'PRODUCT ID' => [
-                'value' => $data->product_id,
+            'PAYMENT01' => [
+                'value' => number_format($data->payment01, 2),
                 'align' => 'left'
             ],
-            'PRODUCTS' => [
-                'value' => $data->products,
+            'WITHDRAWAL01' => [
+                'value' => number_format($data->withdrawal01, 2),
                 'align' => 'left'
             ],
-            'TOTAL BIL' => [
-                'value' => number_format($data->tot_bil, 2),
+            'TOTAL_AMOUNT01' => [
+                'value' => number_format($data->total_amount01, 2),
                 'align' => 'right'
             ],
-            'APPROVED LIMIT' => [
-                'value' => number_format($data->approved_limit, 2),
+            'PAYMENT02' => [
+                'value' => number_format($data->payment02, 2),
+                'align' => 'left'
+            ],
+            'WITHDRAWAL02' => [
+                'value' => number_format($data->withdrawal02, 2),
+                'align' => 'left'
+            ],
+            'TOTAL_AMOUNT02' => [
+                'value' => number_format($data->total_amount02, 2),
                 'align' => 'right'
             ],
-            'INSTAL AMOUNT' => [
-                'value' => number_format($data->instal_amount, 2),
+            'PAYMENT03' => [
+                'value' => number_format($data->payment03, 2),
+                'align' => 'left'
+            ],
+            'WITHDRAWAL03' => [
+                'value' => number_format($data->withdrawal03, 2),
+                'align' => 'left'
+            ],
+            'TOTAL_AMOUNT03' => [
+                'value' => number_format($data->total_amount03, 2),
                 'align' => 'right'
             ],
-            'BAL_OUTSTANDING' => [
-                'value' => number_format($data->bal_outstanding, 2),
+            'PAYMENT04' => [
+                'value' => number_format($data->payment04, 2),
+                'align' => 'left'
+            ],
+            'WITHDRAWAL04' => [
+                'value' => number_format($data->withdrawal04, 2),
+                'align' => 'left'
+            ],
+            'TOTAL_AMOUNT04' => [
+                'value' => number_format($data->total_amount04, 2),
                 'align' => 'right'
             ],
-            'UEI_OUTSTANDING' => [
-                'value' => number_format($data->uei_outstanding, 2),
+            'PAYMENT05' => [
+                'value' => number_format($data->payment05, 2),
+                'align' => 'left'
+            ],
+            'WITHDRAWAL05' => [
+                'value' => number_format($data->withdrawal05, 2),
+                'align' => 'left'
+            ],
+            'TOTAL_AMOUNT05' => [
+                'value' => number_format($data->total_amount05, 2),
                 'align' => 'right'
             ],
-            'PRINT OUTSTANDING' => [
-                'value' => number_format($data->prin_outstanding, 2),
+            'PAYMENT06' => [
+                'value' => number_format($data->payment06, 2),
+                'align' => 'left'
+            ],
+            'WITHDRAWAL06' => [
+                'value' => number_format($data->withdrawal06, 2),
+                'align' => 'left'
+            ],
+            'TOTAL_AMOUNT06' => [
+                'value' => number_format($data->total_amount06, 2),
                 'align' => 'right'
             ],
-            'BIL 1' => [
-                'value' => $data->bil1,
+            'PAYMENT07' => [
+                'value' => number_format($data->payment07, 2),
+                'align' => 'left'
+            ],
+            'WITHDRAWAL07' => [
+                'value' => number_format($data->withdrawal07, 2),
+                'align' => 'left'
+            ],
+            'TOTAL_AMOUNT07' => [
+                'value' => number_format($data->total_amount07, 2),
                 'align' => 'right'
             ],
-            'MONTH1' => [
-                'value' => number_format($data->month1, 2),
+            'PAYMENT08' => [
+                'value' => number_format($data->payment08, 2),
+                'align' => 'left'
+            ],
+            'WITHDRAWAL08' => [
+                'value' => number_format($data->withdrawal08, 2),
+                'align' => 'left'
+            ],
+            'TOTAL_AMOUNT08' => [
+                'value' => number_format($data->total_amount08, 2),
                 'align' => 'right'
             ],
-            'BIL 2' => [
-                'value' => $data->bil2,
+            'PAYMENT09' => [
+                'value' => number_format($data->payment09, 2),
+                'align' => 'left'
+            ],
+            'WITHDRAWAL09' => [
+                'value' => number_format($data->withdrawal09, 2),
+                'align' => 'left'
+            ],
+            'TOTAL_AMOUNT09' => [
+                'value' => number_format($data->total_amount09, 2),
                 'align' => 'right'
             ],
-            'MONTH2' => [
-                'value' => number_format($data->month2, 2),
+            'PAYMENT10' => [
+                'value' => number_format($data->payment10, 2),
+                'align' => 'left'
+            ],
+            'WITHDRAWAL10' => [
+                'value' => number_format($data->withdrawal10, 2),
+                'align' => 'left'
+            ],
+            'TOTAL_AMOUNT10' => [
+                'value' => number_format($data->total_amount10, 2),
                 'align' => 'right'
             ],
-            'BIL 3' => [
-                'value' => $data->bil3,
+            'PAYMENT11' => [
+                'value' => number_format($data->payment11, 2),
+                'align' => 'left'
+            ],
+            'WITHDRAWAL11' => [
+                'value' => number_format($data->withdrawal11, 2),
+                'align' => 'left'
+            ],
+            'TOTAL_AMOUNT11' => [
+                'value' => number_format($data->total_amount11, 2),
                 'align' => 'right'
             ],
-            'MONTH3' => [
-                'value' => number_format($data->month3, 2),
-                'align' => 'right'
+            'PAYMENT12' => [
+                'value' => number_format($data->payment12, 2),
+                'align' => 'left'
             ],
-            'BIL 4' => [
-                'value' => $data->bil4,
-                'align' => 'right'
+            'WITHDRAWAL12' => [
+                'value' => number_format($data->withdrawal12, 2),
+                'align' => 'left'
             ],
-            'MONTH4' => [
-                'value' => number_format($data->month4, 2),
-                'align' => 'right'
-            ],
-            'BIL 5' => [
-                'value' => $data->bil5,
-                'align' => 'right'
-            ],
-            'MONTH5' => [
-                'value' => number_format($data->month5, 2),
-                'align' => 'right'
-            ],
-            'BIL 6' => [
-                'value' => $data->bil6,
-                'align' => 'right'
-            ],
-            'MONTH6' => [
-                'value' => number_format($data->month6, 2),
-                'align' => 'right'
-            ],
-            'BIL 7' => [
-                'value' => $data->bil7,
-                'align' => 'right'
-            ],
-            'MONTH7' => [
-                'value' => number_format($data->month7, 2),
-                'align' => 'right'
-            ],
-            'BIL_MORE_THEN 7' => [
-                'value' => $data->bil_more_then_7,
-                'align' => 'right'
-            ],
-            'MORE_THEN_7' => [
-                'value' => number_format($data->more_then_7 , 2),
+            'TOTAL_AMOUNT12' => [
+                'value' => number_format($data->total_amount12, 2),
                 'align' => 'right'
             ],
         ];
