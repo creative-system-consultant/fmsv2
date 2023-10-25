@@ -3,18 +3,17 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefRace;
-use App\Services\Maintenance\RaceService;
+use App\Services\Model\RaceService;
 use App\Services\General\PopupService;
 use Livewire\Attributes\Rule;
 use App\Traits\MaintenanceModalTrait;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
 class Race extends Component
 {
-    use Actions, WithPagination,MaintenanceModalTrait;
+    use Actions, WithPagination, MaintenanceModalTrait;
 
     #[Rule('required|max:3|alpha')]
     public $code;
@@ -30,7 +29,6 @@ class Race extends Component
     public $modalDescription;
     public $modalMethod;
     public $race;
-    public $coopId;
     public $paginated;
 
     protected $raceService;
@@ -53,17 +51,26 @@ class Race extends Component
         $this->description = $this->race->description;
         $this->code = $this->race->code;
         $this->race->status == 1 ? $this->status = true : $this->status = false;
+
         $this->setupModal("update", "Update Race", "Race", "update({$id})");
     }
 
     public function create()
     {
+        
         $this->validate();
 
-        if ($this->raceService->isCodeExists($this->code)) {
+        if (RaceService::isCodeExists($this->code)) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $this->raceService->createRace($this->description, $this->code, $this->status);
+            $data = [
+                'description' => trim(strtoupper($this->description)),
+                'code' => trim(strtoupper($this->code)),
+                'status' => $this->status == true ? '1' : '0',
+            ];
+
+            RaceService::createRace($data);
+
             $this->reset();
             $this->openModal = false;
         }
@@ -73,8 +80,14 @@ class Race extends Component
     {
         $this->validate();
 
-        if ($this->raceService->canUpdateCode($id, $this->code)) {
-            $this->raceService->updateRace($id, $this->description, $this->code, $this->status);
+        if (RaceService::canUpdateCode($id, $this->code)) {
+            $data = [
+                'description' => trim(strtoupper($this->description)),
+                'code' => trim(strtoupper($this->code)),
+                'status' => $this->status == true ? '1' : '0',
+            ];
+
+            RaceService::updateRace($id, $data);
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -88,12 +101,12 @@ class Race extends Component
 
     public function ConfirmDelete($id)
     {
-        $this->raceService->deleteRace($id);
+        RaceService::deleteRace($id);
     }
 
     public function render()
     {
-        $data = $this->raceService->getPaginatedRace($this->paginated);
+        $data = $this->raceService::getPaginatedRace($this->paginated);
 
         return view('livewire.admin.maintenance.race', [
             'data' => $data,

@@ -57,16 +57,21 @@ class Religion extends Component
 
     public function create()
     {
+        
         $this->validate();
 
-        if ($this->religionService->isCodeExists($this->code)) {
+        if (ReligionService::isCodeExists($this->code)) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $this->religionService->createReligion($this->description, $this->code, $this->status);
+            $data = [
+                'description' => trim(strtoupper($this->description)),
+                'code' => trim(strtoupper($this->code)),
+                'status' => $this->status == true ? '1' : '0',
+            ];
 
-            // clear input field
+            ReligionService::createReligion($data);
+
             $this->reset();
-            // close modal
             $this->openModal = false;
         }
     }
@@ -75,8 +80,14 @@ class Religion extends Component
     {
         $this->validate();
 
-        if ($this->religionService->canUpdateCode($id, $this->code)) {
-            $this->religionService->updateReligion($id, $this->description, $this->code, $this->status);
+        if (ReligionService::canUpdateCode($id, $this->code)) {
+            $data = [
+                'description' => trim(strtoupper($this->description)),
+                'code' => trim(strtoupper($this->code)),
+                'status' => $this->status == true ? '1' : '0',
+            ];
+
+            ReligionService::updateReligion($id, $data);
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -90,7 +101,7 @@ class Religion extends Component
 
     public function ConfirmDelete($id)
     {
-        $this->religionService->deleteReligion($id);
+        ReligionService::deleteReligion($id);
     }
 
     public function render()

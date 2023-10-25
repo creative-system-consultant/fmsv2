@@ -5,49 +5,55 @@ namespace App\Services\Model;
 use App\Models\Ref\RefReligion;
 
 class ReligionService
-
 {
-    public function isCodeExists($code)
+    public static function isCodeExists($code)
     {
         return RefReligion::whereClientId(auth()->user()->client_id)->whereCode($code)->exists();
     }
 
-    public function createReligion($description, $code, $status)
+    public static function getAllReligion()
     {
-        RefReligion::create([
-            'description' => trim(strtoupper($description)),
-            'code' => trim(strtoupper($code)),
-            'client_id' => auth()->user()->client_id,
-            'status' => $status == true ? '1' : '0',
-            'created_at' => now(),
-            'created_by' => auth()->user()->name,
-        ]);
+        return RefReligion::all();
     }
 
-    public function canUpdateCode($id, $code)
+    public static function createReligion($data)
+    {
+        $defaultData = [
+            'client_id' => auth()->user()->client_id,
+            'updated_at' => now(),
+            'updated_by' => auth()->user()->name,
+        ];
+
+        $mergedData = array_merge($data, $defaultData);
+
+        RefReligion::create($mergedData);
+    }
+
+    public static function canUpdateCode($id, $code)
     {
         $existingCode = RefReligion::whereClientId(auth()->user()->client_id)->whereCode($code);
 
         return !$existingCode->exists() || $existingCode->value('id') == $id;
     }
 
-    public function updateReligion($id, $description, $code, $status)
+    public static function updateReligion($id, $data)
     {
-        RefReligion::whereId($id)->update([
-            'description' => trim(strtoupper($description)),
-            'code' => trim(strtoupper($code)),
-            'status' => $status == true ? '1' : '0',
+        $defaultData = [
             'updated_at' => now(),
             'updated_by' => auth()->user()->name,
-        ]);
+        ];
+
+        $mergedData = array_merge($data, $defaultData);
+
+        RefReligion::whereId($id)->update($mergedData);
     }
 
-    public function deleteReligion($id)
+    public static function deleteReligion($id)
     {
         RefReligion::whereId($id)->delete();
     }
 
-    public function getPaginatedReligions($perPage = 10)
+    public static function getPaginatedReligions($perPage = 10)
     {
         return RefReligion::whereClientId(auth()->user()->client_id)->paginate($perPage);
     }
