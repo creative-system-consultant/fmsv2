@@ -57,12 +57,19 @@ class State extends Component
 
     public function create()
     {
+        
         $this->validate();
 
-        if ($this->stateService->isCodeExists($this->code)) {
+        if (StateService::isCodeExists($this->code)) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $this->stateService->createState($this->description, $this->code, $this->status);
+            $data = [
+                'description' => trim(strtoupper($this->description)),
+                'code' => trim(strtoupper($this->code)),
+                'status' => $this->status == true ? '1' : '0',
+            ];
+
+            StateService::createState($data);
 
             $this->reset();
             $this->openModal = false;
@@ -73,8 +80,14 @@ class State extends Component
     {
         $this->validate();
 
-        if ($this->stateService->canUpdateCode($id, $this->code)) {
-            $this->stateService->updateState($id, $this->description, $this->code, $this->status);
+        if (StateService::canUpdateCode($id, $this->code)) {
+            $data = [
+                'description' => trim(strtoupper($this->description)),
+                'code' => trim(strtoupper($this->code)),
+                'status' => $this->status == true ? '1' : '0',
+            ];
+
+            StateService::updateState($id, $data);
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -88,12 +101,12 @@ class State extends Component
 
     public function ConfirmDelete($id)
     {
-        $this->stateService->deleteState($id);
+        StateService::deleteState($id);
     }
 
     public function render()
     {
-        $data = $this->stateService->getPaginatedState($this->paginated);
+        $data = $this->stateService->getPaginatedStates($this->paginated);
 
         return view('livewire.admin.maintenance.state', [
             'data' => $data,
