@@ -22,6 +22,7 @@ use App\Livewire\Report\Operation\List\DormantMember;
 use App\Livewire\Report\Operation\List\ClosedMember;
 use App\Livewire\Report\Operation\List\Deduction;
 use App\Livewire\Report\Operation\List\DetailForCashDisbursement;
+use App\Livewire\Report\Operation\List\DividendPayment;
 use App\Livewire\Report\Operation\List\EntranceFee;
 use App\Livewire\Report\Operation\List\Financing;
 use App\Livewire\Report\Operation\List\FinTrxBaseOnDisbursement;
@@ -81,6 +82,7 @@ Route::get('list/financing', Financing::class)->name('list.financing');
 Route::get('list/introducer', Introducer::class)->name('list.introducer');
 Route::get('list/non-cash-product', NonCashProduct::class)->name('list.non-cash-product');
 Route::get('list/takaful-payment', TakafulPayment::class)->name('list.takaful-payment');
+Route::get('list/dividend-payment', DividendPayment::class)->name('list.dividend-payment');
 
 //daily transaction
 Route::get('dailytransaction/listing', Listing::class)->name('dailytransaction.listing');

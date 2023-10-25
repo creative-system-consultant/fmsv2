@@ -204,7 +204,7 @@
                                             />
                                             <x-general.nav-item
                                                 title="List Of Dividend Payment"
-                                                href="#"
+                                                href="{{ route('report.operation.list.dividend-payment') }}"
                                             />
                                             <x-general.nav-item
                                                 title="List Of Fin Transaction Base On Disbursement"
