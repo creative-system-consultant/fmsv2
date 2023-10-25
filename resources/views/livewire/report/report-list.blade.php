@@ -234,7 +234,7 @@
                                             />
                                             <x-general.nav-item
                                                 title="Monthly Arrears Account"
-                                                href="#"
+                                                href="{{ route('report.operation.monthly.arrears-account') }}"
                                             />
                                             <x-general.nav-item
                                                 title="Monthly Financing Position"
@@ -242,11 +242,19 @@
                                             />
                                             <x-general.nav-item
                                                 title="List Of Share Details"
-                                                href="#"
+                                                href="{{ route('report.operation.monthly.list-share-detail') }}"
                                             />
                                             <x-general.nav-item
                                                 title="Share Summary Yearly"
-                                                href="#"
+                                                href="{{ route('report.operation.monthly.share-summary-yearly') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Contribution Details Monthly"
+                                                href="{{ route('report.operation.monthly.contribution-details-monthly') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Contribution Summary Yearly"
+                                                href="{{ route('report.operation.monthly.contribution-summary-yearly') }}"
                                             />
                                             <x-general.nav-item
                                                 title="Financing Summary Yearly"
@@ -254,7 +262,7 @@
                                             />
                                             <x-general.nav-item
                                                 title="Details Yearly Share"
-                                                href="#"
+                                                href="{{ route('report.operation.monthly.details-yearly-share') }}"
                                             />
                                             <x-general.nav-item
                                                 title="Details Yearly Contributions"

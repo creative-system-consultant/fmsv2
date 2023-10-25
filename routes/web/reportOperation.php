@@ -29,6 +29,12 @@ use App\Livewire\Report\Operation\Member\ByState;
 
 //monthly
 use App\Livewire\Report\Operation\Monthly\MthlyNpfAcc;
+use App\Livewire\Report\Operation\Monthly\ArrearsAccount;
+use App\Livewire\Report\Operation\Monthly\ContributionDetailsMonthly;
+use App\Livewire\Report\Operation\Monthly\ContributionSummaryYearly;
+use App\Livewire\Report\Operation\Monthly\DetailsYearlyShare;
+use App\Livewire\Report\Operation\Monthly\ListShareDetail;
+use App\Livewire\Report\Operation\Monthly\ShareSummaryYearly;
 use App\Livewire\Report\Operation\Monthly\MthlyFinPosition;
 use App\Livewire\Report\Operation\Monthly\ReportResc;
 use App\Livewire\Report\Operation\Monthly\DetailsYrlyCont;
@@ -73,6 +79,12 @@ Route::get('member/by-state', ByState::class)->name('member.by-state');
 
 //monthly
 Route::get('monthly/mthlynpfacc', MthlyNpfAcc::class)->name('monthly.mthlynpfacc');
+Route::get('monthly/arrears-account', ArrearsAccount::class)->name('monthly.arrears-account');
+Route::get('monthly/list-share-detail', ListShareDetail::class)->name('monthly.list-share-detail');
+Route::get('monthly/share-summary-yearly', ShareSummaryYearly::class)->name('monthly.share-summary-yearly');
+Route::get('monthly/contribution-details-monthly', ContributionDetailsMonthly::class)->name('monthly.contribution-details-monthly');
+Route::get('monthly/contribution-summary-yearly', ContributionSummaryYearly::class)->name('monthly.contribution-summary-yearly');
+Route::get('monthly/details-yearly-share', DetailsYearlyShare::class)->name('monthly.details-yearly-share');
 Route::get('monthly/mthly-fin-position', MthlyFinPosition::class)->name('monthly.mthly-fin-position');
 Route::get('monthly/report-resc', ReportResc::class)->name('monthly.report-resc');
 Route::get('monthly/details-yrly-cont', DetailsYrlyCont::class)->name('monthly.details-yrly-cont');
