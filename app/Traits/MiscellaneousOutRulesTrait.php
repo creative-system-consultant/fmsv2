@@ -21,14 +21,14 @@ trait MiscellaneousOutRulesTrait
             ];
         } elseif ($this->selectedType == 'financing') {
             return [
-                'txnAmt' => 'required|numeric|lte:miscAmt|gte:instalAmt',
+                'txnAmt' => 'required|numeric|gte:instalAmt',
                 'txnDate' => 'required|before_or_equal:today'
             ];
         } else {
             return [
-                    'txnAmt' => 'required|numeric|lte:miscAmt',
-                    'txnDate' => 'required|before_or_equal:today'
-                ];
+                'txnAmt' => 'required|numeric|lte:miscAmt',
+                'txnDate' => 'required|before_or_equal:today'
+            ];
         }
     }
 }
