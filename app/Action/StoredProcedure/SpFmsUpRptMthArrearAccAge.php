@@ -34,10 +34,6 @@ class SpFmsUpRptMthArrearAccAge
                 'value' => number_format($data->total_instal_arrears, 2),
                 'align' => 'right'
             ],
-            'REPORT DATE' => [
-                'value' =>  date('d-m-Y', strtotime($data->report_date)),
-                'align' => 'right'
-            ],
         ];
     }
 
