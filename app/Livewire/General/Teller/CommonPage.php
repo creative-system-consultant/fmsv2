@@ -17,7 +17,9 @@ use App\Action\StoredProcedure\SpFmsUpTrxRetirementProcess;
 use App\Action\StoredProcedure\SpFmsUpTrxThirdparty;
 use App\Livewire\General\CustomerSearch;
 use App\Livewire\Teller\General\MembersBankInfo;
+use App\Models\Cif\CifCustomer;
 use App\Models\Fms\FmsAccountMaster;
+use App\Models\Fms\FmsMembership;
 use App\Models\Systm\SysMsgSp;
 use App\Traits\PaymentContributionRulesTrait;
 use App\Traits\BulkPaymentRulesTrait;
@@ -331,8 +333,10 @@ class CommonPage extends Component
             $this->saveButton = $this->bankMember && $customer['bank_acct_no'];
             $this->ic = $customer['identity_no'];
             $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
-            // $this->docNo = SpFmsGenerateMbrClosedMembers::handle(1, $this->mbrNo);
-            $this->docNo = 'PV/123';
+
+            //generate pv no
+            SpFmsGenerateMbrClosedMembers::handle(1, $this->mbrNo);
+            $this->docNo = FmsMembership::where('mbr_no', $this->mbrNo)->first()->closed_mbr_pv;
 
         } elseif($this->module == 'earlySettlementPayment') {
             $this->idMsg = mt_rand(100000000, 999999999);
