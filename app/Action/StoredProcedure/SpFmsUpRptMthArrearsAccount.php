@@ -20,30 +20,30 @@ class SpFmsUpRptMthArrearsAccount
             ],
             'IDENTITY NO' => [
                 'value' => $data->identity_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'NAME' => [
                 'value' => $data->name,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'CURRENT_EMPLOYER NAME' => [
                 'value' => $data->current_employer_name,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PAYMENT TYPE' => [
                 'value' => $data->payment_type,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'ACCOUNT_NO' => [
                 'value' => $data->account_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PRODUCT' => [
                 'value' =>$data->product,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'BALANCE OUT' => [
-                'value' => $data->number_format($data->balance_outs, 2),
+                'value' => number_format($data->balance_outs, 2),
                 'align' => 'right'
             ],
             'PRINS OUTSTANDING' => [
@@ -72,27 +72,27 @@ class SpFmsUpRptMthArrearsAccount
             ],
             'GUARANTOR1 IC_NO' => [
                 'value' =>$data->Guarantor1_IcNo,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'GUARANTOR1 MBR_NO' => [
                 'value' =>$data->Guarantor1_mbr_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'GUARANTOR 1' => [
                 'value' =>$data->Guarantor1,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'GUARANTOR2 IC_NO' => [
                 'value' =>$data->Guarantor2_IcNo,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'GUARANTOR2 MBR_NO' => [
                 'value' =>$data->Guarantor2_mbr_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'GUARANTOR 2' => [
                 'value' =>$data->Guarantor2,
-                'align' => 'right'
+                'align' => 'left'
             ],
         ];
     }

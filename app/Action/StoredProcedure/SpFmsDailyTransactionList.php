@@ -9,7 +9,7 @@ class SpFmsDailyTransactionList
 {
     public static function getRawData($input)
     {
-        return DB::select("FMS.UP_RPT_TRX_DAILY_FINAL :clientId, :startDate, :endDate", $input);   
+        return DB::select("RPT.UP_RPT_TRX_DAILY_FINAL :clientId, :startDate, :endDate", $input);   
     }
     public static function formatData($data)
     {
@@ -20,23 +20,23 @@ class SpFmsDailyTransactionList
             ],
             'NAME' => [
                 'value' => $data->name,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'ACCOUNT_NO' => [
                 'value' => $data->account_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'TRANSACTION DATE' => [
                 'value' => date('Y-m-d', strtotime($data->transaction_date)) ?? 0,
                 'align' => 'right'
             ],
-            'TRANSACTION CODE ID' => [
+            'TRANSACTION CODE' => [
                 'value' =>  $data->transaction_code_id,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'INSTITUTION CODE' => [
                 'value' => $data->institution_code,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'BANK ID' => [
                 'value' =>  $data->bank_id,
@@ -52,7 +52,7 @@ class SpFmsDailyTransactionList
             ],
             'DOCUMENT NO' => [
                 'value' => $data->doc_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'DEBIT' => [
                 'value' => $data->debit,
@@ -72,11 +72,11 @@ class SpFmsDailyTransactionList
             ],
             'BANK KOPUTRA' => [
                 'value' => $data->bank_koputra,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'REMARKS' => [
                 'value' => $data->remarks,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'CREATED_BY' => [
                 'value' => $data->created_by,

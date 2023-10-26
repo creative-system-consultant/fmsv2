@@ -17,11 +17,11 @@ class SpFmsUpRptMemberByState
         return [
             'MEMBER NO'  => [
                 'value' =>  $data->mbr_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'STAFF NO' => [
                 'value' => $data->staff_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'NAME' => [
                 'value' => $data->name,
@@ -41,11 +41,11 @@ class SpFmsUpRptMemberByState
             ],
             'GENDER ID' => [
                 'value' =>  $data->gender_id,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'RACE ID'  => [
                 'value' => $data->race_id,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'RELIGION ID' => [
                 'value' => $data->religion_id,

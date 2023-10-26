@@ -9,7 +9,7 @@ class SpFmsDailyTransactionProduct
 {
     public static function getRawData($input)
     {
-        return DB::select("FMS.up_rpt_daily_trx_products :clientId, :startDate, :endDate", $input);
+        return DB::select("RPT.up_rpt_daily_trx_products :clientId, :startDate, :endDate", $input);
     }
 
     public static function formatData($data)

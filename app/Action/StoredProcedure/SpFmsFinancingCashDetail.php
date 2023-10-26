@@ -9,7 +9,7 @@ class SpFmsFinancingCashDetail
 {
     public static function getRawData($input)
     {
-        return DB::select("fms.up_rpt_fin_disbursement_cash :clientId, :startDate, :endDate", $input);   
+        return DB::select("rpt.up_rpt_fin_disbursement_cash :clientId, :startDate, :endDate", $input);   
     }
     public static function formatData($data)
     {
@@ -20,15 +20,15 @@ class SpFmsFinancingCashDetail
             ],
             'ACCOUNT NO' => [
                 'value' => $data->account_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'NAME' => [
                 'value' => $data->name,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PRODUCT' => [
                 'value' => $data->product,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PERCENTAGES' => [
                 'value' => $data->percentages,

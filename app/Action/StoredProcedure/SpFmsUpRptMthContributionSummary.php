@@ -24,7 +24,7 @@ class SpFmsUpRptMthContributionSummary
             ],
             'TOTAL_AMOUNT01' => [
                 'value' => number_format($data->total_amount01, 2),
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PAYMENT02' => [
                 'value' => number_format($data->payment02, 2),
@@ -36,7 +36,7 @@ class SpFmsUpRptMthContributionSummary
             ],
             'TOTAL_AMOUNT02' => [
                 'value' => number_format($data->total_amount02, 2),
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PAYMENT03' => [
                 'value' => number_format($data->payment03, 2),
@@ -48,7 +48,7 @@ class SpFmsUpRptMthContributionSummary
             ],
             'TOTAL_AMOUNT03' => [
                 'value' => number_format($data->total_amount03, 2),
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PAYMENT04' => [
                 'value' => number_format($data->payment04, 2),
@@ -60,7 +60,7 @@ class SpFmsUpRptMthContributionSummary
             ],
             'TOTAL_AMOUNT04' => [
                 'value' => number_format($data->total_amount04, 2),
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PAYMENT05' => [
                 'value' => number_format($data->payment05, 2),
@@ -72,7 +72,7 @@ class SpFmsUpRptMthContributionSummary
             ],
             'TOTAL_AMOUNT05' => [
                 'value' => number_format($data->total_amount05, 2),
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PAYMENT06' => [
                 'value' => number_format($data->payment06, 2),
@@ -84,7 +84,7 @@ class SpFmsUpRptMthContributionSummary
             ],
             'TOTAL_AMOUNT06' => [
                 'value' => number_format($data->total_amount06, 2),
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PAYMENT07' => [
                 'value' => number_format($data->payment07, 2),
@@ -96,7 +96,7 @@ class SpFmsUpRptMthContributionSummary
             ],
             'TOTAL_AMOUNT07' => [
                 'value' => number_format($data->total_amount07, 2),
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PAYMENT08' => [
                 'value' => number_format($data->payment08, 2),
@@ -108,7 +108,7 @@ class SpFmsUpRptMthContributionSummary
             ],
             'TOTAL_AMOUNT08' => [
                 'value' => number_format($data->total_amount08, 2),
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PAYMENT09' => [
                 'value' => number_format($data->payment09, 2),
@@ -120,7 +120,7 @@ class SpFmsUpRptMthContributionSummary
             ],
             'TOTAL_AMOUNT09' => [
                 'value' => number_format($data->total_amount09, 2),
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PAYMENT10' => [
                 'value' => number_format($data->payment10, 2),
@@ -132,7 +132,7 @@ class SpFmsUpRptMthContributionSummary
             ],
             'TOTAL_AMOUNT10' => [
                 'value' => number_format($data->total_amount10, 2),
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PAYMENT11' => [
                 'value' => number_format($data->payment11, 2),
@@ -144,7 +144,7 @@ class SpFmsUpRptMthContributionSummary
             ],
             'TOTAL_AMOUNT11' => [
                 'value' => number_format($data->total_amount11, 2),
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PAYMENT12' => [
                 'value' => number_format($data->payment12, 2),
@@ -156,7 +156,7 @@ class SpFmsUpRptMthContributionSummary
             ],
             'TOTAL_AMOUNT12' => [
                 'value' => number_format($data->total_amount12, 2),
-                'align' => 'right'
+                'align' => 'left'
             ],
         ];
     }

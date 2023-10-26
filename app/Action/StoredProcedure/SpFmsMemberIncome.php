@@ -10,18 +10,18 @@ class SpFmsMemberIncome
     
     public static function getRawData($input)
     {
-        return DB::select("fms.up_rpt_members_byincome :clientId, :startDate, :endDate", $input);
+        return DB::select("rpt.up_rpt_members_byincome :clientId, :startDate, :endDate", $input);
     }
         public static function formatData($data)
         {
             return [
-                'MEMBERSHIP NO'  => [
+                'MEMBER NO'  => [
                     'value' =>  $data->mbr_no,
-                    'align' => 'right'
+                    'align' => 'left'
                 ],
                 'STAFF NO' => [
                     'value' => $data->staff_no,
-                    'align' => 'right'
+                    'align' => 'left'
                 ],
                 'NAME' => [
                     'value' => $data->name,
@@ -41,11 +41,11 @@ class SpFmsMemberIncome
                 ],
                 'GENDER ID' => [
                     'value' =>  $data->gender_id,
-                    'align' => 'right'
+                    'align' => 'left'
                 ],
                 'RACE ID'  => [
                     'value' => $data->race_id,
-                    'align' => 'right'
+                    'align' => 'left'
                 ],
                 'RELIGION ID' => [
                     'value' => $data->religion_id,

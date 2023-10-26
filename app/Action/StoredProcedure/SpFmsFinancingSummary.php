@@ -9,7 +9,7 @@ class SpFmsFinancingSummary
 {
     public static function getRawData($input)
     {
-        return DB::select("fms.up_rpt_financing_summary  :clientId, :reportDate", $input);   
+        return DB::select("rpt.up_rpt_financing_summary  :clientId, :reportDate", $input);   
     }
     public static function formatData($data)
     {
@@ -20,7 +20,7 @@ class SpFmsFinancingSummary
             ],
             'PRODUCT DESCRIPTION' => [
                 'value' => $data->prod_desc,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PRODUCT TYPE' => [
                 'value' => $data->product_type,

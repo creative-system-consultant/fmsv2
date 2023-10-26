@@ -9,7 +9,7 @@ class SpFmsContributionPayment
 {
     public static function getRawData($input)
     {
-        return DB::select("fms.up_rpt_contribution_payment :clientId, :startDate, :endDate", $input);   
+        return DB::select("rpt.up_rpt_contribution_payment :clientId, :startDate, :endDate", $input);   
     }
     public static function formatData($data)
     {
@@ -20,19 +20,19 @@ class SpFmsContributionPayment
             ],
             'STAFF NO' => [
                 'value' => $data->staff_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'IDENTITY NO' => [
                 'value' => $data->identity_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'NAME' => [
                 'value' => $data->name,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'TRANSACTION' => [
                 'value' => $data->transactions,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'AMOUNT' => [
                 'value' => number_format($data->amount, 2),
@@ -44,11 +44,11 @@ class SpFmsContributionPayment
             ],
             'DOCUMENT NO' => [
                 'value' => $data->doc_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'REMARKS' => [
                 'value' => $data->remarks,
-                'align' => 'right'
+                'align' => 'left'
             ],
         ];
     }

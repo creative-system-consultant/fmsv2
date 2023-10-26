@@ -20,11 +20,11 @@ class SpFmsUpRptMthDetailsYearlyShare
             ],
             'IDENTITY NO' => [
                 'value' => $data->identity_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'STAFF NO' => [
                 'value' => $data->staff_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'OPENING_BALANCE' => [
                 'value' => number_format($data->opening_balance, 2),

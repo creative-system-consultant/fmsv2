@@ -9,7 +9,7 @@ class SpFmsFinancingDisbursement
 {
     public static function getRawData($input)
     {
-        return DB::select("fms.up_rpt_fin_disbursement :clientId, :startDate, :endDate", $input);
+        return DB::select("rpt.up_rpt_fin_disbursement :clientId, :startDate, :endDate", $input);
     }
 
     public static function formatData($data)
@@ -21,11 +21,11 @@ class SpFmsFinancingDisbursement
             ],
             'NAME' => [
                 'value' => $data->name,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'PAYROLL UNIT' => [
                 'value' => $data->payroll_unit ?? 0,
-                'align' => 'right'
+                'align' => 'left'
             ],
             
             'SALARY' => [
@@ -39,7 +39,7 @@ class SpFmsFinancingDisbursement
             ],
             'LOAN TYPE' => [
                 'value' => $data->loan_type,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'DISBURSED DATE' => [
                 'value' => date('Y-m-d'), 

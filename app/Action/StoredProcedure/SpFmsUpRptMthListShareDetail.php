@@ -20,11 +20,11 @@ class SpFmsUpRptMthListShareDetail
             ],
             'IDENTITY NO' => [
                 'value' => $data->identity_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'STAFF NO' => [
                 'value' => $data->staff_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'NAME' => [
                 'value' => $data->name,
