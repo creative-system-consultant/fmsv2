@@ -14,36 +14,24 @@ class SpFmsUpRptMthShareSummaryYearly
     public static function formatData($data)
     {
         return [
-            'MEMBER NO' => [
-                'value' => $data->mbr_no,
+            'MONTH' => [
+                'value' => $data->bulan,
                 'align' => 'left'
             ],
-            'IDENTITY NO' => [
-                'value' => $data->identity_no,
-                'align' => 'left'
-            ],
-            'STAFF NO' => [
-                'value' => $data->staff_no,
-                'align' => 'left'
-            ],
-            'NAME' => [
-                'value' => $data->name,
-                'align' => 'left'
-            ],
-            'PAYMENT' => [
-                'value' => number_format($data->payment, 0),
+            'OPENING BALANCE' => [
+                'value' => number_format($data->opening_balance, 0),
                 'align' => 'right'
             ],
-            'WITHDRAWAL' => [
-                'value' => number_format($data->withdrawal, 0),
+            'PAYMENT IN' => [
+                'value' => number_format($data->payment_in, 0),
                 'align' => 'right'
             ],
-            'TOTAL AMOUNT' => [
-                'value' => number_format($data->total_amount, 0),
+            'PAYMENT OUT' => [
+                'value' => number_format($data->payment_out, 0),
                 'align' => 'right'
             ],
-            'REPORT DATE' => [
-                'value' => date('d-m-Y', strtotime($data->report_date)),
+            'CLOSING BALANCE' => [
+                'value' => number_format($data->closing_balance),
                 'align' => 'right'
             ],
         ];
