@@ -9,7 +9,7 @@ class SpFmsRptListDividendPayment
 {
     public static function getRawData($input)
     {
-        return DB::select("RPT.up_rpt_members_bystate :clientId, :startDate, :endDate, :flag, :batchNo", $input);
+        return DB::select("RPT.UP_RPT_lIST_OF_DIVIDEND_PAYMENT :clientId, :startDate, :endDate, :flag, :batch_no", $input);
     }
 
     public static function formatData($data)

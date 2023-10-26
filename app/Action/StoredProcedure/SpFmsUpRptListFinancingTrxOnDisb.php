@@ -9,7 +9,7 @@ class SpFmsUpRptListFinancingTrxOnDisb
 {
     public static function getRawData($input)
     {
-        return DB::select("fms.up_rpt_list_financing_trx_on_disb :clientId, :startDate, :endDate", $input);
+        return DB::select("RPT.up_rpt_list_financing_trx_on_disb :clientId, :startDate, :endDate", $input);
     }
 
     public static function formatData($data)

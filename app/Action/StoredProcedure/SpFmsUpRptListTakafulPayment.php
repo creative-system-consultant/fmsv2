@@ -9,7 +9,7 @@ class SpFmsUpRptListTakafulPayment
 {
     public static function getRawData($input)
     {
-        return DB::select("FMS.UP_RPT_LIST_OF_TAKAFUL_PAYMENT :clientId, :reportDate", $input);
+        return DB::select("RPT.UP_RPT_LIST_OF_TAKAFUL_PAYMENT :clientId, :reportDate", $input);
     }
 
     public static function formatData($data)

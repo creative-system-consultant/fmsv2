@@ -9,7 +9,7 @@ class SpFmsUpRptBskeGoldbarTrx
 {
     public static function getRawData($input)
     {
-        return DB::select("FMS.up_rpt_bske_gold_transactions :clientId, :startDate, :endDate", $input);
+        return DB::select("RPT.up_rpt_bske_gold_transactions :clientId, :startDate, :endDate", $input);
     }
 
     public static function formatData($data)

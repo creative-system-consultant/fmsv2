@@ -9,7 +9,7 @@ class SpFmsUpRptDetailForCashDisbursement
 {
     public static function getRawData($input)
     {
-        return DB::select("FMS.up_rpt_detail_for_cash_disbursement :clientId, :startDate, :endDate", $input);
+        return DB::select("RPT.up_rpt_detail_for_cash_disbursement :clientId, :startDate, :endDate", $input);
     }
 
     public static function formatData($data)
