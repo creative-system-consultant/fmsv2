@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class RefState extends Model
 {
     use SoftDeletes;
-    protected $table   = 'ref.statecodes';
+
+    protected $connection = 'fms';
+    protected $table   = 'ref.states';
     protected $guarded = [];
     protected $casts   = [
         'created_at'    => 'datetime',

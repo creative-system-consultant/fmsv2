@@ -9,6 +9,7 @@ class RefBank extends Model
 {
     use SoftDeletes;
 
+    protected $connection = 'fms';
     protected $table   = 'ref.banks';
     protected $guarded = [];
     protected $dates   = ['created_at','deleted_at','updated_at'];

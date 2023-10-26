@@ -26,7 +26,7 @@ class SpFmsGenerateFinancingAdv
         $sql = "exec " . $sp . " :client_id, :account_no";
 
         // Execute the stored procedure and fetch the result
-        $result = DB::select($sql, [
+        $result = DB::connection('fms')->select($sql, [
             'client_id' => $clientId,
             'account_no' => $accountNo
         ]);

@@ -9,8 +9,9 @@ class RefEducation extends Model
 {
     use SoftDeletes;
 
+    protected $connection = 'fms';
     protected $table   = 'ref.education';
     protected $guarded = [];
     protected $dates   = ['created_at','deleted_at','updated_at'];
-    
+
 }

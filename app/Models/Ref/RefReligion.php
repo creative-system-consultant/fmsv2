@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class RefReligion extends Model
 {
     use SoftDeletes;
+
+    protected $connection = 'fms';
     protected $table   = 'ref.religions';
     protected $guarded = [];
     protected $casts   = [

@@ -9,6 +9,7 @@ class RefRace extends Model
 {
     use SoftDeletes;
 
+    protected $connection = 'fms';
     protected $table   = 'ref.races';
     protected $guarded = [];
     protected $dates   = ['created_at','deleted_at','updated_at'];

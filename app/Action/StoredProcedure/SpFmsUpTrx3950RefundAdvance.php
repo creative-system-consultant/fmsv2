@@ -21,10 +21,10 @@ class SpFmsUpTrx3950RefundAdvance
         $sp = 'FMS.up_trx_3950_refund_advance';
 
         // Construct the SQL statement for executing the stored procedure.
-        $sql = "exec " . $sp . " :clientId, :accountNo, :amount, :transactionDate, :txnCode, :remark, :documentNo, :userId, :bank, :bankIbt";
+        $sql = "exec " . $sp . " :clientId, :accNo, :txnAmt, :txnDate, :txnCode, :remarks, :docNo, :userId, :bankMember, :bankClient";
 
         // Execute the SQL statement using Laravel's database facade.
-        DB::statement($sql, $data);
+        DB::connection('fms')->statement($sql, $data);
 
         // Return 'DONE' upon successful execution.
         return 'DONE';
