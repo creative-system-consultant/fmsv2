@@ -16,6 +16,7 @@ class User extends Authenticatable implements Auditable
     use Notifiable;
     use \OwenIt\Auditing\Auditable;
 
+    protected $connection = 'fms';
     protected $table = 'FMS.users';
     protected $fillable = [
         'name',

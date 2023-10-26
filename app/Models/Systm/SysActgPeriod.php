@@ -9,6 +9,7 @@ class SysActgPeriod extends Model
 {
     use HasFactory;
 
+    protected $connection = 'fms';
     protected $table   = 'SYSTM.SYS_ACTG_PERIOD';
     protected $guarded = [];
 }

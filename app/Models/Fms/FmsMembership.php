@@ -10,17 +10,23 @@ class FmsMembership extends Model
 {
     use HasFactory;
 
+    protected $connection = 'fms';
     protected $table   = 'FMS.MEMBERSHIP';
     protected $guarded = [];
 
     // Relationship
     public function fmsAccountMaster()
     {
-        return $this->hasOne(FmsAccountMaster::class,'mbr_no', 'ref_no');
+        return $this->hasOne(FmsAccountMaster::class,'mbr_no', 'mbr_no');
     }
 
     public function cifCustomer()
     {
         return $this->belongsTo(CifCustomer::class, 'cif_id', 'id');
+    }
+
+    public function fmsMiscAccount()
+    {
+        return $this->hasOne(FmsMiscAccount::class, 'mbr_no', 'mbr_no');
     }
 }

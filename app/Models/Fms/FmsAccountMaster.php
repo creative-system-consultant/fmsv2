@@ -11,19 +11,14 @@ class FmsAccountMaster extends Model
 {
     use HasFactory;
 
+    protected $connection = 'fms';
     protected $table   = 'FMS.ACCOUNT_MASTERS';
     protected $guarded = [];
-
-    // Functions
-    public function getProductAttribute()
-    {
-        return DB::select(DB::raw("FMS.uf_get_product(?)", [$this->product_id]))[0]->products ?? null;
-    }
 
     // Relationship
     public function fmsMembership()
     {
-        return $this->belongsTo(FmsMembership::class, 'mbr_no', 'ref_no');
+        return $this->belongsTo(FmsMembership::class, 'mbr_no', 'mbr_no');
     }
 
     public function fmsAccountPosition()

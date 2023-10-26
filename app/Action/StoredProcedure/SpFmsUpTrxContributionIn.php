@@ -23,10 +23,10 @@ class SpFmsUpTrxContributionIn
         $sp = 'up_trx_contribution_in';
 
         // Construct the SQL statement to execute the stored procedure with provided parameters.
-        $sql = "SET NOCOUNT ON; exec " . $sp . " :clientId, :refNo, :txnAmt, :txnDate, :docNo, :txnCode, :remarks, :bankCustomer, :userId, :chequeDate, :bankClient";
+        $sql = "SET NOCOUNT ON; exec " . $sp . "  :clientId, :mbrNo, :txnAmt, :txnDate, :docNo, :txnCode, :remarks, :bankMember, :userId, :chequeDate, :bankClient";
 
         // Execute the statement using Laravel's database query builder and capture the result.
-        $result = DB::statement($sql, $data);
+        $result = DB::connection('fms')->statement($sql, $data);
 
         // Return the result of the statement execution.
         return $result;

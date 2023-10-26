@@ -9,6 +9,7 @@ class RefBankIbt extends Model
 {
     use HasFactory;
 
+    protected $connection = 'fms';
     protected $table   = 'ref.banks_ibt';
     protected $guarded = [];
     protected $dates   = ['created_at', 'deleted_at', 'updated_at'];
