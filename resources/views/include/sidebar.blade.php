@@ -59,6 +59,17 @@
                         </x-sidebar.nav-item>
                         <!-- End finance -->
 
+                        <!-- Start Other Info -->
+                        <x-sidebar.nav-item
+                            title="Other Info"
+                            activeUrl="other/*"
+                            route="{{ route('other.other-info') }}">
+                            <x-slot name="iconName">
+                                <x-icon name="collection" class="w-6 h-6"/>
+                            </x-slot>
+                        </x-sidebar.nav-item>
+                        <!-- End Other Info -->
+
                         <!-- Start teller -->
                         <x-sidebar.nav-item
                             title="Teller"

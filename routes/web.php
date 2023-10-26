@@ -63,6 +63,11 @@ Route::middleware('auth')->group(function () {
             base_path('routes/web/finance.php'),
         );
 
+        //other
+        Route::prefix('other')->as('other.')->group(
+            base_path('routes/web/other.php'),
+        );
+
         //reversal
         Route::prefix('reversal')->as('reversal.')->group(
             base_path('routes/web/reversal.php'),
