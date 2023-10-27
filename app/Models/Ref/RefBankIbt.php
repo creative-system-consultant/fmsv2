@@ -11,5 +11,5 @@ class RefBankIbt extends Model
 
     protected $table   = 'ref.banks_ibt';
     protected $guarded = [];
-    protected $dates   = ['created_at', 'deleted_at', 'updated_at'];
+    protected $dates   = ['created_by','updated_by','deleted_by','created_at', 'updated_at','deleted_at'];
 }

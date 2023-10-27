@@ -319,7 +319,7 @@
                                             />
                                             <x-general.nav-item
                                                 title="Detail GL By Bank Recon"
-                                                href="#"
+                                                href="{{ route('report.operation.g-l.gl-bank-recon') }}"
                                             />
                                         </x-general.dropdown-item>
                                     </div>

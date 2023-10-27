@@ -7,8 +7,8 @@
             wire:model="gl_code"
             style="width: 600px;" 
         >
-        <x-select.option value="ALL">ALL</x-select.option>
-                @forelse ($glc as $gl_code)
+        {{-- <x-select.option value="ALL">ALL</x-select.option> --}}
+            @foreach ($glc as $gl_code)
                 <x-select.option label="{{ $gl_code->GL_CODE}} - {{ $gl_code->DESCRIPTION }}" value="{{ $gl_code->GL_CODE }}" />
             @endforeach
         </x-select>

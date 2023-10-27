@@ -65,6 +65,7 @@ use App\Livewire\Report\Operation\Summary\SumTotalCont;
 //gl
 use App\Livewire\Report\Operation\GL\DetailGlByAccount;
 use App\Livewire\Report\Operation\GL\DetailGl;
+use App\Livewire\Report\Operation\GL\GlBankRecon;
 
 //contribution
 Route::get('contribution/payment', Payment::class)->name('contribution.payment');
@@ -131,3 +132,4 @@ Route::get('summary/sum-total-cont', SumTotalCont::class)->name('summary.sum-tot
 //gl
 Route::get('g-l/detail-gl-by-account', DetailGlByAccount::class)->name('g-l.detail-gl-by-account');
 Route::get('g-l/detail-gl', DetailGl::class)->name('g-l.detail-gl');
+Route::get('g-l/gl-bank-recon', GlBankRecon::class)->name('g-l.gl-bank-recon');
