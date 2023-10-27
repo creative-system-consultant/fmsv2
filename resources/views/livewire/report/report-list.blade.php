@@ -311,11 +311,11 @@
                                         <x-general.dropdown-item icon="collection" title="GL" index="14">
                                             <x-general.nav-item
                                                 title="Detail"
-                                                href="#"
+                                                href="{{ route('report.operation.g-l.detail-gl') }}"
                                             />
                                             <x-general.nav-item
                                                 title="Detail GL by Account"
-                                                href="#"
+                                                href="{{ route('report.operation.g-l.detail-gl-by-account') }}"
                                             />
                                             <x-general.nav-item
                                                 title="Detail GL By Bank Recon"

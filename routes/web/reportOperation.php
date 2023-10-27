@@ -62,6 +62,10 @@ use App\Livewire\Report\Operation\Share\ShareWithdrawal;
 use App\Livewire\Report\Operation\Summary\SumTotalShare;
 use App\Livewire\Report\Operation\Summary\SumTotalCont;
 
+//gl
+use App\Livewire\Report\Operation\GL\DetailGlByAccount;
+use App\Livewire\Report\Operation\GL\DetailGl;
+
 //contribution
 Route::get('contribution/payment', Payment::class)->name('contribution.payment');
 Route::get('contribution/withdrawal', Withdrawal::class)->name('contribution.withdrawal');
@@ -123,3 +127,7 @@ Route::get('share/share-withdrawal', ShareWithdrawal::class)->name('share.share-
 //summary
 Route::get('summary/sum-total-share', SumTotalShare::class)->name('summary.sum-total-share');
 Route::get('summary/sum-total-cont', SumTotalCont::class)->name('summary.sum-total-cont');
+
+//gl
+Route::get('g-l/detail-gl-by-account', DetailGlByAccount::class)->name('g-l.detail-gl-by-account');
+Route::get('g-l/detail-gl', DetailGl::class)->name('g-l.detail-gl');
