@@ -3,6 +3,8 @@
 namespace App\Livewire\Report\Operation\List;
 
 use App\Action\StoredProcedure\SpFmsRptListDividendPayment;
+use App\Models\Fms\DividendFinal;
+use App\Models\Fms\DividendPreApp;
 use App\Services\General\ReportService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -13,6 +15,7 @@ class DividendPayment extends Component
 {   
     use Actions, WithPagination;
     public $clientId;
+    public $code;
 
     #[Rule('required')]
     public $startDate;
@@ -38,7 +41,7 @@ class DividendPayment extends Component
             'startDate' => $this->startDate,
             'endDate' => $this->endDate,
             'flag'  => $this->flag,
-            'batchNo'   => $this->batchNo,
+            'batch_no'   => $this->batchNo,
         ], true);
     }
 
@@ -90,10 +93,13 @@ class DividendPayment extends Component
             }
         }
 
+        $list_batch_no = DividendPreApp::all();
+        $success_payment = DividendFinal::all();
         return view('livewire.report.operation.list.dividend-payment', [
             'result' => $result,
-            'flag'  => $flag,
-            'batchNo' => $batchNo
+            'list_batch_no' => $list_batch_no,
+            'flag_payment' => $success_payment,
+
         ])->extends('layouts.main');
     }
 }
