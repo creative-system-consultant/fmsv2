@@ -11,8 +11,7 @@ use WireUi\Traits\Actions;
 
 class Financing extends Component
 {   
-    use Actions, WithPagination;
-    
+    use Actions, WithPagination;   
     public $clientId;
 
     #[Rule('required')]

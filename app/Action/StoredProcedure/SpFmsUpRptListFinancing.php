@@ -202,8 +202,10 @@ class SpFmsUpRptListFinancing
         return $excelData;
     }
 
-    public static function handleForExcel($rawData, $format = false)
+
+    public static function handleForExcel($input, $format = false)
     {
+        $rawData = self::getRawData($input);
         foreach ($rawData as $data) {
             $formattedData = $format ? self::formatDataForExcel($data) : $data;
             yield $formattedData;

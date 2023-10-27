@@ -1,5 +1,5 @@
 <div>
-    <x-container title="Monthly Share" routeBackBtn="{{ route('report.report-list') }}" titleBackBtn="report list" disableBackBtn="true">
+    <x-container title="" routeBackBtn="{{ route('report.report-list') }}" titleBackBtn="report list" disableBackBtn="true">
         <div class="grid grid-cols-1">
             <x-card title="{{ $title }}">
                 <div class="flex items-center mb-4 space-x-2">
