@@ -35,11 +35,11 @@ class SpFmsUpRptDetailGl
                 'align' => 'left'
             ],
             'DEBIT_CODE' => [
-                'value' => number_format($data->debit_code, 2),
+                'value' => $data->debit_code,
                 'align' => 'right'
             ],
             'CREDIT_CODE' => [
-                'value' => number_format($data->credit_code, 2),
+                'value' => $data->credit_code,
                 'align' => 'right'
             ],
             'DEBIT_AMOUNT' => [
