@@ -26,7 +26,7 @@
                     <x-table.table-header class="text-left" value="MEMBER NO" sort="" />
                     <x-table.table-header class="text-left" value="IC NO" sort="" />
                     <x-table.table-header class="text-left" value="CODE" sort="" />
-                    <x-table.table-header class="text-right" value="NAME" sort="" />
+                    <x-table.table-header class="text-left" value="NAME" sort="" />
                     <x-table.table-header class="text-center" value="AMOUNT" sort="" />
                     <x-table.table-header class="text-left" value="ACTION" sort="" />
                 </x-slot>

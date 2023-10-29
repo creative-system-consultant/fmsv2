@@ -62,7 +62,6 @@ class ListingFromEmployer extends Component
         $dataUploaded = (new FastExcel())->import($filePath);
         unlink($filePath); // Remove the file from storage
 
-        // dd($dataUploaded);
         if(count($dataUploaded) > 0) {
             FmsAutopayUploadFromEmployer::truncate();
 
