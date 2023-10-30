@@ -1,3 +1,3 @@
 <div>
-    <x-report title="List of Autopay" :startDate="true" :endDate="true" :reportDate="false" :result="$result"/>
+    <x-report title="List of Autopay" :startDate="true" :endDate="true" :result="$result"/>
 </div>

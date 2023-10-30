@@ -1,3 +1,3 @@
 <div>
-    <x-report title="List of Bank" :startDate="false" :endDate="false" :reportDate="true" :result="$result" />
+    <x-report title="List of Bank" :reportDate="true" :result="$result" />
 </div>

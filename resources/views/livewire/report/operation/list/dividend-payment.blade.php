@@ -1,5 +1,5 @@
 <div>
-    <x-report title="List of Dividend Payment" :startDate="true" :endDate="true" :reportDate="false" :result="$result">
+    <x-report title="List of Dividend Payment" :startDate="true" :endDate="true" :result="$result">
         <x-select
         label="List of Batch"
         placeholder="-- PLEASE SELECT --"
