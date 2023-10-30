@@ -9,7 +9,6 @@ class FmsAutopayUploadFromEmployer extends Model
 {
     use HasFactory;
 
-    protected $connection = 'fms';
     protected $table   = 'FMS.AUTOPAY_UPLOAD_FROM_EMPLOYER';
     protected $guarded = [];
 }

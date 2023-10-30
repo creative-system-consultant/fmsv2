@@ -9,7 +9,6 @@ class FmsMiscAccount extends Model
 {
     use HasFactory;
 
-    protected $connection = 'fms';
     protected $table   = 'FMS.MISC_ACCOUNT';
     protected $guarded = [];
 

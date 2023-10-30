@@ -9,7 +9,6 @@ class FmsAccountPosition extends Model
 {
     use HasFactory;
 
-    protected $connection = 'fms';
     protected $table   = 'FMS.ACCOUNT_POSITIONS';
     protected $guarded = [];
 

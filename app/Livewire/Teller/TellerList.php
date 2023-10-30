@@ -6,7 +6,7 @@ use Livewire\Component;
 
 class TellerList extends Component
 {
-    public $type_payment_in = 'Autopay';
+    public $type_payment_in = '';
     public $option_payment_in;
 
     public $type_payment_out = '';

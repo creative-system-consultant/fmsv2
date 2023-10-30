@@ -9,7 +9,6 @@ class RefMarital extends Model
 {
     use SoftDeletes;
 
-    protected $connection = 'fms';
     protected $table = 'REF.marital';
     protected $guarded = [];
     protected $dates   = ['created_at','deleted_at','updated_at'];

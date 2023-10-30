@@ -10,7 +10,6 @@ class FmsThirdParty extends Model
 {
     use HasFactory;
 
-    protected $connection = 'fms';
     protected $table   = 'FMS.THIRDPARTY_LIST';
     protected $guarded = [];
 

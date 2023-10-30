@@ -323,12 +323,12 @@ class CustomerSearch
     ) {
         $query = FmsAccountMaster::select([
             'FMS.ACCOUNT_MASTERS.account_no',
-            DB::connection('siskop')->raw('SISKOPv3B.SISKOP.Account_Products.name as product'),
+            'SISKOP.ACCOUNT_PRODUCTS.name as product',
             'FMS.ACCOUNT_MASTERS.instal_amount'
         ])
         ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_POSITIONS.account_no', '=', 'FMS.ACCOUNT_MASTERS.account_no')
         ->join('CIF.ACCOUNT_STATUSES', 'CIF.ACCOUNT_STATUSES.id', '=', 'FMS.ACCOUNT_MASTERS.account_status')
-        ->join(DB::connection('siskop')->raw('SISKOPv3B.SISKOP.Account_Products'), 'SISKOPv3B.SISKOP.Account_Products.id', '=', 'FMS.ACCOUNT_MASTERS.product_id')
+        ->join('SISKOP.ACCOUNT_PRODUCTS', 'SISKOP.ACCOUNT_PRODUCTS.id', '=', 'FMS.ACCOUNT_MASTERS.product_id')
         ->whereNotNull('FMS.ACCOUNT_POSITIONS.disbursed_amount')
         ->where('FMS.ACCOUNT_MASTERS.client_id', $clientId)
         ->where('FMS.ACCOUNT_MASTERS.account_status', 1)

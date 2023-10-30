@@ -10,7 +10,6 @@ class FmsAutopayGuarantor extends Model
 {
     use HasFactory;
 
-    protected $connection = 'fms';
     protected $table   = 'FMS.AUTOPAY_GUARANTOR';
     protected $guarded = [];
 

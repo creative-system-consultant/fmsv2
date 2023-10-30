@@ -15,7 +15,7 @@ class SpFmsGenerateMbrWithdrawShare
         $sql = "exec " . $sp . " :clientId, :refNo";
 
         // Execute the stored procedure and fetch the result
-        $result = DB::connection('fms')->select($sql, [
+        $result = DB::select($sql, [
             'clientId' => $clientId,
             'refNo' => $refNo
         ]);

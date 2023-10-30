@@ -9,7 +9,6 @@ class FmsAutopayRefCode extends Model
 {
     use HasFactory;
 
-    protected $connection = 'fms';
     protected $table   = 'FMS.AUTOPAY_REF_CODE';
     protected $guarded = [];
 }

@@ -9,7 +9,6 @@ class FmsAutopayExceptionsDetail extends Model
 {
     use HasFactory;
 
-    protected $connection = 'fms';
     protected $table   = 'FMS.AUTOPAY_EXCEPTIONS_DETAIL';
     protected $guarded = [];
 }

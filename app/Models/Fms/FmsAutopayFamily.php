@@ -9,7 +9,6 @@ class FmsAutopayFamily extends Model
 {
     use HasFactory;
 
-    protected $connection = 'fms';
     protected $table   = 'FMS.AUTOPAY_FAMILY';
     protected $guarded = [];
 }

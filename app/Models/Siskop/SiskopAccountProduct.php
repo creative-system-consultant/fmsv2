@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Models\Ref;
+namespace App\Models\Siskop;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RefEmployerList extends Model
+class SiskopAccountProduct extends Model
 {
     use HasFactory;
 
-    protected $table = 'REF.EMPLOYER_LIST';
+    protected $table = 'SISKOP.ACCOUNT_PRODUCTS';
     protected $guarded = [];
 }

@@ -9,7 +9,6 @@ class Employer extends Model
 {
     use HasFactory;
 
-    protected $connection = 'fms';
     protected $table   = 'CIF.Cust_Employer';
     protected $guarded = [];
 }
