@@ -33,7 +33,7 @@ class SpFmsUpRptMemberNotPayContribution
             ],
             'Monthly Contribution' => [
                 'value' =>number_format($data->monthly_contribution,2),
-                'align' => 'left'
+                'align' => 'right'
             ],
             'Transaction Date'  => [
                 'value' => date('d-m-Y', strtotime($data->transaction_date)),
@@ -49,11 +49,11 @@ class SpFmsUpRptMemberNotPayContribution
             ],
             'Total Contribution' => [
                 'value' =>number_format($data->total_contribution,2),
-                'align' => 'left'
+                'align' => 'right'
             ],
             'Total Share' => [
                 'value' =>number_format($data->total_share,2),
-                'align' => 'left'
+                'align' => 'right'
             ],
         ];
     }

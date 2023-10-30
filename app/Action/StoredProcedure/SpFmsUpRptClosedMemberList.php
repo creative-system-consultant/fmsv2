@@ -21,7 +21,7 @@ class SpFmsUpRptClosedMemberList
             ],
             'IC NO'  => [
                 'value' => $data->identity_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'NAME' => [
                 'value' => $data->name,
@@ -49,7 +49,7 @@ class SpFmsUpRptClosedMemberList
             ],
             'EMPLOYER'                  => [
                 'value' => $data->current_employer_name,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'REMARKS' => [
                 'value' => $data->remarks,

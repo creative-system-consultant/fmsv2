@@ -29,11 +29,11 @@ class SpFmsUpRptEntranceFeeList
             ],
             'START DATE' => [
                 'value' => date('d-m-Y', strtotime($data->start_date)),
-                'align' => 'left'
+                'align' => 'right'
             ],
             'STATUS' => [
                 'value' => $data->status,
-                'align' => 'right'
+                'align' => 'left'
             ],
         ];
     }
