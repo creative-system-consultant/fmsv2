@@ -20,7 +20,7 @@ class SpFmsUpTrxPaymentAll
         $sql = "exec " . $sp . " :clientId, :mbrNo, :txnAmt, :txnDate, :docNo, :txnCode, :remarks, :bankMember, :userId, :chequeDate";
 
         // Execute the statement using Laravel's database query builder and capture the result.
-        $result = DB::connection('fms')->statement($sql, $data);
+        $result = DB::statement($sql, $data);
 
         // Return the result of the statement execution.
         return $result;

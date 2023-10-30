@@ -20,7 +20,7 @@ class SpFmsUpTrxThirdparty
         $sql = "exec " . $sp . "  :clientId, :mbrNo, :instiCode, :paymentMode, :txnAmt, :txnDate, :docNo, :bankMember, :chequeNo, :chequeDate, :remarks, :userId, :mode, :bankClient, :idThirdParty";
 
         // Execute the statement using Laravel's database query builder and capture the result.
-        $result = DB::connection('fms')->statement($sql, $data);
+        $result = DB::statement($sql, $data);
 
         // Return the result of the statement execution.
         return $result;

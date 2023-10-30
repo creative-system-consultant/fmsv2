@@ -10,7 +10,6 @@ class FmsMembership extends Model
 {
     use HasFactory;
 
-    protected $connection = 'fms';
     protected $table   = 'FMS.MEMBERSHIP';
     protected $guarded = [];
 

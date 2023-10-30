@@ -363,7 +363,6 @@ class CommonPage extends Component
             $this->ic = $customer['identity_no'];
             $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
             $this->saveButton = $this->bankMember && $customer['bank_acct_no'];
-            // dd($this->financing);
         }
         // $this->dispatch('endProcessing');
     }

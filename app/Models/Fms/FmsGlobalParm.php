@@ -9,7 +9,6 @@ class FmsGlobalParm extends Model
 {
     use HasFactory;
 
-    protected $connection = 'fms';
     protected $table   = 'FMS.GLOBALPARM';
     protected $guarded = [];
 }

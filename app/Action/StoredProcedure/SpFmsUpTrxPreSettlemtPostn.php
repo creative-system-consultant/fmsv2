@@ -20,7 +20,7 @@ class SpFmsUpTrxPreSettlemtPostn
         $sql = "exec " . $sp . " :clientId, :accNo, :userId, :idMsg, :accId";
 
         // Execute the statement using Laravel's database query builder and capture the result.
-        $result = DB::connection('fms')->statement($sql, $data);
+        $result = DB::statement($sql, $data);
 
         // Return the result of the statement execution.
         return $result;

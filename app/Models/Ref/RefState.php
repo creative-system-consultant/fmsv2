@@ -10,7 +10,6 @@ class RefState extends Model
 {
     use SoftDeletes;
 
-    protected $connection = 'fms';
     protected $table   = 'ref.statecodes';
     protected $guarded = [];
     protected $casts   = [

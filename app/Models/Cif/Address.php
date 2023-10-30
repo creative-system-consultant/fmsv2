@@ -11,7 +11,6 @@ class Address extends Model
 {
     use HasFactory;
 
-    protected $connection = 'fms';
     protected $table   = 'CIF.Address';
     protected $guarded = [];
 

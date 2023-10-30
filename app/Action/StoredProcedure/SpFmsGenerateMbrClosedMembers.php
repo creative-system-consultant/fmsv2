@@ -15,7 +15,7 @@ class SpFmsGenerateMbrClosedMembers
         $sql = "exec " . $sp . " :clientId, :refNo";
 
         // Execute the stored procedure and fetch the result
-        $result = DB::connection('fms')->statement($sql, [
+        $result = DB::statement($sql, [
             'clientId' => $clientId,
             'refNo' => $refNo
         ]);

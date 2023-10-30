@@ -9,7 +9,6 @@ class RefThirdParty extends Model
 {
     use HasFactory;
 
-    protected $connection = 'fms';
     protected $table   = 'REF.THIRDPARTY';
     protected $guarded = [];
 }
