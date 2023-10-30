@@ -5,6 +5,7 @@ namespace App\Livewire\Teller\Autopay;
 use App\Models\Fms\FmsAutopayToEmployer;
 use Carbon\Carbon;
 use Livewire\Attributes\Rule;
+use App\Traits\Teller\Autopay\ListToEmployer;
 use Livewire\Component;
 use OpenSpout\Common\Entity\Style\CellAlignment;
 use OpenSpout\Common\Entity\Style\Style;
@@ -12,6 +13,8 @@ use Rap2hpoutre\FastExcel\FastExcel;
 
 class ListingToEmployer extends Component
 {
+    use ListToEmployer;
+    
     #[Rule('required')]
     public $month;
 

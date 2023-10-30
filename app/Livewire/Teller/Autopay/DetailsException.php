@@ -3,12 +3,13 @@
 namespace App\Livewire\Teller\Autopay;
 
 use App\Models\Fms\FmsAutopayExceptionsDetail;
+use App\Traits\Teller\Autopay\DetailsException as AutoPayDetailsException;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class DetailsException extends Component
 {
-    use WithPagination;
+    use WithPagination,AutoPayDetailsException;
 
     public $search;
 

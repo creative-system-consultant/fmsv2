@@ -27,14 +27,13 @@
             <div x-show="tab == 1">
                 <x-card title="">
                     <div class="grid grid-cols-1">
-                        <livewire:teller.autopay.listing-to-employer />
-
+                        <livewire:teller.autopay.listing-to-employer lazy/>
                         <div class="mt-10">
-                            <livewire:teller.autopay.listing-from-employer />
+                            <livewire:teller.autopay.listing-from-employer lazy/>
                         </div>
                     </div>
                     <div class="mt-10">
-                        <livewire:teller.autopay.details-exception />
+                        <livewire:teller.autopay.details-exception lazy/>
                     </div>
                 </x-card>
             </div>

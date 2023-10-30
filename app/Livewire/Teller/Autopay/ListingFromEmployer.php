@@ -4,6 +4,7 @@ namespace App\Livewire\Teller\Autopay;
 
 use App\Action\StoredProcedure\SpFmsUploadAutopayFromEmployer;
 use App\Models\Fms\FmsAutopayRefCode;
+use App\Traits\Teller\Autopay\ListFromEmployer;
 use App\Models\FMS\FmsAutopayUploadFromEmployer;
 use App\Services\General\ActgPeriod;
 use DB;
@@ -15,7 +16,7 @@ use WireUi\Traits\Actions;
 
 class ListingFromEmployer extends Component
 {
-    use Actions, WithFileUploads;
+    use Actions, WithFileUploads,ListFromEmployer;
 
     public $clientId;
     public $startDate;
