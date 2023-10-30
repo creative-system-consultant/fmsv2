@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class RefGender extends Model
 {
     use SoftDeletes;
-
-    protected $table = 'REF.gender';
+    protected $table = 'REF.genders';
     protected $guarded = [];
     protected $dates   = ['created_at','deleted_at','updated_at'];
 }

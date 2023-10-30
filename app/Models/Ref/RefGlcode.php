@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RefGlcode extends Model
 {
-    use SoftDeletes;
-
-    protected $table   = 'ref.glcode';
+    protected $table   = 'ref.gl_codes';
     protected $guarded = [];
-    protected $dates   = ['created_at','deleted_at','updated_at'];
+    protected $dates   = ['created_at','updated_at','created_by','updated_by'];
 }
