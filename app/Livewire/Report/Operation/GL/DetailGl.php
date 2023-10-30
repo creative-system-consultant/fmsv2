@@ -74,6 +74,7 @@ class DetailGl extends Component
 
         return $report->generateExcelReport($dataGenerator, $filename, $this->reportDate);
     }
+
     public function render()
     {
         $result = null;
@@ -86,7 +87,22 @@ class DetailGl extends Component
             }
         }
 
-        $gl_desc = FmsTrxGlMap::all();
+        $gl_desc = FmsTrxGlMap::select('id','gl_acctg_desc')->get()->toArray(); // This retrieves an array
+
+        $allOption = [
+            [
+                'id' => 0,
+                'gl_acctg_desc' => 'ALL'
+            ],
+        ];
+
+        $gl_desc = array_merge($allOption, $gl_desc);
+
+        usort($gl_desc, function ($a, $b) {
+            return $a['id'] - $b['id'];
+        });
+
+        $gl_desc = collect($gl_desc);
 
         return view('livewire.report.operation.g-l.detail-gl',[
             'result' => $result,
