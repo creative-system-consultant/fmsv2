@@ -90,7 +90,23 @@ class DetailGlByAccount extends Component
             }
         }
 
-        $gl_code = RefGlcode::all();
+        $gl_code = RefGlcode::select('id','GL_CODE','DESCRIPTION')->get()->toArray(); // This retrieves an array
+
+        $allOption = [
+            [
+                'id' => 0,
+                'GL_CODE' => 'ALL',
+                'DESCRIPTION' => 'DESCRIPTION'
+            ],
+        ];
+
+        $gl_code = array_merge($allOption, $gl_code);
+
+        usort($gl_code, function ($a, $b) {
+            return ($a['id'] - $b['GL_CODE']);
+        });
+
+        $gl_code = collect($gl_code);
 
         return view('livewire.report.operation.g-l.detail-gl-by-account',[
             'result' => $result,

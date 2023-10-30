@@ -5,11 +5,11 @@
             label="Account No"
             placeholder="-- PLEASE SELECT --"
             wire:model="gl_code"
-            style="width: 600px;" 
+            style="width: 650px;" 
         >
         {{-- <x-select.option value="ALL">ALL</x-select.option> --}}
             @foreach ($glc as $gl_code)
-                <x-select.option label="{{ $gl_code->GL_CODE}} - {{ $gl_code->DESCRIPTION }}" value="{{ $gl_code->GL_CODE }}" />
+                <x-select.option label="{{ $gl_code['GL_CODE'] }} - {{ $gl_code ['DESCRIPTION'] }}" value="{{ $gl_code['GL_CODE']}}" />
             @endforeach
         </x-select>
     </x-report>
