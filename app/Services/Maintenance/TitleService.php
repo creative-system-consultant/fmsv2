@@ -8,7 +8,7 @@ class TitleService
 {
     public function isCodeExists($code)
     {
-        return RefTitle::whereCoopId(auth()->user()->coop_id)->whereCode($code)->exists();
+        return RefTitle::whereclientId(auth()->user()->client_id)->whereCode($code)->exists();
     }
 
     public function createTitle($description, $code, $status)
@@ -16,7 +16,7 @@ class TitleService
         RefTitle::create([
             'description' => trim(strtoupper($description)),
             'code' => trim(strtoupper($code)),
-            'coop_id' => auth()->user()->coop_id,
+            'client_id' => auth()->user()->client_id,
             'status' => $status == true ? '1' : '0',
             'created_at' => now(),
             'created_by' => auth()->user()->name,
@@ -25,7 +25,7 @@ class TitleService
 
     public function canUpdateCode($id, $code)
     {
-        $existingCode = RefTitle::whereCoopId(auth()->user()->coop_id)->whereCode($code);
+        $existingCode = RefTitle::whereclientId(auth()->user()->client_id)->whereCode($code);
 
         return !$existingCode->exists() || $existingCode->value('id') == $id;
     }
@@ -48,6 +48,6 @@ class TitleService
 
     public function getPaginatedTitle($perPage = 10)
     {
-        return RefTitle::whereCoopId(auth()->user()->coop_id)->paginate($perPage);
+        return RefTitle::whereclientId(auth()->user()->client_id)->paginate($perPage);
     }
 }

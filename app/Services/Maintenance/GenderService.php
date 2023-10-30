@@ -8,7 +8,7 @@ class GenderService
 {
     public function isCodeExists($code)
     {
-        return RefGender::whereCoopId(auth()->user()->coop_id)->whereCode($code)->exists();
+        return RefGender::whereClientId(auth()->user()->client_id)->whereCode($code)->exists();
     }
 
     public function createGender($description, $code, $status)
@@ -16,7 +16,7 @@ class GenderService
         RefGender::create([
             'description' => trim(strtoupper($description)),
             'code' => trim(strtoupper($code)),
-            'coop_id' => auth()->user()->coop_id,
+            'client_id' => auth()->user()->client_id,
             'status' => $status == true ? '1' : '0',
             'created_at' => now(),
             'created_by' => auth()->user()->name,
@@ -25,7 +25,7 @@ class GenderService
 
     public function canUpdateCode($id, $code)
     {
-        $existingCode = RefGender::whereCoopId(auth()->user()->coop_id)->whereCode($code);
+        $existingCode = RefGender::whereClientId(auth()->user()->client_id)->whereCode($code);
 
         return !$existingCode->exists() || $existingCode->value('id') == $id;
     }
@@ -48,6 +48,6 @@ class GenderService
 
     public function getPaginatedGender($perPage = 10)
     {
-        return RefGender::whereCoopId(auth()->user()->coop_id)->paginate($perPage);
+        return RefGender::whereClientId(auth()->user()->client_id)->paginate($perPage);
     }
 }

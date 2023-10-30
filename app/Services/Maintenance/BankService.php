@@ -8,7 +8,7 @@ class BankService
 {
     public function isCodeExists($code)
     {
-        return RefBank::whereCoopId(auth()->user()->coop_id)->whereCode($code)->exists();
+        return RefBank::whereclientId(auth()->user()->client_id)->whereCode($code)->exists();
     }
 
     public function createBank($description, $code, $status)
@@ -16,7 +16,7 @@ class BankService
         RefBank::create([
             'description' => trim(strtoupper($description)),
             'code' => trim(strtoupper($code)),
-            'coop_id' => auth()->user()->coop_id,
+            'client_id' => auth()->user()->client_id,
             'status' => $status == true ? '1' : '0',
             'created_at' => now(),
             'created_by' => auth()->user()->name,
@@ -25,7 +25,7 @@ class BankService
 
     public function canUpdateCode($id, $code)
     {
-        $existingCode = RefBank::whereCoopId(auth()->user()->coop_id)->whereCode($code);
+        $existingCode = RefBank::whereclientId(auth()->user()->client_id)->whereCode($code);
 
         return !$existingCode->exists() || $existingCode->value('id') == $id;
     }
@@ -48,6 +48,6 @@ class BankService
 
     public function getPaginatedBank($perPage = 10)
     {
-        return RefBank::whereCoopId(auth()->user()->coop_id)->paginate($perPage);
+        return RefBank::whereclientId(auth()->user()->client_id)->paginate($perPage);
     }
 }

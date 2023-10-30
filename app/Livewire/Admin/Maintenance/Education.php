@@ -29,7 +29,7 @@ class Education extends Component
     public $modalDescription;
     public $modalMethod;
     public $education;
-    public $coopId;
+    public $clientId;
     public $paginated;
 
     protected $educationService;

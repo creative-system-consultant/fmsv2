@@ -8,7 +8,7 @@ class MaritalService
 {
     public function isCodeExists($code)
     {
-        return RefMarital::whereCoopId(auth()->user()->coop_id)->whereCode($code)->exists();
+        return RefMarital::whereclientId(auth()->user()->client_id)->whereCode($code)->exists();
     }
 
     public function createMarital($description, $code, $status)
@@ -16,7 +16,7 @@ class MaritalService
         RefMarital::create([
             'description' => trim(strtoupper($description)),
             'code' => trim(strtoupper($code)),
-            'coop_id' => auth()->user()->coop_id,
+            'client_id' => auth()->user()->client_id,
             'status' => $status == true ? '1' : '0',
             'created_at' => now(),
             'created_by' => auth()->user()->name,
@@ -25,7 +25,7 @@ class MaritalService
 
     public function canUpdateCode($id, $code)
     {
-        $existingCode = RefMarital::whereCoopId(auth()->user()->coop_id)->whereCode($code);
+        $existingCode = RefMarital::whereclientId(auth()->user()->client_id)->whereCode($code);
 
         return !$existingCode->exists() || $existingCode->value('id') == $id;
     }
@@ -48,6 +48,6 @@ class MaritalService
 
     public function getPaginatedMarital($perPage = 10)
     {
-        return RefMarital::whereCoopId(auth()->user()->coop_id)->paginate($perPage);
+        return RefMarital::whereclientId(auth()->user()->client_id)->paginate($perPage);
     }
 }

@@ -30,7 +30,7 @@ class Marital extends Component
     public $modalDescription;
     public $modalMethod;
     public $marital;
-    public $coopId;
+    public $clientId;
     public $paginated;
 
     protected $maritalService;

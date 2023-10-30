@@ -29,7 +29,7 @@ class Bank extends Component
     public $modalDescription;
     public $modalMethod;
     public $bank;
-    public $coopId;
+    public $clientId;
     public $paginated;
 
     protected $bankService;

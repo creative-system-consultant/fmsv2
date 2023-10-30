@@ -29,7 +29,7 @@ class Country extends Component
     public $modalDescription;
     public $modalMethod;
     public $country;
-    public $coopId;
+    public $clientId;
     public $paginated;
 
     protected $countryService;

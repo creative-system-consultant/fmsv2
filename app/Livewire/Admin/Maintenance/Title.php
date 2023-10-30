@@ -30,7 +30,7 @@ class Title extends Component
     public $modalDescription;
     public $modalMethod;
     public $title;
-    public $coopId;
+    public $clientId;
     public $paginated;
 
     protected $titleService;
