@@ -2,15 +2,15 @@
 
 namespace App\Livewire\Report\Operation\GL;
 
-use App\Action\StoredProcedure\SpFmsUpRptDetailGl;
-use App\Models\Fms\FmsTrxGlMap;
+use App\Action\StoredProcedure\SpFmsUpRptGlBankRecon;
+use App\Models\Ref\RefBankIbt;
 use App\Services\General\ReportService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
-class DetailGl extends Component
+class GlBankRecon extends Component
 {
     use Actions, WithPagination;
 
@@ -20,7 +20,7 @@ class DetailGl extends Component
     public $reportDate;
 
     #[Rule('required')]
-    public $gl_desc;
+    public $bank_koputra;
 
     public function mount()
     {
@@ -29,25 +29,23 @@ class DetailGl extends Component
 
     protected function getRawData()
     {
-        return SpFmsUpRptDetailGl::getRawData([
+        return SpFmsUpRptGlBankRecon::getRawData([
             'clientId' => $this->clientId,
             'reportDate' => $this->reportDate,
-            'gl_desc' => $this->gl_desc,
+            'bank_koputra' => $this->bank_koputra,
         ], true);
     }
 
     public function generateExcel()
     {
         $this->validate();
-
         $rawData = $this->getRawData();
 
         if (count($rawData) > 0) {
             $formattedData = [];
             foreach ($rawData as $data) {
-                $formattedData[] = SpFmsUpRptDetailGl::formatDataForExcel($data);
+                $formattedData[] = SpFmsUpRptGlBankRecon::formatDataForExcel($data);
             }
-
             return $this->handleExcel($formattedData);
         } else {
             $this->dialog()->success('Process Complete!', 'No Data Found.');
@@ -56,8 +54,7 @@ class DetailGl extends Component
 
     private function handleDataTable($rawData)
     {
-        $data = SpFmsUpRptDetailGl::handleForTable($rawData, true);
-
+        $data = SpFmsUpRptGlBankRecon::handleForTable($rawData, true);
         return ReportService::paginateData($data);
     }
 
@@ -69,7 +66,7 @@ class DetailGl extends Component
             }
         };
 
-        $filename = 'GL_Detail_%s.xlsx';
+        $filename = 'GlBankRecon-%s.xlsx';
         $report = new ReportService();
 
         return $report->generateExcelReport($dataGenerator, $filename, $this->reportDate);
@@ -87,26 +84,11 @@ class DetailGl extends Component
             }
         }
 
-        $gl_desc = FmsTrxGlMap::select('id','gl_acctg_desc')->get()->toArray(); // This retrieves an array
+        $bank_koputra = RefBankIbt::all();
 
-        $allOption = [
-            [
-                'id' => 0,
-                'gl_acctg_desc' => 'ALL'
-            ],
-        ];
-
-        $gl_desc = array_merge($allOption, $gl_desc);
-
-        usort($gl_desc, function ($a, $b) {
-            return $a['id'] - $b['id'];
-        });
-
-        $gl_desc = collect($gl_desc);
-
-        return view('livewire.report.operation.g-l.detail-gl',[
+        return view('livewire.report.operation.g-l.gl-bank-recon', [
             'result' => $result,
-            'gl_descs'=>$gl_desc
+            'bank_koputras' => $bank_koputra
         ])->extends('layouts.main');
     }
 }
