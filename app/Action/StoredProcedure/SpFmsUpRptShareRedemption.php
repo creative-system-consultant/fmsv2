@@ -9,7 +9,7 @@ class SpFmsUpRptShareRedemption
 {
     public static function getRawData($input)
     {
-        return DB::select("fms.up_rpt_share_redemption :clientId, :startDate, :endDate", $input);
+        return DB::select("RPT.up_rpt_share_redemption :clientId, :startDate, :endDate", $input);
     }
 
     public static function formatData($data)
@@ -29,11 +29,11 @@ class SpFmsUpRptShareRedemption
             ],
             'Name' => [
                 'value' => $data->name,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'Transaction' => [
                 'value' => $data->transactions,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'Amount' => [
                 'value' =>$data->amount,
@@ -41,15 +41,15 @@ class SpFmsUpRptShareRedemption
             ],
             'Transaction Date'     => [
                 'value' => date('d-m-Y', strtotime($data->transaction_date)),
-                'align' => 'right'
+                'align' => 'left'
             ],
             'Doc No' => [
                 'value' => $data->doc_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'Remarks' => [
                 'value' => $data->remarks,
-                'align' => 'right'
+                'align' => 'left'
             ],
         ];
     }

@@ -26,6 +26,10 @@ class SpFmsUpRptMthDetailsYearlyShare
                 'value' => $data->staff_no,
                 'align' => 'left'
             ],
+            'NAME' => [
+                'value' => $data->name,
+                'align' => 'left'
+            ],
             'OPENING_BALANCE' => [
                 'value' => number_format($data->opening_balance, 2),
                 'align' => 'right'

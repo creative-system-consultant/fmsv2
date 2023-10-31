@@ -16,15 +16,15 @@ class SpFmsFinancingApproval
         return [
             'MEMBERSHIP NO'  => [
                 'value' =>  $data->mbr_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'STAFF NO' => [
                 'value' => $data->staff_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'IDENTITY NO' => [
                 'value' => $data->identity_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'NAME' => [
                 'value' => $data->name,
@@ -32,7 +32,7 @@ class SpFmsFinancingApproval
             ],
             'BRANCH CODE' => [
                 'value' =>  $data->branch_code,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'FINANCING_NAME' => [
                 'value' => $data->financing_name,

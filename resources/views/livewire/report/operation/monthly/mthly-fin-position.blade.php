@@ -1,3 +1,3 @@
 <div>
-    <x-report title="Monthly Financing Position" :startDate="false" :endDate="false" :reportDate="true" :result="$result"/>
+    <x-report title="Monthly Financing Position" :reportDate="true" :result="$result"/>
 </div>

@@ -9,7 +9,7 @@ class SpUpRptMthNpfAcc
 {
     public static function getRawData($input)
     {
-        return DB::select("fms.up_rpt_mth_npf_account :clientId, :reportDate", $input);
+        return DB::select("rpt.up_rpt_mth_npf_account :clientId, :reportDate", $input);
     }
 
     public static function formatData($data)
@@ -25,15 +25,15 @@ class SpUpRptMthNpfAcc
             ],
             'Name' => [
                 'value' => $data->name,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'Account No' => [
                 'value' => $data->account_no,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'Product' => [
                 'value' => $data->product,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'Balance Outstanding' => [
                 'value' =>$data->balance_outs,

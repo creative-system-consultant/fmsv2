@@ -66,7 +66,7 @@ class DetailsFinYrly extends Component
             }
         };
 
-        $filename = 'DetailsFinancingMonthly-%s.xlsx';
+        $filename = 'DetailsFinancingYearly-%s.xlsx';
         $report = new ReportService();
 
         return $report->generateExcelReport($dataGenerator, $filename, $this->reportDate);

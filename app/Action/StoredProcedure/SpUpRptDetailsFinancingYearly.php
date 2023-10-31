@@ -9,7 +9,7 @@ class SpUpRptDetailsFinancingYearly
 {
     public static function getRawData($input)
     {
-        return DB::select("fms.UP_RPT_DETAILS_FINANCING_YEARLY :clientId, :reportDate", $input);
+        return DB::select("RPT.UP_RPT_DETAILS_FINANCING_YEARLY :clientId, :reportDate", $input);
     }
 
     public static function formatData($data)

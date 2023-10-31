@@ -1,3 +1,3 @@
 <div>
-    <x-report title="Daily Transaction by Product" :startDate="true" :endDate="true" :reportDate="false" :result="$result"/>
+    <x-report title="Daily Transaction by Product" :startDate="true" :endDate="true" :result="$result"/>
 </div>

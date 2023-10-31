@@ -9,7 +9,7 @@ class SpUpRptSummaryTotalcontribution
 {
     public static function getRawData($input)
     {
-        return DB::select("fms.up_rpt_summary_totalcontribution :clientId, :startDate, :endDate", $input);
+        return DB::select("RPT.up_rpt_summary_totalcontribution :clientId, :startDate, :endDate", $input);
     }
 
     public static function formatData($data)
@@ -21,11 +21,11 @@ class SpUpRptSummaryTotalcontribution
             ],
             'Identity No' => [
                 'value' => $data->identityno,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'Name' => [
                 'value' => $data->mbrname,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'Opening' => [
                 'value' => $data->opening,

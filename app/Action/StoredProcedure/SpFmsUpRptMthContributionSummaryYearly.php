@@ -19,19 +19,19 @@ class SpFmsUpRptMthContributionSummaryYearly
                 'align' => 'left'
             ],
             'OPENING BALANCE' => [
-                'value' => number_format($data->opening_balance, 0),
+                'value' => number_format($data->opening_balance, 2),
                 'align' => 'right'
             ],
             'PAYMENT IN' => [
-                'value' => number_format($data->payment_in, 0),
+                'value' => number_format($data->payment_in, 2),
                 'align' => 'right'
             ],
             'PAYMENT OUT' => [
-                'value' => number_format($data->payment_out, 0),
+                'value' => number_format($data->payment_out, 2),
                 'align' => 'right'
             ],
             'CLOSING BALANCE' => [
-                'value' => number_format($data->closing_balance, 0),
+                'value' => number_format($data->closing_balance, 2),
                 'align' => 'right'
             ],
         ];

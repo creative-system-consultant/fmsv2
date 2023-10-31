@@ -9,7 +9,7 @@ class SpUpRptMonthArrearsReportResche
 {
     public static function getRawData($input)
     {
-        return DB::select("fms.UP_RPT_MONTH_ARREARS_REPORT_RESCHE :clientId, :reportDate", $input);
+        return DB::select("RPT.UP_RPT_MONTH_ARREARS_REPORT_RESCHE :clientId, :reportDate", $input);
     }
 
     public static function formatData($data)

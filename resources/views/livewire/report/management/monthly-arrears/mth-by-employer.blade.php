@@ -1,3 +1,3 @@
 <div>
-    <x-report title="Monthly Arrears Account By Employer" :startDate="false" :endDate="false" :reportDate="true" :result="$result"/>
+    <x-report title="Monthly Arrears Account By Employer" :reportDate="true" :result="$result"/>
 </div>

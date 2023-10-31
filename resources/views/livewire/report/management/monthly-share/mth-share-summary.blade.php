@@ -1,3 +1,3 @@
 <div>
-    <x-report title="Monthly Share Summary" :startDate="false" :endDate="false" :reportDate="true" :result="$result"/>
+    <x-report title="Monthly Share Summary" :reportDate="true" :result="$result"/>
 </div>

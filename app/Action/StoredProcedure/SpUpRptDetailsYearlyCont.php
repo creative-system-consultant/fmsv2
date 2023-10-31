@@ -9,7 +9,7 @@ class SpUpRptDetailsYearlyCont
 {
     public static function getRawData($input)
     {
-        return DB::select("fms.UP_RPT_DETAILS_YEARLY_CONTRIBUTIONS :clientId, :reportDate", $input);
+        return DB::select("rpt.UP_RPT_DETAILS_YEARLY_CONTRIBUTIONS :clientId, :reportDate", $input);
     }
 
     public static function formatData($data)

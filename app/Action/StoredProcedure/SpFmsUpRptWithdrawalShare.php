@@ -9,7 +9,7 @@ class SpFmsUpRptWithdrawalShare
 {
     public static function getRawData($input)
     {
-        return DB::select("fms.up_rpt_withdrawal_share :clientId, :startDate, :endDate", $input);
+        return DB::select("RPT.up_rpt_withdrawal_share :clientId, :startDate, :endDate", $input);
     }
 
     public static function formatData($data)
@@ -21,15 +21,15 @@ class SpFmsUpRptWithdrawalShare
             ],
             'Name' => [
                 'value' => $data->name,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'Transaction Id' => [
                 'value' => $data->transaction_code_id,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'Description' => [
                 'value' => $data->descriptions,
-                'align' => 'right'
+                'align' => 'left'
             ],
             'amount' => [
                 'value' =>$data->amount,
@@ -41,7 +41,7 @@ class SpFmsUpRptWithdrawalShare
             ],
             'Transaction Date'     => [
                 'value' => date('d-m-Y', strtotime($data->transaction_date)),
-                'align' => 'right'
+                'align' => 'left'
             ],
         ];
     }
