@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class ReversalList extends Component
 {
-    public $type_financing = 'Disbursement';
+    public $type_financing = '';
     public $option_financing;
 
     public $type_general = '';
@@ -61,7 +61,7 @@ class ReversalList extends Component
     {
         $this->type_general = '';
     }
-    
+
     public function render()
     {
         return view('livewire.reversal.reversal-list')->extends('layouts.main');

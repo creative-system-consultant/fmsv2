@@ -18,7 +18,7 @@ trait ListOfFamilies
         for ($x = 0; $x <= 10; $x++) {
             $tableRow = '<tr>';
             for ($i = 0; $i < 9; $i++) {
-                $tableRow .= '<td><div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></td>';
+                $tableRow .= '<td><div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div></td>';
             }
             $tableRow .= '</tr>';
             $tableRows .= $tableRow;

@@ -41,11 +41,11 @@
 
                     <div class="mt-5">
                         @if($type_financing == 'Disbursement')
-                            <livewire:general.reversal.common-page/>
+                            <livewire:reversal.disbursement lazy />
                         @elseif($type_financing == 'Financing Repayment')
-                        
+                            <livewire:reversal.financing-repayment lazy />
                         @elseif($type_financing == 'Early Settlement')
-
+                            <livewire:reversal.early-settlement lazy />
                         @endif
                     </div>
                 </div>
@@ -69,19 +69,19 @@
 
                     <div class="mt-5">
                         @if($type_general == 'Share')
-
+                            <livewire:reversal.share lazy />
                         @elseif($type_general == 'Contribution')
-
+                            <livewire:reversal.contribution lazy />
                         @elseif($type_general == 'Other Payment')
-
+                            <livewire:reversal.other-payment lazy />
                         @elseif($type_general == 'Miscellaneous')
-
+                            <livewire:reversal.miscellaneous lazy />
                         @elseif($type_general == 'Third Party')
-
+                            <livewire:reversal.third-party lazy />
                         @elseif($type_general == 'Dividend')
-
+                            <livewire:reversal.dividend lazy />
                         @elseif($type_general == 'Refund Advance')
-                        
+                            <livewire:reversal.refund-advance lazy />
                         @endif
                     </div>
                 </div>
