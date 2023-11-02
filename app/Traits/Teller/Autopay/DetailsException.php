@@ -18,7 +18,7 @@ trait DetailsException
         for ($x = 0; $x <= 10; $x++) {
             $tableRow = '<tr>';
             for ($i = 0; $i < 9; $i++) {
-                $tableRow .= '<td><div class="w-32 h-2 bg:gray-200 rounded-full dark-bg-gray-700"></td>';
+                $tableRow .= '<td><div class="w-32 h-2 rounded-full bg:gray-200 dark-bg-gray-700"></div></td>';
             }
             $tableRow .= '</tr>';
             $tableRows .= $tableRow;
@@ -41,7 +41,7 @@ trait DetailsException
                     </div>
                     <div class="px-2 py-5 md:px-4 animate-pulse">
                         <div class="flex items-center justify-between space-x-2">
-                            <div class="flex space-x-2 items-center">
+                            <div class="flex items-center space-x-2">
                                 <div class="h-2 bg-gray-300 rounded-md dark:bg-gray-600 w-20 mb-2.5"></div>
                                 <div class="h-5 bg-gray-300 rounded-md dark:bg-gray-600 w-64 mb-2.5"></div>
                             </div>

@@ -23,13 +23,13 @@ class ActgPeriod
     {
         // Fetch the accounting period data for the previous month which is not closed.
         $actg_period_prevMonth = SysActgPeriod::select('actg_period_start', 'actg_period_end')
-            ->where('actg_period_start', '=', Carbon::now()->subMonth(1)->startOfMonth())
+            ->where('actg_period_start', '=', Carbon::now()->subMonth(1)->startOfMonth()->format('Y-m-d'))
             ->where('actg_close_flag', '=', self::CLOSE_FLAG)
             ->first();
 
         // Fetch the accounting period data for the current month which is not closed.
         $actg_period_thisMonth = SysActgPeriod::select('actg_period_start', 'actg_period_end')
-            ->where('actg_period_start', '=', Carbon::now()->startOfMonth())
+            ->where('actg_period_start', '=', Carbon::now()->startOfMonth()->format('Y-m-d'))
             ->where('actg_close_flag', '=', self::CLOSE_FLAG)
             ->first();
 

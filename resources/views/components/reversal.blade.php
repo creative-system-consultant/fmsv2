@@ -1,15 +1,10 @@
 <div>
     <div class="grid grid-cols-1 ">
-        <x-card title="Third Party Reversal">
+        <x-card title="{{ $title }}">
             <div class="flex items-center space-x-2 ">
                 <x-label label="Search :"/>
                 <div>
-                    <x-native-select  wire:model.live="searchBy">
-                        <option value="FMS.MEMBERSHIP.mbr_no">Membership No</option>
-                        <option value="FMS.ACCOUNT_STATEMENTS.doc_no">Document No</option>
-                        <option value="CIF.CUSTOMERS.name">Name</option>
-                        <option value="FMS.ACCOUNT_STATEMENTS.transaction_date">Transaction Date</option>
-                    </x-native-select>
+                    {{ $searchBy }}
                 </div>
 
                 <div class="w-64">
@@ -20,77 +15,78 @@
                 </div>
             </div>
 
-            <div class="mt-4">
-                <x-table.table>
-                    <x-slot name="thead">
-                        <x-table.table-header value="MEMBERSHIP NO" sort="" class="text-left" />
-                        <x-table.table-header value="NAME" sort="" class="text-left" />
-                        <x-table.table-header value="ACCOUNT NO" sort="" class="text-left" />
-                        <x-table.table-header value="ADVANCE AMOUNT" sort="" class="text-left" />
-                        <x-table.table-header value="REMARKS" sort="" class="text-left" />
-                        <x-table.table-header value="DOCUMENT NO" sort="" class="text-left" />
-                        <x-table.table-header value="DESCRIPTION" sort="" class="text-left" />
-                        <x-table.table-header value="AMOUNT" sort="" class="text-right" />
-                        <x-table.table-header value="TRANSACTION DATE" sort="" class="text-left" />
-                        <x-table.table-header value="ACTION" sort="" class="text-left" />
-                    </x-slot>
-                    <x-slot name="tbody">
-                        @forelse($dataTable as $data)
-                            <tr>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-left text-gray-700">
-                                    {{ $data->mbr_no }}
-                                </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-left text-gray-700">
-                                    {{ $data->name }}
-                                </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-left text-gray-700">
-                                    {{ $data->account_no }}
-                                </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-right text-gray-700">
-                                    {{ number_format($data->advance_payment, 2) }}
-                                </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-left text-gray-700">
-                                    {{ $data->remarks }}
-                                </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-left text-gray-700">
-                                    {{ $data->doc_no }}
-                                </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-left text-gray-700">
-                                    {{ $data->description }}
-                                </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-right text-gray-700">
-                                    {{ number_format($data->transaction_amount, 2) }}
-                                </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-left text-gray-700">
-                                    {{ date('d/m/Y', strtotime($data->transaction_date)) }}
-                                </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-left text-gray-700">
-                                        @if ($data->trx_group == 'REFUND ADV' && $data->ref_id_reversal == NULL)
-                                            <x-button sm icon="refresh" primary label="Reverse" wire:click="reverse('{{ $data->id }}')" />
-                                        @else
-                                            <x-badge md icon="check-circle" positive label="Done Reverse" />
-                                        @endif
-                                </x-table.table-body>
-                            </tr>
-                        @empty
-                            <tr>
-                                <x-table.table-body colspan="7" class="text-xs font-medium text-center text-gray-700">
-                                    NO DATA
-                                </x-table.table-body>
-                            </tr>
-                        @endforelse
-                    </x-slot>
-                </x-table.table>
+            @if($dataTable && $dataTable->count() > 0)
+            <?php $firstRow = $dataTable->first(); ?>
 
-                <div class="py-4">
-                    {{ $dataTable->links('livewire::pagination-links') }}
+                <div class="mt-4">
+                    @if($firstRow)
+                        <x-table.table>
+                            <x-slot name="thead">
+                                @foreach($firstRow as $column => $cell)
+                                    @php
+                                        $alignment = 'text-left'; // Default to left
+
+                                        if ($cell['align'] === 'right') {
+                                            $alignment = 'text-right';
+                                        } elseif ($cell['align'] === 'center') {
+                                            $alignment = 'text-center';
+                                        }
+                                    @endphp
+                                    <x-table.table-header value="{{ $column }}" sort="" class="{{ $alignment }}" />
+                                @endforeach
+                            </x-slot>
+                            <x-slot name="tbody">
+                                @foreach($dataTable as $row)
+                                    <tr>
+                                        @foreach($row as $column => $cell)
+                                            @php
+                                                $alignment = 'text-left'; // Default to left
+
+                                                if ($cell['align'] === 'right') {
+                                                    $alignment = 'text-right';
+                                                } elseif ($cell['align'] === 'center') {
+                                                    $alignment = 'text-center';
+                                                }
+                                            @endphp
+                                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 {{ $alignment }}">
+                                                @if($column == 'ACTION')
+                                                    @if($cell['value'] == 'DONE')
+                                                        <x-badge md icon="check-circle" positive label="Done Reverse" />
+                                                    @else
+                                                        <x-button sm icon="refresh" primary label="Reverse" wire:click="{{ $cell['value'] }}" />
+                                                    @endif
+                                                @else
+                                                    {{ $cell['value'] }}
+                                                @endif
+                                            </x-table.table-body>
+                                        @endforeach
+                                    </tr>
+                                @endforeach
+                            </x-slot>
+                        </x-table.table>
+
+                        <div class="py-4">
+                            {{ $dataTable->links('livewire::pagination-links') }}
+                        </div>
+                    @endif
                 </div>
-            </div>
+            @else
+                <div class="mt-4">
+                    <label for="fileInput" class="flex items-center justify-center w-full h-24 py-4 border-2 border-dotted 'bg-rose-50 dark:border-rose-700 dark:bg-rose-800 rounded-xl border-rose-400">
+                        <div class="flex items-center justify-center space-x-2">
+                                <x-icon name="x-circle" class="w-5 h-5 text-rose-600 animate-bounce" />
+                                <p class="text-xs leading-5 text-center text-rose-600">
+                                    NO DATA AVAILABLE
+                                </p>
+                        </div>
+                    </label>
+                </div>
+            @endif
         </x-card>
 
         {{-- modal --}}
         <div>
-            <x-modal.card title="{{ strtoupper('Third Party Reversal') }} CONFIRMATION" align="center" fullscreen="true" blur wire:model.defer="reversalModal">
+            <x-modal.card title="{{ strtoupper($title) }} CONFIRMATION" align="center" fullscreen="true" blur wire:model.defer="reversalModal">
                 <div class="mb-4">
                     <x-card title="Customer Information">
                         <div class="grid grid-cols-1 gap-2 lg:grid-cols-3">
