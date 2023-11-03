@@ -110,6 +110,7 @@ class Disbursement extends Component
 
         $this->remarksModal = false;
         $this->reversalModal = false;
+        $this->reset('confirmRemark');
 
         if ($response['success']) {
             // Handle success, such as setting a success message or redirecting with success.
