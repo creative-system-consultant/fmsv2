@@ -133,13 +133,13 @@
                                 disabled
                             />
                             <x-input
-                                label="remarks"
-                                wire:model="remarks"
+                                label="Trasaction Date"
+                                wire:model="trxDate"
                                 disabled
                             />
                             <x-input
-                                label="Trasaction Date"
-                                wire:model="trxDate"
+                                label="Remarks"
+                                wire:model="remarks"
                                 disabled
                             />
                         </div>
