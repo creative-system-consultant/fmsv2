@@ -1,27 +1,30 @@
 <?php
 
-namespace App\Livewire\Cif;
+namespace App\Livewire\Cif\Other;
 
 use App\Services\Model\CifCustomer;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class Individual extends Component
+class OtherInfoList extends Component
 {
+
     use WithPagination;
 
     public $searchBy = 'name';
     public $search;
+    public $uuid;
+    public $setIndex = 0;
+
+    public function setState($index)
+    {
+        $this->setIndex = $index;
+    }
 
     public function render()
     {
         $relationship = ['membership'];
-        // Retrieve customers based on conditions, search field and search term
         $customers = CifCustomer::fetchByCondition([], $this->searchBy, $this->search, null, null, $relationship);
-        // dd($customers);
-
-
-        return view('livewire.cif.individual', ['customers' => $customers])
-            ->extends('layouts.main');
+        return view('livewire.cif.other.other-info-list', ['customers' => $customers])->extends('layouts.main');
     }
 }

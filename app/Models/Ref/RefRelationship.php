@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class RefRelationship extends Model
 {
     use SoftDeletes;
-    protected $table   = 'ref.relationships';
+    protected $table   = 'REF.RELATIONS';
     protected $guarded = [];
     protected $casts   = [
         'created_at'    => 'datetime',

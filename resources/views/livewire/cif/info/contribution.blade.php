@@ -1,13 +1,13 @@
 <div>
     <x-card title="Contribution Information">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-2 items-center">
-            <x-input label="Total" wire:model="" disabled />
-            <x-input label="Last Payment Amount" wire:model="" disabled />
-            <x-input label="Monthly" wire:model="" disabled />
-            <x-input label="Last Withraw Amount"  wire:model="" disabled />
-            <x-input label="Last Withdraw Date"  wire:model="" disabled/>
-            <x-input label="Number of Withdraw" wire:model="" disabled />
-            <x-input label="Total of Withdraw" wire:model="" disabled />
+            <x-input label="Total" wire:model="totalContribution" disabled />
+            <x-input label="Last Payment Amount" wire:model="lastPaymentAmt" disabled />
+            <x-input label="Monthly" wire:model="monthlyContribution" disabled />
+            <x-input label="Last Withraw Amount"  wire:model="lastWithdrawAmt" disabled />
+            <x-input label="Last Withdraw Date"  wire:model="lastWithdrawDate" disabled/>
+            <x-input label="Number of Withdraw" wire:model="numWithdraw" disabled />
+            <x-input label="Total of Withdraw" wire:model="totalWithdraw" disabled />
 
             <div class="mt-6">
                 <x-button 
@@ -25,14 +25,24 @@
                         <x-table.table-header class="text-center" value="EFFECTIVE DATE" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
+                        @forelse($changedMonthlyCon as $item)
+
                         <tr>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{ number_format(optional($item->prev_amount, 2)) }}</p>
 
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{date('d/m/Y',strtotime(optional($item->effective_date)))}}</p>
                                 
                             </x-table.table-body>
                         </tr>
+                        @empty
+                        <x-table.table-body colspan="2" class="text-xs font-medium text-gray-700 ">
+                                <p>No Data</p>
+                        </x-table.table-body>
+                        @endforelse
+
                     </x-slot>
                 </x-table.table>
             </x-modal.card>
@@ -86,40 +96,60 @@
                             <x-table.table-header class="text-left " value="Action" sort="" />
                         </x-slot>
                         <x-slot name="tbody">
+                            @forelse ($contributions as $item)
+
                             <tr>
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                                    <p>{{ date('d/m/Y',strtotime($item->transaction_date)) }}</p>
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                                    <p>{{$item->description}}</p>
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                                    <p>{{$item->remarks ? $item->remarks : 'N/A'}}</p>
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                                    <p>
+                                        @if($item->dr_cr == 'D')
+                                        -
+                                        @endif
+                                        {{number_format($item->amount,2)}}
+                                    </p>
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                                    <p>{{number_format($item->total_amount,2)}}</p>
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                                    <p>{{$item->created_by ? $item->created_by : 'N/A'}}</p>
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                                    <p>{{$item->created_at ? date('d/m/Y/h:m:s',strtotime($item->created_at)) : 'N/A'}}</p>
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                                    @if ($item->transaction_code_id == 4101)
+                                    <div class="inline-flex rounded-md sm:pr-0">
+{{--                                        
+                                        <x-general.button.icon href="" target="_blank" label="Payment Voucher" color="{{auth()->user()->primary_color}}" livewire="">
+                                            <x-heroicon-o-document-report class="-ml-0.5 mr-2 h-4 w-4"/>
+                                        </x-general.button.icon> --}}
+                                    </div>
+                                @endif
                                 </x-table.table-body>
 
                             </tr>
+                            @empty
+                            <x-table.table-body colspan="5" class="text-xs font-medium text-gray-700 ">
+                                <p>No Data</p>
+                            </x-table.table-body>
+                            @endforelse
+
                         </x-slot>
                     </x-table.table>
 

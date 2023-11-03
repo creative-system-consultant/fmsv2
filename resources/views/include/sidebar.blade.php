@@ -63,7 +63,7 @@
                         <x-sidebar.nav-item
                             title="Other Info"
                             activeUrl="other/*"
-                            route="{{ route('other.other-info') }}">
+                            route="{{ route('other.info-list') }}">
                             <x-slot name="iconName">
                                 <x-icon name="collection" class="w-6 h-6"/>
                             </x-slot>

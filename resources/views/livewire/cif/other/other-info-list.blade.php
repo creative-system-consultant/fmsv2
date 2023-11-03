@@ -1,5 +1,5 @@
 <div>
-    <x-container title="Member Info" routeBackBtn="" titleBackBtn="" disableBackBtn="">
+    <x-container title="Other Info" routeBackBtn="" titleBackBtn="" disableBackBtn="">
         <div class="grid grid-cols-1">
             <div class="flex items-center space-x-2">
                 <x-label label="Search :"/>
@@ -65,8 +65,7 @@
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <div class="flex items-center space-x-2">
-                                        <x-button sm  href="{{ route('cif.info',['uuid'=>$item->uuid]) }}" icon="eye" primary label="CIF" wire:navigate/>
-                                        <x-button sm  href="{{ route('cif.member',['uuid'=>$item->uuid]) }}" icon="eye" primary label="Membership" wire:navigate/>
+                                        <x-button sm  href="{{ route('other.other-info',['uuid'=>$item->uuid]) }}" icon="eye" primary label="Details" wire:navigate/>
                                     </div>
                                 </x-table.table-body>
 
@@ -88,3 +87,5 @@
         </div>
     </x-container>
 </div>
+
+                

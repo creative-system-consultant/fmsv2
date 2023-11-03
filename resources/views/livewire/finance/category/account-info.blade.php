@@ -10,7 +10,7 @@
                     <h1 class="font-semibold text-lg dark:text-white">Category</h1>
                     <div class="bg-white border-2 border-black dark:border-gray-400 dark:text-white dark:bg-gray-800 px-4 py-2 text-xs rounded-lg text-black flex space-x-2 items-center">
                         <x-icon name="user-circle" class="w-5 h-5"/>
-                        <p>RAJA SAHRUL HISHAN BIN RAJA MAT</p>
+                        <p>{{$customer}}</p>
                     </div>
                 </div>
             
@@ -70,19 +70,19 @@
 
             <div class="mt-12">
                 @if($setIndex == '0')
-                    <livewire:finance.category.info.account-master />
+                    <livewire:finance.category.info.account-master :uuid="$uuid"/>
                 @elseif($setIndex  == '1')
-                    <livewire:finance.category.info.account-position />
+                    <livewire:finance.category.info.account-position :uuid="$uuid"/>
                 @elseif($setIndex  == '2')
-                    <livewire:finance.category.info.repayment-schedule />
+                    <livewire:finance.category.info.repayment-schedule :uuid="$uuid" />
                 @elseif($setIndex  == '3')
-                    <livewire:finance.category.info.statement />
+                    <livewire:finance.category.info.statement :uuid="$uuid"/>
                 @elseif($setIndex  == '4')
-                    <livewire:finance.category.info.pre-disb-condition />
+                    <livewire:finance.category.info.pre-disb-condition :uuid="$uuid"/>
                 @elseif($setIndex  == '5')
-                    <livewire:finance.category.info.early-settlement />
+                    <livewire:finance.category.info.early-settlement :uuid="$uuid"/>
                 @elseif($setIndex  == '6')
-                    <livewire:finance.category.info.reschedule />
+                    <livewire:finance.category.info.reschedule :uuid="$uuid"/>
                 @endif
             </div>
         </div>

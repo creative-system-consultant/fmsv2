@@ -20,11 +20,14 @@
                 <x-slot name="action" >
                     <div class="flex items-center space-x-2">
                         <x-checkbox 
-                            id="left-label" 
-                            left-label="Mailing Address" 
-                            wire:model.defer="addresses.{{$key}}.mail_flag" 
-                            wire:loading.attr='readonly' wire:loading.class="bg-gray-300"
+                        id="left-label" 
+                        left-label="Mailing Address" 
+                        wire:model.defer="addresses.{{ $key }}.mail_flag" 
+                        wire:loading.attr='readonly' 
+                        wire:loading.class="bg-gray-300"
                         />
+                        
+
                         <x-button icon="trash" red label="delete" sm  onclick="deleteAddress({{ $key }})"/>
                     </div>
                 </x-slot>
@@ -87,35 +90,3 @@
 </form>
 </div>
 
-
-@push('js')
-<script>
-    function deleteAddress(key){
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                @this.deleteAddress(key)
-            }
-        })
-    }
-    window.addEventListener('swal',function(e){Swal.fire(e.detail);});
-</script>
-
-@if(session()->has('createCustomer'))
-<script>
-    Swal.fire({
-            title               : 'Created!',
-            text                : 'The member have been created!.',
-            icon                : 'success',
-            showConfirmButton   : false,
-            timer               : 1500,
-        })
-</script>
-@endif
-@endpush

@@ -47,16 +47,6 @@ class Address extends Component
         $this->states                   = RefState::all();
         $this->countries                = RefCountry::all();
         $this->addressTypes             = AddressType::whereIn('id', [2, 3, 11])->get();
-
-        // if ($address) {
-        //     $this->add1 = $address->address1;
-        //     $this->add2 = $address->address2;
-        //     $this->add3 = $address->address3;
-        //     $this->postcode = $address->postcode;
-        //     $this->town = $address->town;
-        //     $this->states = $address->state->description;
-        //     $this->countries = $address->country->description;
-        // }
     }
 
     public function editAddressbtn()
@@ -66,6 +56,7 @@ class Address extends Component
 
     public function saveAddress()
     {
+
         $this->rules['addresses.*.address_type_id'] = [
             'required',
             function ($attribute, $value, $fail) {
@@ -78,14 +69,13 @@ class Address extends Component
                 }
             }
         ];
-        $this->validate();
+
 
         if (array_sum(array_column($this->addresses, 'mail_flag')) == 1) {
             foreach ($this->addresses as $index => $address) {
-                // dd($address);
 
                 CifAddress::where('id', $address['id'])->update([
-                    'mail_flag'         => $address['mail_flag'] == true ? '1' : NULL,
+                    'mail_flag'         => $address['mail_flag'] == true ? '1' : 0,
                     'address_type_id'   => $address['address_type_id'],
                     'address1'          => $address['address1'],
                     'address2'          => $address['address2'],
@@ -102,21 +92,11 @@ class Address extends Component
 
 
 
-                if ($address['address_type_id'] == 2) {
-                    $this->customer->siskopCustomer->address->update([
-                        'address1'          => $address['address1'],
-                        'address2'          => $address['address2'],
-                        'address3'          => $address['address3'],
-                        'postcode'          => $address['postcode'],
-                        'town'              => $address['town'],
-                        'def_state_id'      => $address['state_id'],
-                        'def_address_type_id' => $address['address_type_id']
-                    ]);
-                }
+
 
                 if (isset($address['id'])) {
                     CifAddress::where('id', $address['id'])->update([
-                        'mail_flag'         => $address['mail_flag'] == true ? '1' : NULL,
+                        'mail_flag'         => $address['mail_flag'] == true ? '1' : 0,
                         'address_type_id'   => $address['address_type_id'],
                         'address1'          => $address['address1'],
                         'address2'          => $address['address2'],
@@ -133,11 +113,9 @@ class Address extends Component
                     ]);
                 } else {
                     CifAddress::create([
-                        // 'id'                => $address['id'],
                         'cust_id'            => $address['ref_id'],
                         'address_type_id'   => $address['address_type_id'],
                         'created_by'        => $address['created_by'],
-                        // 'created_at'        => $address['created_at'],
                         'mail_flag'         => $address['mail_flag'],
                         'address1'          => $address['address1'],
                         'address2'          => $address['address2'],
@@ -154,22 +132,9 @@ class Address extends Component
                     ]);
                 }
             }
-            // $this->dispatchBrowserEvent('swal',[
-            //     'title' => 'Updated!',
-            //     'text'  => 'The detail has been updated.',
-            //     'icon'  => 'success',
-            //     'showConfirmButton' => false,
-            //     'timer' => 1500,
-            // ]);
-            return redirect()->to('/cif/individual/' . $this->customer->uuid);
+
+            return redirect()->to('/cif/info/' . $this->uuid);
         }
-        // $this->dispatchBrowserEvent('swal',[
-        //     'title' => 'Failed To Update!',
-        //     'text'  => 'The details not updated.',
-        //     'icon'  => 'Failed',
-        //     'showConfirmButton' => false,
-        //     'timer' => 1500,
-        // ]);
     }
 
     public function render()

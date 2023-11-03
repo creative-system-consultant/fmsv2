@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Models\Cif;
+namespace App\Models\Fms;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Employer extends Model
+class ChangeMonthlyContribution extends Model
 {
     use HasFactory;
 
-    protected $table   = 'CIF.CUSTOMER_EMPLOYER';
+    protected $table   = 'FMS.CHANGES_MONTHLY_CONTRIBUTION';
     protected $guarded = [];
 }

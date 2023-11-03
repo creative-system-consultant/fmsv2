@@ -9,7 +9,7 @@ class FmsAccountPosition extends Model
 {
     use HasFactory;
 
-    protected $table   = 'FMS.Account_Positions';
+    protected $table   = 'FMS.ACCOUNT_POSITIONS';
     protected $guarded = [];
 
     public function fmsAccMaster()

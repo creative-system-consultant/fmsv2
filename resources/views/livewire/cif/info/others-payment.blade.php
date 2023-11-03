@@ -9,8 +9,8 @@
         
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center space-x-2">
-                <x-input type="date"  label="Start Date" value="" wire:model=""/>
-                <x-input type="date"  label="End Date" value="" wire:model=""/>
+                <x-input type="date"  label="Start Date" value="" wire:model="startDT"/>
+                <x-input type="date"  label="End Date" value="" wire:model="endDT"/>
             </div>
         </div>
 
@@ -29,41 +29,56 @@
                     <x-table.table-header class="text-left " value="ACTION" sort="" />
                 </x-slot>
                 <x-slot name="tbody">
+                    @forelse ($othersPayment as $item)
+                    <tr>
                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        1
+                        <p>{{ $item->mbr_no }}</p>
                     </x-table.table-body>
 
                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        2
+                        <p>{{ date('d/m/Y',strtotime($item->transaction_date)) }}</p>
                     </x-table.table-body>
 
                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        3
+                        <p>{{ $item->description }}</p>
                     </x-table.table-body>
 
                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        4
+                        <p>{{ $item->doc_no }}</p>
                     </x-table.table-body>
 
                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        5
+                        <p>{{ $item->remarks }}</p>
                     </x-table.table-body>
 
                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        6
+                        <p>
+                            @if($item->dr_cr == 'D')
+                            -
+                            @endif
+                            {{number_format($item->amount,2)}}
+                        </p>
                     </x-table.table-body>
 
                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        7
+                        <p>{{$item->created_by ? $item->created_by : 'N/A'}}</p>
                     </x-table.table-body>
 
                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        8
+                        <p>{{$item->created_at ? date('d/m/Y/h:m:s',strtotime($item->created_at)) : 'N/A'}}</p>
                     </x-table.table-body>
 
                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        9
+                        
                     </x-table.table-body>
+                    </tr>
+
+                    @empty
+                    <x-table.table-body colspan="7" class="text-xs font-medium text-gray-700 ">
+                        <p>No Data</p>
+                    </x-table.table-body>
+                    @endforelse
+
                 </x-slot>
             </x-table.table>
         </div>

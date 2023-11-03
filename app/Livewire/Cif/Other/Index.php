@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Cif\Other;
 
+use App\Models\Cif\CifCustomer;
 use Livewire\Component;
 
 class Index extends Component
@@ -13,6 +14,12 @@ class Index extends Component
     public function setState($index)
     {
         $this->setIndex = $index;
+    }
+
+    public function mount()
+    {
+        $CustomerInfo = CifCustomer::where('uuid', $this->uuid)->first();
+        $this->uuid = $CustomerInfo->uuid;
     }
 
 

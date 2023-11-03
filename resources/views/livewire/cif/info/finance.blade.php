@@ -16,56 +16,75 @@
 
                 </x-slot>
                 <x-slot name="tbody">
+                    @forelse ($accounts as $item)
+                    @php
+                        $selling_price +=$item->selling_price;
+                        $disbursed_amount +=$item->disbursed_amount;
+                    @endphp
                     <tr>
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            5702458002534
+                            <p>{{ $item->account_no }}</p>
+
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            CLOSE
+                            <p>{{ $item->status }}</p>
+
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            CASH-i 1/2/3
+                            <p>{{ $item->product }}</p>
+
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            NONE
+                            <p>{{ $item->payment_type }}</p>
+
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                            29,800.00
+                            <p>{{ number_format($item->selling_price,2,'.',',') }}</p>
+
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                            20,000.00
+                            <p>{{ number_format($item->disbursed_amount,2,'.',',') }}</p>
+
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                            0.00
+                            <p>{{ number_format($item->advance_payment,2,'.',',') }}</p>
+
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                            354.00
+                            <p>{{ number_format($item->instal_amount,2,'.',',') }}</p>
+
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            28-02-2005
+                            <p>{{ date('d-m-Y', strtotime($item->start_disbursed_date)) }}</p>
+
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                            0.00
+                            <p>{{ number_format($item->bal_outstanding,2,'.',',') }}</p>
+
                         </x-table.table-body>
                     </tr>
+                    @empty @endforelse
+
                     <tr class="bg-gray-50">
                         <x-table.table-body colspan="4" class="text-xs  text-gray-700 font-bold text-right">
                             Total
                         </x-table.table-body>
                         <x-table.table-body colspan="1" class="text-xs  text-gray-700 font-bold text-right">
-                            44,000.00
+                            <p>{{ number_format($selling_price,2,'.',',') }}</p>
+
                         </x-table.table-body>
                         <x-table.table-body colspan="1" class="text-xs  text-gray-700 font-bold text-right">
-                            30,000.00
+                            <p>{{ number_format($disbursed_amount,2,'.',',') }}</p>
+
                         </x-table.table-body>
                         <x-table.table-body colspan="4" class="text-xs  text-gray-700 font-bold text-right">
                         </x-table.table-body>

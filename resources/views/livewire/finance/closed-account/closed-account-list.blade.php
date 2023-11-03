@@ -38,17 +38,18 @@
                         <x-table.table-header class="text-left" value="ACTION" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
+                        @forelse ($closed_acc as $item)
                         <tr>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                1
+                                <p>{{ $loop->iteration }}</p>
                             </x-table.table-body>
                 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                03229
+                                <p>{{ $item->mbr_no }}</p>
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700">
-                                ABANG HISYAMUDDIN BIN ABANG RAMLIE
+                                <p>{{ $item->name }}</p>
                             </x-table.table-body>
                         
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
@@ -60,41 +61,49 @@
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                990217016536
+                                <p>{{ $item->identity_no }}</p>
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
-                                78111998036488
+                                <p>{{ $item->account_no }}</p>
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center">
-                                ACTIVE
+                                <p>{{ $item->description }}</p>
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                848.41
+                                <p>{{ number_format($item->instal_amount,2,'.',',') }}</p>
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                24,604.00
+                                <p>{{ number_format($item->bal_outstanding,2,'.',',') }}</p>
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                32,000.00
+                                <p>{{ number_format($item->selling_price,2,'.',',') }}</p>
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                20,000.00
+                                <p>{{ number_format($item->disbursed_amount,2,'.',',') }}</p>
                             </x-table.table-body>
                 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <div>
-                                    <x-button sm  href="{{ route('finance.finance-account-info',['id' => 1]) }}" icon="eye" primary label="View" wire:navigate/>
+                                    <x-button sm  href="{{ route('finance.finance-account-info',['uuid' => $item->uuid]) }}" icon="eye" primary label="View" wire:navigate/>
                                 </div>
                             </x-table.table-body>
                         </tr>
+                        @empty
+                        <x-table.table-body colspan="9" class="text-xs font-medium text-gray-700 text-right">
+                            <p>No data</p>
+                        </x-table.table-body>
+                        @endforelse
                     </x-slot>
                 </x-table.table>
+                <div class="px-2 py-2 mt-4">
+                    {{ $closed_acc->links('livewire::pagination-links') }}
+                </div>
             </div>
         </x-card>
         

@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Models\Cif;
+namespace App\Models\Ref;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Employer extends Model
+class RefThirdParty extends Model
 {
     use HasFactory;
-
-    protected $table   = 'CIF.CUSTOMER_EMPLOYER';
+    protected $table = 'REF.THIRDPARTY';
     protected $guarded = [];
 }
