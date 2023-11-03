@@ -97,7 +97,7 @@
                                 wire:model.lazy="reschedule"
                                 id="reschedule"
                                 name="reschedule"
-                                class="text-xs lg:text-sm form-select block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5 rounded-md shadow-sm py-1 px-4"
+                                class="select-custom"
                                 wire:loading.attr='readonly'
                                 wire:loading.class="bg-gray-300"
                                 wire:target="submit"
@@ -109,7 +109,7 @@
                         </div>
                     </div>
                     
-                 {{-- {{$reschedule}} --}}
+                {{-- {{$reschedule}} --}}
                 @if ($reschedule =='ins' || $reschedule =='dur' )
                     <div class="">
                         <x-input 
@@ -120,38 +120,85 @@
                     </div>
 
                     <div class="mt-6">
-                        <div class="flex items-center pr-2 mt-1 rounded-md sm:pr-0">
-                                <x-button 
-                                    sm  
-                                    icon="clipboard-check"
-                                    primary 
-                                    label="Calculate" 
-                                    wire:click="instalmentRes"
-                                />
-                            </button>
-{{-- 
-                            @if($financeInfoNew)
-                                <div class="flex ml-4 space-x-2">
-                                    <div>
-                                        <x-general.button.icon
-                                            href="#"
-                                            target=""
-                                            label="View New Schedule"
-                                            color="orange"
-                                            livewire=""
-                                            class=""
-                                            @click="viewOpen = true"
-                                        >
-                                            <x-heroicon-o-eye class="-ml-0.5 mr-2 h-4 w-4"/>
-                                        </x-general.button.icon>
+                        <div class="flex items-center pr-2 mt-1 rounded-md sm:pr-0 space-x-2">
+                            <x-button 
+                                sm  
+                                icon="clipboard-check"
+                                primary 
+                                label="Calculate" 
+                                wire:click="instalmentRes"
+                            />
+                            <x-button 
+                                sm  
+                                icon="eye"
+                                orange 
+                                label="View New Schedule" 
+                                onclick="$openModal('openSchedule')"
+                            />
+                        </div>
+
+                        <x-modal.card title="Rescheduled - Repayment Schedule" align="center" blur wire:model.defer="openSchedule" max-width="8xl">
+                            <div>
+                                <div class="flex items-center justify-end mb-4">
+                                    <x-button 
+                                        sm 
+                                        icon="document-report" 
+                                        green 
+                                        label="Excel"
+                                        wire:click="generateExcel" 
+                                    />
+                                </div>
+                                <x-table.table>
+                                    <x-slot name="thead">
+                                        <x-table.table-header class="text-left" value="INSTALMENT NO." sort="" />
+                                        <x-table.table-header class="text-left" value="INSTALMENT DATE" sort="" />
+                                        <x-table.table-header class="text-right" value="INSTALMENT AMOUNT" sort="" />
+                                        <x-table.table-header class="text-right" value="BALANCE OUTSTANDING" sort="" />
+                                        <x-table.table-header class="text-right" value="PRINT AMOUNT" sort="" />
+                                        <x-table.table-header class="text-right" value="PRINCIPAL OUTSTANDING" sort="" />
+                                        <x-table.table-header class="text-right" value="PROFIT AMOUNT" sort="" />
+                                        <x-table.table-header class="text-right" value="UEI OUTSTANDING" sort="" />
+                                    </x-slot>
+                                    <x-slot name="tbody">
+                                        <tr>
+                                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                <p>113</p>
+                                            </x-table.table-body>
+                                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                <p>30/11/2023</p>
+                                            </x-table.table-body>
+                                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
+                                                <p>4,060.00</p>
+                                            </x-table.table-body>
+                                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
+                                                <p>0.00</p>
+                                            </x-table.table-body>
+                                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
+                                                <p>4,033.00</p>
+                                            </x-table.table-body>
+                                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
+                                                <p>-94.48</p>
+                                            </x-table.table-body>
+                                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
+                                                <p>27.00</p>
+                                            </x-table.table-body>
+                                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
+                                                <p>94.48</p>
+                                            </x-table.table-body>
+                                        </tr>
+                                    </x-slot>
+                                </x-table.table>
+                            </div>
+                            <x-slot name="footer">
+                                <div class="flex justify-end">
+                                    <div class="flex">
+                                        <x-button icon="check" primary label="Confirm Reschedule" wire:click="" />
                                     </div>
                                 </div>
-                            @endif --}}
-                        </div>
+                            </x-slot>
+                        </x-modal.card>
                     </div>
                 @endif
-                    
-                    
                 </div>
             </x-card>
         </div>
