@@ -1,10 +1,10 @@
 
 <div x-cloak >
     <aside
-        @mouseover="openHoverMiniSidebar = true" 
+        @mouseover="openHoverMiniSidebar = true"
         @mouseover.away = "openHoverMiniSidebar = false"
         x-cloak
-        class="fixed top-0  left-0 flex flex-col flex-shrink-0 h-full duration-75 lg:flex transition-width"
+        class="fixed top-0 left-0 flex flex-col flex-shrink-0 h-full duration-75 lg:flex transition-width"
         x-bind:class="{
             'block lg:hidden': toggleSidebarDesktop,
             'w-64 lg:w-[5rem]': toggleMiniSidebar && !openHoverMiniSidebar,
@@ -37,6 +37,26 @@
                             route="{{ route('home') }}">
                             <x-slot name="iconName">
                                 <x-icon name="home" class="w-6 h-6"/>
+                            </x-slot>
+                        </x-sidebar.nav-item>
+
+                        <!-- Roles -->
+                        <x-sidebar.nav-item
+                            title="Roles"
+                            activeUrl="roles"
+                            route="{{ route('roles.index') }}">
+                            <x-slot name="iconName">
+                                <x-icon name="shield-check" class="w-6 h-6"/>
+                            </x-slot>
+                        </x-sidebar.nav-item>
+
+                        <!-- Permission -->
+                        <x-sidebar.nav-item
+                            title="Permission"
+                            activeUrl="permissions"
+                            route="{{ route('permissions.index') }}">
+                            <x-slot name="iconName">
+                                <x-icon name="shield-exclamation" class="w-6 h-6"/>
                             </x-slot>
                         </x-sidebar.nav-item>
 

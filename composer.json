@@ -15,6 +15,7 @@
         "livewire/livewire": "^3.0",
         "owen-it/laravel-auditing": "^13.5",
         "rap2hpoutre/fast-excel": "^5.3",
+        "spatie/laravel-permission": "^6.0",
         "wireui/wireui": "^1.18"
     },
     "require-dev": {
