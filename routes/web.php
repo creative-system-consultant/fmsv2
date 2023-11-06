@@ -49,6 +49,16 @@ Route::middleware('auth')->group(function () {
         Route::get('password/confirm', Confirm::class)
             ->name('password.confirm');
 
+        // roles
+        Route::prefix('roles')->as('roles.')->group(
+            base_path('routes/web/role.php'),
+        );
+
+        // permissions
+        Route::prefix('permissions')->as('permissions.')->group(
+            base_path('routes/web/permission.php'),
+        );
+
         // cif
         Route::prefix('cif')->as('cif.')->group(
             base_path('routes/web/cif.php'),
