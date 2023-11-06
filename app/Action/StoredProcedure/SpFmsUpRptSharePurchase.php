@@ -1,0 +1,86 @@
+<?php
+
+namespace App\Action\StoredProcedure;
+
+use DB;
+use Illuminate\Support\Collection;
+
+class SpFmsUpRptSharePurchase
+{
+    public static function getRawData($input)
+    {
+        return DB::select("RPT.up_rpt_share_purchase :clientId, :startDate, :endDate", $input);
+    }
+
+    public static function formatData($data)
+    {
+        return [
+            'Membership No'  => [
+                'value' =>  $data->mbr_no,
+                'align' => 'left'
+            ],
+            'Staff No'  => [
+                'value' =>  $data->staff_no,
+                'align' => 'left'
+            ],
+            'Identity No'  => [
+                'value' =>  $data->identity_no,
+                'align' => 'left'
+            ],
+            'Name' => [
+                'value' => $data->name,
+                'align' => 'left'
+            ],
+            'Transaction' => [
+                'value' => $data->transactions,
+                'align' => 'left'
+            ],
+            'Amount' => [
+                'value' =>$data->amount,
+                'align' => 'right'
+            ],
+            'Transaction Date'     => [
+                'value' => date('d-m-Y', strtotime($data->transaction_date)),
+                'align' => 'left'
+            ],
+            'Doc No' => [
+                'value' => $data->doc_no,
+                'align' => 'left'
+            ],
+            'Remarks' => [
+                'value' => $data->remarks,
+                'align' => 'left'
+            ],
+        ];
+    }
+
+    public static function formatDataForExcel($data)
+    {
+        $formattedData = self::formatData($data);
+        $excelData = [];
+
+        foreach ($formattedData as $column => $cell) {
+            $excelData[$column] = $cell['value'];
+        }
+
+        return $excelData;
+    }
+
+    public static function handleForExcel($input, $format = false)
+    {
+        $rawData = self::getRawData($input);
+        foreach ($rawData as $data) {
+            $formattedData = $format ? self::formatDataForExcel($data) : $data;
+            yield $formattedData;
+        }
+    }
+
+    public static function handleForTable($rawData, $format = false)
+    {
+        $formattedData = [];
+        foreach ($rawData as $data) {
+            $formattedData[] = $format ? self::formatData($data) : $data;
+        }
+        return new Collection($formattedData);
+    }
+}

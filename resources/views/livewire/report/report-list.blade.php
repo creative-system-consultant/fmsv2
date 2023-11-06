@@ -1,15 +1,14 @@
 
-<div class="relative">
-    <div class="fixed top-0 bottom-0 right-0 z-50 mt-12 overflow-hidden lg:mt-0"
+<div class="relative" x-data="searching()">
+    <div class="fixed top-0 bottom-0 left-0 right-0 z-50  mt-12 overflow-hidden lg:mt-0  max-w-lg"
         :class="{
             'lg:left-[16rem] left-0': !toggleSidebarDesktop,
             'lg:left-[5rem] left-0': toggleMiniSidebar,
             'lg:left-0': toggleSidebarDesktop,
         }"
         x-cloak>
-        <section class="absolute inset-y-0 left-0 flex max-w-full " aria-labelledby="slide-over-heading">
+        <section class="absolute inset-y-0 left-0 flex max-w-full z-50 " aria-labelledby="slide-over-heading">
             <div class="relative w-screen max-w-md">
-
                 <div class="flex flex-col h-full py-6 pt-0 overflow-auto bg-white shadow-xl animate__animated animate__fadeInLeft dark:bg-gray-900">
                     <div class="relative flex-shrink-0 overflow-hidden bg-primary-600 ">
                         <svg class="absolute bottom-0 left-0 mb-8" viewBox="0 0 375 283" fill="none" style="transform: scale(1.5); opacity: 0.1;">
@@ -28,8 +27,8 @@
                         <div class="mb-4">
                             <x-input
                                 placeholder="Search"
-                                id="myInput"
-                                onkeyup="myFunction()"
+                                x-model="searchTerm"
+                                x-on:input="shouldShowDropdown()"
                             />
                         </div>
                         <div class="py-3 border-2 rounded border-primary-50 dark:border-gray-800 ">
@@ -37,619 +36,292 @@
                                 <ul id="myUL" class="list-none">
                                     <div class="py-2">
                                         <li>
-                                            <p class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white pb-2">
+                                            <p class="inline-flex items-center w-full px-4 py-2 pb-2 text-sm font-semibold text-gray-500 dark:text-white">
                                                 <span>MANAGEMENT</span>
                                             </p>
                                         </li>
 
-                                        <div x-data={show:false}>
-                                            <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
-                                                    <span>Monthly Arreas</span>
-                                                </p>
-                                                <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                                <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                            </li>
+                                        <x-general.dropdown-item icon="collection" title="Monthly Arreas" index="1">
+                                            <x-general.nav-item
+                                                title="Monthly Arrears Account By Age"
+                                                href="{{ route('report.management.monthly-arrears.mth-by-age') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Monthly Arrears Account By Employer"
+                                                href="{{route('report.management.monthly-arrears.mth-by-employer')}}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Monthly Arrears Account By State"
+                                                href="{{ route('report.management.monthly-arrears.mth-by-state') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Monthly Arrears Account By Product"
+                                                href="{{route('report.management.monthly-arrears.mth-by-product')}}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Monthly Arrears Ageing"
+                                                href="{{route('report.management.monthly-arrears.mth-ageing')}}"
+                                            />
+                                        </x-general.nav-item>
 
-                                            <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
-                                                <li>
-                                                    <a wire:navigate href="{{route('report.report-ma-age')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Monthly Arrears Account By Age</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="{{route('report.report-ma-employer')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Monthly Arrears Account By Employer</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="{{route('report.report-ma-state')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Monthly Arrears Account By State</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="{{route('report.report-ma-product')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Monthly Arrears Account By Product</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="{{route('report.report-ma-ageing')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Monthly Arrears Ageing</span>
-                                                    </a>
-                                                </li>
-                                            </div>
-                                        </div>
+                                        <x-general.dropdown-item icon="collection" title="Monthly Contribution" index="2">
+                                            <x-general.nav-item
+                                                title="Monthly Contribution Summary"
+                                                href="{{ route('report.management.monthly-contribution.contribution-summary') }}"
+                                            />
+                                        </x-general.dropdown-item>
 
-                                        <div x-data={show:false}>
-                                            <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
-                                                    <span>Monthly Contribution</span>
-                                                </p>
-                                                <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                                <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                            </li>
+                                        <x-general.dropdown-item icon="collection" title="Monthly Financing Position" index="3">
+                                            <x-general.nav-item
+                                                title="Monthly Financing Position Summary"
+                                                href="{{ route('report.management.monthly-financing-position.financing-position') }}"
+                                            />
+                                        </x-general.dropdown-item>
 
-                                            <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
-                                                <li>
-                                                    <a wire:navigate href="{{route('report.report-mc-summary')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Monthly Contribution Summary</span>
-                                                    </a>
-                                                </li>
-                                            </div>
-                                        </div>
+                                        <x-general.dropdown-item icon="collection" title="Monthly Npf" index="4">
+                                            <x-general.nav-item
+                                                title="Monthly Npf Summary"
+                                                href="{{ route('report.management.monthly-npf.mthly-npf-sum') }}"
+                                            />
+                                        </x-general.dropdown-item>
 
-                                        <div x-data={show:false}>
-                                            <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
-                                                    <span>Monthly Financing Position</span>
-                                                </p>
-                                                <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                                <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                            </li>
-
-                                            <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
-                                                <li>
-                                                    <a wire:navigate href="{{route('report.report-mfp-summary')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Monthly Financing Position Summary</span>
-                                                    </a>
-                                                </li>
-                                            </div>
-                                        </div>
-
-                                        <div x-data={show:false}>
-                                            <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
-                                                    <span>Monthly Npf</span>
-                                                </p>
-                                                <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                                <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                            </li>
-
-                                            <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
-                                                <li>
-                                                    <a wire:navigate href="{{route('report.report-mnpf-summary')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Monthly Npf Summary</span>
-                                                    </a>
-                                                </li>
-                                            </div>
-                                        </div>
-
-                                        <div x-data={show:false}>
-                                            <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
-                                                    <span>Monthly Share</span>
-                                                </p>
-                                                <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                                <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                            </li>
-
-                                            <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
-                                                <li>
-                                                    <a wire:navigate href="{{route('report.report-ms-summary')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Monthly Share Summary</span>
-                                                    </a>
-                                                </li>
-                                            </div>
-                                        </div>
+                                        <x-general.dropdown-item icon="collection" title="Monthly Share" index="5">
+                                            <x-general.nav-item
+                                                title="Monthly Share Summary"
+                                                href="{{ route('report.management.monthly-share.mth-share-summary') }}"
+                                            />
+                                        </x-general.dropdown-item>
 
                                     </div>
-                                    <div class="border-t py-2 border-primary-50 dark:border-gray-700">
+                                    <div class="py-2 border-t border-primary-50 dark:border-gray-700">
                                         <li>
-                                            <p class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white pb-2">
+                                            <p class="inline-flex items-center w-full px-4 py-2 pb-2 text-sm font-semibold text-gray-500 dark:text-white">
                                                 <span>OPERATION</span>
                                             </p>
                                         </li>
 
-                                        <div x-data={show:false}>
-                                            <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
-                                                    <span>Contribution</span>
-                                                </p>
-                                                <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                                <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                            </li>
+                                        <x-general.dropdown-item icon="collection" title="Contribution" index="6">
+                                            <x-general.nav-item
+                                                title="Contribution Payment"
+                                                href="{{route('report.operation.contribution.payment')}}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Contribution Wihdrawal"
+                                                href="{{route('report.operation.contribution.withdrawal')}}"
+                                            />
+                                        </x-general.dropdown-item>
 
-                                            <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="collection" class="w-4 h-4 mr-2"/>
-                                                        <span>Contribution Payment</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Contribution Wihdrawal</span>
-                                                    </a>
-                                                </li>
-                                            </div>
-                                        </div>
+                                        <x-general.dropdown-item icon="collection" title="Daily Transaction" index="7">
+                                            <x-general.nav-item
+                                                title="Daily Transaction Listing"
+                                                href="{{ route('report.operation.dailytransaction.listing') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Daily Transaction By Product"
+                                                href="{{ route('report.operation.dailytransaction.product') }}"
+                                            />
+                                        </x-general.dropdown-item>
 
-                                        <div x-data={show:false}>
-                                            <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
-                                                    <span>Daily Transaction</span>
-                                                </p>
-                                                <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                                <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                            </li>
+                                        <x-general.dropdown-item icon="collection" title="Financing" index="8">
+                                            <x-general.nav-item
+                                                title="Financing Summary"
+                                                href="{{ route('report.operation.financing.summary') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Financing Disbursement"
+                                                href="{{ route('report.operation.financing.disbursement') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Financing Cash Detail"
+                                                href="{{ route('report.operation.financing.cashdetail') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Financing Approval"
+                                                href="{{ route('report.operation.financing.approval') }}"
+                                            />
+                                        </x-general.dropdown-item>
 
-                                            <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800">
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Daily Transaction Listing</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Daily Transaction By Product</span>
-                                                    </a>
-                                                </li>
-                                            </div>
-                                        </div>
+                                        <x-general.dropdown-item icon="collection" title="List" index="9">
+                                            <x-general.nav-item
+                                                title="List Of Autopay"
+                                                href="{{ route('report.operation.list.autopay') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Member"
+                                                href="{{route('report.operation.list.member')}}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Closed Member"
+                                                href="{{ route('report.operation.list.closed-member') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Bank"
+                                                href="{{ route('report.operation.list.bank') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Member Not Pay Contribution"
+                                                href="{{ route('report.operation.list.member-not-pay-contribution') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Dormant Member"
+                                                href="{{ route('report.operation.list.dormant-member') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Entrance Fee"
+                                                href="{{ route('report.operation.list.entrance-fee') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Financing"
+                                                href="{{ route('report.operation.list.financing') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Full Settlement"
+                                                href="{{ route('report.operation.list.full-settlement') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Introducer"
+                                                href="{{ route('report.operation.list.introducer') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Deduction"
+                                                href="{{ route('report.operation.list.deduction') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Retirement"
+                                                href="{{ route('report.operation.list.retirement') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Non-Cash Products"
+                                                href="{{ route('report.operation.list.non-cash-product') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Detail Cash Disbursement"
+                                                href="{{ route('report.operation.list.detail-for-cash-disbursement') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Takaful Payment"
+                                                href="{{ route('report.operation.list.takaful-payment') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Dividend Payment"
+                                                href="{{ route('report.operation.list.dividend-payment') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Fin Transaction Base On Disbursement"
+                                                href="{{ route('report.operation.list.fin-trx-base-disbursement') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of BSKE & GOLDBAR Transactions"
+                                                href="{{ route('report.operation.list.Bske-Goldbar-Trax') }}"
+                                            />
+                                        </x-general.dropdown-item>
 
-                                        <div x-data={show:false}>
-                                            <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
-                                                    <span>Financing</span>
-                                                </p>
-                                                <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                                <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                            </li>
+                                        <x-general.dropdown-item icon="collection" title="Member" index="10">
+                                            <x-general.nav-item
+                                                title="Member By Income"
+                                                href="{{ route('report.operation.member.byincome') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Member By State"
+                                                href="{{ route('report.operation.member.by-state') }}"
+                                            />
+                                        </x-general.dropdown-item>
 
-                                            <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800">
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Financing Summary</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Financing Disbursement</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Financing Cash Detail</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Financing Approval</span>
-                                                    </a>
-                                                </li>
-                                            </div>
-                                        </div>
+                                        <x-general.dropdown-item icon="collection" title="Monthly" index="11">
+                                            <x-general.nav-item
+                                                title="Monthly Npf Account"
+                                                href="{{ route('report.operation.monthly.mthlynpfacc') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Monthly Arrears Account"
+                                                href="{{ route('report.operation.monthly.arrears-account') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Monthly Financing Position"
+                                                href="{{ route('report.operation.monthly.mthly-fin-position') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="List Of Share Details"
+                                                href="{{ route('report.operation.monthly.list-share-detail') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Share Summary Yearly"
+                                                href="{{ route('report.operation.monthly.share-summary-yearly') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Contribution Details Monthly"
+                                                href="{{ route('report.operation.monthly.contribution-details-monthly') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Contribution Summary Yearly"
+                                                href="{{ route('report.operation.monthly.contribution-summary-yearly') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Financing Summary Yearly"
+                                                href="{{ route('report.operation.monthly.financing-summary-yearly') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Details Yearly Share"
+                                                href="{{ route('report.operation.monthly.details-yearly-share') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Details Yearly Contributions"
+                                                href="{{ route('report.operation.monthly.details-yrly-cont') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Details Financing Monthly"
+                                                href="{{ route('report.operation.monthly.details-fin-mthly') }}"
+                                            />  
+                                            <x-general.nav-item
+                                                title="Details Financing Yearly"
+                                                href="{{ route('report.operation.monthly.details-fin-yrly') }}"
+                                            /> 
+                                            <x-general.nav-item
+                                                title="Month Arrears Report(Rescheduled) - Monthly"
+                                                href="{{ route('report.operation.monthly.report-resc') }}"
+                                            />
+                                        </x-general.dropdown-item>
 
-                                        <div x-data={show:false}>
-                                            <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
-                                                    <span>List</span>
-                                                </p>
-                                                <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                                <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                            </li>
+                                        <x-general.dropdown-item icon="collection" title="Share" index="12">
+                                            <x-general.nav-item
+                                                title="Share Purchase"
+                                                href="{{ route('report.operation.share.share-purchase') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Share Redemption"
+                                                href="{{ route('report.operation.share.share-redemption') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Share Withdrawal"
+                                                href="{{ route('report.operation.share.share-withdrawal') }}"
+                                            />
+                                        </x-general.dropdown-item>
 
-                                            <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800">
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Autopay</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="{{route('report.report-list-member')}}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Member</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Closed Member</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of BSKE Account</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Bank</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Member Not Pay Contribution</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Dormant Member</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Entrance Fee</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Financing</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Full Settlement</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Introducer</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Deduction </span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Retirement </span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Non-Cash Products </span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Detail Cash Disbursement </span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>LIst Of Takaful Payment </span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Dividend Payment </span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Fin Transaction Base On Disbursement </span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of BSKE & GOLDBAR Transactions </span>
-                                                    </a>
-                                                </li>
-                                            </div>
-                                        </div>
+                                        <x-general.dropdown-item icon="collection" title="Summary" index="13">
+                                            <x-general.nav-item
+                                                title="Summary Total Share"
+                                                href="{{ route('report.operation.summary.sum-total-share') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Summary Total Contribution"
+                                                href="{{ route('report.operation.summary.sum-total-cont') }}"
+                                            />
+                                        </x-general.dropdown-item>
 
-                                        <div x-data={show:false}>
-                                            <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
-                                                    <span>Member</span>
-                                                </p>
-                                                <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                                <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                            </li>
-
-                                            <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800">
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Member By Income</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Member By State</span>
-                                                    </a>
-                                                </li>
-                                            </div>
-                                        </div>
-
-                                        <div x-data={show:false}>
-                                            <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
-                                                    <span>Monthly</span>
-                                                </p>
-                                                <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                                <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                            </li>
-
-                                            <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800">
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Monthly Npf Account</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Monthly Arrears Account</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Monthly Financing Position</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>List Of Share Details </span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Share Summary Yearly </span>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Financing Summary Yearly </span>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Details Yearly Share </span>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Details Yearly Contributions </span>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Details Financing Monthly </span>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Details Financing Yearly </span>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Month Arrears Report(Rescheduled) - Monthly </span>
-                                                    </a>
-                                                </li>
-                                            </div>
-                                        </div>
-
-                                        <div x-data={show:false}>
-                                            <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
-                                                    <span>Share</span>
-                                                </p>
-                                                <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                                <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                            </li>
-
-                                            <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Share Purchase</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Share Redemption</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Share Withdrawal</span>
-                                                    </a>
-                                                </li>
-                                            </div>
-                                        </div>
-
-                                        <div x-data={show:false}>
-                                            <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
-                                                    <span>Summary</span>
-                                                </p>
-                                                <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                                <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                            </li>
-
-                                            <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Summary Total Share</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Summary Total Contribution</span>
-                                                    </a>
-                                                </li>
-                                            </div>
-                                        </div>
-
-                                        <div x-data={show:false}>
-                                            <li x-on:click.prevent="show=!show" class="flex items-center justify-between cursor-pointer hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none">
-                                                <p class="inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white"> 
-                                                    <x-icon name="collection" class="w-4 h-4 mr-2"/>   
-                                                    <span>GL</span>
-                                                </p>
-                                                <div class="px-4" x-show="!show"  x-cloak>
-                                                    <x-icon name="chevron-left" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                                <div class="px-4" x-show="show" x-cloak>
-                                                    <x-icon name="chevron-down" class="inline-flex w-5 h-5 text-gray-500 dark:text-white"/>   
-                                                </div>
-                                            </li>
-
-                                            <div x-show="show" class="px-4 bg-gray-100 dark:bg-gray-800 ">
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Detail</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Detail GL by Account</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a wire:navigate href="#" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
-                                                        <span>Detail GL By Bank Recon</span>
-                                                    </a>
-                                                </li>
-                                            </div>
-                                        </div>
-
+                                        <x-general.dropdown-item icon="collection" title="GL" index="14">
+                                            <x-general.nav-item
+                                                title="Detail"
+                                                href="{{ route('report.operation.g-l.detail-gl') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Detail GL by Account"
+                                                href="{{ route('report.operation.g-l.detail-gl-by-account') }}"
+                                            />
+                                            <x-general.nav-item
+                                                title="Detail GL By Bank Recon"
+                                                href="{{ route('report.operation.g-l.gl-bank-recon') }}"
+                                            />
+                                        </x-general.dropdown-item>
                                     </div>
                                 </ul>
                             </div>
@@ -661,26 +333,36 @@
         </section>
     </div>
 </div>
-
-
 @push('js')
-<script>
-    function myFunction() {
-        var input, filter, ul, li, a, i, txtValue;
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        ul = document.getElementById("myUL");
-        li = ul.getElementsByTagName("li");
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("a")[0];
-            txtValue = a.textContent || a.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
-            } else {
-                li[i].style.display = "none";
-            }
+    <script>
+        function searching() {
+            return {
+                searchTerm: '',
+                showDropdowns: Array(10).fill(false),
+                toggleDropdown(index) {
+                    if (this.showDropdowns[index]) {
+                        this.showDropdowns[index] = false;
+                    } else {
+                        this.showDropdowns = this.showDropdowns.map(() => false);
+                        this.showDropdowns[index] = true;
+                    }
+                },
+                shouldShowDropdown(index) {
+                    if (this.searchTerm) {
+                        const searchTermLower = this.searchTerm.toLowerCase();
+                        const listItems = this.$el.querySelectorAll('.search-item');
+                        return [...listItems].some(item => item.textContent.toLowerCase().includes(searchTermLower));
+                    }
+                    return this.showDropdowns[index];
+                },
+                itemMatches(el) {
+                    if (!this.searchTerm) return true;
+                    const searchTermLower = this.searchTerm.toLowerCase();
+                    const itemText = el.querySelector('.search-item').textContent.toLowerCase();
+                    return itemText.includes(searchTermLower);
+                }
+            };
         }
-    }
-</script>
+    </script>
 @endpush
 

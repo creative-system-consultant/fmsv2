@@ -93,6 +93,36 @@ return [
             'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'true'),
         ],
 
+        'fms' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL_FMS'),
+            'host' => env('DB_HOST_FMS', 'localhost'),
+            'port' => env('DB_PORT_FMS', '1433'),
+            'database' => env('DB_DATABASE_FMS', 'forge'),
+            'username' => env('DB_USERNAME_FMS', 'forge'),
+            'password' => env('DB_PASSWORD_FMS', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'encrypt' => env('DB_ENCRYPT_FMS', 'yes'),
+            'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'true'),
+        ],
+
+        'siskop' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL_SISKOP'),
+            'host' => env('DB_HOST_SISKOP', 'localhost'),
+            'port' => env('DB_PORT_SISKOP', '1433'),
+            'database' => env('DB_DATABASE_SISKOP', 'forge'),
+            'username' => env('DB_USERNAME_SISKOP', 'forge'),
+            'password' => env('DB_PASSWORD_SISKOP', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'encrypt' => env('DB_ENCRYPT_SISKOP', 'yes'),
+            'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'true'),
+        ],
+
     ],
 
     /*
