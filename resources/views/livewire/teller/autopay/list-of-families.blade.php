@@ -92,7 +92,7 @@
         </div>
 
         <!-- general modal -->
-        <x-modal.card title="{{ $modalName }}" align="start" blur wire:model.defer="generalModal" max-width="6xl" hide-close="true">
+        <x-modal.card title="{{ $modalName }}" align="center" blur wire:model.defer="generalModal" max-width="6xl" hide-close="true">
             <div >
                 <div class="pb-10">
                     <h1 class="pb-2 font-semibold text-primary-500">Search Member</h1>
