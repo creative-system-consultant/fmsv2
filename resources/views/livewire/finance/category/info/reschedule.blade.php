@@ -115,7 +115,7 @@
                         <x-input 
                         label="{{$reschedule =='ins' ? 'Add New Instalment Amount (RM)' : 'Additional Duration (Months)'}}" 
                         wire:model="newInstalAmt"
-                        disabled
+                        
                     />
                     </div>
 

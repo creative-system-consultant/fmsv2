@@ -4,6 +4,7 @@ namespace App\Livewire\Finance\Category\Info;
 
 use App\Models\Fms\FmsAccountMaster;
 use App\Models\User;
+use Carbon\Carbon;
 use DateTime;
 use DB;
 use Hash;
@@ -39,19 +40,23 @@ class Reschedule extends Component
         );
 
         $errorMsg = 1;
-        $datetime = now();
+        $datetime = Carbon::now()->format('Y-m-d');
         $result = DB::select("EXEC FMS.up_cal_min_rechedamt '$this->account_no' ");
         $resultN = false;
+        // dd($result);
         //$this->min_repayment = $result[0]->{''}c  one takde column name;
         $this->min_repayment = $result[0]->min_amt;
         $this->min_dur = $result[0]->max_dur;
 
 
+
         if ($this->reschedule == 'ins' && ($this->newInstalAmt >= $this->min_repayment)) {
-            $resultN        = DB::update(
-                'SET NOCOUNT ON;
-                                        EXEC FMS.up_insert_repay_sched_rescdule ?,?,?,?',
+
+
+            $resultN = DB::statement(
+                'EXEC FMS.up_insert_repay_sched_rescdule ?,?,?,?,?',
                 [
+                    1,
                     $this->account_no,
                     $this->user_id,
                     $this->newInstalAmt,
@@ -75,16 +80,18 @@ class Reschedule extends Component
             //dd($durationReschedule->new_install_amt3,$this->min_repayment);
             //if($this->newInstalAmt >= $this->min_dur){
             if ($durationReschedule->new_install_amt4 >= $this->min_repayment) {
-                $resultN        = DB::update(
-                    'SET NOCOUNT ON;
-                                            EXEC FMS.up_insert_repay_sched_rescdule ?,?,?,?',
+
+                $resultN = DB::statement(
+                    'EXEC FMS.up_insert_repay_sched_rescdule ?,?,?,?,?',
                     [
+                        1,
                         $this->account_no,
                         $this->user_id,
                         $durationReschedule->new_install_amt4,
-                        $datetime,
+                        (string)$datetime,
                     ]
                 );
+
                 $this->newSPInstalAmt = $durationReschedule->new_install_amt4;
                 $errorMsg = 0;
             }

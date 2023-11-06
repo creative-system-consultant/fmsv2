@@ -17,6 +17,7 @@ class Guarantee extends Component
 
         $this->customer = CifCustomer::where('uuid', $this->uuid)->first();
         $this->MembershipInfo = Membership::where('cif_id', $this->customer->id)->first();
+        $clientID = auth()->user()->client_id;
 
         $this->Guarantor = DB::table('FMS.GUARANTOR_LIST')
             ->select([
@@ -31,6 +32,11 @@ class Guarantee extends Component
             ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'FMS.MEMBERSHIP.cif_id')
             ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_POSITIONS.account_no', '=', 'FMS.GUARANTOR_LIST.account_no')
             ->join('FMS.ACCOUNT_MASTERS', 'FMS.ACCOUNT_MASTERS.account_no', '=', 'FMS.ACCOUNT_POSITIONS.account_no')
+            ->where('FMS.GUARANTOR_LIST.client_id', $clientID)
+            ->where('FMS.ACCOUNT_MASTERS.client_id', $clientID)
+            ->where('FMS.ACCOUNT_POSITIONS.client_id', $clientID)
+            ->where('FMS.MEMBERSHIP.client_id', $clientID)
+            ->where('CIF.CUSTOMERS.client_id', $clientID)
             ->where('FMS.GUARANTOR_LIST.mbr_id', $this->MembershipInfo->mbr_no)
 
             ->orderBy('FMS.ACCOUNT_MASTERS.account_status')
@@ -51,6 +57,11 @@ class Guarantee extends Component
             ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_POSITIONS.account_no', '=', 'FMS.GUARANTOR_LIST.account_no')
             ->join('FMS.ACCOUNT_MASTERS', 'FMS.ACCOUNT_MASTERS.account_no', '=', 'FMS.ACCOUNT_POSITIONS.account_no')
             ->where('FMS.GUARANTOR_LIST.guarantor_mbr_id', $this->MembershipInfo->mbr_no)
+            ->where('FMS.GUARANTOR_LIST.client_id', $clientID)
+            ->where('FMS.ACCOUNT_MASTERS.client_id', $clientID)
+            ->where('FMS.ACCOUNT_POSITIONS.client_id', $clientID)
+            ->where('FMS.MEMBERSHIP.client_id', $clientID)
+            ->where('CIF.CUSTOMERS.client_id', $clientID)
             ->orderBy('FMS.ACCOUNT_MASTERS.account_status')
             ->get();
 

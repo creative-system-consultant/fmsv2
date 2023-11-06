@@ -6,17 +6,19 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                         <x-input 
                             label="Dividen Rate (%)" 
-                            wire:model=""
+                            wire:model="profit_share_bonus"
                         />
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
                         <x-input 
                             label="Numbers of Member" 
+                            value="{{ $div_share_bonus->bil_share_bonus }}"
                             wire:model=""
                             disabled
                         />
                         <x-input 
                             label="Total Dividend" 
+                            value="{{ number_format($div_share_bonus->total_share_bonus,2) }}"
                             wire:model=""
                             disabled
                         />

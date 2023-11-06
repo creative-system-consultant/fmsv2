@@ -14,7 +14,7 @@ class ThirdPartyInfo extends Component
 {
     use WithPagination;
     public $customer, $uuid, $ThirdPartyStatement, $priority, $status, $transaction_amt, $status_effective_dt, $RefThirdParty,
-        $mode, $institution_code, $expiry_dt, $MembershipInfo, $ThirdPartys;
+        $mode, $institution_code, $expiry_dt, $MembershipInfo, $ThirdPartys, $clientID;
 
     protected $rules = [
         'transaction_amt'                       => 'required',
@@ -31,6 +31,7 @@ class ThirdPartyInfo extends Component
     {
         $this->customer = CifCustomer::where('uuid', $this->uuid)->first();
         $this->MembershipInfo = Membership::where('cif_id', $this->customer->id)->first();
+        $this->clientID = auth()->user()->client_id;
 
         $this->ThirdPartyStatement      = [];
     }
@@ -145,7 +146,7 @@ class ThirdPartyInfo extends Component
         if ($this->RefThirdParty == null) {
             $this->RefThirdParty = new RefThirdParty;
         }
-        $this->ThirdPartys = FmsThirdPartyList::where('mbr_no', $this->MembershipInfo->mbr_no)->orderby('status', 'asc')->orderby('priority', 'asc')->get();
+        $this->ThirdPartys = FmsThirdPartyList::where('mbr_no', $this->MembershipInfo->mbr_no)->where('client_id', $this->clientID)->orderby('status', 'asc')->orderby('priority', 'asc')->get();
         // dd($this->ThirdPartys);
         if ($this->ThirdPartys == null) {
             $this->ThirdPartys = new FmsThirdPartyList;

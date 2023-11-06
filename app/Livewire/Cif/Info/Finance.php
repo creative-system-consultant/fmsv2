@@ -14,8 +14,10 @@ class Finance extends Component
 
     public function mount()
     {
+
         $this->customer = CifCustomer::where('uuid', $this->uuid)->first();
         $MembershipInfo = Membership::where('cif_id', $this->customer->id)->first();
+        $clientID = auth()->user()->client_id;
 
         $this->accounts = DB::table('FMS.ACCOUNT_MASTERS as a')
             ->select([
@@ -38,6 +40,9 @@ class Finance extends Component
             ->join('CIF.ACCOUNT_STATUSES as c', 'a.account_status', '=', 'c.id')
             ->whereNotNull('b.disbursed_amount')
             ->where('a.mbr_no', $MembershipInfo->mbr_no)
+            ->where('b.client_id', $clientID)
+            ->where('c.client_id', $clientID)
+            ->where('a.client_id', $clientID)
             ->orderBy('a.account_status')
             ->orderBy('a.start_disbursed_date', 'desc')
             ->get();
