@@ -1,16 +1,8 @@
 <div>
-    <x-container title="Roles" routeBackBtn="" titleBackBtn="" disableBackBtn="">
+    <x-container title="User Management" routeBackBtn="" titleBackBtn="" disableBackBtn="">
         <div class="grid grid-cols-1">
             <div class="flex items-center">
-                <div>
-                    <x-button
-                        wire:click="add"
-                        xs
-                        icon="plus-circle"
-                        positive
-                        label="Create Role"
-                    />
-                </div>
+                {{-- search will be here --}}
             </div>
 
             <div style="margin-top: 30px;">
@@ -20,26 +12,19 @@
                         <x-table.table-header class="text-left" value="ACTION" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
-                        @forelse ($roles as $role)
+                        @forelse ($users as $user)
                             <tr>
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
-                                    <p>{{ strtoupper($role->name) }}</p>
+                                    <p>{{ strtoupper($user->name) }}</p>
                                 </x-table.table-body>
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <div class="flex items-center space-x-2">
                                         <x-button
-                                            wire:click="edit('{{ $role->id }}')"
+                                            wire:click="assign('{{ $user->id }}')"
                                             xs
                                             icon="pencil-alt"
                                             primary
-                                            label="Edit"
-                                        />
-                                        <x-button
-                                            wire:click="delete('{{ $role->id }}')"
-                                            xs
-                                            icon="trash"
-                                            negative
-                                            label="Delete"
+                                            label="Assign"
                                         />
                                     </div>
                                 </x-table.table-body>
@@ -53,30 +38,24 @@
 
                 </x-table.table>
                 <div class="px-2 py-2 mt-4">
-                    {{ $roles->links('livewire::pagination-links') }}
+                    {{ $users->links('livewire::pagination-links') }}
                 </div>
             </div>
-
         </div>
 
         <!-- modal -->
-        <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="2xl" hide-close="true">
+        <x-modal.card title="Assign Roles & Permissions" align="center" blur wire:model.defer="openModal" max-width="lg" hide-close="true">
             <div class="gap-4 my-2">
-                <x-input wire:model="name" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
-            </div>
-
-            <div class="mt-6">
-                <h2 class="text-lg font-semibold">Role Permissions</h2>
-                <div class="grid grid-cols-3 gap-4 mt-2">
-                    @foreach ($permissions as $permission)
-                        <x-checkbox
-                            id="{{ $permission->id }}"
-                            label="{{ strtoupper($permission->name) }}"
-                            wire:model="selectedPermission"
-                            value="{{ $permission->name }}"
-                        />
+                <x-select
+                    label="Role"
+                    placeholder="-- PLEASE SELECT --"
+                    wire:model="role"
+                    multiselect
+                >
+                    @foreach ($roles as $role)
+                        <x-select.option label="{{ strtoupper($role->name) }}" value="{{ $role->name }}" />
                     @endforeach
-                </div>
+                </x-select>
             </div>
 
             <x-slot name="footer">

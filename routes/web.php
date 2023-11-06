@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\Home\Home;
 use App\Livewire\Doc\Doc;
 use App\Livewire\Report\ReportList;
+use App\Livewire\SysAdmin\UserManagement;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', Login::class);
@@ -48,6 +49,9 @@ Route::middleware('auth')->group(function () {
 
         Route::get('password/confirm', Confirm::class)
             ->name('password.confirm');
+
+        //user management
+        Route::get('user-management', UserManagement::class)->name('userManagement');
 
         // roles
         Route::prefix('roles')->as('roles.')->group(
