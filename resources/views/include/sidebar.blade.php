@@ -30,136 +30,157 @@
                             <x-toggle-theme/>
                         </div>
 
-                        <!-- Home -->
-                        <x-sidebar.nav-item
-                            title="Dashboard"
-                            activeUrl="home"
-                            route="{{ route('home') }}">
-                            <x-slot name="iconName">
-                                <x-icon name="home" class="w-6 h-6"/>
-                            </x-slot>
-                        </x-sidebar.nav-item>
+                        @can('access dashboard')
+                            <!-- Home -->
+                            <x-sidebar.nav-item
+                                title="Dashboard"
+                                activeUrl="home"
+                                route="{{ route('home') }}">
+                                <x-slot name="iconName">
+                                    <x-icon name="home" class="w-6 h-6"/>
+                                </x-slot>
+                            </x-sidebar.nav-item>
+                        @endcan
 
-                        <!-- Roles -->
-                        <x-sidebar.nav-item
-                            title="Roles"
-                            activeUrl="roles"
-                            route="{{ route('roles.index') }}">
-                            <x-slot name="iconName">
-                                <x-icon name="shield-check" class="w-6 h-6"/>
-                            </x-slot>
-                        </x-sidebar.nav-item>
+                        @can('access roles and permissions')
+                            <!-- Users -->
+                            <x-sidebar.nav-item
+                                title="User Management"
+                                activeUrl="user-management"
+                                route="{{ route('userManagement') }}">
+                                <x-slot name="iconName">
+                                    <x-icon name="user-group" class="w-6 h-6"/>
+                                </x-slot>
+                            </x-sidebar.nav-item>
 
-                        <!-- Permission -->
-                        <x-sidebar.nav-item
-                            title="Permission"
-                            activeUrl="permissions"
-                            route="{{ route('permissions.index') }}">
-                            <x-slot name="iconName">
-                                <x-icon name="shield-exclamation" class="w-6 h-6"/>
-                            </x-slot>
-                        </x-sidebar.nav-item>
+                            <!-- Roles -->
+                            <x-sidebar.nav-item
+                                title="Roles"
+                                activeUrl="roles"
+                                route="{{ route('roles.index') }}">
+                                <x-slot name="iconName">
+                                    <x-icon name="shield-check" class="w-6 h-6"/>
+                                </x-slot>
+                            </x-sidebar.nav-item>
 
-                        <!-- Start Cif -->
-                        <x-sidebar.nav-item
-                            title="Member Info"
-                            activeUrl="cif/*"
-                            route="{{ route('cif.main') }}">
-                            <x-slot name="iconName">
-                                <x-icon name="user-group" class="w-6 h-6"/>
-                            </x-slot>
-                        </x-sidebar.nav-item>
-                        <!-- End Cif -->
+                            <!-- Permission -->
+                            <x-sidebar.nav-item
+                                title="Permission"
+                                activeUrl="permissions"
+                                route="{{ route('permissions.index') }}">
+                                <x-slot name="iconName">
+                                    <x-icon name="shield-exclamation" class="w-6 h-6"/>
+                                </x-slot>
+                            </x-sidebar.nav-item>
+                        @endcan
 
-                        <!-- Start finance -->
-                        <x-sidebar.nav-item
-                            title="Financing Info"
-                            activeUrl="finance/*"
-                            route="{{ route('finance.finance-financing-info') }}">
-                            <x-slot name="iconName">
-                                <x-icon name="database" class="w-6 h-6"/>
-                            </x-slot>
-                        </x-sidebar.nav-item>
-                        <!-- End finance -->
+                        @can('access member info')
+                            <!-- Start Cif -->
+                            <x-sidebar.nav-item
+                                title="Member Info"
+                                activeUrl="cif/*"
+                                route="{{ route('cif.main') }}">
+                                <x-slot name="iconName">
+                                    <x-icon name="user-group" class="w-6 h-6"/>
+                                </x-slot>
+                            </x-sidebar.nav-item>
+                        @endcan
 
-                        <!-- Start Other Info -->
-                        <x-sidebar.nav-item
-                            title="Other Info"
-                            activeUrl="other/*"
-                            route="{{ route('other.info-list') }}">
-                            <x-slot name="iconName">
-                                <x-icon name="collection" class="w-6 h-6"/>
-                            </x-slot>
-                        </x-sidebar.nav-item>
-                        <!-- End Other Info -->
+                        @can('access financing info')
+                            <!-- Start finance -->
+                            <x-sidebar.nav-item
+                                title="Financing Info"
+                                activeUrl="finance/*"
+                                route="{{ route('finance.finance-financing-info') }}">
+                                <x-slot name="iconName">
+                                    <x-icon name="database" class="w-6 h-6"/>
+                                </x-slot>
+                            </x-sidebar.nav-item>
+                        @endcan
 
-                        <!-- Start teller -->
-                        <x-sidebar.nav-item
-                            title="Teller"
-                            activeUrl="teller/*"
-                            route="{{ route('teller.teller-list') }}">
-                            <x-slot name="iconName">
-                                <x-icon name="currency-dollar" class="w-6 h-6"/>
-                            </x-slot>
-                        </x-sidebar.nav-item>
-                        <!-- End teller -->
+                        @can('access other info')
+                            <!-- Start Other Info -->
+                            <x-sidebar.nav-item
+                                title="Other Info"
+                                activeUrl="other/*"
+                                route="{{ route('other.info-list') }}">
+                                <x-slot name="iconName">
+                                    <x-icon name="collection" class="w-6 h-6"/>
+                                </x-slot>
+                            </x-sidebar.nav-item>
+                        @endcan
 
+                        @can('access teller')
+                            <!-- Start teller -->
+                            <x-sidebar.nav-item
+                                title="Teller"
+                                activeUrl="teller/*"
+                                route="{{ route('teller.teller-list') }}">
+                                <x-slot name="iconName">
+                                    <x-icon name="currency-dollar" class="w-6 h-6"/>
+                                </x-slot>
+                            </x-sidebar.nav-item>
+                        @endcan
 
-                        <!-- Start Reversal -->
-                        <x-sidebar.nav-item
-                            title="Reversal"
-                            activeUrl="reversal/*"
-                            route="{{ route('reversal.reversal-list') }}">
-                            <x-slot name="iconName">
-                                <x-icon name="refresh" class="w-6 h-6"/>
-                            </x-slot>
-                        </x-sidebar.nav-item>
-                        <!-- End Reversal -->
+                        @can('access reversal')
+                            <!-- Start Reversal -->
+                            <x-sidebar.nav-item
+                                title="Reversal"
+                                activeUrl="reversal/*"
+                                route="{{ route('reversal.reversal-list') }}">
+                                <x-slot name="iconName">
+                                    <x-icon name="refresh" class="w-6 h-6"/>
+                                </x-slot>
+                            </x-sidebar.nav-item>
+                        @endcan
 
+                        @can('access calculator')
+                            <!-- Start Calculator -->
+                            <x-sidebar.nav-item
+                                title="Calculator"
+                                activeUrl="calculator/*"
+                                route="{{ route('calculator.calculator-index') }}">
+                                <x-slot name="iconName">
+                                    <x-icon name="calculator" class="w-6 h-6"/>
+                                </x-slot>
+                            </x-sidebar.nav-item>
+                        @endcan
 
-                        <!-- Start Calculator -->
-                        <x-sidebar.nav-item
-                            title="Calculator"
-                            activeUrl="calculator/*"
-                            route="{{ route('calculator.calculator-index') }}">
-                            <x-slot name="iconName">
-                                <x-icon name="calculator" class="w-6 h-6"/>
-                            </x-slot>
-                        </x-sidebar.nav-item>
-                        <!-- End Calculator -->
+                        @can('access dividen')
+                            <!-- Start Dividen -->
+                            <x-sidebar.nav-item
+                                title="Dividen"
+                                activeUrl="dividen/*"
+                                route="{{ route('dividen.dividen-index') }}">
+                                <x-slot name="iconName">
+                                    <x-icon name="presentation-chart-line" class="w-6 h-6"/>
+                                </x-slot>
+                            </x-sidebar.nav-item>
+                        @endcan
 
-                        <!-- Start Dividen -->
-                        <x-sidebar.nav-item
-                            title="Dividen"
-                            activeUrl="dividen/*"
-                            route="{{ route('dividen.dividen-index') }}">
-                            <x-slot name="iconName">
-                                <x-icon name="presentation-chart-line" class="w-6 h-6"/>
-                            </x-slot>
-                        </x-sidebar.nav-item>
-                        <!-- End Dividen -->
+                        @can('access report')
+                            <!-- Start Report -->
+                            <x-sidebar.nav-item
+                                title="Report"
+                                activeUrl="report/*"
+                                route="{{ route('report.report-list') }}">
+                                <x-slot name="iconName">
+                                    <x-icon name="clipboard-list" class="w-6 h-6"/>
+                                </x-slot>
+                            </x-sidebar.nav-item>
+                        @endcan
 
-                        <!-- Start Report -->
-                        <x-sidebar.nav-item
-                            title="Report"
-                            activeUrl="report/*"
-                            route="{{ route('report.report-list') }}">
-                            <x-slot name="iconName">
-                                <x-icon name="clipboard-list" class="w-6 h-6"/>
-                            </x-slot>
-                        </x-sidebar.nav-item>
-                        <!-- End Report -->
-
-                        <!-- Start Report -->
-                        <x-sidebar.nav-item
-                            title="Setting"
-                            activeUrl="Admin/*"
-                            route="{{ route('setting.setting-list') }}">
-                            <x-slot name="iconName">
-                                <x-icon name="cog" class="w-6 h-6"/>
-                            </x-slot>
-                        </x-sidebar.nav-item>
-                        <!-- End Report -->
+                        @can('setting')
+                            <!-- Start Report -->
+                            <x-sidebar.nav-item
+                                title="Setting"
+                                activeUrl="Admin/*"
+                                route="{{ route('setting.setting-list') }}">
+                                <x-slot name="iconName">
+                                    <x-icon name="cog" class="w-6 h-6"/>
+                                </x-slot>
+                            </x-sidebar.nav-item>
+                        @endcan
                     </ul>
                 </div>
             </div>

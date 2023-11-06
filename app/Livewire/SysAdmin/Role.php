@@ -5,6 +5,7 @@ namespace App\Livewire\SysAdmin;
 use App\Services\General\PopupService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role as ModelsRole;
 use WireUi\Traits\Actions;
 
@@ -19,6 +20,8 @@ class Role extends Component
 
     #[Rule('required')]
     public $name;
+
+    public $selectedPermission = [];
 
     protected $popupService;
 
@@ -56,7 +59,9 @@ class Role extends Component
 
     public function edit($id)
     {
-        $this->name = ModelsRole::whereId($id)->first()->name;
+        $role = ModelsRole::whereId($id)->first();
+        $this->name = $role->name;
+        $this->selectedPermission = $role->permissions->pluck('name')->toArray();
         $this->setupModal("update", "Update Role", "Role Name", "update({$id})");
     }
 
@@ -64,11 +69,15 @@ class Role extends Component
     {
         $this->validate();
 
-        ModelsRole::whereId($id)->update([
+        $role = ModelsRole::whereId($id)->first();
+
+        $role->update([
             'name' => strtolower($this->name)
         ]);
 
-        $this->reset('name');
+        $role->syncPermissions($this->selectedPermission);
+
+        $this->reset('name', 'selectedPermission');
         $this->openModal = false;
 
         $this->dialog()->success('Success!', 'Role Successfully Updated.');
@@ -88,9 +97,11 @@ class Role extends Component
     public function render()
     {
         $roles = ModelsRole::paginate(10);
+        $permissions = Permission::all();
 
         return view('livewire.sys-admin.role',[
-            'roles' => $roles
+            'roles' => $roles,
+            'permissions' => $permissions
         ])->extends('layouts.main');
     }
 }
