@@ -1,12 +1,12 @@
 <div>
-    <x-card title="Contribution Information">
+    <x-card title="Share Information">
         <div class="grid grid-cols-3 gap-2">
-            <x-input  label="Total" wire:model="" disabled />
-            <x-input  label="Last Purchase Amount" wire:model="" disabled />
-            <x-input  label="Last Purchase Date" wire:model="" disabled />
-            <x-input  label="Monthly" wire:model="" disabled />
-            <x-input  label="Last Selling Amount" wire:model="" disabled />
-            <x-input  label="Last Selling Date" wire:model="" disabled />
+            <x-input  label="Total" wire:model="totalShare" disabled />
+            <x-input  label="Last Purchase Amount" wire:model="lastPurchaseAmt" disabled />
+            <x-input  label="Last Purchase Date" wire:model="lastPurchaseDate" disabled />
+            <x-input  label="Monthly" wire:model="monthly" disabled />
+            <x-input  label="Last Selling Amount" wire:model="lastSellAmt" disabled />
+            <x-input  label="Last Selling Date" wire:model="lastSellDate" disabled />
         </div>
     </x-card>
 
@@ -14,8 +14,8 @@
         <x-card title="Share Statements">
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center space-x-2">
-                    <x-input type="date"  label="Start Date" value="" wire:model=""/>
-                    <x-input type="date"  label="End Date" value="" wire:model=""/>
+                    <x-input type="date"  label="Start Date" value="" wire:model="startDateShare"/>
+                    <x-input type="date"  label="End Date" value="" wire:model="endDateShare"/>
                 </div>
 
                 <div class="mt-5">
@@ -37,44 +37,56 @@
                     <x-table.table-header class="text-left " value="Action" sort="" />
                 </x-slot>
                 <x-slot name="tbody">
+                    @forelse ($shares as $item)
                     <tr>
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                            <p>{{ date('d/m/Y',strtotime($item->transaction_date)) }}</p>
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                            <p>{{$item->doc_no ? $item->doc_no: 'N/A'}} </p>
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                            <p>{{$item->description}}</p>
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                            <p>{{$item->remarks ? $item->remarks: 'N/A'}} </p>
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                            <p>
+                                @if($item->dr_cr == 'D')
+                                -
+                                @endif
+                                {{number_format($item->amount,2)}}
+                            </p>
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                            <p>{{ number_format($item->total_amount, 2) }}</p>
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                            <p>{{$item->created_by ? $item->created_by : 'N/A'}}</p>
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                            <p>{{$item->created_at ? date('d/m/Y/h:m:s',strtotime($item->created_at)) : 'N/A'}}</p>
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-
+                         
                         </x-table.table-body>
 
                     </tr>
+                    @empty
+                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                        <p>No Data</p>
+                    </x-table.table-body>
+                    @endforelse
+
                 </x-slot>
             </x-table.table>
 

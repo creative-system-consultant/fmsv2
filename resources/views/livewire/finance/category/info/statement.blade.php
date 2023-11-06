@@ -9,8 +9,8 @@
             </x-slot>
             <div>
                 <div class="flex items-center space-x-2 mb-4">
-                    <x-input type="date"  label="Start Date" value="" wire:model=""/>
-                    <x-input type="date"  label="End Date" value="" wire:model=""/>
+                    <x-input type="date"  label="Start Date" value="" wire:model="startDate"/>
+                    <x-input type="date"  label="End Date" value="" wire:model="endDate"/>
                 </div>
             
                 <x-table.table>
@@ -29,55 +29,62 @@
                         <x-table.table-header class="text-left" value="CREATED AT" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
+                        @forelse ($statements as $item)
                         <tr>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                31/12/2021
+                                <p>{{date('d/m/Y',strtotime($item->transaction_date))}}</p>
                             </x-table.table-body>
                 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                1231241234
+                                <p>{{$item->doc_no}}</p>
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700">
-                                Early Settlement - IBT
+                                <p>{{$item->transaction_code ? $item->transaction_code->description : 'N/A'}}</p>
                             </x-table.table-body>
                         
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                MIGRATION
+                                <p>{{$item->remarks ? $item->remarks : 'N/A'}}</p>
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                0.00
+                                <p>{{$item->amount}}</p>
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                17,419.53
+                                <p>{{$item->stmt_balance}}</p>
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right ">
-                                0.00
+                                <p>{{$item->princp_outs}}</p>
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                1,566.68
+                                <p>{{$item->profit}}</p>
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right ">
-                                1,566.68
+                                <p>{{$item->unearned_outs}}</p>
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right ">
-                                0.00
+                                <p>{{$item->advance_payment}}</p>
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                2022-01-01 01:07:11
+                                <p>{{$item->created_by}}</p>
                             </x-table.table-body>
 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700">
-                                2022-01-01 01:07:11
+                                <p>{{date('d/m/Y',strtotime($item->created_at))}}</p>
+                            </x-table.table-body>
+                            @empty
+                  
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700">
+                                <p>No Data</p>
                             </x-table.table-body>
                             
+                            @endforelse
                         </tr>
                     </x-slot>
                 </x-table.table>

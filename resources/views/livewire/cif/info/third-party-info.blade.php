@@ -7,33 +7,37 @@
         <x-modal.card  title="Create Third Party" align="center"  wire:model.defer="create-tp">
             <div class="grid grid-cols-2 gap-4">
                 <x-native-select label="Mode" wire:model="" >
-                    <option></option>
+                    <option value="1">One Of Payment</option>
+                    <option value="2">No Expiry</option>
+                    <option value="3" x-hide:selected="selected === '3'">Period</option>
                 </x-native-select>
 
-                <x-native-select label="Description" wire:model="" >
-                    <option></option>
+                <x-native-select label="Description" wire:model="institution_code" >
+                    @forelse ($RefThirdParty as $type)
+                    <option value="{{ $type->id }}">{{ $type->description }}</option>
+                    @empty @endforelse
                 </x-native-select>
 
                 <x-input 
                     label="Trasaction Amount"
-                    wire:model=""
+                    wire:model="transaction_amt"
                 />
 
                 <x-input 
                     label="Priority"
-                    wire:model=""
+                    wire:model="priority"
                 />
 
                 <x-input 
                     label="Effective Date"
                     type="date"
-                    wire:model=""
+                    wire:model="status_effective_dt"
                 />
 
                 <x-input 
                     label="Expiry Date"
                     type="date"
-                    wire:model=""
+                    wire:model="expiry_dt"
                 />
             </div>
             <div class="grid grid-cols-1 mt-4">
@@ -62,58 +66,89 @@
                     <x-table.table-header class="text-left " value="EXPIRY DATE" sort="" />
                     <x-table.table-header class="text-left " value="PRIORITY" sort="" />
                     <x-table.table-header class="text-left " value="PAYMENT MODE" sort="" />
-                    <x-table.table-header class="text-left " value="REMARKS" sort="" />
+                    {{-- <x-table.table-header class="text-left " value="REMARKS" sort="" /> --}}
                     <x-table.table-header class="text-left " value="STATUS" sort="" />
-                    <x-table.table-header class="text-left " value="CREATED BY" sort="" />
-                    <x-table.table-header class="text-left " value="CREATED AT" sort="" />
+                    {{-- <x-table.table-header class="text-left " value="CREATED BY" sort="" /> --}}
+                    {{-- <x-table.table-header class="text-left " value="CREATED AT" sort="" /> --}}
                     <x-table.table-header class="text-left " value="Action" sort="" />
                 </x-slot>
                 <x-slot name="tbody">
+                    @forelse($ThirdPartys as $item)
+
+                    <tr>
                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        MUTIARA PLUS
+                        <p>{{optional($item->institution)->description}}</p>
+
                     </x-table.table-body>
 
                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        10.00
+                        <p>{{ number_format($item->transaction_amt, 2) }}</p>
+
                     </x-table.table-body>
 
                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                        <p>{{ date('d/m/Y', strtotime($item->status_effective_dt)) }}</p>
+
+                    </x-table.table-body>
+
+                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                        <p>{{ $item->expiry_dt ?  date('d/m/Y', strtotime($item->expiry_dt)) : 'N/A' }} </p>
+
+                    </x-table.table-body>
+
+                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                        <p>{{ $item->priority }}</p>
+
+                    </x-table.table-body>
+
+                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                        <p>
+                            @if($item->mode == '1')
+                                One Of Payment
+                            @elseif($item->mode == '2')
+                                No Expiry
+                            @elseif($item->mode == '3')
+                                Period
+                            @endif
+                        </p>
+
+                    </x-table.table-body>
+
+                    {{-- <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                        N/A
+                    </x-table.table-body> --}}
+
+                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                        @if($item->status == '1')
+                            ACTIVE
+                        @elseif($item->status == '2')
+                            CLOSED
+                        @elseif($item->status == '3')
+                            FREEZE
+                        @endif
+                    </x-table.table-body>
+
+                    {{-- <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                         N/A
                     </x-table.table-body>
 
                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        1
-                    </x-table.table-body>
-
-                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        NO EXPIRY
-                    </x-table.table-body>
-
-                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                         N/A
-                    </x-table.table-body>
+                    </x-table.table-body> --}}
 
-                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        CLOSED
-                    </x-table.table-body>
-
-                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        N/A
-                    </x-table.table-body>
-
-                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        N/A
-                    </x-table.table-body>
-
-                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        10
-                    </x-table.table-body>
 
                     <x-table.table-body colspan="1" class="text-left">
                         <x-button  primary label="Statement" sm />
                         <x-button  onclick="$openModal('edit-tp')" warning label="Edit" sm />
                         <x-button  negative label="Delete" sm/>
                     </x-table.table-body>
+
+                    </tr>
+                    @empty
+                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                        <p>No Data</p>
+                    </x-table.table-body>
+                    @endforelse
                 </x-slot>
             </x-table.table>
         </div>

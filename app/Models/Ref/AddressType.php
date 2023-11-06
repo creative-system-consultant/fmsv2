@@ -11,7 +11,7 @@ class AddressType extends Model implements Auditable
     use HasFactory;
     use \OwenIt\Auditing\Auditable;
 
-    protected $table = 'ref.address_types';
-
     protected $guarded = [];
+
+    protected $table = 'REF.ADDTYPES';
 }

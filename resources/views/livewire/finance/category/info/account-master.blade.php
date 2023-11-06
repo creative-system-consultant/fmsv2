@@ -13,92 +13,110 @@
                 <x-input 
                     label="Account No" 
                     wire:model=""
+                    value="{{$account->account_no}}"
                     disabled
                 />
                 <x-input 
                     label="Product Name" 
                     wire:model=""
+                    value="{{$account->product}}"
                     disabled
                 />
                 <x-input 
                     label="Product Concept" 
                     wire:model=""
+                    value="{{optional($account->concept)->description}}"
                     disabled
                 />
                 <x-input 
                     label="Approved Amount" 
                     wire:model=""
+                    value="{{number_format($account->approved_limit,2,'.',',')}}"
                     disabled
                 />
                 <x-input 
                     label="Approved Date" 
                     wire:model=""
+                    value="{{date('d/m/Y',strtotime($account->approved_date))}}"
                     disabled
                 />
                 <x-input 
                     label="Apply Date" 
                     wire:model=""
+                    value="{{date('d/m/Y',strtotime($account->apply_date))}}"
                     disabled
                 />
                 <x-input 
                     label="Duration (Month)" 
                     wire:model=""
+                    value="{{$account->duration}}"
                     disabled
                 />
                 <x-input 
                     label="Purchased Price" 
                     wire:model=""
+                    value="{{number_format($account->purchase_price,2,'.',',')}}"
                     disabled
                 />
                 <x-input 
                     label="Selling Price" 
                     wire:model=""
+                    value="{{number_format($account->selling_price,2,'.',',')}}"
                     disabled
                 />
-                <x-input 
-                    label="Payment Term" 
-                    wire:model=""
-                    disabled
-                />
+
+                <x-native-select label="Payment Term" wire:model=""  disabled>
+                    <option value="m">Monthly</option>
+                </x-native-select>
+
                 <x-input 
                     label="Profit Rate" 
-                    value=""
+                    value="{{number_format($account->profit_rate,2,'.',',')}}%"
                     wire:model=""
                     disabled
                 />
                 <x-input 
                     label="Instalment Amount" 
                     wire:model=""
+                    value="{{number_format($account->instal_amount,2,'.',',')}}"
                     disabled
                 />
 
                 <x-native-select label="Account Status"  wire:model="" disabled>
-                    <option value=""></option>
+                    @forelse ($statuses as $status)
+                        <option value="{{ $status->id }}">{{ $status->description }}</option>
+                    @empty @endforelse
                 </x-native-select>
 
                 <x-input 
                     label="Start Disbursed Date" 
                     wire:model=""
+                    value="{{date('d/m/Y',strtotime($account->start_disbursed_date))}}"
                     disabled
                 />
                 <x-input 
                     label="Account Status Changed Date" 
                     wire:model=""
+                    value="{{isset($account->acct_stat_chg_date) ? date('d/m/Y',strtotime($account->acct_stat_chg_date)): ''}}"
                     disabled
                 />
                 <x-input 
                     label="Start Instalment Date" 
                     wire:model=""
+                    value="{{date('d/m/Y',strtotime($account->start_instal_date))}}"
                     disabled
                 />
 
                 <x-native-select label="Payment Type"  wire:model="" disabled>
-                    <option value=""></option>
+                    @forelse ($payment_types as $payment_type)
+                        <option value="{{ $payment_type->id }}" selected>{{ $payment_type->description }}</option>
+                    @empty @endforelse
                 </x-native-select>
 
                 <x-input 
                     label="Reschedule Status" 
                     wire:model=""
+                    value="{{ $account->reschedule_flag == 'Y' ? 'YES' : 'NO' }}"
                     disabled
                 />
 

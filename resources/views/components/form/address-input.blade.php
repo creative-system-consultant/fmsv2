@@ -37,13 +37,13 @@
         />
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 mt-2">
-        <x-native-select label="State" wire:model.lazy="addresses.{{ $key }}.state_id" name="address_type_id" :disabled=$editable>
+        <x-native-select label="State" wire:model.lazy="addresses.{{ $key }}.state_id" name="state_id" :disabled=$editable>
             @forelse ($states as $state)
                 <option value="{{ $state->id }}">{{ $state->description }}</option>
             @empty @endforelse
         </x-native-select>
 
-        <x-native-select label="Country" wire:model.lazy="addresses.{{ $key }}.country_id" name="address_type_id" :disabled=$editable>
+        <x-native-select label="Country" wire:model.lazy="addresses.{{ $key }}.country_id" name="country_id" :disabled=$editable>
             @forelse($countries as $country)
             <option value="{{ $country->id }}">{{ $country->description }}</option>
             @empty @endforelse

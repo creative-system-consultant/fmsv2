@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class RefThirdParty extends Model
 {
     use HasFactory;
-
-    protected $table   = 'REF.THIRDPARTY';
+    protected $table = 'REF.THIRDPARTY';
     protected $guarded = [];
 }

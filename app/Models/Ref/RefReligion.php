@@ -9,8 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class RefReligion extends Model
 {
     use SoftDeletes;
-
-    protected $table   = 'ref.religions';
+    protected $table   = 'REF.RELIGIONS';
     protected $guarded = [];
     protected $casts   = [
         'created_at'    => 'datetime',

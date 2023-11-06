@@ -2,19 +2,26 @@
 
 namespace App\Models\Fms;
 
+use App\Models\Cif\CifCustomer;
+use App\Models\Ref\RefBank;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class FmsMiscAccount extends Model
 {
     use HasFactory;
-
     protected $table   = 'FMS.MISC_ACCOUNT';
     protected $guarded = [];
 
-    // Relationship
-    public function fmsMembership()
+
+    public function membership()
     {
-        return $this->belongsTo(FmsMembership::class, 'mbr_no', 'mbr_no');
+        return $this->belongsTo(Membership::class, 'mbr_no', 'mbr_no');
+    }
+
+
+    public function bank()
+    {
+        return $this->belongsTo(RefBank::class, 'bank_members', 'id');
     }
 }
