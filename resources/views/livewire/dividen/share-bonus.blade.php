@@ -25,6 +25,30 @@
                     </div>
                 </x-card>
             </div>
+            <div class="mt-4">
+                <x-card title="Result">
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="px-4 py-6 bg-gray-50 rounded-lg dark:bg-gray-800 flex justify-between items-center">
+                            <div>
+                                <p class="text-sm font-bold text-gray-600 dark:text-white">
+                                    Overall Total:
+                                </p>
+                                <p class="pt-1 text-base font-semibold text-green-500 md:text-lg">
+                                    RM 423,603.25
+                                </p>
+                            </div>
+                            <div class="flex space-x-2 items-center justify-start">
+                                <x-button
+                                    xs
+                                    icon="document-report"
+                                    green
+                                    label="Export Excel"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </x-card>
+            </div>
             <x-slot name="footer">
                 <div class="flex justify-end items-center space-x-2">
                     <x-button 
