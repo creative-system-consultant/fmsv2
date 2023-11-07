@@ -30,19 +30,17 @@
                             <x-toggle-theme/>
                         </div>
 
-                        @can('access dashboard')
-                            <!-- Home -->
-                            <x-sidebar.nav-item
-                                title="Dashboard"
-                                activeUrl="home"
-                                route="{{ route('home') }}">
-                                <x-slot name="iconName">
-                                    <x-icon name="home" class="w-6 h-6"/>
-                                </x-slot>
-                            </x-sidebar.nav-item>
-                        @endcan
+                        <!-- Home -->
+                        <x-sidebar.nav-item
+                            title="Dashboard"
+                            activeUrl="home"
+                            route="{{ route('home') }}">
+                            <x-slot name="iconName">
+                                <x-icon name="home" class="w-6 h-6"/>
+                            </x-slot>
+                        </x-sidebar.nav-item>
 
-                        @can('access roles and permissions')
+                        @can('access user management')
                             <!-- Users -->
                             <x-sidebar.nav-item
                                 title="User Management"
@@ -52,7 +50,9 @@
                                     <x-icon name="user-group" class="w-6 h-6"/>
                                 </x-slot>
                             </x-sidebar.nav-item>
+                        @endcan
 
+                        @can('access roles')
                             <!-- Roles -->
                             <x-sidebar.nav-item
                                 title="Roles"
@@ -62,7 +62,9 @@
                                     <x-icon name="shield-check" class="w-6 h-6"/>
                                 </x-slot>
                             </x-sidebar.nav-item>
+                        @endcan
 
+                        @can('access permissions')
                             <!-- Permission -->
                             <x-sidebar.nav-item
                                 title="Permission"
@@ -170,7 +172,7 @@
                             </x-sidebar.nav-item>
                         @endcan
 
-                        @can('setting')
+                        @can('access setting')
                             <!-- Start Report -->
                             <x-sidebar.nav-item
                                 title="Setting"
