@@ -47,8 +47,12 @@
                         </x-table.table-body>
             
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <div class="w-52">
-                                <x-input wire:model="" type="date" />
+                            <div class="w-52 py-4">
+                                <x-datetime-picker
+                                    wire:model.live=""
+                                    without-time=true
+                                    display-format="DD/MM/YYYY"
+                                />
                             </div>
                         </x-table.table-body>
 
@@ -74,8 +78,12 @@
                         </x-table.table-body>
             
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <div class="w-52">
-                                <x-input wire:model="" type="date" />
+                            <div class="w-52 py-4">
+                                <x-datetime-picker
+                                    wire:model.live=""
+                                    without-time=true
+                                    display-format="DD/MM/YYYY"
+                                />
                             </div>
                         </x-table.table-body>
 

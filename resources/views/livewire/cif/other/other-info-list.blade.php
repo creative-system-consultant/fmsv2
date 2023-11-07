@@ -65,7 +65,7 @@
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <div class="flex items-center space-x-2">
-                                        <x-button sm  href="{{ route('other.other-info',['uuid'=>$item->uuid]) }}" icon="eye" primary label="Details" wire:navigate/>
+                                        <x-button xs  href="{{ route('other.other-info',['uuid'=>$item->uuid]) }}" icon="eye" primary label="Details" wire:navigate/>
                                     </div>
                                 </x-table.table-body>
 

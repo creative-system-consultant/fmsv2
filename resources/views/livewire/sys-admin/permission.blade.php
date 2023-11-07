@@ -13,7 +13,7 @@
                 </div>
             </div>
 
-            <div style="margin-top: 30px;">
+            <div class="mt-3">
                 <x-table.table loading="true" loadingtarget="search">
                     <x-slot name="thead">
                         <x-table.table-header class="text-left" value="NAME" sort="" />

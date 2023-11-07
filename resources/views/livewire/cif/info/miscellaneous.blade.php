@@ -15,8 +15,18 @@
                 <div>
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center space-x-2">
-                            <x-input type="date"  label="Start Date" value="" wire:model="startDateMisc"/>
-                            <x-input type="date"  label="End Date" value="" wire:model="endDateMisc"/>
+                            <x-datetime-picker
+                                label="Start Date"
+                                wire:model.live="startDateMisc"
+                                without-time=true
+                                display-format="DD/MM/YYYY"
+                            />
+                            <x-datetime-picker
+                                label="End Date"
+                                wire:model.live="endDateMisc"
+                                without-time=true
+                                display-format="DD/MM/YYYY"
+                            />
                         </div>
                     
                         <div class="flex items-center space-x-2">
@@ -40,9 +50,9 @@
                             <x-table.table-header class="text-left" value="CREATED AT" sort="" />
                             <x-table.table-header class="text-left" value="ACTION" sort="" />
 
-@php
-$ctr=0;
-@endphp
+                                @php
+                                $ctr=0;
+                                @endphp
                         </x-slot>
                         <x-slot name="tbody">
                             @forelse($MiscStmt as $item)
@@ -65,7 +75,6 @@ $ctr=0;
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <p>
-                                       
                                         {{number_format($item->transaction_amount,2)}}
                                     </p>
                                 </x-table.table-body>
@@ -102,11 +111,11 @@ $ctr=0;
                                 $ctr=1;
                             @endphp
                             @endif
-                        @empty
-                                <x-table.table-body colspan="8" class="text-xs font-medium text-gray-700 ">
+                            @empty
+                                <x-table.table-body colspan="9" class="text-xs font-medium text-gray-700 text-center">
                                     <p>No Data</p>
                                 </x-table.table-body>
-                        @endforelse
+                            @endforelse
                         </x-slot>
                     </x-table.table>
                 </div>

@@ -74,8 +74,18 @@
                 <x-card title="Contribution Statements">
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center space-x-2">
-                            <x-input type="date"  label="Start Date" value="" wire:model=""/>
-                            <x-input type="date"  label="End Date" value="" wire:model=""/>
+                            <x-datetime-picker
+                                label="Start Date"
+                                wire:model.live=""
+                                without-time=true
+                                display-format="DD/MM/YYYY"
+                            />
+                            <x-datetime-picker
+                                label="End Date"
+                                wire:model.live=""
+                                without-time=true
+                                display-format="DD/MM/YYYY"
+                            />
                         </div>
 
                         <div class="mt-5">
@@ -160,8 +170,18 @@
                 <x-card title="Contribution Out Statements">
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center space-x-2">
-                            <x-input type="date"  label="Start Date" value="" wire:model=""/>
-                            <x-input type="date"  label="End Date" value="" wire:model=""/>
+                            <x-datetime-picker
+                                label="Start Date"
+                                wire:model.live=""
+                                without-time=true
+                                display-format="DD/MM/YYYY"
+                            />
+                            <x-datetime-picker
+                                label="End Date"
+                                wire:model.live=""
+                                without-time=true
+                                display-format="DD/MM/YYYY"
+                            />
                         </div>
 
                         <div class="mt-5">

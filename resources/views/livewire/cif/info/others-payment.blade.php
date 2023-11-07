@@ -9,13 +9,22 @@
         
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center space-x-2">
-                <x-input type="date"  label="Start Date" value="" wire:model="startDT"/>
-                <x-input type="date"  label="End Date" value="" wire:model="endDT"/>
+                <x-datetime-picker
+                    label="Start Date"
+                    wire:model.live="startDT"
+                    without-time=true
+                    display-format="DD/MM/YYYY"
+                />
+                <x-datetime-picker
+                    label="End Date"
+                    wire:model.live="endDT"
+                    without-time=true
+                    display-format="DD/MM/YYYY"
+                />
             </div>
         </div>
 
         <div class="grid grid-cols-1 mt-5">
-            
             <x-table.table>
                 <x-slot name="thead">
                     <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
@@ -74,7 +83,7 @@
                     </tr>
 
                     @empty
-                    <x-table.table-body colspan="7" class="text-xs font-medium text-gray-700 ">
+                    <x-table.table-body colspan="9" class="text-xs font-medium text-gray-700 text-center ">
                         <p>No Data</p>
                     </x-table.table-body>
                     @endforelse

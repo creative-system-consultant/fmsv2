@@ -41,24 +41,21 @@
             </div>
             @if($rebate_amount)
 
-            <div class="grid grid-cols-1 md:grid-cols-3 mt-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 mt-4 gap-x-2 items-center">
                 <x-input 
                     wire:model="rebate_amt1"
                 />
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 mt-4">
-                <x-button 
-                sm  
-                icon="clipboard-check"
-                primary 
-                label="Calculate" 
-                wire:click="calculate"
-            />
+                <div class="w-64">
+                    <x-button 
+                        sm  
+                        icon="clipboard-check"
+                        primary 
+                        label="Calculate" 
+                        wire:click="calculate"
+                />
+                </div>
             </div>
             @endif
-
-      
-
         </x-card>
 
         @if($calculated)

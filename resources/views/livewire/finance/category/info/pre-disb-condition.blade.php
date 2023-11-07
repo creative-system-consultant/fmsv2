@@ -101,7 +101,10 @@
 
                         
                     </div>
+
+                    <div class="flex justify-end items-center py-4  mt-4 border-t dark:border-gray-700">
                     <x-button primary label="Save" wire:click="update" />
+                    </div>
 
                 </x-card>
             </form>

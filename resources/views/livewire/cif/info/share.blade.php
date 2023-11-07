@@ -14,8 +14,18 @@
         <x-card title="Share Statements">
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center space-x-2">
-                    <x-input type="date"  label="Start Date" value="" wire:model="startDateShare"/>
-                    <x-input type="date"  label="End Date" value="" wire:model="endDateShare"/>
+                    <x-datetime-picker
+                        label="Start Date"
+                        wire:model.live="startDateShare"
+                        without-time=true
+                        display-format="DD/MM/YYYY"
+                    />
+                    <x-datetime-picker
+                        label="End Date"
+                        wire:model.live="endDateShare"
+                        without-time=true
+                        display-format="DD/MM/YYYY"
+                    />
                 </div>
 
                 <div class="mt-5">
@@ -77,12 +87,12 @@
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                         
+                        
                         </x-table.table-body>
 
                     </tr>
                     @empty
-                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                    <x-table.table-body colspan="9" class="text-xs font-medium text-gray-700 text-center">
                         <p>No Data</p>
                     </x-table.table-body>
                     @endforelse

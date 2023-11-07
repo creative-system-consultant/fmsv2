@@ -65,8 +65,8 @@
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <div class="flex items-center space-x-2">
-                                        <x-button sm  href="{{ route('cif.info',['uuid'=>$item->uuid]) }}" icon="eye" primary label="CIF" wire:navigate/>
-                                        <x-button sm  href="{{ route('cif.member',['uuid'=>$item->uuid]) }}" icon="eye" primary label="Membership" wire:navigate/>
+                                        <x-button xs  href="{{ route('cif.info',['uuid'=>$item->uuid]) }}" icon="eye" primary label="CIF" wire:navigate/>
+                                        <x-button xs  href="{{ route('cif.member',['uuid'=>$item->uuid]) }}" icon="eye" primary label="Membership" wire:navigate/>
                                     </div>
                                 </x-table.table-body>
 

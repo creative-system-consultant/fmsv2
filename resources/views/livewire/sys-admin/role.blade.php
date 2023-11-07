@@ -13,7 +13,7 @@
                 </div>
             </div>
 
-            <div style="margin-top: 30px;">
+            <div class="mt-3">
                 <x-table.table loading="true" loadingtarget="search">
                     <x-slot name="thead">
                         <x-table.table-header class="text-left" value="NAME" sort="" />
@@ -60,22 +60,27 @@
         </div>
 
         <!-- modal -->
-        <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="2xl" hide-close="true">
-            <div class="gap-4 my-2">
-                <x-input wire:model="name" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
-            </div>
+        <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="6xl" hide-close="true">
+            <div class="px-2">
+                <div class="gap-4 my-2">
+                    <x-input wire:model="name" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
+                </div>
 
-            <div class="mt-6">
-                <h2 class="text-lg font-semibold">Role Permissions</h2>
-                <div class="grid grid-cols-3 gap-4 mt-2">
-                    @foreach ($permissions as $permission)
-                        <x-checkbox
-                            id="{{ $permission->id }}"
-                            label="{{ strtoupper($permission->name) }}"
-                            wire:model="selectedPermission"
-                            value="{{ $permission->name }}"
-                        />
-                    @endforeach
+                <div class="mt-6">
+                    <h2 class=" font-semibold border-b pb-1 mb-4 dark:border-gray-800">
+                        Role Permissions
+                    </h2>
+                    <div class="grid grid-cols-3 gap-4 mt-2">
+                        @foreach ($permissions as $permission)
+                            <x-checkbox
+                                id="{{ $permission->id }}"
+                                label="{{ strtoupper($permission->name) }}"
+                                wire:model="selectedPermission"
+                                value="{{ $permission->name }}"
+                                md
+                            />
+                        @endforeach
+                    </div>
                 </div>
             </div>
 

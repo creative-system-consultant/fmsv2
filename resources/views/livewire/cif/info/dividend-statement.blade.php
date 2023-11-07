@@ -10,8 +10,18 @@
         
             <div class="flex gap-6">
                 <div class="flex items-center space-x-2">
-                    <x-input type="date"  label="Start Date" value="" wire:model="startDateDividen"/>
-                    <x-input type="date"  label="End Date" value="" wire:model="endDateDividen"/>
+                    <x-datetime-picker
+                        label="Start Date"
+                        wire:model.live="startDateDividen"
+                        without-time=true
+                        display-format="DD/MM/YYYY"
+                    />
+                    <x-datetime-picker
+                        label="End Date"
+                        wire:model.live="endDateDividen"
+                        without-time=true
+                        display-format="DD/MM/YYYY"
+                    />
 
                     <div class="mt-6">
                         <x-button sm icon="document-report" green label="Excel"/>
