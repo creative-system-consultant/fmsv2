@@ -18,7 +18,7 @@
                             {{ $thead }}
                         </tr>
                     </thead>
-                    <tbody class="relative bg-white divide-y divide-gray-200 dark:divide-gray-600">
+                    <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-600">
                         {{ $tbody }}
                         <tr>
                             @if($loading == 'true')
