@@ -56,14 +56,14 @@
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <x-button 
                                         wire:click="openUpdateModal({{ $education->id }})"
-                                        sm  
+                                        xs  
                                         icon="pencil-alt" 
                                         orange 
                                         label="Edit" 
                                     />
                                     <x-button 
                                         wire:click="delete({{ $education->id }})"
-                                        sm  
+                                        xs  
                                         icon="trash" 
                                         red 
                                         label="Delete" 

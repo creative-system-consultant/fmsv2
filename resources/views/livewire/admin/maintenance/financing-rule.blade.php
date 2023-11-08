@@ -47,14 +47,14 @@
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <x-button 
                                         wire:click="openUpdateModal(1)"
-                                        sm  
+                                        xs  
                                         icon="pencil-alt" 
                                         orange 
                                         label="Edit" 
                                     />
                                     <x-button 
                                         wire:click="delete(1)"
-                                        sm  
+                                        xs  
                                         icon="trash" 
                                         red 
                                         label="Delete" 
