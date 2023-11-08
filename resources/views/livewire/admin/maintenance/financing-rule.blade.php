@@ -30,7 +30,7 @@
                         <x-table.table-header class="text-left" value="ACTION" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
-                        {{-- @foreach ($data as $item) --}}
+                        {{-- @forelse ($data as $item) --}}
                             <tr>
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     1
@@ -61,7 +61,13 @@
                                     />
                                 </x-table.table-body>
                             </tr>
-                        {{-- @endforeach --}}
+                            {{-- @empty
+                            <tr>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                    <x-no-data title="No data"/>
+                                </x-table.table-body>
+                            </tr>
+                        @endforelse --}}
                     </x-slot>
                 </x-table.table>
 

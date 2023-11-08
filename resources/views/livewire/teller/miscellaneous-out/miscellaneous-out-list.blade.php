@@ -57,8 +57,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <x-table.table-body colspan="5" class="text-xs font-medium text-center text-gray-700 ">
-                                    <p>NO DATA</p>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                    <x-no-data title="No data"/>
                                 </x-table.table-body>
                             </tr>
                         @endforelse

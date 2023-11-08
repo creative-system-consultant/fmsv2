@@ -15,7 +15,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
             <! -- Start loop -->
-            @foreach ($addresses as $key => $address)
+            @forelse ($addresses as $key => $address)
             <x-card title="Address Detail {{ $loop->iteration }}" >
                 <x-slot name="action" >
                     <div class="flex items-center space-x-2">
@@ -84,7 +84,9 @@
                     </div>
                 </div>
             </x-card>
-            @endforeach
+            @empty
+                <x-no-data title="No data"/>
+            @endforelse
             <! -- End loop -->
         </div>
 </form>

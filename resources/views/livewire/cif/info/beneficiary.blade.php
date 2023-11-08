@@ -88,8 +88,9 @@
 
             </div>
         </x-card>
-        @endforeach
-
+        @empty
+            <x-no-data title="No data"/>
+        @endforelse
         <! -- End loop -->
     </div>
 </div>

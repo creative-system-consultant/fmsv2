@@ -104,16 +104,16 @@
                                 </x-table.table-body>
                             </tr>
                             @elseif ($ctr==0)
-                            <x-table.table-body colspan="8" class="text-xs font-medium text-gray-700 ">
-                                <p>No Data</p>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                <x-no-data title="No data"/>
                             </x-table.table-body>
                             @php
                                 $ctr=1;
                             @endphp
                             @endif
                             @empty
-                                <x-table.table-body colspan="9" class="text-xs font-medium text-gray-700 text-center">
-                                    <p>No Data</p>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                    <x-no-data title="No data"/>
                                 </x-table.table-body>
                             @endforelse
                         </x-slot>

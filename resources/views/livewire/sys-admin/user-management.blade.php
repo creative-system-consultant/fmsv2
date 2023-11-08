@@ -30,8 +30,8 @@
                                 </x-table.table-body>
                             </tr>
                         @empty
-                            <x-table.table-body colspan="2" class="font-medium text-center text-gray-900">
-                                <p><center>No data</center></p>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                <x-no-data title="No data"/>
                             </x-table.table-body>
                         @endforelse
                     </x-slot>

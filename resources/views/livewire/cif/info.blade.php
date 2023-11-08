@@ -16,12 +16,14 @@
             
                 <div class="flex flex-wrap justify-start sm:justify-start">
 
+                    @can('member info - cif - details')
                     <x-hovertab.title name="0" wire:click="setState(0)">
                         <x-icon name="user-circle" class="w-6 h-6 mr-2"/>
                         <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
                             Details
                         </span>
                     </x-hovertab.title>
+                    @endcan
 
                     <x-hovertab.title name="1" wire:click="setState(1)">
                         <x-icon name="home" class="w-6 h-6 mr-2"/>

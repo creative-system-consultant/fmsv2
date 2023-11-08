@@ -62,8 +62,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <x-table.table-body colspan="7" class="text-xs font-medium text-center text-gray-700">
-                                    NO DATA
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                    <x-no-data title="No data"/>
                                 </x-table.table-body>
                             </tr>
                         @endforelse
