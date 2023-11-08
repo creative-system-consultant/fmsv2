@@ -22,7 +22,38 @@
                     <x-logo class="w-auto h-12 "  x-bind:class="openHoverMiniSidebar ? 'lg:h-12' : 'lg:h-6'" />
                 </div>
             </a>
-            <div class="flex flex-col flex-1 pt-5 pb-4 "
+            <div 
+                x-show="toggleMiniSidebar"
+                x-bind:class="openHoverMiniSidebar ? 'block' : 'hidden'" 
+                class="mt-6 flex flex-col items-center">
+                <x-badge 
+                    outline 
+                    secondary
+                    label="{{ auth()->user()->name }}" 
+                    class="py-1"
+                    >
+                    <x-slot name="prepend" class="relative flex items-center w-2 h-2 mr-1">
+                        <span class="absolute inline-flex w-full h-full rounded-full bg-green-500/75 animate-ping"></span>
+                        <span class="relative inline-flex w-2 h-2 rounded-full bg-green-500"></span>
+                    </x-slot>
+                </x-badge>
+            </div>
+            <div 
+                x-show="!toggleMiniSidebar"
+                class="mt-6 flex flex-col items-center px-4">
+                <x-badge 
+                    outline 
+                    secondary
+                    label="{{ auth()->user()->name }}" 
+                    class="py-1"
+                    >
+                    <x-slot name="prepend" class="relative flex items-start w-2 h-2 mr-1">
+                        <span class="absolute inline-flex w-full h-full rounded-full bg-green-500/75 animate-ping"></span>
+                        <span class="relative inline-flex w-2 h-2 rounded-full bg-green-500"></span>
+                    </x-slot>
+                </x-badge>
+            </div>
+            <div class="flex flex-col flex-1 pb-4 "
                 :class="toggleMiniSidebar == true ? '' : 'overflow-y-auto'">
                 <div class="flex-1 px-3 space-y-1 divide-y">
                     <ul class="pt-4 pb-2 space-y-2 list-none">

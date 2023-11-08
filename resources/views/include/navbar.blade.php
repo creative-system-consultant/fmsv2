@@ -38,7 +38,7 @@
                     <div x-on:click="menuOpen = !menuOpen" @click.away="menuOpen = false"
                         class="flex items-center space-x-2 cursor-pointer">
                         <x-avatar md src="https://picsum.photos/300?size=md" />
-                        <p class="w-24  dark:text-gray-200 line-clamp-1" :class="{'': atTop, ' text-black xl:text-white': !atTop}">
+                        <p class="w-14 dark:text-gray-200 line-clamp-1" :class="{'': atTop, ' text-black xl:text-white': !atTop}">
                             {{ auth()->user()->name }}
                         </p>
                     </div>

@@ -79,7 +79,7 @@
                                                 </x-table.table-body>
 
                                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    <x-button onclick="$openModal('disb-modal')" sm icon="dots-horizontal" primary label="More info" />
+                                                    <x-button onclick="$openModal('disb-modal')" xs icon="dots-horizontal" primary label="More info" />
                                                 </x-table.table-body>
                                             </tr>
                                             @endforeach
@@ -146,7 +146,7 @@
                                                 </x-table.table-body>
 
                                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    <x-button onclick="$openModal('predisb-modal')" sm icon="dots-horizontal" primary label="More info" />
+                                                    <x-button onclick="$openModal('predisb-modal')" xs icon="dots-horizontal" primary label="More info" />
                                                 </x-table.table-body>
                                             </tr>
                                             @endforeach
