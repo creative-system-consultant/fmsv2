@@ -53,7 +53,7 @@
 
                 </x-table.table>
                 <div class="px-2 py-2 mt-4">
-                    {{ $roles->links('livewire::pagination-links') }}
+                    {{ $roles->links() }}
                 </div>
             </div>
 
