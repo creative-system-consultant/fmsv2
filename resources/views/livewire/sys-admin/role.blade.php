@@ -60,16 +60,28 @@
         </div>
 
         <!-- modal -->
-        <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="6xl" hide-close="true">
+        <x-modal.card title="{{ $modalTitle }}" align="start" blur wire:model.defer="openModal" max-width="9xl">
             <div class="px-2">
                 <div class="gap-4 my-2">
                     <x-input wire:model="name" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
                 </div>
 
-                <div class="mt-6">
-                    <h2 class=" font-semibold border-b pb-1 mb-4 dark:border-gray-800">
-                        Role Permissions
-                    </h2>
+                <div class="mt-10">
+                    <div class=" font-semibold border-b pb-4 mb-4 dark:border-gray-800">
+                        <div class="flex items-center justify-between">
+                            <h1>Role Permissions</h1>
+                            <div class="flex items-center space-x-2">
+                                <x-label label="Search : " />
+                                <div class="w-64">
+                                    <x-input 
+                                        wire:model.live="search" 
+                                        label="" 
+                                        placeholder="Search Module" 
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="grid grid-cols-3 gap-4 mt-2">
                         @foreach ($permissions as $permission)
                             <x-checkbox
@@ -86,7 +98,8 @@
 
             <x-slot name="footer">
                 <div class="flex justify-end">
-                    <div class="flex">
+                    <div class="flex space-x-2 items-center">
+                        <x-button flat label="Cancel" x-on:click="close" />
                         <x-button primary label="Save" wire:click="{{ $modalMethod }}" />
                     </div>
                 </div>

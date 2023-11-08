@@ -16,14 +16,12 @@
             
                 <div class="flex flex-wrap justify-start sm:justify-start">
 
-                    @can('member info - cif - details')
                     <x-hovertab.title name="0" wire:click="setState(0)">
                         <x-icon name="user-circle" class="w-6 h-6 mr-2"/>
                         <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
                             Details
                         </span>
                     </x-hovertab.title>
-                    @endcan
 
                     <x-hovertab.title name="1" wire:click="setState(1)">
                         <x-icon name="home" class="w-6 h-6 mr-2"/>
@@ -53,57 +51,34 @@
                         </span>
                     </x-hovertab.title>
 
-                    {{-- <x-hovertab.title name="5" wire:click="setState(5)">
-                        <x-icon name="currency-dollar" class="w-6 h-6 mr-2"/>
-                        <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
-                            Finance
-                        </span>
-                    </x-hovertab.title>
-
-                    <x-hovertab.title name="6" wire:click="setState(6)">
-                        <x-icon name="information-circle" class="w-6 h-6 mr-2"/>
-                        <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
-                            Third Party Info
-                        </span>
-                    </x-hovertab.title>
-
-                    <x-hovertab.title name="7" wire:click="setState(7)">
-                        <x-icon name="shield-check" class="w-6 h-6 mr-2"/>
-                        <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
-                            Guarantee/Guarantor
-                        </span>
-                    </x-hovertab.title> --}}
-
-                    <x-hovertab.title name="8" wire:click="setState(8)">
+                    <x-hovertab.title name="5" wire:click="setState(5)">
                         <x-icon name="credit-card" class="w-6 h-6 mr-2"/>
                         <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
                             Others Payment
                         </span>
                     </x-hovertab.title>
 
-                    <x-hovertab.title name="9" wire:click="setState(9)">
+                    <x-hovertab.title name="6" wire:click="setState(6)">
                         <x-icon name="calendar" class="w-6 h-6 mr-2"/>
                         <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
                             Monthly Payment Summary
                         </span>
                     </x-hovertab.title>
 
-                    <x-hovertab.title name="10" wire:click="setState(10)">
+                    <x-hovertab.title name="7" wire:click="setState(7)">
                         <x-icon name="clipboard-list" class="w-6 h-6 mr-2"/>
                         <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
                             Dividend Statements
                         </span>
                     </x-hovertab.title>
 
-                    <x-hovertab.title name="11" wire:click="setState(11)">
+                    <x-hovertab.title name="8" wire:click="setState(8)">
                         <x-icon name="inbox" class="w-6 h-6 mr-2"/>
                         <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
                             Miscellaneous
                         </span>
                     </x-hovertab.title>
-
                 </div>
-
             </div>
 
             <div class="mt-12">
@@ -118,18 +93,12 @@
                 @elseif($setIndex  == '4')
                     <livewire:cif.info.share :uuid="$uuid" />
                 @elseif($setIndex  == '5')
-                    <livewire:cif.info.finance :uuid="$uuid" />
-                @elseif($setIndex  == '6')
-                    <livewire:cif.info.third-party-info :uuid="$uuid" />
-                @elseif($setIndex  == '7')
-                    <livewire:cif.info.guarantee :uuid="$uuid" />
-                @elseif($setIndex  == '8')
                     <livewire:cif.info.others-payment :uuid="$uuid" />
-                @elseif($setIndex  == '9')
+                @elseif($setIndex  == '6')
                     <livewire:cif.info.monthly-payment-summary :uuid="$uuid" />
-                @elseif($setIndex  == '10')
+                @elseif($setIndex  == '7')
                     <livewire:cif.info.dividend-statement :uuid="$uuid" />
-                @elseif($setIndex  == '11')
+                @elseif($setIndex  == '8')
                     <livewire:cif.info.miscellaneous :uuid="$uuid" />
                 @endif
             </div>

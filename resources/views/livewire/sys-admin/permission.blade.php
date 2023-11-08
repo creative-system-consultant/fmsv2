@@ -1,7 +1,7 @@
 <div>
     <x-container title="Permissions" routeBackBtn="" titleBackBtn="" disableBackBtn="">
         <div class="grid grid-cols-1">
-            <div class="flex items-center">
+            <div class="flex items-center justify-between">
                 <div>
                     <x-button
                         wire:click="add"
@@ -10,6 +10,16 @@
                         positive
                         label="Create Permission"
                     />
+                </div>
+                <div class="flex items-center space-x-2">
+                    <x-label label="Search : " />
+                    <div class="w-64">
+                        <x-input 
+                            wire:model.live="search" 
+                            label="" 
+                            placeholder="Search Module" 
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -53,7 +63,7 @@
 
                 </x-table.table>
                 <div class="px-2 py-2 mt-4">
-                    {{ $permissions->links() }}
+                    {{-- {{ $permissions->links() }} --}}
                 </div>
             </div>
 

@@ -17,6 +17,7 @@ class Role extends Component
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
+    public $search = '';
 
     #[Rule('required')]
     public $name;
@@ -97,7 +98,7 @@ class Role extends Component
     public function render()
     {
         $roles = ModelsRole::paginate(10);
-        $permissions = Permission::all();
+        $permissions = Permission::where('name', 'like', '%' . $this->search . '%')->get();
 
         return view('livewire.sys-admin.role',[
             'roles' => $roles,
