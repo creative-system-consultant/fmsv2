@@ -75,7 +75,7 @@
     </x-container>
 
     <!-- modal -->
-    <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="lg" hide-close="true">
+    <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="lg">
         <div class="grid gap-4 my-2 lg:grid-cols-2 ">
             <x-input wire:model="code" label="Code" placeholder="" class="uppercase "/>
             <x-input wire:model="description" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
@@ -83,7 +83,8 @@
 
         <x-slot name="footer">
             <div class="flex justify-end">
-                <div class="flex">
+                <div class="flex space-x-2 items-center">
+                    <x-button flat label="Cancel" x-on:click="close" />
                     <x-button primary label="Save" wire:click="{{ $modalMethod }}" />
                 </div>
             </div>
