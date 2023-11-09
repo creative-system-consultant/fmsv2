@@ -21,7 +21,7 @@ class AddTypeService
         $defaultData = [
             'client_id' => auth()->user()->client_id,
             'updated_at' => now(),
-            'updated_by' => auth()->user()->name,
+            'updated_by' => auth()->id(),
         ];
 
         $mergedData = array_merge($data, $defaultData);
@@ -40,7 +40,7 @@ class AddTypeService
     {
         $defaultData = [
             'updated_at' => now(),
-            'updated_by' => auth()->user()->name,
+            'updated_by' => auth()->id(),
         ];
 
         $mergedData = array_merge($data, $defaultData);

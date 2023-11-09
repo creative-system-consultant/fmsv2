@@ -27,7 +27,6 @@
                         <x-table.table-header class="text-left" value="NO." sort="" />
                         <x-table.table-header class="text-left" value="ADDRESS TYPE" sort="" />
                         <x-table.table-header class="text-left" value="CODE" sort="" />
-                        <x-table.table-header class="text-left" value="STATUS" sort="" />
                         <x-table.table-header class="text-left" value="ACTION" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
@@ -43,14 +42,6 @@
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     {{ $addtype->code }}
-                                </x-table.table-body>
-
-                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    @if($addtype->status == 1)
-                                        <x-badge flat emerald label="ENABLE" />
-                                    @else
-                                        <x-badge flat negative  label="DISABLE" />
-                                    @endif
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
@@ -90,12 +81,17 @@
     </x-container>
 
     <!-- modal -->
+
     <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="lg">
-        <div class="grid gap-4 my-2 lg:grid-cols-2 ">
-            <x-input wire:model="code" label="Code" placeholder="" class="uppercase "/>
-            <x-input wire:model="description" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
-            <x-toggle wire:model="status" left-label="Status" />
+        <div class="grid gap-4 my-2 lg:grid-cols-2">
+            <div class="tooltip buttom" title="Code must be alphabetic and maximum 1 characters">
+                <x-input wire:model="code" label="Code" placeholder="" class="uppercase" maxlength="2"/>
+            </div>
+            <div class="tooltip buttom" title="Address type must be alphabetic">
+                <x-input wire:model="description" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
+            </div> 
         </div>
+
 
         <x-slot name="footer">
             <div class="flex justify-end">
@@ -106,5 +102,6 @@
             </div>
         </x-slot>
     </x-modal.card>
+
     <!-- end modal -->
 </div>

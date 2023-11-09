@@ -21,9 +21,6 @@ class AddType extends Component
     #[Rule('required|string')]
     public $description;
 
-    #[Rule('nullable|boolean')]
-    public $status;
-
     public $openModal;
     public $modalTitle;
     public $modalDescription;
@@ -50,7 +47,6 @@ class AddType extends Component
         $this->addtype = AddressType::find($id);
         $this->description = $this->addtype->description;
         $this->code = $this->addtype->code;
-        $this->addtype->status == 1 ? $this->status = true : $this->status = false;
 
         $this->setupModal("update", "Update Address Type", "Address Type", "update({$id})");
     }
@@ -66,7 +62,6 @@ class AddType extends Component
             $data = [
                 'description' => trim(strtoupper($this->description)),
                 'code' => trim(strtoupper($this->code)),
-                'status' => $this->status == true ? '1' : '0',
             ];
 
             AddTypeService::createAddType($data);
@@ -84,7 +79,6 @@ class AddType extends Component
             $data = [
                 'description' => trim(strtoupper($this->description)),
                 'code' => trim(strtoupper($this->code)),
-                'status' => $this->status == true ? '1' : '0',
             ];
 
             AddTypeService::updateAddType($id, $data);
