@@ -27,14 +27,14 @@
                         <x-table.table-header class="text-left" value="NO." sort="" />
                         <x-table.table-header class="text-left" value="STATE NAME" sort="" />
                         <x-table.table-header class="text-left" value="CODE" sort="" />
-                        <x-table.table-header class="text-left" value="STATUS" sort="" />
                         <x-table.table-header class="text-left" value="ACTION" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
-                        @forelse ($data as $state)
+
+                        @foreach ($data as $key => $state)
                             <tr>
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    {{ $loop->iteration }}
+                                    {{ $data->firstItem() + $key }}
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
@@ -43,14 +43,6 @@
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     {{ $state->code }}
-                                </x-table.table-body>
-
-                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    @if($state->status == 1)
-                                        <x-badge flat emerald label="ENABLE" />
-                                    @else
-                                        <x-badge flat negative  label="DISABLE" />
-                                    @endif
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
@@ -70,13 +62,8 @@
                                     />
                                 </x-table.table-body>
                             </tr>
-                            @empty
-                                <tr>
-                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
-                                        <x-no-data title="No data"/>
-                                    </x-table.table-body>
-                                </tr>
-                            @endforelse
+                        @endforeach
+
                     </x-slot>
                 </x-table.table>
 
@@ -90,12 +77,17 @@
     </x-container>
 
     <!-- modal -->
-    <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="lg">
-        <div class="grid gap-4 my-2 lg:grid-cols-2 ">
-            <x-input wire:model="code" label="Code" placeholder="" class="uppercase "/>
-            <x-input wire:model="description" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
-            <x-toggle wire:model="status" left-label="Status" />
+
+        <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="lg">
+        <div class="grid gap-4 my-2 lg:grid-cols-2">
+            <div class="tooltip buttom" title="Code must be numberic and maximum 2 characters">
+                <x-input wire:model="code" label="Code" placeholder="" class="uppercase" maxlength="2"/>
+            </div>
+            <div class="tooltip buttom" title="State must be alphabetic">
+                <x-input wire:model="description" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
+            </div> 
         </div>
+
 
         <x-slot name="footer">
             <div class="flex justify-end">
@@ -106,5 +98,6 @@
             </div>
         </x-slot>
     </x-modal.card>
+
     <!-- end modal -->
 </div>

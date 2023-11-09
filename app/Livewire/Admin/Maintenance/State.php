@@ -15,14 +15,11 @@ class State extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
-    #[Rule('required|max:3|alpha')]
+    #[Rule('required|numeric')]
     public $code;
 
-    #[Rule('required|string')]
+    #[Rule('required|alpha')]
     public $description;
-
-    #[Rule('nullable|boolean')]
-    public $status;
 
     public $openModal;
     public $modalTitle;
@@ -50,7 +47,6 @@ class State extends Component
         $this->state = RefState::find($id);
         $this->description = $this->state->description;
         $this->code = $this->state->code;
-        $this->state->status == 1 ? $this->status = true : $this->status = false;
 
         $this->setupModal("update", "Update State", "State", "update({$id})");
     }
@@ -66,7 +62,6 @@ class State extends Component
             $data = [
                 'description' => trim(strtoupper($this->description)),
                 'code' => trim(strtoupper($this->code)),
-                'status' => $this->status == true ? '1' : '0',
             ];
 
             StateService::createState($data);
@@ -84,7 +79,6 @@ class State extends Component
             $data = [
                 'description' => trim(strtoupper($this->description)),
                 'code' => trim(strtoupper($this->code)),
-                'status' => $this->status == true ? '1' : '0',
             ];
 
             StateService::updateState($id, $data);
