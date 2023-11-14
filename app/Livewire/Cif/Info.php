@@ -16,6 +16,14 @@ class Info extends Component
         $this->customer = CifCustomer::select('name', 'id')->where('uuid', $this->uuid)->first();
         $this->name = $this->customer->name;
         $this->cID = $this->customer->id;
+
+        // Default to the first permitted tab
+        foreach (config('module.member-info.cif.index') as $config) {
+            if (auth()->user()->can($config['permission'])) {
+                $this->setIndex = $config['index'];
+                break;
+            }
+        }
     }
 
     public function deleteAddress($key)
