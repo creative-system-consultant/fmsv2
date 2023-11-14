@@ -60,45 +60,86 @@
         </div>
 
         <!-- modal -->
-        <x-modal.card title="{{ $modalTitle }}" align="start" blur wire:model.defer="openModal" max-width="9xl">
+        <x-modal.card title="{{ $modalTitle }}" align="start" blur wire:model.defer="openModal" fullscreen="true">
             <div class="px-2">
                 <div class="gap-4 my-2">
                     <x-input wire:model="name" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
                 </div>
 
                 <div class="mt-10">
-                    <div class=" font-semibold border-b pb-4 mb-4 dark:border-gray-800">
+                    <div class="pb-4 mb-4 font-semibold border-b dark:border-gray-800">
                         <div class="flex items-center justify-between">
                             <h1>Role Permissions</h1>
                             <div class="flex items-center space-x-2">
                                 <x-label label="Search : " />
                                 <div class="w-64">
-                                    <x-input 
-                                        wire:model.live="search" 
-                                        label="" 
-                                        placeholder="Search Module" 
+                                    <x-input
+                                        wire:model.live="search"
+                                        label=""
+                                        placeholder="Search Module"
                                     />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="grid grid-cols-3 gap-4 mt-2">
-                        @foreach ($permissions as $permission)
-                            <x-checkbox
-                                id="{{ $permission->id }}"
-                                label="{{ strtoupper($permission->name) }}"
-                                wire:model="selectedPermission"
-                                value="{{ $permission->name }}"
-                                md
-                            />
-                        @endforeach
-                    </div>
+
+                    @foreach ($systems as $system)
+                        <div class="mb-6">
+                            <div class="flex items-center space-x-2 mb-2 pl-2">
+                                <x-checkbox
+                                    id=""
+                                    wire:model=""
+                                    value=""
+                                    md
+                                />
+                                <h1 class="font-medium">
+                                    {{ $system->description }}
+                                </h1>
+                            </div>
+                            <div>
+                                @foreach ($modules->where('system_id', $system->id) as $module)
+                                    <div class="grid grid-cols-12">
+                                        <div class="col-span-3 bg-gray-50 dark:bg-gray-900 py-3 border text-primary-600 flex items-center  dark:border-gray-800">
+                                            <div
+                                                class="flex font-medium items-center pl-2">
+                                                    <x-checkbox
+                                                        id=""
+                                                        wire:model=""
+                                                        value=""
+                                                        md
+                                                    />
+                                                <div class="flex space-x-1 items-start px-4 text-xs">
+                                                    <x-icon name="collection" class="w-4 h-4"/>
+                                                    <h1>{{ $module->description }}</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-span-9 border dark:border-gray-900">
+                                            <div class="flex flex-wrap gap-4 px-3 py-4">
+                                                @foreach ($permissions->where('system_id', $system->id)->where('module_id', $module->id) as $permission)
+                                                    <div class="flex items-center space-x-2">
+                                                        <x-checkbox
+                                                            id="{{ $permission->id }}"
+                                                            wire:model="selectedPermission"
+                                                            value="{{ $permission->name }}"
+                                                            md
+                                                        />
+                                                        <x-label class="text-xs" label="{{ strtoupper($permission->name) }}"/>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
 
             <x-slot name="footer">
                 <div class="flex justify-end">
-                    <div class="flex space-x-2 items-center">
+                    <div class="flex items-center space-x-2">
                         <x-button flat label="Cancel" x-on:click="close" />
                         <x-button primary label="Save" wire:click="{{ $modalMethod }}" />
                     </div>

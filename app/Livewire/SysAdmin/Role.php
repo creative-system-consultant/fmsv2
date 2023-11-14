@@ -2,6 +2,9 @@
 
 namespace App\Livewire\SysAdmin;
 
+use App\Models\Ref\System;
+use App\Models\Ref\SystemModule;
+use App\Models\User;
 use App\Services\General\PopupService;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -41,6 +44,7 @@ class Role extends Component
 
     public function add()
     {
+        $this->reset('name', 'selectedPermission');
         $this->setupModal("create", "Create Role", "Role Name");
     }
 
@@ -48,11 +52,15 @@ class Role extends Component
     {
         $this->validate();
 
-        ModelsRole::create([
-            'name' => strtolower($this->name)
-        ]);
+        $id = ModelsRole::create([
+            'name' => strtolower($this->name),
+            'created_by' => auth()->user()->client_id
+        ])->id;
 
-        $this->reset('name');
+        $role = ModelsRole::whereId($id)->first();
+        $role->syncPermissions($this->selectedPermission);
+
+        $this->reset('name', 'selectedPermission');
         $this->openModal = false;
 
         $this->dialog()->success('Success!', 'Role Created Successfully');
@@ -73,7 +81,8 @@ class Role extends Component
         $role = ModelsRole::whereId($id)->first();
 
         $role->update([
-            'name' => strtolower($this->name)
+            'name' => strtolower($this->name),
+            'updated_by' => auth()->user()->client_id,
         ]);
 
         $role->syncPermissions($this->selectedPermission);
@@ -97,12 +106,19 @@ class Role extends Component
 
     public function render()
     {
-        $roles = ModelsRole::paginate(10);
-        $permissions = Permission::where('name', 'like', '%' . $this->search . '%')->get();
+        $user = User::find(auth()->id());
+        $roles = ModelsRole::where('created_by', $user->client_id)->paginate(10);
+        $permissions = $user->getAllPermissions();
+
+        $systems = System::whereIn('id', $permissions->pluck('system_id')->unique())->get();
+        $modules = SystemModule::whereIn('id', $permissions->pluck('module_id')->unique())
+                                ->where('description', 'like', '%' . $this->search . '%')->get();
 
         return view('livewire.sys-admin.role',[
             'roles' => $roles,
-            'permissions' => $permissions
+            'permissions' => $permissions,
+            'systems' => $systems,
+            'modules' => $modules,
         ])->extends('layouts.main');
     }
 }

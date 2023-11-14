@@ -43,8 +43,14 @@ class UserManagement extends Component
 
     public function render()
     {
-        $users = User::paginate(10);
-        $roles = Role::all();
+        $users = User::where('client_id', auth()->user()->client_id)
+            ->whereNotIn('user_type', [1])
+            ->whereNotIn('id', [auth()->id()])
+            ->orderBy('id', 'ASC')
+            ->orderBy('user_type', 'ASC')
+            ->paginate(10);
+
+        $roles = Role::where('created_by', auth()->user()->client_id)->get();
 
         return view('livewire.sys-admin.user-management', [
             'users' => $users,
