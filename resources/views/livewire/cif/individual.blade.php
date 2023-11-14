@@ -13,7 +13,7 @@
                 </div>
 
                 <div class="w-full sm:w-64">
-                    <x-input 
+                    <x-input
                         wire:model.live="search"
                         placeholder="Search"
                     />
@@ -65,8 +65,18 @@
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <div class="flex items-center space-x-2">
-                                        <x-button xs  href="{{ route('cif.info',['uuid'=>$item->uuid]) }}" icon="eye" primary label="CIF" wire:navigate/>
-                                        <x-button xs  href="{{ route('cif.member',['uuid'=>$item->uuid]) }}" icon="eye" primary label="Membership" wire:navigate/>
+                                        @foreach(config('module.member-info.index') as $config)
+                                            @can($config['permission'])
+                                                <x-button
+                                                    xs
+                                                    href="{{ route($config['route'], ['uuid'=>$item->uuid]) }}"
+                                                    icon="{{ $config['icon'] }}"
+                                                    primary
+                                                    label="{{ $config['label'] }}"
+                                                    wire:navigate
+                                                />
+                                            @endcan
+                                        @endforeach
                                     </div>
                                 </x-table.table-body>
 
