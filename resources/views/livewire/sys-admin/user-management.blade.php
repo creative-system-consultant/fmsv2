@@ -9,6 +9,7 @@
                 <x-table.table loading="true" loadingtarget="search">
                     <x-slot name="thead">
                         <x-table.table-header class="text-left" value="NAME" sort="" />
+                        <x-table.table-header class="text-left" value="ROLE" sort="" />
                         <x-table.table-header class="text-left" value="ACTION" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
@@ -16,6 +17,11 @@
                             <tr>
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{ strtoupper($user->name) }}</p>
+                                </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-left text-gray-500">
+                                    @foreach ($user->roles as $rolesAssign)
+                                        <x-badge flat fuchsia label="{{ strtoupper($rolesAssign->name) }}" />
+                                    @endforeach
                                 </x-table.table-body>
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <div class="flex items-center space-x-2">
@@ -50,7 +56,6 @@
                     label="Role"
                     placeholder="-- PLEASE SELECT --"
                     wire:model="role"
-                    multiselect
                 >
                     @foreach ($roles as $role)
                         <x-select.option label="{{ strtoupper($role->name) }}" value="{{ $role->name }}" />

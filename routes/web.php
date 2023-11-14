@@ -64,11 +64,6 @@ Route::middleware('auth')->group(function () {
             base_path('routes/web/role.php'),
         );
 
-        // permissions
-        Route::prefix('permissions')->as('permissions.')->group(
-            base_path('routes/web/permission.php'),
-        );
-
         // cif
         Route::prefix('cif')->as('cif.')->group(
             base_path('routes/web/cif.php'),
