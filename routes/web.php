@@ -16,6 +16,12 @@ use App\Livewire\Doc\Doc;
 use App\Livewire\Report\ReportList;
 use App\Livewire\SysAdmin\UserManagement;
 
+// webhook from CSC-CA to clear cache on roles/user management update
+Route::post('/webhook/clear-cache', function () {
+    Artisan::call('cache:clear');
+    return response('Cache Cleared', 200);
+});
+
 Route::middleware('guest')->group(function () {
     Route::get('/', Login::class);
     Route::get('login', Login::class)
