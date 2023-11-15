@@ -1,4 +1,3 @@
-
 <div x-cloak >
     <aside
         @mouseover="openHoverMiniSidebar = true"

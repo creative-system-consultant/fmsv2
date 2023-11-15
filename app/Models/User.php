@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Ref\RefClient;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -31,4 +33,14 @@ class User extends Authenticatable implements Auditable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function clients()
+    {
+        return $this->belongsToMany(RefClient::class,'REF.USER_HAS_CLIENTS', 'user_id', 'client_id');
+    }
+
+    public function refClient()
+    {
+        return $this->hasOne(RefClient::class, 'id', 'client_id');
+    }
 }

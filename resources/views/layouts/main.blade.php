@@ -9,7 +9,7 @@
         toggleMiniSidebar:localStorage.getItem('toggleMiniSidebar')  === 'true',
     }">
     <div class="flex w-full">
-        @include('include.sidebar')
+        <livewire:layout.sidebar />
         <div
             x-on:click="toggleSidebarMobile = !toggleSidebarMobile"
             class="fixed inset-0 z-10 bg-gray-900 opacity-50"
@@ -23,7 +23,7 @@
             'block lg:ml-[16rem]': openHoverMiniSidebar,
             'lg:ml-64': !toggleSidebarDesktop
         }" x-cloak>
-        @include('include.navbar')
+        <livewire:layout.navbar />
         <div
             x-show="theme === 'light'"
             class=" w-full h-[15rem] md:h-[27rem] bg-center bg-cover  md:-mt-[5rem]"

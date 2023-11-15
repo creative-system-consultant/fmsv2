@@ -6,6 +6,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class Login extends Component
 {
@@ -25,13 +26,15 @@ class Login extends Component
 
     public function authenticate()
     {
-        //dd(['email' => $this->email, 'password' => $this->password]);
         $this->validate();
 
         if (!Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             $this->addError('email', trans('auth.failed'));
             return;
         }
+
+        // Set a session variable after successful login
+        session(['just_logged_in' => true]);
 
         return redirect()->intended(route('home'));
     }
