@@ -22,7 +22,7 @@ class Home extends Component
 
     public function mount()
     {
-        if (session('just_logged_in')) {
+        if (session('just_logged_in') && auth()->user()->clients->count() > 1) {
             $this->selectClientModal = true;
             session()->forget('just_logged_in');
         } else {
@@ -39,6 +39,7 @@ class Home extends Component
 
         // dispatch an event
         $this->dispatch('clientUpdated');
+        return $this->redirect('/home', navigate: true);
     }
 
     public function render()

@@ -54,7 +54,8 @@ class Role extends Component
 
         $id = ModelsRole::create([
             'name' => strtolower($this->name),
-            'created_by' => auth()->user()->client_id
+            'client_id' => auth()->user()->client_id,
+            'created_by' => auth()->id()
         ])->id;
 
         $role = ModelsRole::whereId($id)->first();
@@ -82,7 +83,8 @@ class Role extends Component
 
         $role->update([
             'name' => strtolower($this->name),
-            'updated_by' => auth()->user()->client_id,
+            'client_id' => auth()->user()->client_id,
+            'updated_by' => auth()->id()
         ]);
 
         $role->syncPermissions($this->selectedPermission);
@@ -107,7 +109,7 @@ class Role extends Component
     public function render()
     {
         $user = User::find(auth()->id());
-        $roles = ModelsRole::where('created_by', $user->client_id)->paginate(10);
+        $roles = ModelsRole::where('client_id', $user->client_id)->paginate(10);
         $permissions = $user->getAllPermissions();
 
         $systems = System::whereIn('id', $permissions->pluck('system_id')->unique())->get();
