@@ -8,6 +8,7 @@ use App\Livewire\Admin\Maintenance\Relationship;
 use App\Livewire\Admin\Maintenance\Religion;
 use App\Livewire\Admin\Maintenance\Title;
 use App\Livewire\Admin\Maintenance\Bank;
+use App\Livewire\Admin\Maintenance\BranchID;
 use App\Livewire\Admin\Maintenance\Education;
 use App\Livewire\Admin\Maintenance\Country;
 use App\Livewire\Admin\Maintenance\Marital;
@@ -33,3 +34,5 @@ Route::get('add-type', AddType::class)->name('add-type');
 Route::get('languages', Languages::class)->name('languages');
 Route::get('identity-type', IdentityType::class)->name('identity-type');
 Route::get('third-party', ThirdParty::class)->name('third-party');
+
+Route::get('branch-i-d', BranchID::class)->name('branch-i-d');
