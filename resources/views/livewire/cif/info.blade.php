@@ -15,24 +15,29 @@
                 </div>
 
                 <div class="flex flex-wrap justify-start sm:justify-start">
-
                     @foreach(config('module.member-info.cif.index') as $config)
-                        @can($config['permission'])
+                        @php
+                            $hasPermission = auth()->check() && auth()->user()->hasClientSpecificPermission($config['permission'], auth()->user()->client_id);
+                        @endphp
+                        @if($hasPermission)
                             <x-hovertab.title name="{{ $config['index'] }}" wire:click="setState({{ $config['index'] }})">
                                 <x-icon name="{{ $config['icon'] }}" class="w-6 h-6 mr-2"/>
                                 <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
                                     {{ $config['name'] }}
                                 </span>
                             </x-hovertab.title>
-                        @endcan
+                        @endif
                     @endforeach
                 </div>
             </div>
 
             <div class="mt-12">
                 @foreach(config('module.member-info.cif.index') as $config)
+                    @php
+                        $hasPermission = auth()->check() && auth()->user()->hasClientSpecificPermission($config['permission'], auth()->user()->client_id);
+                    @endphp
                     @if($setIndex == $config['index'])
-                        @can($config['permission'])
+                        @if($hasPermission)
                             @switch($setIndex)
                                 @case('0')
                                     <livewire:cif.info.details :uuid="$uuid" />
@@ -62,7 +67,7 @@
                                     <livewire:cif.info.miscellaneous :uuid="$uuid" />
                                     @break
                             @endswitch
-                        @endcan
+                        @endif
                     @endif
                 @endforeach
             </div>
