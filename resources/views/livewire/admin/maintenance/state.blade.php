@@ -13,6 +13,13 @@
                         />
                     </div>
                     <div  class="flex items-center space-x-2">
+                        <x-label label="Search : " />
+                        <x-input 
+                            type="text"
+                            wire:model.live.debounce.1500ms="searchQuery" 
+                            placeholder="Search"
+                            class="uppercase "
+                            /> 
                         <x-label label="List Until : " />
                         <x-input 
                             type="number"
@@ -78,10 +85,10 @@
 
     <!-- modal -->
 
-        <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="lg">
+    <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="lg">
         <div class="grid gap-4 my-2 lg:grid-cols-2">
             <div class="tooltip buttom" title="Code must be numberic and maximum 2 characters">
-                <x-input wire:model="code" label="Code" placeholder="" class="uppercase" maxlength="2"/>
+                <x-input wire:model="code" label="Code" placeholder="" class="uppercase"/>
             </div>
             <div class="tooltip buttom" title="State must be alphabetic">
                 <x-input wire:model="description" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
@@ -91,8 +98,8 @@
 
         <x-slot name="footer">
             <div class="flex justify-end">
-                <div class="flex space-x-2 items-center">
-                    <x-button flat label="Cancel" x-on:click="close" />
+                <div class="flex gap-2">
+                    <x-button secondary label="Cancel" x-on:click="close" />
                     <x-button primary label="Save" wire:click="{{ $modalMethod }}" />
                 </div>
             </div>
