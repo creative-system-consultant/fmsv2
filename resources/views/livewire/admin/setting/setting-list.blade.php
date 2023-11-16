@@ -116,6 +116,10 @@
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Third Party</span>
                                                     </a>
+                                                    <a wire:navigate href="{{ route('maintenance.member-status') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
+                                                        <span>Member Status</span>
+                                                    </a>
                                                     <a wire:navigate href="{{ route('maintenance.branch-i-d') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Branch Id</span>

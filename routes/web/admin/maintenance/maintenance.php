@@ -17,6 +17,7 @@ use App\Livewire\Admin\Maintenance\AddType;
 use App\Livewire\Admin\Maintenance\Languages;
 use App\Livewire\Admin\Maintenance\IdentityType;
 use App\Livewire\Admin\Maintenance\ThirdParty;
+use App\Livewire\Admin\Maintenance\MemberStatus;
 
 Route::get('state', State::class)->name('state');
 Route::get('glcode', Glcode::class)->name('glcode');
@@ -34,5 +35,5 @@ Route::get('add-type', AddType::class)->name('add-type');
 Route::get('languages', Languages::class)->name('languages');
 Route::get('identity-type', IdentityType::class)->name('identity-type');
 Route::get('third-party', ThirdParty::class)->name('third-party');
-
+Route::get('member-status', MemberStatus::class)->name('member-status');
 Route::get('branch-i-d', BranchID::class)->name('branch-i-d');
