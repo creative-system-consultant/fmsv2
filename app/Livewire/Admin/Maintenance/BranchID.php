@@ -41,8 +41,9 @@ class BranchID extends Component
     public function openCreateModal()
     {
         $this->setupModal("create", "Create Branch", "Branch Name");
-        $this->branch_id = '';   // Clear the values for branch_id and branch_name
-        $this->branch_name = '';
+        // Clear the values for branch_id and branch_name
+        $this->reset(['branch_id','branch_name']);
+        $this->resetValidation();
     }
 
     public function openUpdateModal($branch_id)
@@ -51,6 +52,7 @@ class BranchID extends Component
         $this->branch_id = $this->branchid->branch_id;
         $this->branch_name = $this->branchid->branch_name;
         $this->setupModal("update", "Update Branch", "Branch Name", "update({$branch_id})");
+        $this->resetValidation();
     }
 
     public function create()
@@ -61,12 +63,10 @@ class BranchID extends Component
 
         if (BranchIDService::isCodeExists($paddedCode)) {
             $this->addError('branch_id', 'The code has already been taken.');
-            $this->reset();
-            
         } else {
             $data = [
                 'branch_id' => $paddedCode,
-                'branch_name' => trim(strtoupper($this->branch_name)),
+                'branch_name' => trim(preg_replace('/\s+/', ' ', strtoupper($this->branch_name))),
             ];
             BranchIDService::createBranchIDService($data);
             $this->reset();
@@ -82,7 +82,7 @@ class BranchID extends Component
             $data = [
                 // Combine validation, trim, strtoupper, and str_pad for branch_id
                 'branch_id' => str_pad(trim(strtoupper($this->branch_id)), 4, '0', STR_PAD_LEFT),
-                'branch_name' => trim(strtoupper($this->branch_name)),
+                'branch_name' => trim(preg_replace('/\s+/', ' ', strtoupper($this->branch_name))),
             ];
             BranchIDService::updateBranchIDService($id, $data);
             $this->openModal = false;
