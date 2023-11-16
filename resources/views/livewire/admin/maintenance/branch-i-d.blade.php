@@ -89,7 +89,7 @@
             <div class="tooltip buttom" title="Input should be a number, limited to 4 digits">
                 <x-input wire:model="branch_id" label="Branch ID " placeholder="" class="uppercase " />
             </div>
-            <div class="tooltip buttom" title="Branch names should be alphabetic">
+            <div class="tooltip buttom" title="Enter the name and location of the branch (e.g., 'AMPANG').>
                 <x-input wire:model="branch_name" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
             </div>
         </div>

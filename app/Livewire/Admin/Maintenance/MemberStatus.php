@@ -42,8 +42,6 @@ class MemberStatus extends Component
     public function openCreateModal()
     {
         $this->setupModal("create", "Create Member Status", "Description");
-        // $this->mbr_status = '';   // Clear the values for branch_id and branch_name
-        // $this->description = '';
         $this->reset(['mbr_status','description']);
         $this->resetValidation();
     }
@@ -66,7 +64,7 @@ class MemberStatus extends Component
         } else {
             $data = [
                 'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-                'mbr_status' => trim(preg_replace('/\s+/', ' ', strtoupper($this->mbr_status))),
+                'mbr_status' => trim(strtoupper($this->mbr_status)),
             ];
             MemberStatusService::createMemberStatusService($data);
             $this->reset();

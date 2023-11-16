@@ -90,7 +90,7 @@
             <div class="tooltip buttom" title="Input should consist of letters only, with a min and max of 2 characters">
                 <x-input wire:model="mbr_status" label="Member Status" placeholder="" class="uppercase"/>
             </div>
-            <div class="tooltip buttom" title="Member Status Name">
+            <div class="tooltip buttom" title="Description of name should represent the relationship status (e.g., 'ACTIVE')">
                 <x-input wire:model="description" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
             </div> 
         </div>
