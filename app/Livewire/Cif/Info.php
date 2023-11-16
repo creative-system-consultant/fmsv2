@@ -9,7 +9,7 @@ use Livewire\Component;
 class Info extends Component
 {
     public $uuid, $name, $cID, $addresses, $customer;
-    public $setIndex = 0;
+    public $setIndex;
 
     public function mount()
     {
@@ -19,8 +19,9 @@ class Info extends Component
 
         // Default to the first permitted tab
         foreach (config('module.member-info.cif.index') as $config) {
-            if (auth()->user()->can($config['permission'])) {
-                $this->setIndex = $config['index'];
+            $hasPermission = auth()->check() && auth()->user()->hasClientSpecificPermission($config['permission'], auth()->user()->client_id);
+            if ($hasPermission) {
+                $this->setIndex = (int) $config['index'];
                 break;
             }
         }
