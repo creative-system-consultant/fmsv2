@@ -22,30 +22,16 @@
                     <x-logo class="w-auto h-12 "  x-bind:class="openHoverMiniSidebar ? 'lg:h-12' : 'lg:h-6'" />
                 </div>
             </a>
-            <div
-                x-show="toggleMiniSidebar"
-                x-bind:class="openHoverMiniSidebar ? 'block' : 'hidden'"
-                class="flex flex-col items-center mt-6">
-                <x-badge
-                    outline
-                    secondary
-                    label="{{ auth()->user()->name }}"
-                    class="py-1"
-                    >
-                    <x-slot name="prepend" class="relative flex items-center w-2 h-2 mr-1">
-                        <span class="absolute inline-flex w-full h-full rounded-full bg-green-500/75 animate-ping"></span>
-                        <span class="relative inline-flex w-2 h-2 bg-green-500 rounded-full"></span>
-                    </x-slot>
-                </x-badge>
-            </div>
             <livewire:layout.sidebar-tag />
 
             <div class="flex flex-col flex-1 pb-4 "
                 :class="toggleMiniSidebar == true ? '' : 'overflow-y-auto'">
                 <div class="flex-1 px-3 space-y-1 divide-y">
                     <ul class="pt-4 pb-2 space-y-2 list-none">
-                        <div class="block pb-6 lg:hidden">
-                            <x-toggle-theme/>
+                        <div class="block pb-6 lg:hidden  fixed bottom-0 left-0 right-0">
+                            <div class="flex items-center justify-center">
+                                <x-toggle-theme/>
+                            </div>
                         </div>
 
                         <!-- Home -->

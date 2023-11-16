@@ -1,11 +1,14 @@
-<div>
+<div class="sticky top-0 z-10" x-data="{showCilent:false , clickClient : false}">
+    <div x-show="clickClient">
+        @include('misc.loading')
+    </div>
     <header
-        x-data="{ atTop: (window.pageYOffset > 50) ? false : true }"
+        x-data="{ atTop: (window.pageYOffset > 50) ? false : true}"
         x-init="() => { atTop = (window.pageYOffset > 50) ? true : false }"
         @scroll.window.window="atTop = (window.pageYOffset > 50) ? true : false"
-        class="sticky top-0 z-10 w-full py-3 backdrop-blur-xl bg-white/60 dark:bg-gray-900/90 dark:border-gray-600 lg:pr-4"
+        class="w-full py-3 backdrop-blur-xl bg-white/60 dark:bg-gray-900/90 dark:border-gray-600 lg:pr-4"
         :class="{'': atTop, ' lg:backdrop-blur-none lg:bg-transparent lg:dark:bg-transparent': !atTop}"
-    >
+        >
         <div class="px-3 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
@@ -17,6 +20,15 @@
 
                 <div class="flex items-center space-x-6 animate__animated animate__fadeInRight">
 
+                    <!-- select client -->
+                    <div>
+                        <div x-on:click="showCilent = !showCilent" class="flex items-center text-xs py-1.5 px-4 space-x-2 bg-primary-600 hover:bg-primary-700  text-white  backdrop-blur-lg rounded-md cursor-pointer relative justify-center">
+                            <x-icon name="office-building" class="w-4 h-4" />
+                            <p>Select Client</p>
+                        </div>
+                    </div>
+
+                    <!-- notification -->
                     <div class="hs-dropdown [--strategy:static] sm:[--strategy:absolute] [--adaptive:none]">
                         <div class="flex items-center p-1.5 space-x-2 bg-white/70 backdrop-blur-lg rounded-full cursor-pointer relative dark:bg-gray-900 w-10 h-10  justify-center">
                             <x-icon name="bell" class="w-6 h-6 text-primary-500" />
@@ -39,7 +51,7 @@
                         <div x-on:click="menuOpen = !menuOpen" @click.away="menuOpen = false"
                             class="flex items-center space-x-2 cursor-pointer">
                             <x-avatar md src="https://picsum.photos/300?size=md" />
-                            <p class="w-14 dark:text-gray-200 line-clamp-1" :class="{'': atTop, ' text-black xl:text-white': !atTop}">
+                            <p class=" w-12 lg:w-full dark:text-gray-200 text-sm line-clamp-1" :class="{'': atTop, ' text-black xl:text-white': !atTop}">
                                 {{ auth()->user()->name }}
                             </p>
                         </div>
@@ -55,19 +67,6 @@
                             </div>
 
                             <div>
-                                <div>
-                                    <h1 class="flex items-center px-4 py-2 text-sm font-semibold text-gray-500 rounded-lg dark:text-gray-400 dark:hover:bg-gray-700"> Select Client :</h1>
-                                </div>
-                                @foreach (auth()->user()->clients as $client)
-                                    <div class="flex items-center px-4 py-2 text-sm font-medium text-gray-500 rounded-lg cursor-pointer hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700"
-                                        wire:click="selectClient({{ $client->id }})"
-                                    >
-                                        {{ strtoupper($client->name) }}
-                                    </div>
-                                @endforeach
-                            </div>
-
-                            <div>
                                 <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                     class="flex items-center px-4 py-2 text-sm font-medium text-gray-500 rounded-lg hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700">
@@ -80,8 +79,34 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </header>
+    <div x-show="showCilent" x-cloak>
+        <x-general.slideover-container 
+            title="List Of Client"
+            xdataName="showCilent"
+            placeholderSearch="Search Client"
+
+            >
+            @forelse (auth()->user()->clients as $client)
+            <li>
+                <div
+                    x-on:click="clickClient = true"
+                    wire:click="selectClient({{ $client->id }})"  
+                    class="cursor-pointer inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                    <x-icon name="office-building" class="w-4 h-4 mr-2"/>
+                    <span>{{ strtoupper($client->name) }}</span>
+                </div>
+            </li>
+            @empty
+            <li>
+                <x-no-data title="No Client"/>
+            </li>
+            @endforelse
+        </x-general.slideover-container>
+    </div>
 </div>
+
