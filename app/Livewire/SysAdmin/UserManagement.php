@@ -2,6 +2,7 @@
 
 namespace App\Livewire\SysAdmin;
 
+use App\Models\Ref\RefClient;
 use App\Models\User;
 use App\Services\General\PopupService;
 use Livewire\Component;
@@ -35,7 +36,24 @@ class UserManagement extends Component
     public function save($id)
     {
         $user = User::whereId($id)->first();
-        $user->syncRoles($this->role);
+        $clientId = auth()->user()->client_id;
+
+        // Retrieve the role by its name and client ID
+        $role = Role::where('name', $this->role)
+            ->where('client_id', $clientId)
+            ->first();
+
+        // First, detach all roles for this client
+        $currentRoles = $user->roles()->wherePivot('client_id', $clientId)->get();
+        foreach ($currentRoles as $currentRole) {
+            $user->removeRole($currentRole);
+        }
+
+        // Then, assign the new role for this client
+        if ($role) {
+            // Use syncRoles to manually attach the role with extra pivot column
+            $user->roles()->syncWithoutDetaching([$role->id => ['client_id' => $clientId]]);
+        }
 
         $this->openModal = false;
         $this->dialog()->success('Assign Successful', 'Role assigning to this user is successful.');
@@ -43,14 +61,10 @@ class UserManagement extends Component
 
     public function render()
     {
-        $users = User::where('client_id', auth()->user()->client_id)
-            ->whereNotIn('user_type', [1])
-            ->whereNotIn('id', [auth()->id()])
-            ->orderBy('id', 'ASC')
-            ->orderBy('user_type', 'ASC')
-            ->paginate(10);
+        $client = RefClient::whereId(auth()->user()->client_id)->first();
+        $users = $client->users()->paginate(10);
 
-        $roles = Role::where('created_by', auth()->user()->client_id)->get();
+        $roles = Role::where('client_id', auth()->user()->client_id)->get();
 
         return view('livewire.sys-admin.user-management', [
             'users' => $users,

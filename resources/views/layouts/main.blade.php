@@ -9,7 +9,7 @@
         toggleMiniSidebar:localStorage.getItem('toggleMiniSidebar')  === 'true',
     }">
     <div class="flex w-full">
-        <livewire:layout.sidebar />
+        @include('include.sidebar')
         <div
             x-on:click="toggleSidebarMobile = !toggleSidebarMobile"
             class="fixed inset-0 z-10 bg-gray-900 opacity-50"

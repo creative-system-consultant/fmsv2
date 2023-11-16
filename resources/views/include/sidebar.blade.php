@@ -38,22 +38,8 @@
                     </x-slot>
                 </x-badge>
             </div>
-            <div
-                x-show="!toggleMiniSidebar"
-                class="flex flex-col items-center px-4 mt-6">
-                <x-badge
-                    outline
-                    secondary
-                    label="{{ auth()->user()->name }}"
-                    class="py-1"
-                    >
-                    <x-slot name="prepend" class="relative flex items-start w-2 h-2 mr-1">
-                        <span class="absolute inline-flex w-full h-full rounded-full bg-green-500/75 animate-ping"></span>
-                        <span class="relative inline-flex w-2 h-2 bg-green-500 rounded-full"></span>
-                    </x-slot>
-                </x-badge>
-                <x-badge class="mt-3" flat primary label="{{ strtoupper(auth()->user()->refClient->name) }}" />
-            </div>
+            <livewire:layout.sidebar-tag />
+
             <div class="flex flex-col flex-1 pb-4 "
                 :class="toggleMiniSidebar == true ? '' : 'overflow-y-auto'">
                 <div class="flex-1 px-3 space-y-1 divide-y">
@@ -73,7 +59,11 @@
                         </x-sidebar.nav-item>
 
                         @foreach(config('module.sidebar') as $item)
-                            @can($item['permission'])
+                            @php
+                                $hasPermission = auth()->check() && auth()->user()->hasClientSpecificPermission($item['permission'], auth()->user()->client_id);
+                            @endphp
+
+                            @if($hasPermission)
                                 <x-sidebar.nav-item
                                     title="{{ $item['title'] }}"
                                     activeUrl="{{ $item['activeUrl'] }}"
@@ -82,7 +72,7 @@
                                         <x-icon name="{{ $item['icon'] }}" class="w-6 h-6"/>
                                     </x-slot>
                                 </x-sidebar.nav-item>
-                            @endcan
+                            @endif
                         @endforeach
                     </ul>
                 </div>

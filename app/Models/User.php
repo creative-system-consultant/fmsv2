@@ -34,9 +34,27 @@ class User extends Authenticatable implements Auditable
         'password' => 'hashed',
     ];
 
+    public function getClientSpecificRoles($clientId)
+    {
+        return $this->roles()->wherePivot('client_id', $clientId)->get();
+    }
+
+    public function hasClientSpecificPermission($permission, $clientId)
+    {
+        $roles = $this->getClientSpecificRoles($clientId);
+
+        foreach ($roles as $role) {
+            if ($role->hasPermissionTo($permission)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function clients()
     {
-        return $this->belongsToMany(RefClient::class,'REF.USER_HAS_CLIENTS', 'user_id', 'client_id');
+        return $this->belongsToMany(RefClient::class, 'REF.USER_HAS_CLIENTS', 'user_id', 'client_id');
     }
 
     public function refClient()
