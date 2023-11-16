@@ -19,7 +19,7 @@
                                     <p>{{ strtoupper($user->name) }}</p>
                                 </x-table.table-body>
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
-                                    @foreach ($user->roles as $rolesAssign)
+                                    @foreach ($user->roles->where('client_id', auth()->user()->client_id) as $rolesAssign)
                                         <x-badge flat fuchsia label="{{ strtoupper($rolesAssign->name) }}" />
                                     @endforeach
                                 </x-table.table-body>
@@ -36,7 +36,7 @@
                                 </x-table.table-body>
                             </tr>
                         @empty
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                            <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
                                 <x-no-data title="No data"/>
                             </x-table.table-body>
                         @endforelse

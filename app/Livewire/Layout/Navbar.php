@@ -12,6 +12,8 @@ class Navbar extends Component
         User::whereId(auth()->id())->update(['client_id' => $id]);
         // dispatch an event
         $this->dispatch('clientUpdated');
+
+        return $this->redirect('/home', navigate: true);
     }
 
     public function render()
