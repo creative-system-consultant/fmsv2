@@ -50,7 +50,7 @@
 
 
 
-                        <div class="relative flex flex-col px-4 py-6 mt-6 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:border-black" >
+                        <div class="relative flex flex-col px-4 py-6 mt-6 mb-20 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:border-black" >
                             <div class="flex mb-4 overflow-x-auto overflow-y-hidden bg-white rounded-lg shadow-sm dark:bg-gray-900">
                                 <div class="flex items-center flex-shrink-0 space-x-4 ">
                                     <x-tab.title name="0">
