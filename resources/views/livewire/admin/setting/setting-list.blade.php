@@ -128,6 +128,10 @@
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Position</span>
                                                     </a>
+                                                    <a wire:navigate href="{{ route('maintenance.income') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
+                                                        <span>Income</span>
+                                                    </a>
                                                 </li>
                                             </div>
                                         </div>
