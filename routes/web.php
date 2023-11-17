@@ -100,7 +100,7 @@ Route::middleware('auth')->group(function () {
         );
 
         // report List
-        Route::prefix('report')->as('report.')->get('index', ReportList::class)->name('report-list');
+        Route::prefix('report')->as('report.')->get('index', ReportList::class)->name('report-list')->middleware('client.permission:access report');
 
         //report Management
         Route::prefix('report')->as('report.management.')->group(
