@@ -40,58 +40,29 @@
                                                 <span>MANAGEMENT</span>
                                             </p>
                                         </li>
-
-                                        <x-general.dropdown-item icon="collection" title="Monthly Arreas" index="1">
-                                            <x-general.nav-item
-                                                title="Monthly Arrears Account By Age"
-                                                href="{{ route('report.management.monthly-arrears.mth-by-age') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Monthly Arrears Account By Employer"
-                                                href="{{route('report.management.monthly-arrears.mth-by-employer')}}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Monthly Arrears Account By State"
-                                                href="{{ route('report.management.monthly-arrears.mth-by-state') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Monthly Arrears Account By Product"
-                                                href="{{route('report.management.monthly-arrears.mth-by-product')}}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Monthly Arrears Ageing"
-                                                href="{{route('report.management.monthly-arrears.mth-ageing')}}"
-                                            />
-                                        </x-general.nav-item>
-
-                                        <x-general.dropdown-item icon="collection" title="Monthly Contribution" index="2">
-                                            <x-general.nav-item
-                                                title="Monthly Contribution Summary"
-                                                href="{{ route('report.management.monthly-contribution.contribution-summary') }}"
-                                            />
-                                        </x-general.dropdown-item>
-
-                                        <x-general.dropdown-item icon="collection" title="Monthly Financing Position" index="3">
-                                            <x-general.nav-item
-                                                title="Monthly Financing Position Summary"
-                                                href="{{ route('report.management.monthly-financing-position.financing-position') }}"
-                                            />
-                                        </x-general.dropdown-item>
-
-                                        <x-general.dropdown-item icon="collection" title="Monthly Npf" index="4">
-                                            <x-general.nav-item
-                                                title="Monthly Npf Summary"
-                                                href="{{ route('report.management.monthly-npf.mthly-npf-sum') }}"
-                                            />
-                                        </x-general.dropdown-item>
-
-                                        <x-general.dropdown-item icon="collection" title="Monthly Share" index="5">
-                                            <x-general.nav-item
-                                                title="Monthly Share Summary"
-                                                href="{{ route('report.management.monthly-share.mth-share-summary') }}"
-                                            />
-                                        </x-general.dropdown-item>
-
+                                        @foreach($reportsManagement as $groupTitle => $items )
+                                            @php
+                                                $groupHasPermittedItems = false;
+                                                foreach ($items as $item) {
+                                                    if (auth()->check() && auth()->user()->hasClientSpecificPermission($item['permission'], auth()->user()->client_id)) {
+                                                        $groupHasPermittedItems = true;
+                                                        break;
+                                                    }
+                                                }
+                                            @endphp
+                                            @if($groupHasPermittedItems)
+                                                <x-general.dropdown-item icon="collection" title="{{ $groupTitle }}" index="{{ $items->first()['index']}}">
+                                                    @foreach ($items as $item)
+                                                        @if (auth()->check() && auth()->user()->hasClientSpecificPermission($item['permission'], auth()->user()->client_id))
+                                                            <x-general.nav-item
+                                                                title="{{ $item['title'] }}"
+                                                                href="{{ route($item['route']) }}"
+                                                            />
+                                                        @endif
+                                                    @endforeach
+                                                </x-general.dropdown-item>
+                                            @endif
+                                        @endforeach
                                     </div>
                                     <div class="py-2 border-t border-primary-50 dark:border-gray-700">
                                         <li>
@@ -99,229 +70,29 @@
                                                 <span>OPERATION</span>
                                             </p>
                                         </li>
-
-                                        <x-general.dropdown-item icon="collection" title="Contribution" index="6">
-                                            <x-general.nav-item
-                                                title="Contribution Payment"
-                                                href="{{route('report.operation.contribution.payment')}}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Contribution Wihdrawal"
-                                                href="{{route('report.operation.contribution.withdrawal')}}"
-                                            />
-                                        </x-general.dropdown-item>
-
-                                        <x-general.dropdown-item icon="collection" title="Daily Transaction" index="7">
-                                            <x-general.nav-item
-                                                title="Daily Transaction Listing"
-                                                href="{{ route('report.operation.dailytransaction.listing') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Daily Transaction By Product"
-                                                href="{{ route('report.operation.dailytransaction.product') }}"
-                                            />
-                                        </x-general.dropdown-item>
-
-                                        <x-general.dropdown-item icon="collection" title="Financing" index="8">
-                                            <x-general.nav-item
-                                                title="Financing Summary"
-                                                href="{{ route('report.operation.financing.summary') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Financing Disbursement"
-                                                href="{{ route('report.operation.financing.disbursement') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Financing Cash Detail"
-                                                href="{{ route('report.operation.financing.cashdetail') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Financing Approval"
-                                                href="{{ route('report.operation.financing.approval') }}"
-                                            />
-                                        </x-general.dropdown-item>
-
-                                        <x-general.dropdown-item icon="collection" title="List" index="9">
-                                            <x-general.nav-item
-                                                title="List Of Autopay"
-                                                href="{{ route('report.operation.list.autopay') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Member"
-                                                href="{{route('report.operation.list.member')}}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Closed Member"
-                                                href="{{ route('report.operation.list.closed-member') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Bank"
-                                                href="{{ route('report.operation.list.bank') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Member Not Pay Contribution"
-                                                href="{{ route('report.operation.list.member-not-pay-contribution') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Dormant Member"
-                                                href="{{ route('report.operation.list.dormant-member') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Entrance Fee"
-                                                href="{{ route('report.operation.list.entrance-fee') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Financing"
-                                                href="{{ route('report.operation.list.financing') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Full Settlement"
-                                                href="{{ route('report.operation.list.full-settlement') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Introducer"
-                                                href="{{ route('report.operation.list.introducer') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Deduction"
-                                                href="{{ route('report.operation.list.deduction') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Retirement"
-                                                href="{{ route('report.operation.list.retirement') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Non-Cash Products"
-                                                href="{{ route('report.operation.list.non-cash-product') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Detail Cash Disbursement"
-                                                href="{{ route('report.operation.list.detail-for-cash-disbursement') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Takaful Payment"
-                                                href="{{ route('report.operation.list.takaful-payment') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Dividend Payment"
-                                                href="{{ route('report.operation.list.dividend-payment') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Fin Transaction Base On Disbursement"
-                                                href="{{ route('report.operation.list.fin-trx-base-disbursement') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of BSKE & GOLDBAR Transactions"
-                                                href="{{ route('report.operation.list.Bske-Goldbar-Trax') }}"
-                                            />
-                                        </x-general.dropdown-item>
-
-                                        <x-general.dropdown-item icon="collection" title="Member" index="10">
-                                            <x-general.nav-item
-                                                title="Member By Income"
-                                                href="{{ route('report.operation.member.byincome') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Member By State"
-                                                href="{{ route('report.operation.member.by-state') }}"
-                                            />
-                                        </x-general.dropdown-item>
-
-                                        <x-general.dropdown-item icon="collection" title="Monthly" index="11">
-                                            <x-general.nav-item
-                                                title="Monthly Npf Account"
-                                                href="{{ route('report.operation.monthly.mthlynpfacc') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Monthly Arrears Account"
-                                                href="{{ route('report.operation.monthly.arrears-account') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Monthly Financing Position"
-                                                href="{{ route('report.operation.monthly.mthly-fin-position') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="List Of Share Details"
-                                                href="{{ route('report.operation.monthly.list-share-detail') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Share Summary Yearly"
-                                                href="{{ route('report.operation.monthly.share-summary-yearly') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Contribution Details Monthly"
-                                                href="{{ route('report.operation.monthly.contribution-details-monthly') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Contribution Summary Yearly"
-                                                href="{{ route('report.operation.monthly.contribution-summary-yearly') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Financing Summary Yearly"
-                                                href="{{ route('report.operation.monthly.financing-summary-yearly') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Details Yearly Share"
-                                                href="{{ route('report.operation.monthly.details-yearly-share') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Details Yearly Contributions"
-                                                href="{{ route('report.operation.monthly.details-yrly-cont') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Details Financing Monthly"
-                                                href="{{ route('report.operation.monthly.details-fin-mthly') }}"
-                                            />  
-                                            <x-general.nav-item
-                                                title="Details Financing Yearly"
-                                                href="{{ route('report.operation.monthly.details-fin-yrly') }}"
-                                            /> 
-                                            <x-general.nav-item
-                                                title="Month Arrears Report(Rescheduled) - Monthly"
-                                                href="{{ route('report.operation.monthly.report-resc') }}"
-                                            />
-                                        </x-general.dropdown-item>
-
-                                        <x-general.dropdown-item icon="collection" title="Share" index="12">
-                                            <x-general.nav-item
-                                                title="Share Purchase"
-                                                href="{{ route('report.operation.share.share-purchase') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Share Redemption"
-                                                href="{{ route('report.operation.share.share-redemption') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Share Withdrawal"
-                                                href="{{ route('report.operation.share.share-withdrawal') }}"
-                                            />
-                                        </x-general.dropdown-item>
-
-                                        <x-general.dropdown-item icon="collection" title="Summary" index="13">
-                                            <x-general.nav-item
-                                                title="Summary Total Share"
-                                                href="{{ route('report.operation.summary.sum-total-share') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Summary Total Contribution"
-                                                href="{{ route('report.operation.summary.sum-total-cont') }}"
-                                            />
-                                        </x-general.dropdown-item>
-
-                                        <x-general.dropdown-item icon="collection" title="GL" index="14">
-                                            <x-general.nav-item
-                                                title="Detail"
-                                                href="{{ route('report.operation.g-l.detail-gl') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Detail GL by Account"
-                                                href="{{ route('report.operation.g-l.detail-gl-by-account') }}"
-                                            />
-                                            <x-general.nav-item
-                                                title="Detail GL By Bank Recon"
-                                                href="{{ route('report.operation.g-l.gl-bank-recon') }}"
-                                            />
-                                        </x-general.dropdown-item>
+                                        @foreach($reportsOperation as $groupTitle => $items )
+                                            @php
+                                                $groupHasPermittedItems = false;
+                                                foreach ($items as $item) {
+                                                    if (auth()->check() && auth()->user()->hasClientSpecificPermission($item['permission'], auth()->user()->client_id)) {
+                                                        $groupHasPermittedItems = true;
+                                                        break;
+                                                    }
+                                                }
+                                            @endphp
+                                            @if($groupHasPermittedItems)
+                                                <x-general.dropdown-item icon="collection" title="{{ $groupTitle }}" index="{{ $items->first()['index']}}">
+                                                    @foreach ($items as $item)
+                                                        @if (auth()->check() && auth()->user()->hasClientSpecificPermission($item['permission'], auth()->user()->client_id))
+                                                            <x-general.nav-item
+                                                                title="{{ $item['title'] }}"
+                                                                href="{{ route($item['route']) }}"
+                                                            />
+                                                        @endif
+                                                    @endforeach
+                                                </x-general.dropdown-item>
+                                            @endif
+                                        @endforeach
                                     </div>
                                 </ul>
                             </div>
