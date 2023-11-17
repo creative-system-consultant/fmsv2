@@ -57,47 +57,47 @@ Route::middleware('auth')->group(function () {
             ->name('password.confirm');
 
         //user management
-        Route::get('user-management', UserManagement::class)->name('userManagement');
+        Route::get('user-management', UserManagement::class)->name('userManagement')->middleware('client.permission:access user management');
 
         // roles
         Route::prefix('roles')->as('roles.')->group(
             base_path('routes/web/role.php'),
-        );
+        )->middleware('client.permission:access roles');
 
         // cif
         Route::prefix('cif')->as('cif.')->group(
             base_path('routes/web/cif.php'),
-        );
+        )->middleware('client.permission:access member info');
 
         //teller
         Route::prefix('teller')->as('teller.')->group(
             base_path('routes/web/teller.php'),
-        );
+        )->middleware('client.permission:access teller');
 
         //finance
         Route::prefix('finance')->as('finance.')->group(
             base_path('routes/web/finance.php'),
-        );
+        )->middleware('client.permission:access financing info');
 
         //other
         Route::prefix('other')->as('other.')->group(
             base_path('routes/web/other.php'),
-        );
+        )->middleware('client.permission:access other info');
 
         //reversal
         Route::prefix('reversal')->as('reversal.')->group(
             base_path('routes/web/reversal.php'),
-        );
+        )->middleware('client.permission:access reversal');
 
         //calculator
         Route::prefix('calculator')->as('calculator.')->group(
             base_path('routes/web/calculator.php'),
-        );
+        )->middleware('client.permission:access calculator');
 
         //dividen
         Route::prefix('dividen')->as('dividen.')->group(
             base_path('routes/web/dividen.php'),
-        );
+        )->middleware('client.permission:access dividen');
 
         // report List
         Route::prefix('report')->as('report.')->get('index', ReportList::class)->name('report-list')->middleware('client.permission:access report');
@@ -115,7 +115,7 @@ Route::middleware('auth')->group(function () {
         //admin/setting
         Route::prefix('Admin/setting')->as('setting.')->group(
             base_path('routes/web/admin/setting/setting.php'),
-        );
+        )->middleware('client.permission:access setting');
 
         //admin/maintenance
         Route::prefix('Admin/Maintenance')->as('maintenance.')->group(
