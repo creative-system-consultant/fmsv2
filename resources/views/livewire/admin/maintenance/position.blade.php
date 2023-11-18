@@ -61,7 +61,7 @@
                                         label="Edit" 
                                     />
                                     <x-button 
-                                        wire:click="delete({{ $position->id }}, {{ $position->code }})"
+                                        wire:click="delete({{ $position->id }}, '{{ $position->code }}')"
                                         sm  
                                         icon="trash" 
                                         red 
@@ -89,7 +89,7 @@
             <div class="tooltip buttom" title="Input should be a number, limited to 2 digits">
                 <x-input wire:model="code" label="Code " placeholder="" class="uppercase " />
             </div>
-            <div class="tooltip buttom" title="Enter the name and location of the branch (e.g., 'AMPANG')">
+            <div class="tooltip buttom" title="Enter the description of the position (e.g., 'MANAGER')">
                 <x-input wire:model="description" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
             </div>
         </div>

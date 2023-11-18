@@ -58,7 +58,7 @@ class IncomeService
         }
         else
         {
-            return RefIncome::where(function ($query) use ($searchQuery) {
+            return RefIncome::whereClientId(auth()->user()->client_id)->where(function ($query) use ($searchQuery) {
                 $query->where('code', 'like',  $searchQuery . '%')
                         ->orWhere('description', 'like', '%'. $searchQuery . '%');
             })

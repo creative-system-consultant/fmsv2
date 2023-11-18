@@ -15,7 +15,7 @@ class JobStatus extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
-    #[Rule('required|alpha|min:1|max:1')]
+    #[Rule('required|alpha|max:2')]
     public $code;
 
     #[Rule('required|regex:/^[A-Za-z\s]*$/|max:50')]
@@ -56,14 +56,17 @@ class JobStatus extends Component
 
     public function create()
     {
+
         $this->validate();
+
+        $trim_code = trim($this->code);
         
-        if (JobStatusService::isCodeExists($this->code)) {
+        if (JobStatusService::isCodeExists($trim_code)) {
             $this->addError('code', 'The code has already been taken.');
         } else {
             $data = [
-                'code' => strtoupper($this->code),
-                'description'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->description)))
+                'code' => strtoupper($trim_code),
+                'description'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
             ];
             JobStatusService::createJobStatus($data);
             $this->reset();
@@ -75,10 +78,12 @@ class JobStatus extends Component
     {
         $this->validate();
 
-        if (JobStatusService::canUpdateCode($id, $this->code)) {
+        $trim_code = trim($this->code);
+
+        if (JobStatusService::canUpdateCode($id,  $trim_code)) {
     
             $data = [
-                'code' => strtoupper($this->code),
+                'code' => strtoupper($trim_code),
                 'description'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->description)))
             ];
             JobStatusService::updateJobStatus($id, $data);

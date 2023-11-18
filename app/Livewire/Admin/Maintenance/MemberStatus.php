@@ -79,7 +79,7 @@ class MemberStatus extends Component
         if (MemberStatusService::canUpdateCode($id, $this->mbr_status)) {
             $data = [
                 'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-                'mbr_status' => trim(preg_replace('/\s+/', ' ', strtoupper($this->mbr_status))),
+                'mbr_status' => trim(strtoupper($this->mbr_status)),
             ];
             MemberStatusService::updateMemberStatusService($id, $data);
             $this->openModal = false;
@@ -88,9 +88,9 @@ class MemberStatus extends Component
         }
     }
 
-    public function delete($id)
+    public function delete($id,$mbr_status)
     {
-        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete the information?',$id);
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', "Are you sure to delete code status: " . $mbr_status . "?",$id);
     }
 
     public function ConfirmDelete($id)

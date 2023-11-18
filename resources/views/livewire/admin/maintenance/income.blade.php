@@ -62,7 +62,7 @@
                                         label="Edit" 
                                     />
                                     <x-button 
-                                        wire:click="delete({{ $income->id }}, {{ $income->code }})"
+                                        wire:click="delete({{ $income->id }}, '{{ $income->code }}')"
                                         sm  
                                         icon="trash" 
                                         red 
@@ -87,7 +87,7 @@
     <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="lg" hide-close="true">
 
         <div class="grid gap-4 my-2 lg:grid-cols-2 ">
-            <div class="tooltip buttom" title="Input should consist of number only, with a min and max of 2 digit">
+            <div class="tooltip buttom" title="Input should consist of number only, limited 2 digit">
                 <x-input wire:model="code" label="Code" placeholder="" class="uppercase"/>
             </div>
             <div class="tooltip buttom" title="Description of income should represent range of incomes (e.g., '0-1000')">

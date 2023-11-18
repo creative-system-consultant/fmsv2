@@ -41,7 +41,6 @@ class BranchID extends Component
     public function openCreateModal()
     {
         $this->setupModal("create", "Create Branch", "Branch Name");
-        // Clear the values for branch_id and branch_name
         $this->reset(['branch_id','branch_name']);
         $this->resetValidation();
     }
@@ -92,9 +91,9 @@ class BranchID extends Component
         }
     }
 
-    public function delete($id)
+    public function delete($id,$branch_id)
     {
-        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete the information?',$id);
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', "Are you delete the branch ID: ".$branch_id."?",$id);
     }
 
     public function ConfirmDelete($id)

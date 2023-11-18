@@ -18,7 +18,7 @@ class Position extends Component
     #[Rule('required|numeric|min:1|max:99')]
     public $code;
     
-    #[Rule('required|regex:/^[A-Za-z\s]+(\([A-Za-z]+\))?$/')]
+    #[Rule('required|regex:/^[A-Za-z\s]*$/|max:50')]
     public $description;
 
     public $openModal;
@@ -58,17 +58,18 @@ class Position extends Component
     {
         $this->validate();
         
-        if(strlen($this->code) == 1) {     // klau code input 1 no, tmbah prefix 0
-            $this->code = '0' . $this->code;
-        }
-        $this->description = str_replace(" ","",$this->description);
+        $trim_code = trim($this->code);
 
-        if (PositionService::isCodeExists($this->code)) {
+        if(strlen($trim_code) == 1) {
+            $trim_code = '0' . $trim_code;
+        }
+
+        if (PositionService::isCodeExists($trim_code)) {
             $this->addError('code', 'The code has already been taken.');
         } else {
             $data = [
-                'code' => $this->code,
-                'description'=>$this->description 
+                'code' => $trim_code,
+                'description'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
             ];
             PositionService::createPositionService($data);
             $this->reset();
@@ -80,11 +81,17 @@ class Position extends Component
     {
         $this->validate();
 
-        if (PositionService::canUpdateCode($id, $this->code)) {
+        $trim_code = trim($this->code);
+
+        if(strlen($trim_code) == 1) {
+            $trim_code = '0' . $trim_code;
+        }
+
+        if (PositionService::canUpdateCode($id, $trim_code)) {
     
             $data = [
-                'code' => str_pad(trim(strtoupper($this->code)), 2, '0', STR_PAD_LEFT),
-                'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
+                'code' => $trim_code,
+                'description'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
             ];
             PositionService::updatePositionService($id, $data);
             $this->openModal = false;
