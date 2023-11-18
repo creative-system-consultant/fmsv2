@@ -62,7 +62,7 @@
                                         label="Edit" 
                                     />
                                     <x-button 
-                                        wire:click="delete({{ $mbrstatus->id }})"
+                                        wire:click="delete({{ $mbrstatus->id }} ,'{{ $mbrstatus->mbr_status }}')"
                                         sm  
                                         icon="trash" 
                                         red 

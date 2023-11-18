@@ -3,7 +3,6 @@
 namespace App\Services\Model;
 
 use App\Models\Ref\RefMemStatus;
-use Illuminate\Support\Facades\Validator;
 
 class MemberStatusService
 {
@@ -60,7 +59,7 @@ class MemberStatusService
         }
         else
         {
-            return RefMemStatus::where(function ($query) use ($searchQuery) {
+            return RefMemStatus::whereClientId(auth()->user()->client_id)->where(function ($query) use ($searchQuery) {
                 $query->where('mbr_status', 'like',  $searchQuery . '%')
                         ->orWhere('description', 'like', '%'. $searchQuery . '%');
             })

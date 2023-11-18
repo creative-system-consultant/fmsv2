@@ -58,19 +58,22 @@ class Income extends Component
     public function create()
     {
         $this->validate();
-        
-        if(strlen($this->code) == 1) {     // klau code input 1 no, tmbah prefix 0
-            $this->code = '0' . $this->code;
+
+        $trim_code = trim($this->code);
+
+        if(strlen($trim_code) == 1) {
+            $trim_code = '0' . $trim_code;
         }
+        
         $this->description = str_replace(" ","",$this->description);
         $this->description = str_replace("-"," - ",$this->description);
 
-        if (IncomeService::isCodeExists($this->code)) {
+        if (IncomeService::isCodeExists($trim_code)) {
             $this->addError('code', 'The code has already been taken.');
         } else {
             $data = [
                 'description' => $this-> description,
-                'code' => $this-> code,
+                'code' => $trim_code,
             ];
             IncomeService::createIncome($data);
             $this->reset();
@@ -82,15 +85,17 @@ class Income extends Component
     {
         $this->validate();
 
-        if(strlen($this->code) == 1) {
-            $this->code = '0' . $this->code;
+        $trim_code = trim($this->code);
+
+        if(strlen($trim_code) == 1) {
+            $trim_code = '0' . $trim_code;
         }
         $this->description = str_replace(" ","",$this->description);
         $this->description = str_replace("-"," - ",$this->description);
 
-        if (IncomeService::canUpdateCode($id, $this->code)){
+        if (IncomeService::canUpdateCode($id, $trim_code)){
             $data = [
-                'code' => $this->code,
+                'code' => $trim_code,
                 'description' => $this->description
             ];
             IncomeService::updateIncome($id, $data);

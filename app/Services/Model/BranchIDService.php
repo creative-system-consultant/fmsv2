@@ -59,7 +59,7 @@ class BranchIDService
         }
         else
         {
-            return RefBranchID::where(function ($query) use ($searchQuery) {
+            return RefBranchID::whereClientId(auth()->user()->client_id)->where(function ($query) use ($searchQuery) {
                 $query->where('branch_id', 'like', $searchQuery . '%')
                         ->orWhere('branch_name', 'like', '%' . $searchQuery . '%');
             })
