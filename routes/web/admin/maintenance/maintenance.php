@@ -21,6 +21,7 @@ use App\Livewire\Admin\Maintenance\JobStatus;
 use App\Livewire\Admin\Maintenance\ThirdParty;
 use App\Livewire\Admin\Maintenance\MemberStatus;
 use App\Livewire\Admin\Maintenance\Position;
+use App\Livewire\Admin\Maintenance\Occupation;
 
 Route::get('state', State::class)->name('state');
 Route::get('glcode', Glcode::class)->name('glcode');
@@ -43,3 +44,4 @@ Route::get('branch-i-d', BranchID::class)->name('branch-i-d');
 Route::get('position', Position::class)->name('position');
 Route::get('income', Income::class)->name('income');
 Route::get('job-status', JobStatus::class)->name('job-status');
+Route::get('occupation', Occupation::class)->name('occupation');
