@@ -51,7 +51,7 @@
                         <div x-on:click="menuOpen = !menuOpen" @click.away="menuOpen = false"
                             class="flex items-center space-x-2 cursor-pointer">
                             <x-avatar md src="https://picsum.photos/300?size=md" />
-                            <p class=" w-12 lg:w-full dark:text-gray-200 text-sm line-clamp-1" :class="{'': atTop, ' text-black xl:text-white': !atTop}">
+                            <p class="w-12 text-sm lg:w-full dark:text-gray-200 line-clamp-1" :class="{'': atTop, ' text-black xl:text-white': !atTop}">
                                 {{ auth()->user()->name }}
                             </p>
                         </div>
@@ -84,29 +84,39 @@
             </div>
         </div>
     </header>
+
     <div x-show="showCilent" x-cloak>
-        <x-general.slideover-container 
+        <x-general.slideover-container
             title="List Of Client"
             xdataName="showCilent"
             placeholderSearch="Search Client"
 
             >
             @forelse (auth()->user()->clients as $client)
-            <li>
-                <div
-                    x-on:click="clickClient = true"
-                    wire:click="selectClient({{ $client->id }})"  
-                    class="cursor-pointer inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
-                    <x-icon name="office-building" class="w-4 h-4 mr-2"/>
-                    <span>{{ strtoupper($client->name) }}</span>
-                </div>
-            </li>
+                <li>
+                    <div
+                        class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 @if(auth()->user()->client_id != $client->id) cursor-pointer @endif dark:text-white hover:text-primary-500"
+                            @if(auth()->user()->client_id != $client->id)
+                                wire:click="selectClient({{ $client->id }})"
+                                x-on:click="clickClient = true"
+                            @endif
+                        >
+
+                        @if(auth()->user()->client_id == $client->id)
+                            <x-icon name="office-building" class="w-4 h-4 mr-2 text-primary-500"/>
+                            <span class="italic text-primary-500">{{ strtoupper($client->name) }} (current selected)</span>
+                        @else
+                            <x-icon name="office-building" class="w-4 h-4 mr-2"/>
+                            <span>{{ strtoupper($client->name) }}</span>
+                        @endif
+
+                    </div>
+                </li>
             @empty
-            <li>
-                <x-no-data title="No Client"/>
-            </li>
+                <li>
+                    <x-no-data title="No Client"/>
+                </li>
             @endforelse
         </x-general.slideover-container>
     </div>
 </div>
-

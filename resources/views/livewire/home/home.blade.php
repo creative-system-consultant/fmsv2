@@ -52,20 +52,28 @@
 
                         <div class="relative flex flex-col px-4 py-6 mt-6 mb-20 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:border-black" >
                             <div class="flex mb-4 overflow-x-auto overflow-y-hidden bg-white rounded-lg shadow-sm dark:bg-gray-900">
-                                <div class="flex items-center flex-shrink-0 space-x-4 ">
-                                    <x-tab.title name="0">
-                                        <div class="flex items-center space-x-2 text-sm">
-                                            <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
-                                            <h1>Disbursement Listing</h1>
-                                        </div>
-                                    </x-tab.title>
-                                    <x-tab.title name="1">
-                                        <div class="flex items-center space-x-2 text-sm">
-                                            <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
-                                            <h1>Pre Disbursement Listing</h1>
-                                        </div>
-                                    </x-tab.title>
-                                </div>
+                                    <div class="flex items-center flex-shrink-0 space-x-4 ">
+                                        <x-tab.title name="0">
+                                            <div class="flex items-center space-x-2 text-sm">
+                                                <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
+                                                @if($clientType == 'fms financing')
+                                                    <h1>Disbursement Listing</h1>
+                                                @else
+                                                    <h1>Active Membership</h1>
+                                                @endif
+                                            </div>
+                                        </x-tab.title>
+                                        <x-tab.title name="1">
+                                            <div class="flex items-center space-x-2 text-sm">
+                                                <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
+                                                @if($clientType == 'fms financing')
+                                                    <h1>Pre Disbursement Listing</h1>
+                                                @else
+                                                    <h1>Closed Membership</h1>
+                                                @endif
+                                            </div>
+                                        </x-tab.title>
+                                    </div>
                             </div>
 
                             <div x-show="tab == 0">
@@ -82,7 +90,6 @@
                                             <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
                                             <x-table.table-header class="text-left" value="IDENTITY NUMBER" sort="" />
                                             <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
-                                            <x-table.table-header class="text-left" value="ACTION" sort="" />
                                         </x-slot>
                                         <x-slot name="tbody">
                                             @foreach($data as $item)
@@ -102,10 +109,6 @@
                                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                                     700210055198
                                                 </x-table.table-body>
-
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    <x-button onclick="$openModal('disb-modal')" xs icon="dots-horizontal" primary label="More info" />
-                                                </x-table.table-body>
                                             </tr>
                                             @endforeach
                                         </x-slot>
@@ -113,26 +116,6 @@
                                     <div class="mt-4">
                                         {{ $data->links('livewire::pagination-links') }}
                                     </div>
-
-                                    <x-modal.card title="Disbursement" align="center" max-width="4xl" wire:model.defer="disb-modal">
-                                        <div class="grid gap-4 sm:grid-cols-2">
-                                            <x-input label="MEMBER NAME" disabled value="" />
-                                            <x-input label="IDENTITY NUMBER" disabled value="" />
-                                            <x-input label="ACCOUNT NO" disabled value="" />
-                                            <x-input label="PRODUCTS" disabled value="" />
-                                            <x-input label="PRODUCTS DETAIL" disabled value="" />
-                                            <x-input label="APPROVED AMOUNT" disabled value="" />
-                                        </div>
-
-                                        <x-slot name="footer">
-                                            <div class="flex justify-end gap-x-4">
-                                                <div class="flex">
-                                                    <x-button flat label="Cancel" x-on:click="close" />
-                                                    <x-button primary label="Things To-do" wire:click="" />
-                                                </div>
-                                            </div>
-                                        </x-slot>
-                                    </x-modal.card>
                                 </div>
                             </div>
                             <div x-show="tab == 1">
@@ -149,7 +132,6 @@
                                             <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
                                             <x-table.table-header class="text-left" value="IDENTITY NUMBER" sort="" />
                                             <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
-                                            <x-table.table-header class="text-left" value="ACTION" sort="" />
                                         </x-slot>
                                         <x-slot name="tbody">
                                             @foreach($data as $item)
@@ -169,10 +151,6 @@
                                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                                     700210055198
                                                 </x-table.table-body>
-
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    <x-button onclick="$openModal('predisb-modal')" xs icon="dots-horizontal" primary label="More info" />
-                                                </x-table.table-body>
                                             </tr>
                                             @endforeach
                                         </x-slot>
@@ -180,28 +158,6 @@
                                     <div class="mt-4">
                                         {{ $data->links('livewire::pagination-links') }}
                                     </div>
-                                        <x-modal.card title="Pre Disbursement" align="center" max-width="4xl" wire:model.defer="predisb-modal">
-                                            <div class="grid gap-4 sm:grid-cols-2">
-                                                <x-input label="NAME" disabled value="" />
-                                                <x-input label="MEMBER ID" disabled value="" />
-                                                <x-input label="ACCOUNT NO" disabled value="" />
-                                                <x-input label="IDENTITY NO" disabled value="" />
-                                                <x-input label="PRODUCTS" disabled value="" />
-                                                <x-input label="PRODUCTS DETAIL" disabled value="" />
-                                                <x-input label="APPROVED LIMIT" disabled value="" />
-                                                <x-input label="INSTALLMENT AMOUNT" disabled value="" />
-                                                <x-input label="APPROVED DATE" disabled value="" />
-                                            </div>
-
-                                            <x-slot name="footer">
-                                                <div class="flex justify-end gap-x-4">
-                                                    <div class="flex">
-                                                        <x-button flat label="Cancel" x-on:click="close" />
-                                                        <x-button primary label="Things To-do" wire:click="" />
-                                                    </div>
-                                                </div>
-                                            </x-slot>
-                                        </x-modal.card>
                                 </div>
                             </div>
                         </div>
@@ -210,7 +166,6 @@
 
 
                 <div class="col-span-12 sm:col-span-12 md:col-span-12 xl:col-span-4 2xl:col-span-4">
-
                     <div class="hidden xl:block">
                         <div class="flex flex-col items-center justify-center p-4 px-12 border rounded-lg shadow-lg bg-white/70 dark:bg-gray-900/50 dark:border-black dark:text-white backdrop-blur-lg h-72">
                             <x-avatar size="w-24 h-24" class="border-2 border-primary-700" src="https://picsum.photos/300?size=lg" />
@@ -234,12 +189,20 @@
                                         :class="tab == 0 ? 'animate-spin' : ''">
                                     </div>
                                     <div class="absolute inset-x-0 flex items-center justify-center w-24 h-24 mx-auto bg-white rounded-full dark:bg-gray-800 top-4">
-                                        <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">84</h1>
+                                        @if($clientType == 'fms financing')
+                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">84</h1>
+                                        @else
+                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">546</h1>
+                                        @endif
                                     </div>
                                 </div>
                                 <div>
                                     <div class="space-y-1 text-xl">
-                                        <h1>Disbursement Listing</h1>
+                                        @if($clientType == 'fms financing')
+                                            <h1>Disbursement Listing</h1>
+                                        @else
+                                            <h1>Active Membership</h1>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -252,11 +215,19 @@
                                     :class="tab == 1 ? 'animate-spin' : ''">
                                     </div>
                                     <div class="absolute inset-x-0 flex items-center justify-center w-24 h-24 mx-auto bg-white rounded-full dark:bg-gray-800 top-4">
-                                        <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">56</h1>
+                                        @if($clientType == 'fms financing')
+                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">56</h1>
+                                        @else
+                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">32</h1>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="space-y-1 text-xl">
-                                    <h1>Pre Disbursement Listing</h1>
+                                    @if($clientType == 'fms financing')
+                                        <h1>Pre Disbursement Listing</h1>
+                                    @else
+                                        <h1>Close Membership</h1>
+                                    @endif
                                 </div>
                             </div>
                         </div>

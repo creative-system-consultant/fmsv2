@@ -14,21 +14,13 @@
             'hidden lg:block': !toggleSidebarMobile
         }">
         <div class="relative flex flex-col flex-1 min-h-0 pt-0 border-r border-gray-200 backdrop-blur-xl bg-white/60 dark:bg-gray-900 dark:border-gray-800">
-            <a href="{{ route('home') }}" class="flex items-center justify-center pt-4 text-xl font-bold">
-                <div x-show="!toggleMiniSidebar">
-                    <x-logo class="w-auto h-12" />
-                </div>
-                <div x-show="toggleMiniSidebar">
-                    <x-logo class="w-auto h-12 "  x-bind:class="openHoverMiniSidebar ? 'lg:h-12' : 'lg:h-6'" />
-                </div>
-            </a>
             <livewire:layout.sidebar-tag />
 
             <div class="flex flex-col flex-1 pb-4 "
                 :class="toggleMiniSidebar == true ? '' : 'overflow-y-auto'">
                 <div class="flex-1 px-3 space-y-1 divide-y">
                     <ul class="pt-4 pb-2 space-y-2 list-none">
-                        <div class="block pb-6 lg:hidden  fixed bottom-0 left-0 right-0">
+                        <div class="fixed bottom-0 left-0 right-0 block pb-6 lg:hidden">
                             <div class="flex items-center justify-center">
                                 <x-toggle-theme/>
                             </div>
