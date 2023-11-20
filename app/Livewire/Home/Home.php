@@ -44,11 +44,16 @@ class Home extends Component
 
     public function render()
     {
+        $clientType = User::where('client_id', auth()->user()->client_id)
+            ->where('user_type', 2)
+            ->first();
+
         $data = RefBank::paginate(3);
 
         return view('livewire.home.home',[
             'data' => $data,
-            'clients' => auth()->user()->clients
+            'clients' => auth()->user()->clients,
+            'clientType' => $clientType->roles->first()->name,
         ])->extends('layouts.main');
     }
 }
