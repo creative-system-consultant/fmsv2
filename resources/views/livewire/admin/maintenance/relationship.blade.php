@@ -90,7 +90,7 @@
     </x-container>
 
     <!-- modal -->
-    <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="lg">
+    <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="lg" disableModal="true">
         <div class="grid gap-4 my-2 lg:grid-cols-2 ">
             <x-input wire:model="code" label="Code" placeholder="" class="uppercase "/>
             <x-input wire:model="description" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
