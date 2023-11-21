@@ -86,7 +86,7 @@
                                             <x-table.table-header class="text-left" value="MEMBERSHIP ID" sort="" />
                                         </x-slot>
                                         <x-slot name="tbody">
-                                            @forelse($dibs as $item)
+                                            @forelse($disb as $item)
                                             <tr>
                                                 <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
                                                     {{ $loop->iteration }}
@@ -114,7 +114,7 @@
                                         </x-slot>
                                     </x-table.table>
                                     <div class="mt-4">
-                                        {{ $dibs->links('livewire::pagination-links') }}
+                                        {{ $disb->links('livewire::pagination-links') }}
                                     </div>
                                 @else
                                     <x-table.table>
@@ -175,7 +175,7 @@
                                             <x-table.table-header class="text-left" value="MEMBER NUMBER" sort="" />
                                         </x-slot>
                                         <x-slot name="tbody">
-                                            @forelse($preDibs as $item)
+                                            @forelse($preDisb as $item)
                                             <tr>
                                                 <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
                                                     {{ $loop->iteration }}
@@ -203,7 +203,7 @@
                                         </x-slot>
                                     </x-table.table>
                                     <div class="mt-4">
-                                        {{ $preDibs->links('livewire::pagination-links') }}
+                                        {{ $preDisb->links('livewire::pagination-links') }}
                                     </div>
                                 @else
                                     <x-table.table>
@@ -277,9 +277,9 @@
                                     </div>
                                     <div class="absolute inset-x-0 flex items-center justify-center w-24 h-24 mx-auto bg-white rounded-full dark:bg-gray-800 top-4">
                                         @if($clientType == 'fms financing')
-                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{$dibs->total()}}</h1>
+                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{ number_format($disb->total()) }}</h1>
                                         @else
-                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{$activeMember->total()}}</h1>
+                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{ number_format($activeMember->total()) }}</h1>
                                         @endif
                                     </div>
                                 </div>
@@ -303,9 +303,9 @@
                                     </div>
                                     <div class="absolute inset-x-0 flex items-center justify-center w-24 h-24 mx-auto bg-white rounded-full dark:bg-gray-800 top-4">
                                         @if($clientType == 'fms financing')
-                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{$preDibs->total()}}</h1>
+                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{ number_format($preDisb->total()) }}</h1>
                                         @else
-                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{$closeMember->total()}}</h1>
+                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{ number_format($closeMember->total()) }}</h1>
                                         @endif
                                     </div>
                                 </div>
