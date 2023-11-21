@@ -38,129 +38,220 @@
                                     Also known as “KOPERASI Financing Management”
                                     Used to manage information of “KOPERASI members and their financing.
                                 </h4>
-                                <div class="pt-4">
-                                    <x-button class="w-full py-2 sm:w-fit" wire:navigate href="{{ route('cif.main') }}" icon="arrow-circle-right" primary label=" Go to Member Info" />
-                                </div>
                             </div>
                             <div class="flex items-center justify-center ml-0 sm:-ml-6">
-                                <img src="{{asset('herodashboard.png')}}" class="w-auto h-64 sm:h-80" alt="Hero"/>
+                                <img src="{{asset('herodashboard.png')}}" class="w-auto h-64 sm:h-64" alt="Hero"/>
                             </div>
                         </div>
                     </div>
 
 
 
-                        <div class="relative flex flex-col px-4 py-6 mt-6 mb-20 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:border-black" >
-                            <div class="flex mb-4 overflow-x-auto overflow-y-hidden bg-white rounded-lg shadow-sm dark:bg-gray-900">
-                                    <div class="flex items-center flex-shrink-0 space-x-4 ">
-                                        <x-tab.title name="0">
-                                            <div class="flex items-center space-x-2 text-sm">
-                                                <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
-                                                @if($clientType == 'fms financing')
-                                                    <h1>Disbursement Listing</h1>
-                                                @else
-                                                    <h1>Active Membership</h1>
-                                                @endif
-                                            </div>
-                                        </x-tab.title>
-                                        <x-tab.title name="1">
-                                            <div class="flex items-center space-x-2 text-sm">
-                                                <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
-                                                @if($clientType == 'fms financing')
-                                                    <h1>Pre Disbursement Listing</h1>
-                                                @else
-                                                    <h1>Closed Membership</h1>
-                                                @endif
-                                            </div>
-                                        </x-tab.title>
-                                    </div>
-                            </div>
+                    <div class="relative flex flex-col px-4 py-6 mt-6 mb-20 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:border-black" >
+                        <div class="flex mb-4 overflow-x-auto overflow-y-hidden bg-white rounded-lg shadow-sm dark:bg-gray-900">
+                                <div class="flex items-center flex-shrink-0 space-x-4 ">
+                                    <x-tab.title name="0">
+                                        <div class="flex items-center space-x-2 text-sm">
+                                            <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
+                                            @if($clientType == 'fms financing')
+                                                <h1>Disbursement Listing</h1>
+                                            @else
+                                                <h1>Active Membership</h1>
+                                            @endif
+                                        </div>
+                                    </x-tab.title>
+                                    <x-tab.title name="1">
+                                        <div class="flex items-center space-x-2 text-sm">
+                                            <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
+                                            @if($clientType == 'fms financing')
+                                                <h1>Pre Disbursement Listing</h1>
+                                            @else
+                                                <h1>Closed Membership</h1>
+                                            @endif
+                                        </div>
+                                    </x-tab.title>
+                                </div>
+                        </div>
 
-                            <div x-show="tab == 0">
-                                <div class="mt-2">
-                                    <div class="flex items-center justify-start mb-4">
-                                        <x-input
-                                            wire:model=""
-                                            placeholder="Search"
-                                        />
+                        <div x-show="tab == 0">
+                            <div class="mt-2">
+                                <div class="flex items-center justify-start mb-4">
+                                    <x-input
+                                        wire:model=""
+                                        placeholder="Search"
+                                    />
+                                </div>
+                                @if($clientType == 'fms financing')
+                                    <x-table.table>
+                                        <x-slot name="thead">
+                                            <x-table.table-header class="text-left" value="NO" sort="" />
+                                            <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
+                                            <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
+                                            <x-table.table-header class="text-left" value="MEMBER NUMBER" sort="" />
+                                        </x-slot>
+                                        <x-slot name="tbody">
+                                            @forelse($dibs as $item)
+                                            <tr>
+                                                <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
+                                                    {{ $loop->iteration }}
+                                                </x-table.table-body>
+
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                    {{$item->name}}
+                                                </x-table.table-body>
+
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                    {{$item->ACCOUNT_NO}}
+                                                </x-table.table-body>
+
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                    {{$item->mbr_no}}
+                                                </x-table.table-body>
+                                            </tr>
+                                            @empty
+                                            <tr>
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                                    <x-no-data title="No data"/>
+                                                </x-table.table-body>
+                                            </tr>
+                                            @endforelse
+                                        </x-slot>
+                                    </x-table.table>
+                                    <div class="mt-4">
+                                        {{ $dibs->links('livewire::pagination-links') }}
                                     </div>
+                                @else
                                     <x-table.table>
                                         <x-slot name="thead">
                                             <x-table.table-header class="text-left" value="NO" sort="" />
                                             <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
                                             <x-table.table-header class="text-left" value="IDENTITY NUMBER" sort="" />
-                                            <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
+                                            <x-table.table-header class="text-left" value="MEMBER NUMBER" sort="" />
                                         </x-slot>
                                         <x-slot name="tbody">
-                                            @foreach($data as $item)
+                                            @forelse($activeMember as $item)
                                             <tr>
                                                 <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
-                                                    1
+                                                    {{ $loop->iteration }}
                                                 </x-table.table-body>
 
                                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    NOR ZAHARA BINTI MOHD ISA
+                                                    {{$item->cifCustomer->name}}
                                                 </x-table.table-body>
 
                                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    700210055198
+                                                    {{$item->cifCustomer->identity_no}}
                                                 </x-table.table-body>
 
                                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    700210055198
+                                                    {{$item->mbr_no}}
                                                 </x-table.table-body>
                                             </tr>
-                                            @endforeach
+                                            @empty
+                                            <tr>
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                                    <x-no-data title="No data"/>
+                                                </x-table.table-body>
+                                            </tr>
+                                            @endforelse
                                         </x-slot>
                                     </x-table.table>
                                     <div class="mt-4">
-                                        {{ $data->links('livewire::pagination-links') }}
+                                        {{ $activeMember->links('livewire::pagination-links') }}
                                     </div>
-                                </div>
-                            </div>
-                            <div x-show="tab == 1">
-                                <div class="mt-2">
-                                    <div class="flex items-center justify-start mb-4">
-                                        <x-input
-                                            wire:model=""
-                                            placeholder="Search"
-                                        />
-                                    </div>
-                                    <x-table.table>
-                                        <x-slot name="thead">
-                                            <x-table.table-header class="text-left" value="NO" sort="" />
-                                            <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
-                                            <x-table.table-header class="text-left" value="IDENTITY NUMBER" sort="" />
-                                            <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
-                                        </x-slot>
-                                        <x-slot name="tbody">
-                                            @foreach($data as $item)
-                                            <tr>
-                                                <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
-                                                    1
-                                                </x-table.table-body>
-
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    NOR ZAHARA BINTI MOHD ISA
-                                                </x-table.table-body>
-
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    700210055198
-                                                </x-table.table-body>
-
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    700210055198
-                                                </x-table.table-body>
-                                            </tr>
-                                            @endforeach
-                                        </x-slot>
-                                    </x-table.table>
-                                    <div class="mt-4">
-                                        {{ $data->links('livewire::pagination-links') }}
-                                    </div>
-                                </div>
+                                @endif
                             </div>
                         </div>
+                        <div x-show="tab == 1">
+                            <div class="mt-2">
+                                <div class="flex items-center justify-start mb-4">
+                                    <x-input
+                                        wire:model=""
+                                        placeholder="Search"
+                                    />
+                                </div>
+                                @if($clientType == 'fms financing')
+                                    <x-table.table>
+                                        <x-slot name="thead">
+                                            <x-table.table-header class="text-left" value="NO" sort="" />
+                                            <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
+                                            <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
+                                            <x-table.table-header class="text-left" value="MEMBER NUMBER" sort="" />
+                                        </x-slot>
+                                        <x-slot name="tbody">
+                                            @forelse($preDibs as $item)
+                                            <tr>
+                                                <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
+                                                    {{ $loop->iteration }}
+                                                </x-table.table-body>
+
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                    {{$item->name}}
+                                                </x-table.table-body>
+
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                    {{$item->ACCOUNT_NO}}
+                                                </x-table.table-body>
+
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                    {{$item->mbr_no}}
+                                                </x-table.table-body>
+                                            </tr>
+                                            @empty
+                                            <tr>
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                                    <x-no-data title="No data"/>
+                                                </x-table.table-body>
+                                            </tr>
+                                            @endforelse
+                                        </x-slot>
+                                    </x-table.table>
+                                    <div class="mt-4">
+                                        {{ $preDibs->links('livewire::pagination-links') }}
+                                    </div>
+                                @else
+                                    <x-table.table>
+                                        <x-slot name="thead">
+                                            <x-table.table-header class="text-left" value="NO" sort="" />
+                                            <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
+                                            <x-table.table-header class="text-left" value="IDENTITY NUMBER" sort="" />
+                                            <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
+                                        </x-slot>
+                                        <x-slot name="tbody">
+                                            @forelse($closeMember as $item)
+                                            <tr>
+                                                <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
+                                                    {{ $loop->iteration }}
+                                                </x-table.table-body>
+
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                    {{$item->cifCustomer->name}}
+                                                </x-table.table-body>
+
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                    {{$item->cifCustomer->identity_no}}
+                                                </x-table.table-body>
+
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                    {{$item->mbr_no}}
+                                                </x-table.table-body>
+                                            </tr>
+                                            @empty
+                                            <tr>
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                                    <x-no-data title="No data"/>
+                                                </x-table.table-body>
+                                            </tr>
+                                            @endforelse
+                                        </x-slot>
+                                    </x-table.table>
+                                    <div class="mt-4">
+                                        {{ $closeMember->links('livewire::pagination-links') }}
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
 
@@ -190,9 +281,9 @@
                                     </div>
                                     <div class="absolute inset-x-0 flex items-center justify-center w-24 h-24 mx-auto bg-white rounded-full dark:bg-gray-800 top-4">
                                         @if($clientType == 'fms financing')
-                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">84</h1>
+                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{$dibs->total()}}</h1>
                                         @else
-                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">546</h1>
+                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{$activeMember->total()}}</h1>
                                         @endif
                                     </div>
                                 </div>
@@ -216,9 +307,9 @@
                                     </div>
                                     <div class="absolute inset-x-0 flex items-center justify-center w-24 h-24 mx-auto bg-white rounded-full dark:bg-gray-800 top-4">
                                         @if($clientType == 'fms financing')
-                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">56</h1>
+                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{$preDibs->total()}}</h1>
                                         @else
-                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">32</h1>
+                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{$closeMember->total()}}</h1>
                                         @endif
                                     </div>
                                 </div>
