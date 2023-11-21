@@ -210,7 +210,7 @@
                                         <x-slot name="thead">
                                             <x-table.table-header class="text-left" value="NO" sort="" />
                                             <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
-                                            <x-table.table-header class="text-left" value="IDENTITY NUMBER" sort="" />
+                                            <x-table.table-header class="text-left" value="IC NUMBER" sort="" />
                                             <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
                                         </x-slot>
                                         <x-slot name="tbody">

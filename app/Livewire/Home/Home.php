@@ -52,45 +52,45 @@ class Home extends Component
 
         
         $dibs =  DB::table('FMS.ACCOUNT_MASTERS AS A')
-            ->join('FMS.ACCOUNT_POSITIONS AS B', 'A.account_no', '=', 'B.account_no')
-            ->join('FMS.MEMBERSHIP AS C', 'A.mbr_no', '=', 'C.mbr_no')
-            ->join('CIF.CUSTOMERS AS D', 'C.cif_id', '=', 'D.ID')
-            ->select(
-                'C.mbr_no',
-                'D.name',
-                'A.ACCOUNT_NO',
-                'B.disbursed_amount',
-                'B.prin_outstanding',
-                'B.uei_outstanding'
-            )
-            ->whereNotNull('A.pre_disbursement_flag')
-            ->where('status_id', '=', 1)
-            ->where('A.account_status', '=', 1)
-            ->where('B.client_id', '=', auth()->user()->client_id)
-            ->where('C.client_id', '=', auth()->user()->client_id)
-            ->where('D.client_id', '=', auth()->user()->client_id)
-            ->paginate(3);
+                    ->join('FMS.ACCOUNT_POSITIONS AS B', 'A.account_no', '=', 'B.account_no')
+                    ->join('FMS.MEMBERSHIP AS C', 'A.mbr_no', '=', 'C.mbr_no')
+                    ->join('CIF.CUSTOMERS AS D', 'C.cif_id', '=', 'D.ID')
+                    ->select(
+                        'C.mbr_no',
+                        'D.name',
+                        'A.ACCOUNT_NO',
+                        'B.disbursed_amount',
+                        'B.prin_outstanding',
+                        'B.uei_outstanding'
+                    )
+                    ->whereNotNull('A.pre_disbursement_flag')
+                    ->where('status_id', '=', 1)
+                    ->where('A.account_status', '=', 1)
+                    ->where('B.client_id', '=', auth()->user()->client_id)
+                    ->where('C.client_id', '=', auth()->user()->client_id)
+                    ->where('D.client_id', '=', auth()->user()->client_id)
+                    ->paginate(3);
 
 
         $preDibs  =  DB::table('FMS.ACCOUNT_MASTERS AS A')
-        ->join('FMS.ACCOUNT_POSITIONS AS B', 'A.account_no', '=', 'B.account_no')
-        ->join('FMS.MEMBERSHIP AS C', 'A.mbr_no', '=', 'C.mbr_no')
-        ->join('CIF.CUSTOMERS AS D', 'C.cif_id', '=', 'D.ID')
-        ->select(
-            'C.mbr_no',
-            'D.name',
-            'A.ACCOUNT_NO',
-            'B.disbursed_amount',
-            'B.prin_outstanding',
-            'B.uei_outstanding'
-        )
-        ->whereNull('A.pre_disbursement_flag')
-        ->where('status_id', '=', 1)
-        ->where('A.account_status', '=', 1)
-        ->where('B.client_id', '=', auth()->user()->client_id)
-        ->where('C.client_id', '=', auth()->user()->client_id)
-        ->where('D.client_id', '=', auth()->user()->client_id)
-        ->paginate(3);
+                        ->join('FMS.ACCOUNT_POSITIONS AS B', 'A.account_no', '=', 'B.account_no')
+                        ->join('FMS.MEMBERSHIP AS C', 'A.mbr_no', '=', 'C.mbr_no')
+                        ->join('CIF.CUSTOMERS AS D', 'C.cif_id', '=', 'D.ID')
+                        ->select(
+                            'C.mbr_no',
+                            'D.name',
+                            'A.ACCOUNT_NO',
+                            'B.disbursed_amount',
+                            'B.prin_outstanding',
+                            'B.uei_outstanding'
+                        )
+                        ->whereNull('A.pre_disbursement_flag')
+                        ->where('status_id', '=', 1)
+                        ->where('A.account_status', '=', 1)
+                        ->where('B.client_id', '=', auth()->user()->client_id)
+                        ->where('C.client_id', '=', auth()->user()->client_id)
+                        ->where('D.client_id', '=', auth()->user()->client_id)
+                        ->paginate(3);
         
 
         $activeMember = FmsMembership::where('client_id' , auth()->user()->client_id)->where('status_id' , 1)->paginate(3);
