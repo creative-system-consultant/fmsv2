@@ -34,10 +34,24 @@
                                 <h1 class="text-3xl font-bold text-center sm:text-left">
                                     Welcome to <span class="text-primary-500">FMS</span> Web
                                 </h1>
-                                <h4 class="text-sm text-center text-gray-500 dark:text-white sm:text-left leading-6">
-                                    Your dedicated management system for '{{ auth()->user()->refClient->name }}.' 
-                                    This sophisticated platform is designed to streamline the organization and retrieval of information pertaining to 
-                                    '{{ auth()->user()->refClient->name }},' ensuring that staff can efficiently access and manage their cooperative's data. 
+                                <h4 class="text-sm leading-6 text-center text-gray-500 dark:text-white sm:text-left">
+                                    Your dedicated management system for '{{ auth()->user()->refClient->name }}.'
+                                    This sophisticated platform is designed to streamline the organization and retrieval of information pertaining to
+                                    '{{ auth()->user()->refClient->name }},' ensuring that staff can efficiently access and manage their
+                                    @if(auth()->user()->refClient->clientType->description == 'COOP')
+                                        Cooperative's
+                                    @elseif(auth()->user()->refClient->clientType->description == 'CLUB')
+                                        Club's
+                                    @elseif(auth()->user()->refClient->clientType->description == 'BANK')
+                                        Bank
+                                    @elseif(auth()->user()->refClient->clientType->description == 'ARRAHNU')
+                                        Arrahnu
+                                    @elseif(auth()->user()->refClient->clientType->description == 'JMB')
+                                        Joint Management Body
+                                    @elseif(auth()->user()->refClient->clientType->description == 'ASSOCIATION')
+                                        Association's
+                                    @endif
+                                    data.
                                 </h4>
                             </div>
                             <div class="flex items-center justify-center ml-0 sm:-ml-2">
@@ -107,7 +121,7 @@
                                             </tr>
                                             @empty
                                             <tr>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
                                                     <x-no-data title="No data"/>
                                                 </x-table.table-body>
                                             </tr>
@@ -146,7 +160,7 @@
                                             </tr>
                                             @empty
                                             <tr>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
                                                     <x-no-data title="No data"/>
                                                 </x-table.table-body>
                                             </tr>
@@ -196,7 +210,7 @@
                                             </tr>
                                             @empty
                                             <tr>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
                                                     <x-no-data title="No data"/>
                                                 </x-table.table-body>
                                             </tr>
@@ -235,7 +249,7 @@
                                             </tr>
                                             @empty
                                             <tr>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
                                                     <x-no-data title="No data"/>
                                                 </x-table.table-body>
                                             </tr>
