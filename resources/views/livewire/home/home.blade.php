@@ -35,11 +35,12 @@
                                     Welcome to <span class="text-primary-500">FMS</span> Web
                                 </h1>
                                 <h4 class="text-sm text-center text-gray-500 dark:text-white sm:text-left leading-6">
-                                    Also known as “{{ auth()->user()->refClient->name }}”
-                                    Used to manage information of "{{ auth()->user()->refClient->name }}".
+                                    Your dedicated management system for '{{ auth()->user()->refClient->name }}.' 
+                                    This sophisticated platform is designed to streamline the organization and retrieval of information pertaining to 
+                                    '{{ auth()->user()->refClient->name }},' ensuring that staff can efficiently access and manage their cooperative's data. 
                                 </h4>
                             </div>
-                            <div class="flex items-center justify-center ml-0 sm:-ml-6">
+                            <div class="flex items-center justify-center ml-0 sm:-ml-2">
                                 <img src="{{asset('herodashboard.png')}}" class="w-auto h-64 sm:h-64" alt="Hero"/>
                             </div>
                         </div>
