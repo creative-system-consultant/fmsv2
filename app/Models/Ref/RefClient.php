@@ -17,4 +17,9 @@ class RefClient extends Model
     {
         return $this->belongsToMany(User::class,'REF.USER_HAS_CLIENTS', 'client_id', 'user_id');
     }
+
+    public function clientType()
+    {
+        return $this->hasOne(RefClientType::class, 'id', 'type_id');
+    }
 }
