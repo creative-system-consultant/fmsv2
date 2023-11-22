@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Layout;
 
+use App\Livewire\Home\Home;
 use App\Models\User;
 use Livewire\Component;
 
@@ -13,7 +14,7 @@ class Navbar extends Component
         // dispatch an event
         $this->dispatch('clientUpdated');
 
-        return $this->redirect('/home', navigate: true);
+        return $this->redirect(Home::class);
     }
 
     public function render()
