@@ -41,7 +41,7 @@ class Home extends Component
 
         // dispatch an event
         $this->dispatch('clientUpdated');
-        return $this->redirect('/home', navigate: true);
+        return $this->redirect(Home::class);
     }
 
     public function render()
