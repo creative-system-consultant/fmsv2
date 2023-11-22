@@ -15,7 +15,7 @@
         }">
         <div class="relative flex flex-col flex-1 min-h-0 pt-0 border-r border-gray-200 backdrop-blur-xl bg-white/60 dark:bg-gray-900 dark:border-gray-800">
             <livewire:layout.sidebar-tag />
-
+                
             <div class="flex flex-col flex-1 pb-4 "
                 :class="toggleMiniSidebar == true ? '' : 'overflow-y-auto'">
                 <div class="flex-1 px-3 space-y-1 divide-y">

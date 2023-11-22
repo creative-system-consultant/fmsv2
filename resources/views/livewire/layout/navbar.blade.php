@@ -59,7 +59,7 @@
                             class="absolute right-0 z-10 w-56 mt-2 origin-top-right bg-white border-2 border-gray-100 rounded-md shadow-lg dark:bg-gray-800 dark:border-gray-700"
                             role="menu">
                             <div>
-                                <a wire:navigate href="{{route('profile')}}"
+                                <a href="{{route('profile')}}"
                                     class="flex items-center px-4 py-2 text-sm font-medium text-gray-500 rounded-lg hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700">
                                     <x-icon name="user-circle" class="w-4 h-4 mr-2" />
                                     Profile

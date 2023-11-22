@@ -73,7 +73,7 @@
                                                     icon="{{ $config['icon'] }}"
                                                     primary
                                                     label="{{ $config['label'] }}"
-                                                    wire:navigate
+                                                   
                                                 />
                                             @endcan
                                         @endforeach

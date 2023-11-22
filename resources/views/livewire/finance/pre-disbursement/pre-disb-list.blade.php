@@ -80,7 +80,7 @@
                 
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <div>
-                                    <x-button xs  href="{{ route('finance.finance-predisbursement-create',['uuid'=>$item->uuid]) }}" icon="eye" primary label="View" wire:navigate/>
+                                    <x-button xs  href="{{ route('finance.finance-predisbursement-create',['uuid'=>$item->uuid]) }}" icon="eye" primary label="View"/>
                                     <x-button xs  icon="x-circle" red label="Cancel" />
                                 </div>
                             </x-table.table-body>

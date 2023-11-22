@@ -11,35 +11,33 @@
     <!-- expanded sidebar -->
     <div
         x-show="!toggleMiniSidebar"
-        class="flex flex-col items-center px-4 mt-6">
-        <x-badge
-            outline
-            secondary
-            label="{{ strtoupper(auth()->user()->refClient->name) }}"
-            class="py-1"
-            >
-            <x-slot name="prepend" class="relative flex items-start w-2 h-2 mr-1">
-                <span class="absolute inline-flex w-full h-full rounded-full bg-green-500/75 animate-ping"></span>
-                <span class="relative inline-flex w-2 h-2 bg-green-500 rounded-full"></span>
-            </x-slot>
-        </x-badge>
+        class="flex flex-col mt-4">
+        <div class=" bg-gradient-to-r from-primary-400 via-primary-500 to-primary-400 px-2 py-3 text-white">
+            <div class="flex items-start space-x-2 justify-center">
+                <div class="text-sm space-y-1 text-center ">
+                    <p class="font-semibold">{{ strtoupper(auth()->user()->refClient->name) }}</p>
+                    @if(auth()->user()->user_type == 3)
+                        <p class="text-xs">{{ strtoupper(auth()->user()->roles->where('client_id',auth()->user()->client_id )->first()->name) }}</p>
+                    @endif
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- mini sidebar -->
     <div
         x-show="toggleMiniSidebar"
         x-bind:class="openHoverMiniSidebar ? 'block' : 'hidden'"
-        class="flex flex-col items-center mt-6">
-        <x-badge
-            outline
-            secondary
-            label="{{ strtoupper(auth()->user()->refClient->name) }}"
-            class="py-1"
-            >
-            <x-slot name="prepend" class="relative flex items-center w-2 h-2 mr-1">
-                <span class="absolute inline-flex w-full h-full rounded-full bg-green-500/75 animate-ping"></span>
-                <span class="relative inline-flex w-2 h-2 bg-green-500 rounded-full"></span>
-            </x-slot>
-        </x-badge>
+        class="flex flex-col mt-4">
+        <div class=" bg-gradient-to-r from-primary-400 via-primary-500 to-primary-400 px-2 py-3 text-white">
+            <div class="flex items-start space-x-2 justify-center">
+                <div class="text-sm space-y-0.5 text-center ">
+                    <p class="font-semibold">{{ strtoupper(auth()->user()->refClient->name) }}</p>
+                    @if(auth()->user()->user_type == 3)
+                        <p class="text-xs">{{ strtoupper(auth()->user()->roles->where('client_id',auth()->user()->client_id )->first()->name) }}</p>
+                    @endif
+                </div>
+            </div>
+        </div>
     </div>
 </div>

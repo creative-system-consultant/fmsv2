@@ -34,9 +34,9 @@
                                 <h1 class="text-3xl font-bold text-center sm:text-left">
                                     Welcome to <span class="text-primary-500">FMS</span> Web
                                 </h1>
-                                <h4 class="text-sm text-center text-gray-500 dark:text-white sm:text-left">
-                                    Also known as “KOPERASI Financing Management”
-                                    Used to manage information of “KOPERASI members and their financing.
+                                <h4 class="text-sm text-center text-gray-500 dark:text-white sm:text-left leading-6">
+                                    Also known as “{{ auth()->user()->refClient->name }}”
+                                    Used to manage information of "{{ auth()->user()->refClient->name }}".
                                 </h4>
                             </div>
                             <div class="flex items-center justify-center ml-0 sm:-ml-6">
@@ -83,7 +83,7 @@
                                             <x-table.table-header class="text-left" value="NO" sort="" />
                                             <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
                                             <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
-                                            <x-table.table-header class="text-left" value="MEMBERSHIP ID" sort="" />
+                                            <x-table.table-header class="text-left" value="MEMBER NUMBER" sort="" />
                                         </x-slot>
                                         <x-slot name="tbody">
                                             @forelse($disb as $item)
@@ -122,7 +122,7 @@
                                             <x-table.table-header class="text-left" value="NO" sort="" />
                                             <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
                                             <x-table.table-header class="text-left" value="IC NUMBER" sort="" />
-                                            <x-table.table-header class="text-left" value="MEMBERSHIP ID" sort="" />
+                                            <x-table.table-header class="text-left" value="MEMBER NUMBER" sort="" />
                                         </x-slot>
                                         <x-slot name="tbody">
                                             @forelse($activeMember as $item)
@@ -211,7 +211,7 @@
                                             <x-table.table-header class="text-left" value="NO" sort="" />
                                             <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
                                             <x-table.table-header class="text-left" value="IC NUMBER" sort="" />
-                                            <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
+                                            <x-table.table-header class="text-left" value="MEMBER NUMBER" sort="" />
                                         </x-slot>
                                         <x-slot name="tbody">
                                             @forelse($closeMember as $item)
@@ -263,7 +263,7 @@
                                 {{ auth()->user()->email }}
                             </h1>
                             <div class="w-full mt-5">
-                                <x-button class="w-full py-3" wire:navigate href="{{route('profile')}}" outline black label="Edit Profile" />
+                                <x-button class="w-full py-3" href="{{route('profile')}}" outline black label="Edit Profile" />
                             </div>
                         </div>
                     </div>

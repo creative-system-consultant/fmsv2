@@ -13,7 +13,7 @@
     </h1>
         @if($disableBackBtn == 'true')
             <div class="flex mt-12 lg:mt-2">
-                <a  wire:navigate href="{{$routeBackBtn}}" class="flex items-center space-x-2 text-white transition ease-in-out delay-75 scale-95 dark:text-white hover:scale-100">
+                <a  href="{{$routeBackBtn}}" class="flex items-center space-x-2 text-white transition ease-in-out delay-75 scale-95 dark:text-white hover:scale-100">
                     <x-icon name="arrow-left" class="w-6 h-6"/>
                     <p class="myFontRegular">Back to {{$titleBackBtn}}</p>
                 </a>
