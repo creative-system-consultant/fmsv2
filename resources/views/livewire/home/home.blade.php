@@ -17,7 +17,7 @@
         <x-slot name="footer">
             <div class="flex justify-end">
                 <div class="flex">
-                    <x-button primary label="Save" wire:click="saveClient" />
+                    <x-button primary label="Select Client" wire:click="saveClient" />
                 </div>
             </div>
         </x-slot>
@@ -31,10 +31,15 @@
                     <div class="flex flex-col items-center justify-center px-6 py-8 border rounded-lg shadow-lg bg-white/70 backdrop-blur-lg md:px-12 2xl:px-24 sm:py-4 sm:h-72 dark:bg-gray-900/50 dark:border-black">
                         <div class="grid items-center justify-center grid-cols-1 md:grid-cols-2 dark:text-white">
                             <div class="flex flex-col order-last space-y-2 sm:order-first">
-                                <h1 class="text-3xl font-bold text-center sm:text-left">
-                                    Welcome to <span class="text-primary-500">FMS</span> Web
+                                <h1 class="text-2xl font-bold text-center sm:text-left">
+                                    Welcome to 
+                                    @if($clientType == 'siskop membership financing')
+                                    <span class="text-primary-500">FINANCING</span> Management System
+                                    @else
+                                    <span class="text-primary-500">MEMBER</span> Management System
+                                    @endif
                                 </h1>
-                                <h4 class="text-sm leading-6 text-center text-gray-500 dark:text-white sm:text-left">
+                                <h4 class="text-xs leading-6 text-center text-gray-500 dark:text-white sm:text-left">
                                     Your dedicated management system for '{{ auth()->user()->refClient->name }}.'
                                     This sophisticated platform is designed to streamline the organization and retrieval of information pertaining to
                                     '{{ auth()->user()->refClient->name }},' ensuring that staff can efficiently access and manage their
