@@ -43,7 +43,7 @@
                                     <p>{{$item->staff_no}}</p>
                                 </x-table.table-body>
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
-                                    <p>{{$item->membership->mbr_no}}</p>
+                                    <p>{{$item->mbr_no}}</p>
                                 </x-table.table-body>
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{$item->identity_no}}</p>

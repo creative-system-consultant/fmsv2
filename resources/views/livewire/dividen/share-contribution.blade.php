@@ -70,7 +70,7 @@
                                 Overall Total Dividend:
                             </p>
                             <p class="pt-1 text-base font-semibold text-green-500 md:text-lg">
-                                RM 423,603.25
+                                RM {{ number_format($div_calc[0]->tot_total_layak_div,2) }}
                             </p>
                         </div>
                         <div class="px-4 py-6 bg-gray-50 rounded-lg dark:bg-gray-800">
@@ -78,7 +78,7 @@
                                 Total Tabung Khairat Dibayar:
                             </p>
                             <p class="pt-1 text-base font-semibold text-green-500 md:text-lg">
-                                RM 423,603.25
+                                RM {{ number_format($div_calc[0]->actual_payment_to_tabung,2) }}
                             </p>
                         </div>
                         <div class="px-4 py-6 bg-gray-50 rounded-lg dark:bg-gray-800">
@@ -86,7 +86,7 @@
                                 Outstanding Tabung Khairat:
                             </p>
                             <p class="pt-1 text-base font-semibold text-green-500 md:text-lg">
-                                RM 423,603.25
+                                RM {{ number_format($div_calc[0]->tot_baki_tunggakan_tabung,2) }}
                             </p>
                         </div>
                         <div class="px-4 py-6 bg-gray-50 rounded-lg dark:bg-gray-800">
@@ -94,7 +94,7 @@
                                 Final Overall Total Dividend:
                             </p>
                             <p class="pt-1 text-base font-semibold text-green-500 md:text-lg">
-                                RM 423,603.25
+                                RM {{ number_format($div_calc[0]->tot_final_layak_total_div,2) }}
                             </p>
                         </div>
                     </div>

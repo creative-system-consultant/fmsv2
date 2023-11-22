@@ -14,6 +14,7 @@ use App\Livewire\Admin\Maintenance\Country;
 use App\Livewire\Admin\Maintenance\Marital;
 use App\Livewire\Admin\Maintenance\FinancingRule;
 use App\Livewire\Admin\Maintenance\AddType;
+use App\Livewire\Admin\Maintenance\DividendRules;
 use App\Livewire\Admin\Maintenance\Languages;
 use App\Livewire\Admin\Maintenance\IdentityType;
 use App\Livewire\Admin\Maintenance\Income;
@@ -41,6 +42,8 @@ Route::get('identity-type', IdentityType::class)->name('identity-type');
 Route::get('third-party', ThirdParty::class)->name('third-party');
 Route::get('member-status', MemberStatus::class)->name('member-status');
 Route::get('branch-i-d', BranchID::class)->name('branch-i-d');
+Route::get('dividend-rule', DividendRules::class)->name('dividend-rule');
+
 Route::get('position', Position::class)->name('position');
 Route::get('income', Income::class)->name('income');
 Route::get('job-status', JobStatus::class)->name('job-status');

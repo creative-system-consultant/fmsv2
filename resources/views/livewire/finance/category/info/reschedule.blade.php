@@ -160,39 +160,47 @@
                                         <x-table.table-header class="text-right" value="UEI OUTSTANDING" sort="" />
                                     </x-slot>
                                     <x-slot name="tbody">
+                                    @if ($financeInfoNew)
+                                        @forelse ($financeInfoNew as $item)
                                         <tr>
                                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                <p>113</p>
+                                                <p>{{$item->instalment_no}}</p>
                                             </x-table.table-body>
                                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                <p>30/11/2023</p>
+                                                <p>{{date('d/m/Y', strtotime($item->instal_date))}}</p>
                                             </x-table.table-body>
                                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                                <p>4,060.00</p>
+                                                <p>{{number_format($item->instal_amt,2)}}</p>
                                             </x-table.table-body>
                                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                                <p>0.00</p>
+                                                <p>{{number_format($item->bal_outstanding,2)}}</p>
                                             </x-table.table-body>
                                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                                <p>4,033.00</p>
+                                                <p>{{number_format($item->print_amt,2)}}</p>
                                             </x-table.table-body>
                                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                                <p>-94.48</p>
+                                                <p>{{number_format($item->prin_outstanding,2)}}</p>
                                             </x-table.table-body>
                                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                                <p>27.00</p>
+                                                <p>{{number_format($item->profit_amt,2)}}</p>
                                             </x-table.table-body>
                                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                                <p>94.48</p>
+                                                <p>{{number_format($item->uei_outstanding,2)}}</p>
                                             </x-table.table-body>
                                         </tr>
+                                        @empty
+                                        <x-table.table-body colspan="9" class="text-xs font-medium text-gray-700 text-right">
+                                            <p>No Data</p>
+                                        </x-table.table-body>
+                                        @endforelse
+                                    @endif
                                     </x-slot>
                                 </x-table.table>
                             </div>
                             <x-slot name="footer">
                                 <div class="flex justify-end">
                                     <div class="flex">
-                                        <x-button icon="check" primary label="Confirm Reschedule" wire:click="" />
+                                        <x-button icon="check" primary label="Confirm Reschedule" wire:click="confirmResched" />
                                     </div>
                                 </div>
                             </x-slot>

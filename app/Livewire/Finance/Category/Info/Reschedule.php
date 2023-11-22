@@ -10,11 +10,15 @@ use DB;
 use Hash;
 use Livewire\Component;
 use Livewire\WithPagination;
+use OpenSpout\Common\Entity\Style\Style;
 use Rap2hpoutre\FastExcel\FastExcel;
+use WireUi\Traits\Actions;
 
 
 class Reschedule extends Component
 {
+    use Actions;
+
     public $uuid, $account, $account_no, $user_id, $password;
     public $financeInfo, $reschedule, $min_repayment, $min_dur;
     public $view_minamt_dur;
@@ -40,11 +44,10 @@ class Reschedule extends Component
         );
 
         $errorMsg = 1;
-        $datetime = Carbon::now()->format('Y-m-d');
+        $datetime = now();
         $result = DB::select("EXEC FMS.up_cal_min_rechedamt '$this->account_no' ");
         $resultN = false;
-        // dd($result);
-        //$this->min_repayment = $result[0]->{''}c  one takde column name;
+        $client_id = auth()->user()->client_id;
         $this->min_repayment = $result[0]->min_amt;
         $this->min_dur = $result[0]->max_dur;
 
@@ -53,16 +56,14 @@ class Reschedule extends Component
         if ($this->reschedule == 'ins' && ($this->newInstalAmt >= $this->min_repayment)) {
 
 
-            $resultN = DB::statement(
-                'EXEC FMS.up_insert_repay_sched_rescdule ?,?,?,?,?',
-                [
-                    1,
-                    $this->account_no,
-                    $this->user_id,
-                    $this->newInstalAmt,
-                    $datetime,
-                ]
+            $$resultN = up_insert_repay_sched_rescdule(
+                $client_id,
+                $this->account_no,
+                $this->user_id,
+                $this->newInstalAmt,
+                $datetime,
             );
+
             $this->newSPInstalAmt = $this->newInstalAmt;
             $errorMsg = 0;
         } elseif ($this->reschedule == 'dur') {
@@ -77,19 +78,14 @@ class Reschedule extends Component
                 ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', 'FMS.MEMBERSHIP.cif_id')
                 ->where('FMS.ACCOUNT_POSITIONS.account_no', $this->account_no)
                 ->first();
-            //dd($durationReschedule->new_install_amt3,$this->min_repayment);
-            //if($this->newInstalAmt >= $this->min_dur){
             if ($durationReschedule->new_install_amt4 >= $this->min_repayment) {
 
-                $resultN = DB::statement(
-                    'EXEC FMS.up_insert_repay_sched_rescdule ?,?,?,?,?',
-                    [
-                        1,
-                        $this->account_no,
-                        $this->user_id,
-                        $durationReschedule->new_install_amt4,
-                        (string)$datetime,
-                    ]
+                $resultN = up_insert_repay_sched_rescdule(
+                    $client_id,
+                    $this->account_no,
+                    $this->user_id,
+                    $durationReschedule->new_install_amt4,
+                    $datetime,
                 );
 
                 $this->newSPInstalAmt = $durationReschedule->new_install_amt4;
@@ -116,13 +112,8 @@ class Reschedule extends Component
                 // ]);
             }
         } elseif ($errorMsg == 0) {
-            // $this->dispatchBrowserEvent('swal', [
-            //     'title' => 'Success!',
-            //     'html'  => 'The requested amount/duration is allowable.',
-            //     'icon'  => 'info',
-            //     'showConfirmButton' => true,
+            $this->dialog()->success('Success', 'The requested amount/duration is allowable.');
 
-            // ]);
             $this->processed = 1;
             $this->financeInfoNew = DB::table('FMS.REPAYMENT_SCHEDULES_RESC')
                 ->select([
@@ -153,16 +144,15 @@ class Reschedule extends Component
         //         $fail('Password is incorrect');
         //     }
         // }]]);
+        $client_id = auth()->user()->client_id;
 
-        $result2        = DB::update(
-            'SET NOCOUNT ON;
-                                    EXEC FMS.up_upd_reschedule ?,?,?',
-            [
-                $this->account_no,
-                auth()->user()->id,
-                $this->newSPInstalAmt
-            ]
+        $result2 = up_upd_reschedule(
+            $client_id,
+            $this->account_no,
+            $this->user_id,
+            $this->newSPInstalAmt
         );
+
 
         // $this->dispatchBrowserEvent('verify-password');
         // $this->dispatchBrowserEvent('swal', [
@@ -175,6 +165,7 @@ class Reschedule extends Component
         // $this->password = null;
         // return redirect()->to("/finance/list_account");
         // return redirect()->route('user.finance.account', ['uuid' => $this->uuid]);
+        $this->dialog()->success('Success', 'Financing has been rescheduled');
     }
 
     public function renderReportList()
@@ -196,113 +187,52 @@ class Reschedule extends Component
         }
     }
 
-    // public function generateExcel()
-    // {
-    //     // $date = new DateTime($this->rptDate);
-    //     $date = DateTime::createFromFormat('d/m/Y', $this->rptDate);
-    //     $date->modify('last day of this month');
-    //     $newRptDate = $date->format('d-m-Y');
-    //     $fileName = sprintf('New Schedule %s (%s).xlsx', $newRptDate, $this->account_no);
-    //     $tempFile = tempnam(sys_get_temp_dir(), 'excel_');
+    public function generateExcel()
+    {
 
-    //     $header_style = (new StyleBuilder())
-    //         ->setFontBold()
-    //         ->setShouldWrapText(false)
-    //         ->build();
-    //     $rows_style = (new StyleBuilder())
-    //         ->setShouldWrapText(false)
-    //         ->build();
+        return response()->streamDownload(function () {
+            $header_style = (new Style())->setFontBold();
+            $rows_style = (new Style())->setShouldWrapText(false);
+            (new FastExcel($this->renderReportList()))
+                ->headerStyle($header_style)
+                ->rowsStyle($rows_style)
+                ->export('php://output', function ($item) {
 
-    //     (new FastExcel($this->renderReportList()))
-    //         ->headerStyle($header_style)
-    //         ->rowsStyle($rows_style)
-    //         ->export($tempFile, function ($item) {
-    //             return [
-    //                 'No.' => $item->instalment_no,
-    //                 'Instalment Date'         => date('d-m-Y', strtotime($item->instal_date)),
-    //                 'Instalment Amount'       => number_format($item->instal_amt, 2),
-    //                 'Balance Oustanding'      => number_format($item->bal_outstanding, 2),
-    //                 'Principal Amount'        => number_format($item->print_amt, 2),
-    //                 'Profit Amount'           => number_format($item->profit_amt, 2),
-    //                 'UEI-Oustanding'          => number_format($item->uei_outstanding, 2)
-    //             ];
-    //         });
+                    return [
+                        'No.' => $item->instalment_no,
+                        'Instalment Date'         => date('d-m-Y', strtotime($item->instal_date)),
+                        'Instalment Amount'       => number_format($item->instal_amt, 2),
+                        'Balance Oustanding'      => number_format($item->bal_outstanding, 2),
+                        'Principal Amount'        => number_format($item->print_amt, 2),
+                        'Profit Amount'           => number_format($item->profit_amt, 2),
+                        'UEI-Oustanding'          => number_format($item->uei_outstanding, 2)
+                    ];
+                });
+        }, sprintf('Repayment-%s.xlsx', now()->format('Y-m-d')));
+    }
 
-    //     $spreadsheet = IOFactory::load($tempFile);
-    //     $sheet = $spreadsheet->getActiveSheet();
-    //     $sheet->setTitle($this->account_no);
+    public function renderRescheHisReportList()
+    {
+        foreach (DB::select("select
+                        Instalment_No = instalment_no,
+                        Instal_Date = instal_date,
+                        Instal_Amount = instal_amt,
+                        Balanace_Outstanding = bal_outstanding,
+                        Principal_Amount = print_amt,
+                        Principal_Outstanding = prin_outstanding,
+                        Profit_Amount = profit_amt,
+                        Unearn_Income_Outstanding = uei_outstanding,
+                        reschedule_no,
+                        reschedule_date
+                        from fms.REPAYMENT_SCHEDULES_HISTORY where  reschedule_date = (select  max(reschedule_date) from fms.REPAYMENT_SCHEDULES_HISTORY where account_no = '$this->account_no' )
+                        and account_no =  '$this->account_no'
+                        order by instalment_no,reschedule_date asc
+                ")
+            as $item) {
+            yield $item;
+        }
+    }
 
-    //     $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-    //     $writer->save($tempFile);
-
-    //     return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
-    // }
-
-    // public function renderRescheHisReportList()
-    // {
-    //     foreach (DB::select("select
-    //                     Instalment_No = instalment_no,
-    //                     Instal_Date = instal_date,
-    //                     Instal_Amount = instal_amt,
-    //                     Balanace_Outstanding = bal_outstanding,
-    //                     Principal_Amount = print_amt,
-    //                     Principal_Outstanding = prin_outstanding,
-    //                     Profit_Amount = profit_amt,
-    //                     Unearn_Income_Outstanding = uei_outstanding,
-    //                     reschedule_no,
-    //                     reschedule_date
-    //                     from fms.REPAYMENT_SCHEDULES_HISTORY where  reschedule_date = (select  max(reschedule_date) from fms.REPAYMENT_SCHEDULES_HISTORY where account_no = '$this->account_no' )
-    //                     and account_no =  '$this->account_no'
-    //                     order by instalment_no,reschedule_date asc
-    //             ")
-    //         as $item) {
-    //         yield $item;
-    //     }
-    // }
-
-    // public function generateRescheHisExcel()
-    // {
-    //     // $date = new DateTime($this->rptDate);
-    //     $date = DateTime::createFromFormat('d/m/Y', $this->rptDate);
-    //     $date->modify('last day of this month');
-    //     $newRptDate = $date->format('d-m-Y');
-    //     $fileName = sprintf('Reschedule-History %s (%s).xlsx', $newRptDate, $this->account_no);
-    //     $tempFile = tempnam(sys_get_temp_dir(), 'excel_');
-
-    //     $header_style = (new StyleBuilder())
-    //         ->setFontBold()
-    //         ->setShouldWrapText(false)
-    //         ->build();
-    //     $rows_style = (new StyleBuilder())
-    //         ->setShouldWrapText(false)
-    //         ->build();
-
-    //     (new FastExcel($this->renderRescheHisReportList()))
-    //         ->headerStyle($header_style)
-    //         ->rowsStyle($rows_style)
-    //         ->export($tempFile, function ($item) {
-    //             return [
-    //                 'No.'                     => $item->Instalment_No,
-    //                 'Instalment Date'         => date('d-m-Y', strtotime($item->Instal_Date)),
-    //                 'Instalment Amount'       => number_format($item->Instal_Amount, 2),
-    //                 'Balance Oustanding'      => number_format($item->Balanace_Outstanding, 2),
-    //                 'Principal Amount'        => number_format($item->Principal_Amount, 2),
-    //                 'Profit Amount'           => number_format($item->Profit_Amount, 2),
-    //                 'UEI-Oustanding'          => number_format($item->Unearn_Income_Outstanding, 2),
-    //                 'Reschedule No'           => $item->reschedule_no,
-    //                 'Reschedule Date'         => $item->reschedule_date
-    //             ];
-    //         });
-
-    //     $spreadsheet = IOFactory::load($tempFile);
-    //     $sheet = $spreadsheet->getActiveSheet();
-    //     $sheet->setTitle($this->account_no);
-
-    //     $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-    //     $writer->save($tempFile);
-
-    //     return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
-    // }
 
     public function mount()
     {

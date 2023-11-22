@@ -3,8 +3,9 @@
         <x-card title="Financing Statements" >
             <x-slot name="action">
                 <div>
-                    <x-button sm icon="document-report" green label="Excel" sm/>
-                    <x-button sm icon="document-report" orange label="PDF" sm/>
+                    <x-button sm icon="document-report" green label="Excel" wire:click="generateExcel"  sm/>
+                    {{-- <x-button sm icon="document-report" orange label="PDF" sm/> --}}
+        
                 </div>
             </x-slot>
             <div>

@@ -87,7 +87,8 @@ class ShareContribution extends Component
         //date div declare
         $this->date_declare = DividenDeclareDate::where('years', $this->year)->first();
         $this->date_sb_declare = DividenShareBonusDate::where('years', $this->year)->first();
-        $this->div_calc = DB::statement('EXEC FMS.up_calc_total_div ?, ?', [1, 56]);
+        $this->div_calc = DB::select('EXEC FMS.up_calc_total_div ?, ?', [1, 56]);
+        // dd($this->div_calc);
     }
     public function render()
     {

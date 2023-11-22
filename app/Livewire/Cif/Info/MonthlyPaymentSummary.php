@@ -8,10 +8,12 @@ use Livewire\Component;
 
 class MonthlyPaymentSummary extends Component
 {
-    public $customer, $uuid;
+    public $customer, $uuid, $clientID;
 
     public function render()
     {
+        $this->clientID = auth()->user()->client_id;
+
         $this->customer = CifCustomer::where('uuid', $this->uuid)->first();
 
         $PaySummary = DB::select("
@@ -48,6 +50,7 @@ class MonthlyPaymentSummary extends Component
             ) v
         on c.mbr_no = v.mbr_no
         where c.mbr_no = '" . $this->customer->membership->mbr_no . "'
+        and c.client_id= '" . $this->clientID . "'
         ");
 
         return view('livewire.cif.info.monthly-payment-summary', [

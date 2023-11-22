@@ -24,8 +24,8 @@
                     />
 
                     <div class="mt-6">
-                        <x-button sm icon="document-report" green label="Excel"/>
-                        <x-button sm icon="document-report" orange label="PDF" />
+                        <x-button sm icon="document-report" green label="Excel" wire:click="generateExcel"/>
+                        {{-- <x-button sm icon="document-report" orange label="PDF" /> --}}
                     </div>
                 </div>
             </div>
