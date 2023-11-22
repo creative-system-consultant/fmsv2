@@ -50,7 +50,7 @@
                                     <x-tab.title name="0">
                                         <div class="flex items-center space-x-2 text-sm">
                                             <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
-                                            @if($clientType == 'fms financing')
+                                            @if($clientType == 'siskop membership financing')
                                                 <h1>Disbursement Listing</h1>
                                             @else
                                                 <h1>Active Membership</h1>
@@ -60,7 +60,7 @@
                                     <x-tab.title name="1">
                                         <div class="flex items-center space-x-2 text-sm">
                                             <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
-                                            @if($clientType == 'fms financing')
+                                            @if($clientType == 'siskop membership financing')
                                                 <h1>Pre Disbursement Listing</h1>
                                             @else
                                                 <h1>Closed Membership</h1>
@@ -77,7 +77,7 @@
                                         placeholder="Search"
                                     />
                                 </div>
-                                @if($clientType == 'fms financing')
+                                @if($clientType == 'siskop membership financing')
                                     <x-table.table>
                                         <x-slot name="thead">
                                             <x-table.table-header class="text-left" value="NO" sort="" />
@@ -166,7 +166,7 @@
                                         placeholder="Search"
                                     />
                                 </div>
-                                @if($clientType == 'fms financing')
+                                @if($clientType == 'siskop membership financing')
                                     <x-table.table>
                                         <x-slot name="thead">
                                             <x-table.table-header class="text-left" value="NO" sort="" />
@@ -276,7 +276,7 @@
                                         :class="tab == 0 ? 'animate-spin' : ''">
                                     </div>
                                     <div class="absolute inset-x-0 flex items-center justify-center w-24 h-24 mx-auto bg-white rounded-full dark:bg-gray-800 top-4">
-                                        @if($clientType == 'fms financing')
+                                        @if($clientType == 'siskop membership financing')
                                             <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{ number_format($disb->total()) }}</h1>
                                         @else
                                             <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{ number_format($activeMember->total()) }}</h1>
@@ -285,7 +285,7 @@
                                 </div>
                                 <div>
                                     <div class="space-y-1 text-xl">
-                                        @if($clientType == 'fms financing')
+                                        @if($clientType == 'siskop membership financing')
                                             <h1>Disbursement Listing</h1>
                                         @else
                                             <h1>Active Membership</h1>
@@ -302,7 +302,7 @@
                                     :class="tab == 1 ? 'animate-spin' : ''">
                                     </div>
                                     <div class="absolute inset-x-0 flex items-center justify-center w-24 h-24 mx-auto bg-white rounded-full dark:bg-gray-800 top-4">
-                                        @if($clientType == 'fms financing')
+                                        @if($clientType == 'siskop membership financing')
                                             <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{ number_format($preDisb->total()) }}</h1>
                                         @else
                                             <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{ number_format($closeMember->total()) }}</h1>
@@ -310,7 +310,7 @@
                                     </div>
                                 </div>
                                 <div class="space-y-1 text-xl">
-                                    @if($clientType == 'fms financing')
+                                    @if($clientType == 'siskop membership financing')
                                         <h1>Pre Disbursement Listing</h1>
                                     @else
                                         <h1>Close Membership</h1>
