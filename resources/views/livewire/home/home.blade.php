@@ -83,7 +83,7 @@
                                             <x-table.table-header class="text-left" value="NO" sort="" />
                                             <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
                                             <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
-                                            <x-table.table-header class="text-left" value="MEMBER NUMBER" sort="" />
+                                            <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
                                         </x-slot>
                                         <x-slot name="tbody">
                                             @forelse($disb as $item)
@@ -122,7 +122,7 @@
                                             <x-table.table-header class="text-left" value="NO" sort="" />
                                             <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
                                             <x-table.table-header class="text-left" value="IC NUMBER" sort="" />
-                                            <x-table.table-header class="text-left" value="MEMBER NUMBER" sort="" />
+                                            <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
                                         </x-slot>
                                         <x-slot name="tbody">
                                             @forelse($activeMember as $item)
@@ -172,7 +172,7 @@
                                             <x-table.table-header class="text-left" value="NO" sort="" />
                                             <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
                                             <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
-                                            <x-table.table-header class="text-left" value="MEMBER NUMBER" sort="" />
+                                            <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
                                         </x-slot>
                                         <x-slot name="tbody">
                                             @forelse($preDisb as $item)
@@ -211,7 +211,7 @@
                                             <x-table.table-header class="text-left" value="NO" sort="" />
                                             <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
                                             <x-table.table-header class="text-left" value="IC NUMBER" sort="" />
-                                            <x-table.table-header class="text-left" value="MEMBER NUMBER" sort="" />
+                                            <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
                                         </x-slot>
                                         <x-slot name="tbody">
                                             @forelse($closeMember as $item)

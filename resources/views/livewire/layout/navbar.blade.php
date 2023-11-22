@@ -21,12 +21,14 @@
                 <div class="flex items-center space-x-6 animate__animated animate__fadeInRight">
 
                     <!-- select client -->
-                    <div>
-                        <div x-on:click="showCilent = !showCilent" class="flex items-center text-xs py-1.5 px-4 space-x-2 bg-primary-600 hover:bg-primary-700  text-white  backdrop-blur-lg rounded-md cursor-pointer relative justify-center">
-                            <x-icon name="office-building" class="w-4 h-4" />
-                            <p>Select Client</p>
+                    @if(auth()->user()->user_type == 3 && count(auth()->user()->clients) > 1)
+                        <div>
+                            <div x-on:click="showCilent = !showCilent" class="flex items-center text-xs py-1.5 px-4 space-x-2 bg-primary-600 hover:bg-primary-700  text-white  backdrop-blur-lg rounded-md cursor-pointer relative justify-center">
+                                <x-icon name="office-building" class="w-4 h-4" />
+                                <p>Select Client</p>
+                            </div>
                         </div>
-                    </div>
+                    @endif
 
                     <!-- notification -->
                     <div class="hs-dropdown [--strategy:static] sm:[--strategy:absolute] [--adaptive:none]">
