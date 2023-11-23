@@ -28,8 +28,7 @@ class VirtualAcc extends Component
     public $virtualAcc;
     public $paginated;
     public $searchQuery;
-    public $coolingperiod;
-    public $threshold;
+    public $vac_item;
 
     protected $virtualAcc_Service;
     protected $popupService;
@@ -40,51 +39,41 @@ class VirtualAcc extends Component
         $this->popupService = app(PopupService::class);
     }
 
-    public function show(){
-        
-        $data = FmsGlobalParm::getValue();
+    public function openUpdateModal($va_item)
+    { 
+        $via_item = FmsGlobalParm::whereClientId(auth()->user()->client_id)
+        ->select('COOLING_PERIOD', 'THRESHOLD')
+        ->first();
 
-        // Check if $va_item is not null before accessing its properties
-        if ($data) {
-            $this->valueCoolingPeriod = $data->COOLING_PERIOD;
-            $this->valueThreshold = $data->THRESHOLD;
+        $this->vac_item = $va_item;
+        $this->valueCoolingPeriod = $via_item->COOLING_PERIOD;
+        $this->valueThreshold = $via_item->THRESHOLD;
+
+        if($this->valueCoolingPeriod == $va_item)
+        {
+            $this->setupModal("update", "Update Value Cooling Period", "Description", "update({$va_item})");
         }
-    }
-
-    public function openUpdateModal()
-    {
-        $data = FmsGlobalParm::getValue();
-
-        // Check if $va_item is not null before accessing its properties
-        if ($data) {
-            $this->valueCoolingPeriod = $data->COOLING_PERIOD;
-            $this->valueThreshold = $data->THRESHOLD;
+        else
+        {
+            $this->setupModal("update", "Update Value Threshold", "Description", "update({$va_item})");
         }
-        $this->setupModal("update", "Update value Cooling Period", "Description", "update({$data})");
-        $this->resetValidation();
-    }
 
-    public function openUpdateModal_Threshold($valueThreshold)
-    {
-        $this->threshold = FmsGlobalParm::find($valueThreshold);
-        $this->valueThreshold = $this->threshold->valueThreshold;
-        $this->setupModal("update", "Update value Threshold", "Description", "update({$valueThreshold})");
         $this->resetValidation();
     }
     
-    public function update($id)
+    public function update()
     {
         $this->validate();
-        
-        if (VirtualAcc::canUpdateCoolingPeriod($id, $this->valueCoolingPeriod)){
-            $data = [
-                'COOLING_PERIOD'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->valueCoolingPeriod))),
-            ];
-            VirtualAccService::updateCoolingPeriod($id, $data);
-            $this->openModal = false;
-        } else {
-            $this->addError('valueCoolingPeriod', 'The value has already been taken.');
+
+        $data = FmsGlobalParm::whereClientId(auth()->user()->client_id)->first();
+
+        if ($this->vac_item == $data->COOLING_PERIOD){ 
+            VirtualAccService::updateCoolingPeriod($this->valueCoolingPeriod);
         }
+        elseif (VirtualAccService::updateThreshold($this->valueThreshold)){ 
+            $this->valueThreshold = $data->THRESHOLD;
+        }
+        $this->openModal = false;
     }
     
     public function render()
