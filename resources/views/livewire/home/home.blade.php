@@ -17,7 +17,7 @@
         <x-slot name="footer">
             <div class="flex justify-end">
                 <div class="flex">
-                    <x-button primary label="Select Client" wire:click="saveClient" />
+                    <x-button primary label="Save" wire:click="saveClient" />
                 </div>
             </div>
         </x-slot>
@@ -31,15 +31,10 @@
                     <div class="flex flex-col items-center justify-center px-6 py-8 border rounded-lg shadow-lg bg-white/70 backdrop-blur-lg md:px-12 2xl:px-24 sm:py-4 sm:h-72 dark:bg-gray-900/50 dark:border-black">
                         <div class="grid items-center justify-center grid-cols-1 md:grid-cols-2 dark:text-white">
                             <div class="flex flex-col order-last space-y-2 sm:order-first">
-                                <h1 class="text-2xl font-bold text-center sm:text-left">
-                                    Welcome to 
-                                    @if($clientType == 'siskop membership financing')
-                                    <span class="text-primary-500">FINANCING</span> Management System
-                                    @else
-                                    <span class="text-primary-500">MEMBER</span> Management System
-                                    @endif
+                                <h1 class="text-3xl font-bold text-center sm:text-left">
+                                    Welcome to <span class="text-primary-500">FMS</span> Web
                                 </h1>
-                                <h4 class="text-xs leading-6 text-center text-gray-500 dark:text-white sm:text-left">
+                                <h4 class="text-sm leading-6 text-center text-gray-500 dark:text-white sm:text-left">
                                     Your dedicated management system for '{{ auth()->user()->refClient->name }}.'
                                     This sophisticated platform is designed to streamline the organization and retrieval of information pertaining to
                                     '{{ auth()->user()->refClient->name }},' ensuring that staff can efficiently access and manage their
@@ -65,31 +60,212 @@
                         </div>
                     </div>
                     <div class="relative flex flex-col px-4 py-6 mt-6 mb-20 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:border-black" >
-                        <div class="flex mb-4 overflow-x-auto overflow-y-hidden bg-white rounded-lg shadow-sm dark:bg-gray-900">
-                                <div class="flex items-center flex-shrink-0 space-x-4 ">
-                                    <x-tab.title name="0">
-                                        <div class="flex items-center space-x-2 text-sm">
-                                            <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
-                                            @if($clientType == 'siskop membership financing')
-                                                <h1>Disbursement Listing</h1>
-                                            @else
-                                                <h1>Active Membership</h1>
-                                            @endif
+                        @if (auth()->user()->user_type != 2)
+                        <div>
+                            <div class="flex mb-4 overflow-x-auto overflow-y-hidden bg-white rounded-lg shadow-sm dark:bg-gray-900">
+                                    <div class="flex items-center flex-shrink-0 space-x-4 ">
+                                        <x-tab.title name="0">
+                                            <div class="flex items-center space-x-2 text-sm">
+                                                <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
+                                                @if($clientType == 'siskop membership financing')
+                                                    <h1>Disbursement Listing</h1>
+                                                @else
+                                                    <h1>Active Membership</h1>
+                                                @endif
+                                            </div>
+                                        </x-tab.title>
+                                        <x-tab.title name="1">
+                                            <div class="flex items-center space-x-2 text-sm">
+                                                <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
+                                                @if($clientType == 'siskop membership financing')
+                                                    <h1>Pre Disbursement Listing</h1>
+                                                @else
+                                                    <h1>Closed Membership</h1>
+                                                @endif
+                                            </div>
+                                        </x-tab.title>
+                                    </div>
+                            </div>
+                            <div x-show="tab == 0">
+                                <div class="mt-2">
+                                    <div class="flex items-center justify-start mb-4">
+                                        <x-input
+                                            wire:model=""
+                                            placeholder="Search"
+                                        />
+                                    </div>
+                                    @if($clientType == 'siskop membership financing')
+                                        <x-table.table>
+                                            <x-slot name="thead">
+                                                <x-table.table-header class="text-left" value="NO" sort="" />
+                                                <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
+                                                <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
+                                                <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
+                                            </x-slot>
+                                            <x-slot name="tbody">
+                                                @forelse($disb as $item)
+                                                <tr>
+                                                    <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
+                                                        {{ $loop->iteration }}
+                                                    </x-table.table-body>
+
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        {{$item->name}}
+                                                    </x-table.table-body>
+
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        {{$item->ACCOUNT_NO}}
+                                                    </x-table.table-body>
+
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        {{$item->mbr_no}}
+                                                    </x-table.table-body>
+                                                </tr>
+                                                @empty
+                                                <tr>
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
+                                                        <x-no-data title="No data"/>
+                                                    </x-table.table-body>
+                                                </tr>
+                                                @endforelse
+                                            </x-slot>
+                                        </x-table.table>
+                                        <div class="mt-4">
+                                            {{ $disb->links('livewire::pagination-links') }}
                                         </div>
-                                    </x-tab.title>
-                                    <x-tab.title name="1">
-                                        <div class="flex items-center space-x-2 text-sm">
-                                            <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
-                                            @if($clientType == 'siskop membership financing')
-                                                <h1>Pre Disbursement Listing</h1>
-                                            @else
-                                                <h1>Closed Membership</h1>
-                                            @endif
+                                    @else
+                                        <x-table.table>
+                                            <x-slot name="thead">
+                                                <x-table.table-header class="text-left" value="NO" sort="" />
+                                                <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
+                                                <x-table.table-header class="text-left" value="IC NUMBER" sort="" />
+                                                <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
+                                            </x-slot>
+                                            <x-slot name="tbody">
+                                                @forelse($activeMember as $item)
+                                                <tr>
+                                                    <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
+                                                        {{ $loop->iteration }}
+                                                    </x-table.table-body>
+
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        {{$item->cifCustomer->name}}
+                                                    </x-table.table-body>
+
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        {{$item->cifCustomer->identity_no}}
+                                                    </x-table.table-body>
+
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        {{$item->mbr_no}}
+                                                    </x-table.table-body>
+                                                </tr>
+                                                @empty
+                                                <tr>
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
+                                                        <x-no-data title="No data"/>
+                                                    </x-table.table-body>
+                                                </tr>
+                                                @endforelse
+                                            </x-slot>
+                                        </x-table.table>
+                                        <div class="mt-4">
+                                            {{ $activeMember->links('livewire::pagination-links') }}
                                         </div>
-                                    </x-tab.title>
+                                    @endif
                                 </div>
+                            </div>
+                            <div x-show="tab == 1">
+                                <div class="mt-2">
+                                    <div class="flex items-center justify-start mb-4">
+                                        <x-input
+                                            wire:model=""
+                                            placeholder="Search"
+                                        />
+                                    </div>
+                                    @if($clientType == 'siskop membership financing')
+                                        <x-table.table>
+                                            <x-slot name="thead">
+                                                <x-table.table-header class="text-left" value="NO" sort="" />
+                                                <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
+                                                <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
+                                                <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
+                                            </x-slot>
+                                            <x-slot name="tbody">
+                                                @forelse($preDisb as $item)
+                                                <tr>
+                                                    <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
+                                                        {{ $loop->iteration }}
+                                                    </x-table.table-body>
+
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        {{$item->name}}
+                                                    </x-table.table-body>
+
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        {{$item->ACCOUNT_NO}}
+                                                    </x-table.table-body>
+
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        {{$item->mbr_no}}
+                                                    </x-table.table-body>
+                                                </tr>
+                                                @empty
+                                                <tr>
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
+                                                        <x-no-data title="No data"/>
+                                                    </x-table.table-body>
+                                                </tr>
+                                                @endforelse
+                                            </x-slot>
+                                        </x-table.table>
+                                        <div class="mt-4">
+                                            {{ $preDisb->links('livewire::pagination-links') }}
+                                        </div>
+                                    @else
+                                        <x-table.table>
+                                            <x-slot name="thead">
+                                                <x-table.table-header class="text-left" value="NO" sort="" />
+                                                <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
+                                                <x-table.table-header class="text-left" value="IC NUMBER" sort="" />
+                                                <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
+                                            </x-slot>
+                                            <x-slot name="tbody">
+                                                @forelse($closeMember as $item)
+                                                <tr>
+                                                    <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
+                                                        {{ $loop->iteration }}
+                                                    </x-table.table-body>
+
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        {{$item->cifCustomer->name}}
+                                                    </x-table.table-body>
+
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        {{$item->cifCustomer->identity_no}}
+                                                    </x-table.table-body>
+
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        {{$item->mbr_no}}
+                                                    </x-table.table-body>
+                                                </tr>
+                                                @empty
+                                                <tr>
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
+                                                        <x-no-data title="No data"/>
+                                                    </x-table.table-body>
+                                                </tr>
+                                                @endforelse
+                                            </x-slot>
+                                        </x-table.table>
+                                        <div class="mt-4">
+                                            {{ $closeMember->links('livewire::pagination-links') }}
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
-                        <div x-show="tab == 0">
+                        @else
                             <div class="mt-2">
                                 <div class="flex items-center justify-start mb-4">
                                     <x-input
@@ -97,45 +273,45 @@
                                         placeholder="Search"
                                     />
                                 </div>
-                                @if($clientType == 'siskop membership financing')
+                                @if(auth()->user()->client_id == 4)
                                     <x-table.table>
                                         <x-slot name="thead">
                                             <x-table.table-header class="text-left" value="NO" sort="" />
                                             <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
-                                            <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
+                                            <x-table.table-header class="text-left" value="IC NUMBER" sort="" />
                                             <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
                                         </x-slot>
                                         <x-slot name="tbody">
-                                            @forelse($disb as $item)
                                             <tr>
                                                 <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
-                                                    {{ $loop->iteration }}
+                                                    1
                                                 </x-table.table-body>
-
                                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    {{$item->name}}
+                                                    Dato Mus
                                                 </x-table.table-body>
-
                                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    {{$item->ACCOUNT_NO}}
+                                                    65902138278
                                                 </x-table.table-body>
-
                                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    {{$item->mbr_no}}
+                                                    12312312
                                                 </x-table.table-body>
                                             </tr>
-                                            @empty
                                             <tr>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
-                                                    <x-no-data title="No data"/>
+                                                <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
+                                                    2
+                                                </x-table.table-body>
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                    Fattah
+                                                </x-table.table-body>
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                    65902138278
+                                                </x-table.table-body>
+                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                    12312312
                                                 </x-table.table-body>
                                             </tr>
-                                            @endforelse
                                         </x-slot>
                                     </x-table.table>
-                                    <div class="mt-4">
-                                        {{ $disb->links('livewire::pagination-links') }}
-                                    </div>
                                 @else
                                     <x-table.table>
                                         <x-slot name="thead">
@@ -145,128 +321,25 @@
                                             <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
                                         </x-slot>
                                         <x-slot name="tbody">
-                                            @forelse($activeMember as $item)
                                             <tr>
                                                 <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
-                                                    {{ $loop->iteration }}
+                                                    1
                                                 </x-table.table-body>
-
                                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    {{$item->cifCustomer->name}}
+                                                    Dato Mus
                                                 </x-table.table-body>
-
                                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    {{$item->cifCustomer->identity_no}}
+                                                    65902138278
                                                 </x-table.table-body>
-
                                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    {{$item->mbr_no}}
+                                                    12312312
                                                 </x-table.table-body>
                                             </tr>
-                                            @empty
-                                            <tr>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
-                                                    <x-no-data title="No data"/>
-                                                </x-table.table-body>
-                                            </tr>
-                                            @endforelse
                                         </x-slot>
                                     </x-table.table>
-                                    <div class="mt-4">
-                                        {{ $activeMember->links('livewire::pagination-links') }}
-                                    </div>
                                 @endif
                             </div>
-                        </div>
-                        <div x-show="tab == 1">
-                            <div class="mt-2">
-                                <div class="flex items-center justify-start mb-4">
-                                    <x-input
-                                        wire:model=""
-                                        placeholder="Search"
-                                    />
-                                </div>
-                                @if($clientType == 'siskop membership financing')
-                                    <x-table.table>
-                                        <x-slot name="thead">
-                                            <x-table.table-header class="text-left" value="NO" sort="" />
-                                            <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
-                                            <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
-                                            <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
-                                        </x-slot>
-                                        <x-slot name="tbody">
-                                            @forelse($preDisb as $item)
-                                            <tr>
-                                                <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
-                                                    {{ $loop->iteration }}
-                                                </x-table.table-body>
-
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    {{$item->name}}
-                                                </x-table.table-body>
-
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    {{$item->ACCOUNT_NO}}
-                                                </x-table.table-body>
-
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    {{$item->mbr_no}}
-                                                </x-table.table-body>
-                                            </tr>
-                                            @empty
-                                            <tr>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
-                                                    <x-no-data title="No data"/>
-                                                </x-table.table-body>
-                                            </tr>
-                                            @endforelse
-                                        </x-slot>
-                                    </x-table.table>
-                                    <div class="mt-4">
-                                        {{ $preDisb->links('livewire::pagination-links') }}
-                                    </div>
-                                @else
-                                    <x-table.table>
-                                        <x-slot name="thead">
-                                            <x-table.table-header class="text-left" value="NO" sort="" />
-                                            <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
-                                            <x-table.table-header class="text-left" value="IC NUMBER" sort="" />
-                                            <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
-                                        </x-slot>
-                                        <x-slot name="tbody">
-                                            @forelse($closeMember as $item)
-                                            <tr>
-                                                <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
-                                                    {{ $loop->iteration }}
-                                                </x-table.table-body>
-
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    {{$item->cifCustomer->name}}
-                                                </x-table.table-body>
-
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    {{$item->cifCustomer->identity_no}}
-                                                </x-table.table-body>
-
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    {{$item->mbr_no}}
-                                                </x-table.table-body>
-                                            </tr>
-                                            @empty
-                                            <tr>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
-                                                    <x-no-data title="No data"/>
-                                                </x-table.table-body>
-                                            </tr>
-                                            @endforelse
-                                        </x-slot>
-                                    </x-table.table>
-                                    <div class="mt-4">
-                                        {{ $closeMember->links('livewire::pagination-links') }}
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
+                        @endif
                     </div>
 
                 </div>
