@@ -4,6 +4,7 @@ namespace App\Models\Cif;
 
 use App\Models\Fms\FmsAccountMaster;
 use App\Models\Fms\Membership;
+use App\Models\Fms\FmsMembership;
 use App\Models\Ref\RefState;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
