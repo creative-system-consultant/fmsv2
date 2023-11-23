@@ -88,7 +88,7 @@
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Education</span>
                                                     </a>
-                                                    <a href="{{ route('maintenance.bank') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a wire:navigate href="{{ route('maintenance.banks') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Bank</span>
                                                     </a>
@@ -139,6 +139,42 @@
                                                     <a href="{{ route('maintenance.occupation') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Occupation</span>
+                                                    </a>
+                                                    <a wire:navigate href="{{ route('maintenance.takaful') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
+                                                        <span>Takaful</span>
+                                                    </a>
+                                                    <a wire:navigate href="{{ route('maintenance.guarantor-status') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
+                                                        <span>Guarantor Status</span>
+                                                    </a>
+                                                    <a wire:navigate href="{{ route('maintenance.inst-codes') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
+                                                        <span>Inst Code</span>
+                                                    </a>
+                                                    <a wire:navigate href="{{ route('maintenance.inst-modes') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
+                                                        <span>Inst Mode</span>
+                                                    </a>
+                                                    <a wire:navigate href="{{ route('maintenance.cust-status') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
+                                                        <span>Customer Status</span>
+                                                    </a>
+                                                    <a wire:navigate href="{{ route('maintenance.employer-list') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
+                                                        <span>Employer List</span>
+                                                    </a>
+                                                    <a wire:navigate href="{{ route('maintenance.payment-type') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
+                                                        <span>Payment Type</span>
+                                                    </a>
+                                                    <a wire:navigate href="{{ route('maintenance.products') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
+                                                        <span>Product</span>
+                                                    </a>
+                                                    <a wire:navigate href="{{ route('maintenance.virtual-acc') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
+                                                        <span>Virtual Account</span>
                                                     </a>
                                                 </li>
                                             </div>
