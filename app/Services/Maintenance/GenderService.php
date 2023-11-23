@@ -6,38 +6,36 @@ use App\Models\Ref\RefGender;
 
 class GenderService
 {
-    public function isCodeExists($code)
+    public function isInstituteIdExists($institute_id)
     {
-        return RefGender::whereClientId(auth()->user()->client_id)->whereCode($code)->exists();
+        return RefGender::whereClientId(auth()->user()->client_id)->whereInstituteId($institute_id)->exists();
     }
 
-    public function createGender($description, $code, $status)
+    public function createGender($description, $institute_id)
     {
         RefGender::create([
             'description' => trim(strtoupper($description)),
-            'code' => trim(strtoupper($code)),
+            'institute_id' => trim(strtoupper($institute_id)),
             'client_id' => auth()->user()->client_id,
-            'status' => $status == true ? '1' : '0',
             'created_at' => now(),
-            'created_by' => auth()->user()->name,
+            'created_by' => auth()->id(),
         ]);
     }
 
-    public function canUpdateCode($id, $code)
+    public function canUpdateInstituteId($id, $institute_id)
     {
-        $existingCode = RefGender::whereClientId(auth()->user()->client_id)->whereCode($code);
+        $existingInstituteId = RefGender::whereClientId(auth()->user()->client_id)->whereInstituteId($institute_id);
 
-        return !$existingCode->exists() || $existingCode->value('id') == $id;
+        return !$existingInstituteId->exists() || $existingInstituteId->value('id') == $id;
     }
 
-    public function updateGender($id, $description, $code, $status)
+    public function updateGender($id, $description, $institute_id)
     {
         RefGender::whereId($id)->update([
             'description' => trim(strtoupper($description)),
-            'code' => trim(strtoupper($code)),
-            'status' => $status == true ? '1' : '0',
+            'institute_id' => trim(strtoupper($institute_id)),
             'updated_at' => now(),
-            'updated_by' => auth()->user()->name,
+            'updated_by' => auth()->id(),
         ]);
     }
 

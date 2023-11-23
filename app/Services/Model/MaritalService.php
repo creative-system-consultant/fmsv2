@@ -2,21 +2,21 @@
 
 namespace App\Services\Model;
 
-use App\Models\Ref\RefReligion;
+use App\Models\Ref\RefMarital;
 
-class ReligionService
+class MaritalService
 {
     public static function isCodeExists($code)
     {
-        return RefReligion::whereClientId(auth()->user()->client_id)->whereCode($code)->exists();
+        return RefMarital::whereClientId(auth()->user()->client_id)->whereCode($code)->exists();
     }
 
-    public static function getAllReligion()
+    public static function getAllMarital()
     {
-        return RefReligion::all();
+        return RefMarital::all();
     }
 
-    public static function createReligion($data)
+    public static function createMarital($data)
     {
         $defaultData = [
             'client_id' => auth()->user()->client_id,
@@ -25,16 +25,16 @@ class ReligionService
         ];
 
         $mergedData = array_merge($data, $defaultData);
-        RefReligion::create($mergedData);
+        RefMarital::create($mergedData);
     }
 
     public static function canUpdateCode($id, $code)
     {
-        $existingCode = RefReligion::whereClientId(auth()->user()->client_id)->whereCode($code);
+        $existingCode = RefMarital::whereClientId(auth()->user()->client_id)->whereCode($code);
         return !$existingCode->exists() || $existingCode->value('id') == $id;
     }
 
-    public static function updateReligion($id, $data)
+    public static function updateMarital($id, $data)
     {
         $defaultData = [
             'updated_at' => now(),
@@ -42,25 +42,25 @@ class ReligionService
         ];
 
         $mergedData = array_merge($data, $defaultData);
-        RefReligion::whereId($id)->update($mergedData);
+        RefMarital::whereId($id)->update($mergedData);
     }
 
-    public static function deleteReligion($id)
+    public static function deleteMarital($id)
     {
-        RefReligion::whereId($id)->delete();
+        RefMarital::whereId($id)->delete();
     }
-
-    public static function getReligionResult($searchQuery, $perPage = 10)
+    
+    public static function getMaritalResult($searchQuery, $perPage = 10)
     {
         if($searchQuery == '')
         {
-            return RefReligion::whereClientId(auth()->user()->client_id)
+            return RefMarital::whereClientId(auth()->user()->client_id)
             ->orderBy('description','ASC')
             ->paginate($perPage);
         }
         else
         {
-            return RefReligion::where(function ($query) use ($searchQuery) {
+            return RefMarital::where(function ($query) use ($searchQuery) {
                 $query->where('code', 'like', $searchQuery . '%')
                         ->orWhere('description', 'like', '%' . $searchQuery . '%');
             })

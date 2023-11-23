@@ -13,6 +13,13 @@
                         />
                     </div>
                     <div  class="flex items-center space-x-2">
+                        <x-label label="Search : " />
+                        <x-input 
+                            type="text"
+                            wire:model.live.debounce.1500ms="searchQuery" 
+                            placeholder="Search"
+                            class="uppercase "
+                            /> 
                         <x-label label="List Until : " />
                         <x-input 
                             type="number"
@@ -26,8 +33,7 @@
                     <x-slot name="thead">
                         <x-table.table-header class="text-left" value="NO." sort="" />
                         <x-table.table-header class="text-left" value="GENDER NAME" sort="" />
-                        <x-table.table-header class="text-left" value="CODE" sort="" />
-                        <x-table.table-header class="text-left" value="STATUS" sort="" />
+                        <x-table.table-header class="text-left" value="INSTITUTE ID" sort="" />
                         <x-table.table-header class="text-left" value="ACTION" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
@@ -42,15 +48,7 @@
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    {{ $gender->code }}
-                                </x-table.table-body>
-
-                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    @if($gender->status == 1)
-                                        <x-badge flat emerald label="ENABLE" />
-                                    @else
-                                        <x-badge flat negative  label="DISABLE" />
-                                    @endif
+                                    {{ $gender->institute_id }}
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
@@ -62,7 +60,7 @@
                                         label="Edit" 
                                     />
                                     <x-button 
-                                        wire:click="delete({{ $gender->id }})"
+                                        wire:click="delete({{ $gender->id }},{{ $gender->institute_id }})"
                                         xs  
                                         icon="trash" 
                                         red 
@@ -92,9 +90,8 @@
     <!-- modal -->
     <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="lg">
         <div class="grid gap-4 my-2 lg:grid-cols-2 ">
-            <x-input wire:model="code" label="Code" placeholder="" class="uppercase "/>
+            <x-input wire:model="institute_id" label="institute_id" placeholder="" class="uppercase "/>
             <x-input wire:model="description" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
-            <x-toggle wire:model="status" left-label="Status" />
         </div>
 
         <x-slot name="footer">

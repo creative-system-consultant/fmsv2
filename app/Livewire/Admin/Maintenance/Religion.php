@@ -15,14 +15,11 @@ class Religion extends Component
 {
     use Actions, WithPagination, MaintenanceModalTrait;
 
-    #[Rule('required|string')]
+    #[Rule('required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/')]
     public $description;
 
-    #[Rule('required|max:3|alpha')]
+    #[Rule('required|min:2|max:2|alpha')]
     public $code;
-
-    #[Rule('nullable|boolean')]
-    public $status;
 
     public $openModal;
     public $modalTitle;
@@ -30,6 +27,7 @@ class Religion extends Component
     public $modalMethod;
     public $religion;
     public $paginated;
+    public $searchQuery;
 
     protected $religionService;
     protected $popupService;
@@ -43,6 +41,8 @@ class Religion extends Component
     public function openCreateModal()
     {
         $this->setupModal("create", "Create Religion", "Religion");
+        $this->reset(['description', 'code']); // Clear the values for description and code
+        $this->resetValidation(); // Clear validation errors
     }
 
     public function openUpdateModal($id)
@@ -50,9 +50,8 @@ class Religion extends Component
         $this->religion = RefReligion::find($id);
         $this->description = $this->religion->description;
         $this->code = $this->religion->code;
-        $this->religion->status == 1 ? $this->status = true : $this->status = false;
-
         $this->setupModal("update", "Update Religion", "Religion", "update({$id})");
+        $this->resetValidation(); // Clear validation errors
     }
 
     public function create()
@@ -60,17 +59,17 @@ class Religion extends Component
         
         $this->validate();
 
-        if (ReligionService::isCodeExists($this->code)) {
+        $paddedCode = str_pad(trim(strtoupper($this->code)), 2,'A', STR_PAD_LEFT);
+
+        if (ReligionService::isCodeExists($paddedCode)) {
             $this->addError('code', 'The code has already been taken.');
         } else {
             $data = [
-                'description' => trim(strtoupper($this->description)),
-                'code' => trim(strtoupper($this->code)),
-                'status' => $this->status == true ? '1' : '0',
+                'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
+                'code' => $paddedCode,
             ];
 
             ReligionService::createReligion($data);
-
             $this->reset();
             $this->openModal = false;
         }
@@ -82,9 +81,8 @@ class Religion extends Component
 
         if (ReligionService::canUpdateCode($id, $this->code)) {
             $data = [
-                'description' => trim(strtoupper($this->description)),
-                'code' => trim(strtoupper($this->code)),
-                'status' => $this->status == true ? '1' : '0',
+                'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
+                'code' => str_pad(trim(strtoupper($this->code)), 2, 'A', STR_PAD_LEFT),
             ];
 
             ReligionService::updateReligion($id, $data);
@@ -94,9 +92,9 @@ class Religion extends Component
         }
     }
 
-    public function delete($id)
+    public function delete($id,$code)
     {
-        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete the information?',$id);
+    $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you sure you want to delete CODE: ' . $code .'?', $id);
     }
 
     public function ConfirmDelete($id)
@@ -106,7 +104,7 @@ class Religion extends Component
 
     public function render()
     {
-        $data = $this->religionService->getPaginatedReligions($this->paginated);
+        $data = $this->religionService->getReligionResult($this->searchQuery, $this->paginated);
 
         return view('livewire.admin.maintenance.religion', [
             'data' => $data,

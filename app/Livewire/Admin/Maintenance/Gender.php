@@ -6,7 +6,7 @@ use App\Models\Ref\RefGender;
 use App\Services\Maintenance\GenderService;
 use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
-use Livewire\Attributes\Layout;
+
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -16,14 +16,11 @@ class Gender extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
-    #[Rule('required|max:3|alpha')]
-    public $code;
+    #[Rule('required|max:2|numeric')]
+    public $institute_id;
 
     #[Rule('required|string')]
     public $description;
-
-    #[Rule('nullable|boolean')]
-    public $status;
 
     public $openModal;
     public $modalTitle;
@@ -32,6 +29,7 @@ class Gender extends Component
     public $gender;
     public $coopId;
     public $paginated;
+    public $searchQuery;
 
     protected $genderService;
     protected $popupService;
@@ -45,25 +43,27 @@ class Gender extends Component
     public function openCreateModal()
     {
         $this->setupModal("create", "Create Gender", "Gender");
+        $this->reset(['description', 'institute_id']); // Clear the values for description and code
+        $this->resetValidation(); // Clear validation errors
     }
 
     public function openUpdateModal($id)
     {
         $this->gender = RefGender::find($id);
         $this->description = $this->gender->description;
-        $this->code = $this->gender->code;
-        $this->gender->status == 1 ? $this->status = true : $this->status = false;
+        $this->institute_id = $this->gender->institute_id;
         $this->setupModal("update", "Update Gender", "Gender", "update({$id})");
+        $this->resetValidation(); // Clear validation errors
     }
 
     public function create()
     {
         $this->validate();
 
-        if ($this->genderService->isCodeExists($this->code)) {
-            $this->addError('code', 'The code has already been taken.');
+        if ($this->genderService->isInstituteIdExists($this->institute_id)) {
+            $this->addError('institute_id', 'The institute id has already been taken.');
         } else {
-            $this->genderService->createGender($this->description, $this->code, $this->status);
+            $this->genderService->createGender($this->description, $this->institute_id);
             $this->reset();
             $this->openModal = false;
         }
@@ -73,17 +73,17 @@ class Gender extends Component
     {
         $this->validate();
 
-        if ($this->genderService->canUpdateCode($id, $this->code)) {
-            $this->genderService->updateGender($id, $this->description, $this->code, $this->status);
+        if ($this->genderService->canUpdateInstituteId($id, $this->institute_id)) {
+            $this->genderService->updateGender($id, $this->description, $this->institute_id);
             $this->openModal = false;
         } else {
-            $this->addError('code', 'The code has already been taken.');
+            $this->addError('institute_id', 'The institute id has already been taken.');
         }
     }
 
-    public function delete($id)
+    public function delete($id,$institute_id)
     {
-        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete the information?',$id);
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete INSTITUTE ID: ' .$institute_id. '?',$id);
     }
 
     public function ConfirmDelete($id)

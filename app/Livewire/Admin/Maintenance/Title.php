@@ -4,10 +4,9 @@ namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefTitle;
 use Livewire\Component;
-use App\Services\Maintenance\TitleService;
+use App\Services\Model\TitleService;
 use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
@@ -16,22 +15,23 @@ class Title extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
-    #[Rule('required|alpha')]
-    public $code;
+    #[Rule('required|numeric|min:1|max:99')]
+    public $title_id;
 
-    #[Rule('required|string')]
+    #[Rule('required|regex:/^[A-Za-z \']+(\([A-Za-z]+\))?$/')]
     public $description;
 
-    #[Rule('nullable|boolean')]
-    public $status;
+    #[Rule('numeric|min:1|max:9999')]
+    public $priority;
 
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $title;
-    public $clientId;
     public $paginated;
+    public $searchQuery;
+    public $prio_id;
 
     protected $titleService;
     protected $popupService;
@@ -45,25 +45,42 @@ class Title extends Component
     public function openCreateModal()
     {
         $this->setupModal("create", "Create Title", "Title");
+        $this->reset(['description', 'title_id']); // Clear the values for description and title_id
+        $this->resetValidation(); // Clear validation errors
     }
 
     public function openUpdateModal($id)
     {
+        $this->prio_id = $id;
         $this->title = RefTitle::find($id);
         $this->description = $this->title->description;
-        $this->code = $this->title->code;
-        $this->title->status == 1 ? $this->status = true : $this->status = false;
-        $this->setupModal("update", "Update Title", "Title", "update({$id})");
+        $this->title_id = $this->title->title_id;
+        $this->priority = $this->title->priority;
+        $this->setupModal("update", "Update Title", "Title", "update({$this->prio_id})");
+        $this->resetValidation(); // Clear validation errors
     }
 
     public function create()
     {
-        $this->validate();
+        
+        $this->validate([
+            'title_id' => 'required|numeric|min:1|max:99',
+            'description' => 'required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/',
+        ]);
+        $trim_code = trim($this->title_id);
 
-        if ($this->titleService->isCodeExists($this->code)) {
-            $this->addError('code', 'The code has already been taken.');
+        if(strlen($trim_code) == 1) {
+            $trim_code = '0' . $trim_code;
+        }
+        if (TitleService::isTitleIdExists($trim_code)) {
+            $this->addError('title_id', 'The title id has already been taken.');
         } else {
-            $this->titleService->createTitle($this->description, $this->code, $this->status);
+            $data = [
+                'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
+                'title_id' => $trim_code,
+            ];
+
+            TitleService::createTitle($data);
             $this->reset();
             $this->openModal = false;
         }
@@ -73,27 +90,40 @@ class Title extends Component
     {
         $this->validate();
 
-        if ($this->titleService->canUpdateCode($id, $this->code)) {
-            $this->titleService->updateTitle($id, $this->description, $this->code, $this->status);
+        $trim_code = trim($this->title_id);
+
+        if(strlen($trim_code) == 1) {
+            $trim_code = '0' . $trim_code;
+        }
+
+        if (TitleService::canUpdateTitleId($id, $this->title_id)) {
+            $data = [
+                'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
+                'priority' => $this->priority,
+                'title_id' => $trim_code,
+            ];
+
+            TitleService::updateTitle($id, $data);
             $this->openModal = false;
         } else {
-            $this->addError('code', 'The code has already been taken.');
+            $this->addError('title_id', 'The title id has already been taken.');
         }
     }
 
-    public function delete($id)
+    public function delete($id,$description)
     {
-        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete the information?',$id);
+    $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you sure you want to delete ' . $description .'?', $id);
     }
-
+    
+    
     public function ConfirmDelete($id)
     {
-        $this->titleService->deleteTitle($id);
+        TitleService::deleteTitle($id);
     }
 
     public function render()
     {
-        $data = $this->titleService->getPaginatedTitle($this->paginated);
+        $data = $this->titleService->getTitleResult($this->searchQuery, $this->paginated);
 
         return view('livewire.admin.maintenance.title', [
             'data' => $data,

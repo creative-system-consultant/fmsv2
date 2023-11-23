@@ -54,7 +54,10 @@ class StateService
     {
         if($searchQuery == '')
         {
-            return RefState::whereClientId(auth()->user()->client_id)->paginate($perPage);
+            return RefState::whereClientId(auth()->user()->client_id)
+            ->orderBy('priority','ASC')
+            ->orderBy('description','ASC')
+            ->paginate($perPage);
         }
         else
         {
@@ -63,12 +66,9 @@ class StateService
                         ->orWhere('description', 'like', '%' . $searchQuery . '%');
             })
             ->whereClientId(auth()->user()->client_id)
+            ->orderBy('priority','ASC')
+            ->orderBy('description','ASC')
             ->paginate($perPage);
         }
     }
-
-
-
-
-
 }

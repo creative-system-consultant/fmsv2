@@ -15,14 +15,11 @@ class Relationship extends Component
 {
     use Actions, WithPagination, MaintenanceModalTrait;
 
-    #[Rule('required|max:3|alpha')]
+    #[Rule('required|numeric')]
     public $code;
 
-    #[Rule('required|string')]
+    #[Rule('required|regex:/^[A-Za-z\s]+$/')]
     public $description;
-
-    #[Rule('nullable|boolean')]
-    public $status;
 
     public $openModal;
     public $modalTitle;
@@ -50,8 +47,6 @@ class Relationship extends Component
         $this->relationship = RefRelationship::find($id);
         $this->description = $this->relationship->description;
         $this->code = $this->relationship->code;
-        $this->relationship->status == 1 ? $this->status = true : $this->status = false;
-
         $this->setupModal("update", "Update Relationship", "Relationship", "update({$id})");
     }
 
@@ -65,7 +60,6 @@ class Relationship extends Component
             $data = [
                 'description' => trim(strtoupper($this->description)),
                 'code' => trim(strtoupper($this->code)),
-                'status' => $this->status == true ? '1' : '0',
             ];
 
             RelationshipService::createRelationship($data);
@@ -83,7 +77,6 @@ class Relationship extends Component
             $data = [
                 'description' => trim(strtoupper($this->description)),
                 'code' => trim(strtoupper($this->code)),
-                'status' => $this->status == true ? '1' : '0',
             ];
 
             RelationshipService::updateRelationship($id, $data);

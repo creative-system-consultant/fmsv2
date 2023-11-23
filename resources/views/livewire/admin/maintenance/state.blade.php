@@ -24,7 +24,7 @@
                         <x-input 
                             type="number"
                             wire:model.live.debounce.1500ms="paginated" 
-                            placeholder="00"
+                            placeholoder="00"
                         />          
                     </div>
                 </div>
@@ -34,6 +34,7 @@
                         <x-table.table-header class="text-left" value="NO." sort="" />
                         <x-table.table-header class="text-left" value="STATE NAME" sort="" />
                         <x-table.table-header class="text-left" value="CODE" sort="" />
+                        <x-table.table-header class="text-left" value="PRIORITY" sort="" />
                         <x-table.table-header class="text-left" value="ACTION" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
@@ -53,6 +54,10 @@
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    {{ $state->priority }}
+                                </x-table.table-body>
+
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <x-button 
                                         wire:click="openUpdateModal({{ $state->id }})"
                                         xs  
@@ -61,7 +66,7 @@
                                         label="Edit" 
                                     />
                                     <x-button 
-                                        wire:click="delete({{ $state->id }})"
+                                        wire:click="delete({{ $state->id }},'{{ $state->description }}')"
                                         xs  
                                         icon="trash" 
                                         red 
@@ -93,8 +98,12 @@
             <div class="tooltip buttom" title="State must be alphabetic">
                 <x-input wire:model="description" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
             </div> 
+            @if ($modalMethod == "update($prio_id)")
+            <div class="tooltip buttom" title="Priority must be number">
+                <x-input wire:model="priority" label="Priority" placeholder="" class=" "/>
+            </div>
+            @endif
         </div>
-
 
         <x-slot name="footer">
             <div class="flex justify-end">
