@@ -1,5 +1,5 @@
 <div>
-    <x-container title="Customer Status Maintenance" routeBackBtn="{{route('setting.setting-list')}}" titleBackBtn="setting list" disableBackBtn="true" >
+    <x-container title="Code Status Maintenance" routeBackBtn="{{route('setting.setting-list')}}" titleBackBtn="setting list" disableBackBtn="true" >
         <div class="grid grid-cols-1">
             <x-card title="">
                 <div class="flex items-center justify-between w-full mb-4">

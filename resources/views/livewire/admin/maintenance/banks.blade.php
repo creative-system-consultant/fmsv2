@@ -99,7 +99,7 @@
     </x-container>
 
     <!-- modal -->
-    <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="lg">
+    <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="lg"  disableModal="true">
         <div class="grid gap-4 my-2 lg:grid-cols-1 ">
             <div class="tooltip buttom" title="Input should be a number, limited to 2 digits">
                 <x-input wire:model="code" label="Code " placeholder="" class="uppercase " />

@@ -12,41 +12,38 @@ class VirtualAccService
         return FmsGlobalParm::all();
     }
 
-    
-    public static function getValue()
-    {
-        return FmsGlobalParm::whereClientId(auth()->user()->client_id)
-        ->select('COOLING_PERIOD', 'THRESHOLD')
-        ->first();
+
+    public static function updateVirtualAcc($data)
+    {  
+        if (!empty($data)) {
+        FmsGlobalParm::whereClientId(auth()->user()->client_id)->update($data);
+        }
     }
 
-    public static function canUpdateCoolingPeriod($id, $valueCoolingPeriod)
+    public static function updateCoolingPeriod($valueCoolingPeriod)
     {
-        $existingValue = FmsGlobalParm::whereClientId(auth()->user()->client_id)->where('COOLING_PERIOD',$valueCoolingPeriod);
-        return !$existingValue->exists() || $existingValue->value('id') == $id;
+         // Assuming $data contains only 'COOLING_PERIOD' key and value
+        FmsGlobalParm::whereClientId(auth()->user()->client_id)->update(['COOLING_PERIOD' => $valueCoolingPeriod]);
     }
-    public static function updateCoolingPeriod($id, $data)
-    {
-        $defaultData = [
-            'updated_at' => now(),
-            'updated_by' => auth()->id()
-        ];
 
-        $mergedData = array_merge($data, $defaultData);
-        FmsGlobalParm::whereId($id)->update($mergedData);
+
+    public static function updateThreshold($valueThreshold)
+    {
+         // Assuming $data contains only 'COOLING_PERIOD' key and value
+        FmsGlobalParm::whereClientId(auth()->user()->client_id)->update(['THRESHOLD' => $valueThreshold]);
     }
 
     public static function getVirtualAccResult($searchQuery, $perPage = 10)
     {
+
         if($searchQuery == '')
         {
-            return FmsGlobalParm::whereClientId(auth()->user()->client_id)->paginate($perPage);
-        }
-        else
-        {
-            return FmsGlobalParm::whereClientId(auth()->user()->client_id)->where(function ($query) use ($searchQuery) {
-                $query->where('COOLING_PERIOD', 'like', $searchQuery . '%')
-                        ->orWhere('THRESHOLD', 'like', '%' . $searchQuery . '%');
+            return FmsGlobalParm::whereClientId(auth()->user()->client_id)
+            ->paginate($perPage);
+        }else{
+            return FmsGlobalParm::where(function ($query) use ($searchQuery) {
+                $query->where('COOLING_PERIOD','like','%'.$searchQuery.'%')
+                ->where('THRESHOLD','like','%'.$searchQuery.'%');
             })
             ->whereClientId(auth()->user()->client_id)
             ->paginate($perPage);
