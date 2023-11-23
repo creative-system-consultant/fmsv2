@@ -21,6 +21,9 @@ class BranchID extends Component
     #[Rule('required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/')]
     public $branch_name;
 
+    #[Rule('required|numeric|min:1|max:9999')]
+    public $priority;
+
     public $openModal;
     public $modalTitle;
     public $modalDescription;
@@ -28,6 +31,7 @@ class BranchID extends Component
     public $branchid;
     public $paginated;
     public $searchQuery;
+    public $branch;
 
     protected $branchid_Service;
     protected $popupService;
@@ -45,12 +49,15 @@ class BranchID extends Component
         $this->resetValidation();
     }
 
-    public function openUpdateModal($branch_id)
+    public function openUpdateModal($id)
     {
-        $this->branchid = RefBranchID::find($branch_id);
+        $this->branch = $id;
+        $this->branchid = RefBranchID::find($id);
         $this->branch_id = $this->branchid->branch_id;
         $this->branch_name = $this->branchid->branch_name;
-        $this->setupModal("update", "Update Branch", "Branch Name", "update({$branch_id})");
+        $this->priority = $this->branchid->priority;
+
+        $this->setupModal("update", "Update Branch", "Branch Name", "update({$this->branch})");
         $this->resetValidation();
     }
 
@@ -79,9 +86,9 @@ class BranchID extends Component
 
         if (BranchIDService::canUpdateCode($id, $this->branch_id)) {
             $data = [
-                // Combine validation, trim, strtoupper, and str_pad for branch_id
                 'branch_id' => str_pad(trim(strtoupper($this->branch_id)), 4, '0', STR_PAD_LEFT),
                 'branch_name' => trim(preg_replace('/\s+/', ' ', strtoupper($this->branch_name))),
+                'priority' => $this->priority,
             ];
             BranchIDService::updateBranchIDService($id, $data);
             $this->openModal = false;
@@ -91,9 +98,9 @@ class BranchID extends Component
         }
     }
 
-    public function delete($id,$branch_id)
+    public function delete($id, $branch_id, $branch_name)
     {
-        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', "Are you delete the branch ID: ".$branch_id."?",$id);
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', "Are you delete the Branch ID " .$branch_id. " : ".$branch_name."?",$id);
     }
 
     public function ConfirmDelete($id)
@@ -103,7 +110,7 @@ class BranchID extends Component
 
     public function render()
     {
-        $data = $this->branchid_Service->getBranchResult($this->searchQuery, $this->paginated);
+        $data = $this->branchid_Service->getBranchIDResult($this->searchQuery, $this->paginated);
         return view('livewire.admin.maintenance.branch-i-d', [
             'data' => $data
             ])->extends('layouts.main');

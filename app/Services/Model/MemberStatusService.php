@@ -55,11 +55,12 @@ class MemberStatusService
     {
         if($searchQuery == '')
         {
-            return RefMemStatus::whereClientId(auth()->user()->client_id)->paginate($perPage);
-        }
-        else
-        {
-            return RefMemStatus::whereClientId(auth()->user()->client_id)->where(function ($query) use ($searchQuery) {
+            return RefMemStatus::whereClientId(auth()->user()->client_id)
+                ->orderBy('mbr_status','ASC')
+                ->orderBy('description','ASC')
+                ->paginate($perPage);
+        }else {
+            return RefMemStatus::where(function ($query) use ($searchQuery) {
                 $query->where('mbr_status', 'like',  $searchQuery . '%')
                         ->orWhere('description', 'like', '%'. $searchQuery . '%');
             })

@@ -54,15 +54,20 @@ class IncomeService
     {
         if($searchQuery == '')
         {
-            return RefIncome::whereClientId(auth()->user()->client_id)->paginate($perPage);
+            return RefIncome::whereClientId(auth()->user()->client_id)
+            ->orderBy('code','ASC')
+            ->orderBy('description','ASC')
+            ->paginate($perPage);
         }
         else
         {
-            return RefIncome::whereClientId(auth()->user()->client_id)->where(function ($query) use ($searchQuery) {
+            return RefIncome::where(function ($query) use ($searchQuery) {
                 $query->where('code', 'like',  $searchQuery . '%')
                         ->orWhere('description', 'like', '%'. $searchQuery . '%');
             })
             ->whereClientId(auth()->user()->client_id)
+            ->orderBy('code','ASC')
+            ->orderBy('description','ASC')
             ->paginate($perPage);
         }
     }
