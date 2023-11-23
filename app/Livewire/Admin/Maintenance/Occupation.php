@@ -22,6 +22,10 @@ class Occupation extends Component
     #[Rule('required|string')]
     public $description;
 
+    #[Rule('numeric|min:1|max:9999')]
+    public $priority;
+
+
     public $openModal;
     public $modalTitle;
     public $modalDescription;
@@ -54,17 +58,16 @@ class Occupation extends Component
         $this->description = $this->occupation->description;
         $this->occup_id = $this->occupation->occup_id;
         $this->setupModal("update", "Update Occupation", "Occupation", "update({$this->occ_id})");
-        // dd([
-        //     'openModal'=> $this->openModal,
-        //     'modalMethod' => $this->modalMethod
-        // ]);
         $this->resetValidation(); // Clear validation errors
     }
 
     public function create()
     {
         
-        $this->validate();
+        $this->validate([
+            'occup_id' => 'required|numeric|min:1|max:9999',
+            'description' => 'required|string',
+    ]);
 
         $paddedOccupId = str_pad(trim($this->occup_id), 4, '0', STR_PAD_LEFT);
 
@@ -72,7 +75,7 @@ class Occupation extends Component
             $this->addError('occup_id', 'The occupation id has already been taken.');
         } else {
             $data = [
-                'description' => trim(preg_replace('/\s+/', ' ', ($this->description))),
+                'description' => trim(strtoupper(preg_replace('/\s+/', ' ', ($this->description)))),
                 'occup_id' => $paddedOccupId,
             ];
 
@@ -88,8 +91,9 @@ class Occupation extends Component
 
         if (OccupationService::canUpdateOccupId($id, $this->occup_id)) {
             $data = [
-                'description' => trim(preg_replace('/\s+/', ' ',($this->description))),
+                'description' => trim(strtoupper(preg_replace('/\s+/', ' ',($this->description)))),
                 'occup_id' => str_pad(trim($this->occup_id), 4, '0', STR_PAD_LEFT),
+                'priority' => $this->priority,
             ];
 
             OccupationService::updateOccupation($id, $data);
@@ -99,9 +103,9 @@ class Occupation extends Component
         }
     }
 
-    public function delete($id,$occup_id)
+    public function delete($id,$description)
     {
-    $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you sure you want to delete Occupation ID: ' . $occup_id .'?', $id);
+    $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you sure you want to delete OCCUPATION: '.$description.'?', $id);
     }
     
     
@@ -111,11 +115,13 @@ class Occupation extends Component
     }
 
     public function render()
-    {
-        $data = $this->occupationService->getOccupationResult($this->searchQuery, $this->paginated);
+    {  
+        $data = $this->occupationService->getOccupationResult($this->searchQuery,20);
+        
 
         return view('livewire.admin.maintenance.occupation', [
             'data' => $data,
         ])->extends('layouts.main');
+
     }
 }

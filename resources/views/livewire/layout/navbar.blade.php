@@ -52,7 +52,16 @@
                     <div class="relative " x-data="{menuOpen:false}" x-cloak>
                         <div x-on:click="menuOpen = !menuOpen" @click.away="menuOpen = false"
                             class="flex items-center space-x-2 cursor-pointer">
-                            <x-avatar md src="https://picsum.photos/300?size=md" />
+                            @php 
+                                if(auth()->user()->client_id == 4 && auth()->user()->user_type == 2) {
+                                    $img = 'https://www.maybank.com/iwov-resources/images/pages/about-us/leadership/leadership_detail/03-Dato-Muzaffar-Hisham.png';
+                                }elseif(auth()->user()->client_id == 5  && auth()->user()->user_type == 2){
+                                    $img = 'https://roadcare.com.my/wp-content/uploads/2022/11/EN-YASIR-08-200x283.png';
+                                }else{
+                                    $img = 'https://www.nicepng.com/png/detail/128-1280406_view-user-icon-png-user-circle-icon-png.png';
+                                }
+                            @endphp
+                            <x-avatar md src={{$img}} />
                             <p class="w-12 text-sm lg:w-full dark:text-gray-200 line-clamp-1" :class="{'': atTop, ' text-black xl:text-white': !atTop}">
                                 {{ auth()->user()->name }}
                             </p>
@@ -81,7 +90,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -111,7 +119,6 @@
                             <x-icon name="office-building" class="w-4 h-4 mr-2"/>
                             <span>{{ strtoupper($client->name) }}</span>
                         @endif
-
                     </div>
                 </li>
             @empty
@@ -122,3 +129,4 @@
         </x-general.slideover-container>
     </div>
 </div>
+

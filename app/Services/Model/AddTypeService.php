@@ -2,21 +2,21 @@
 
 namespace App\Services\Model;
 
-use App\Models\Ref\RefReligion;
+use App\Models\Ref\AddressType;
 
-class ReligionService
+class AddTypeService
 {
     public static function isCodeExists($code)
     {
-        return RefReligion::whereClientId(auth()->user()->client_id)->whereCode($code)->exists();
+        return AddressType::whereClientId(auth()->user()->client_id)->whereCode($code)->exists();
     }
 
-    public static function getAllReligion()
+    public static function getAllAddType()
     {
-        return RefReligion::all();
+        return AddressType::all();
     }
 
-    public static function createReligion($data)
+    public static function createAddType($data)
     {
         $defaultData = [
             'client_id' => auth()->user()->client_id,
@@ -25,16 +25,17 @@ class ReligionService
         ];
 
         $mergedData = array_merge($data, $defaultData);
-        RefReligion::create($mergedData);
+        AddressType::create($mergedData);
     }
 
     public static function canUpdateCode($id, $code)
     {
-        $existingCode = RefReligion::whereClientId(auth()->user()->client_id)->whereCode($code);
+        $existingCode = AddressType::whereClientId(auth()->user()->client_id)->whereCode($code);
+
         return !$existingCode->exists() || $existingCode->value('id') == $id;
     }
 
-    public static function updateReligion($id, $data)
+    public static function updateAddType($id, $data)
     {
         $defaultData = [
             'updated_at' => now(),
@@ -42,25 +43,25 @@ class ReligionService
         ];
 
         $mergedData = array_merge($data, $defaultData);
-        RefReligion::whereId($id)->update($mergedData);
+        AddressType::whereId($id)->update($mergedData);
     }
 
-    public static function deleteReligion($id)
+    public static function deleteAddType($id)
     {
-        RefReligion::whereId($id)->delete();
+        AddressType::whereId($id)->delete();
     }
 
-    public static function getReligionResult($searchQuery, $perPage = 10)
+    public static function getAddTypeResult($searchQuery, $perPage = 10)
     {
         if($searchQuery == '')
         {
-            return RefReligion::whereClientId(auth()->user()->client_id)
+            return AddressType::whereClientId(auth()->user()->client_id)
             ->orderBy('description','ASC')
             ->paginate($perPage);
         }
         else
         {
-            return RefReligion::where(function ($query) use ($searchQuery) {
+            return AddressType::where(function ($query) use ($searchQuery) {
                 $query->where('code', 'like', $searchQuery . '%')
                         ->orWhere('description', 'like', '%' . $searchQuery . '%');
             })

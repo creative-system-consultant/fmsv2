@@ -54,16 +54,19 @@ class OccupationService
     {
         if($searchQuery == '')
         {
-            return RefOccupations::whereClientId(auth()->user()->client_id)->paginate($perPage);
-        }
-        else
-        {
+            return RefOccupations::whereClientId(auth()->user()->client_id)
+                ->orderBy('priority','ASC')
+                ->orderBy('description','ASC')
+                ->paginate($perPage);
+        } else {
             return RefOccupations::where(function ($query) use ($searchQuery) {
                 $query->where('occup_id', 'like', $searchQuery . '%')
                         ->orWhere('description', 'like', '%' . $searchQuery . '%');
-            })
-            ->whereClientId(auth()->user()->client_id)
-            ->paginate($perPage);
+                })
+                ->whereClientId(auth()->user()->client_id)
+                ->orderBy('priority','ASC')
+                ->orderBy('description','ASC')
+                ->paginate($perPage);
         }
     }
 }
