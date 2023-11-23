@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Models\Siskop;
+namespace App\Models\Ref;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SiskopAccountProduct extends Model
+class RefCustStatus extends Model
 {
-    use HasFactory;
     use SoftDeletes;
-    protected $table = 'SISKOP.ACCOUNT_PRODUCTS';
+    use HasFactory;
+    protected $table   = 'REF.CUST_STATUS';
     protected $guarded = [];
     protected $casts   = [
         'created_at'    => 'datetime',
