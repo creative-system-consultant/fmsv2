@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\AddressType;
-use App\Services\Maintenance\AddTypeService;
+use App\Services\Model\AddTypeService;
 use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
 use Livewire\Attributes\Rule;
@@ -15,10 +15,10 @@ class AddType extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
-    #[Rule('required|max:3|alpha')]
+    #[Rule('required|max:1|alpha')]
     public $code;
 
-    #[Rule('required|string')]
+    #[Rule('required|regex:/^[A-Za-z\/\s]+$/')]
     public $description;
 
     public $openModal;
@@ -27,6 +27,7 @@ class AddType extends Component
     public $modalMethod;
     public $addtype;
     public $paginated;
+    public $searchQuery;
 
     protected $addtypeService;
     protected $popupService;
@@ -40,6 +41,8 @@ class AddType extends Component
     public function openCreateModal()
     {
         $this->setupModal("create", "Create Address Type", "Address Type");
+        $this->reset(['description', 'code']); // Clear the values for description and code
+        $this->resetValidation(); // Clear validation errors    
     }
 
     public function openUpdateModal($id)
@@ -47,8 +50,9 @@ class AddType extends Component
         $this->addtype = AddressType::find($id);
         $this->description = $this->addtype->description;
         $this->code = $this->addtype->code;
-
         $this->setupModal("update", "Update Address Type", "Address Type", "update({$id})");
+        $this->resetValidation(); // Clear validation errors
+    
     }
 
     public function create()
@@ -56,12 +60,14 @@ class AddType extends Component
         
         $this->validate();
 
-        if (AddTypeService::isCodeExists($this->code)) {
+        $paddedCode = str_pad(trim(strtoupper($this->code)), 1, STR_PAD_LEFT);
+
+        if (AddTypeService::isCodeExists($paddedCode)) {
             $this->addError('code', 'The code has already been taken.');
         } else {
             $data = [
-                'description' => trim(strtoupper($this->description)),
-                'code' => trim(strtoupper($this->code)),
+                'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
+                'code' => $paddedCode,
             ];
 
             AddTypeService::createAddType($data);
@@ -77,8 +83,8 @@ class AddType extends Component
 
         if (AddTypeService::canUpdateCode($id, $this->code)) {
             $data = [
-                'description' => trim(strtoupper($this->description)),
-                'code' => trim(strtoupper($this->code)),
+                'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
+                'code' => str_pad(trim(strtoupper($this->code)), 1, STR_PAD_LEFT),
             ];
 
             AddTypeService::updateAddType($id, $data);
@@ -88,9 +94,9 @@ class AddType extends Component
         }
     }
 
-    public function delete($id)
+    public function delete($id,$code)
     {
-        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete the information?',$id);
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete the CODE: '.$code.'?',$id);
     }
 
     public function ConfirmDelete($id)
@@ -100,7 +106,7 @@ class AddType extends Component
 
     public function render()
     {
-        $data = $this->addtypeService->getPaginatedAddTypes($this->paginated);
+        $data = $this->addtypeService->getAddTypeResult($this->searchQuery, $this->paginated);
 
         return view('livewire.admin.maintenance.add-type', [
             'data' => $data,

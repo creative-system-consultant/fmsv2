@@ -5,7 +5,7 @@ namespace App\Livewire\Admin\Maintenance;
 use App\Models\Ref\RefCountry;
 use Livewire\Component;
 use Livewire\Attributes\Rule;
-use App\Services\Maintenance\CountryService;
+use App\Services\Model\CountryService;
 use App\Services\General\PopupService;
 use App\Traits\MaintenanceModalTrait;
 use WireUi\Traits\Actions;
@@ -13,24 +13,25 @@ use Livewire\WithPagination;
 
 class Country extends Component
 {
-    use Actions, WithPagination , MaintenanceModalTrait;
+    use Actions, WithPagination, MaintenanceModalTrait;
 
-    #[Rule('required|alpha')]
-    public $code;
-
-    #[Rule('required|string')]
+    #[Rule('required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/')]
     public $description;
 
-    #[Rule('nullable|boolean')]
-    public $status;
+    #[Rule('required|min:2|max:2|alpha')]
+    public $abbr;
+
+    #[Rule('numeric|min:1|max:9999')]
+    public $priority;
 
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $country;
-    public $clientId;
     public $paginated;
+    public $searchQuery;
+    public $prio_id;
 
     protected $countryService;
     protected $popupService;
@@ -44,25 +45,40 @@ class Country extends Component
     public function openCreateModal()
     {
         $this->setupModal("create", "Create Country", "Country");
+        $this->reset(['description', 'abbr']); // Clear the values for description and abbr
+        $this->resetValidation(); // Clear validation errors
     }
 
     public function openUpdateModal($id)
     {
+        $this->prio_id = $id;
         $this->country = RefCountry::find($id);
         $this->description = $this->country->description;
-        $this->code = $this->country->code;
-        $this->country->status == 1 ? $this->status = true : $this->status = false;
+        $this->abbr = $this->country->abbr;
+        $this->priority = $this->country->priority;
         $this->setupModal("update", "Update Country", "Country", "update({$id})");
+        $this->resetValidation(); // Clear validation errors
     }
 
     public function create()
     {
-        $this->validate();
+        
+        $this->validate([
+            'abbr' => 'required|min:2|max:2|alpha',
+            'description' => 'required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/',
+        ]);
 
-        if ($this->countryService->isCodeExists($this->code)) {
-            $this->addError('code', 'The code has already been taken.');
+        $paddedAbbr = str_pad(trim(strtoupper($this->abbr)), 2,'A', STR_PAD_LEFT);
+
+        if (CountryService::isAbbrExists($paddedAbbr)) {
+            $this->addError('abbr', 'The abbr has already been taken.');
         } else {
-            $this->countryService->createCountry($this->description, $this->code, $this->status);
+            $data = [
+                'description' => trim(strtoupper(preg_replace('/\s+/', ' ', ($this->description)))),
+                'abbr' => $paddedAbbr,
+            ];
+
+            CountryService::createCountry($data);
             $this->reset();
             $this->openModal = false;
         }
@@ -72,29 +88,35 @@ class Country extends Component
     {
         $this->validate();
 
-        if ($this->countryService->canUpdateCode($id, $this->code)) {
-            $this->countryService->updateCountry($id, $this->description, $this->code, $this->status);
+        if (CountryService::canUpdateAbbr($id, $this->abbr)) {
+            $data = [
+                'description' => trim(strtoupper(preg_replace('/\s+/', ' ', ($this->description)))),
+                'abbr' => str_pad(trim(strtoupper($this->abbr)), 2, 'A', STR_PAD_LEFT),
+                'priority' => $this->priority,
+            ];
+
+            CountryService::updateCountry($id, $data);
             $this->openModal = false;
         } else {
-            $this->addError('code', 'The code has already been taken.');
+            $this->addError('abbr', 'The abbr has already been taken.');
         }
     }
 
-    public function delete($id)
+    public function delete($id,$description)
     {
-        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete the information?',$id);
+    $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you sure you want to delete country ' . $description .'?', $id);
     }
 
     public function ConfirmDelete($id)
     {
-        $this->countryService->deleteCountry($id);
+        CountryService::deleteCountry($id);
     }
 
     public function render()
     {
-        $data = $this->countryService->getPaginatedCountry($this->paginated);
+        $data = $this->countryService->getCountryResult($this->searchQuery, $this->paginated);
 
-        return view('livewire.admin.maintenance.country',[
+        return view('livewire.admin.maintenance.country', [
             'data' => $data,
         ])->extends('layouts.main');
     }

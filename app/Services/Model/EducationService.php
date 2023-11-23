@@ -2,21 +2,21 @@
 
 namespace App\Services\Model;
 
-use App\Models\Ref\RefReligion;
+use App\Models\Ref\RefEducation;
 
-class ReligionService
+class EducationService
 {
     public static function isCodeExists($code)
     {
-        return RefReligion::whereClientId(auth()->user()->client_id)->whereCode($code)->exists();
+        return RefEducation::whereClientId(auth()->user()->client_id)->whereCode($code)->exists();
     }
 
-    public static function getAllReligion()
+    public static function getAllEducation()
     {
-        return RefReligion::all();
+        return RefEducation::all();
     }
 
-    public static function createReligion($data)
+    public static function createEducation($data)
     {
         $defaultData = [
             'client_id' => auth()->user()->client_id,
@@ -25,16 +25,16 @@ class ReligionService
         ];
 
         $mergedData = array_merge($data, $defaultData);
-        RefReligion::create($mergedData);
+        RefEducation::create($mergedData);
     }
 
     public static function canUpdateCode($id, $code)
     {
-        $existingCode = RefReligion::whereClientId(auth()->user()->client_id)->whereCode($code);
+        $existingCode = RefEducation::whereClientId(auth()->user()->client_id)->whereCode($code);
         return !$existingCode->exists() || $existingCode->value('id') == $id;
     }
 
-    public static function updateReligion($id, $data)
+    public static function updateEducation($id, $data)
     {
         $defaultData = [
             'updated_at' => now(),
@@ -42,25 +42,25 @@ class ReligionService
         ];
 
         $mergedData = array_merge($data, $defaultData);
-        RefReligion::whereId($id)->update($mergedData);
+        RefEducation::whereId($id)->update($mergedData);
     }
 
-    public static function deleteReligion($id)
+    public static function deleteEducation($id)
     {
-        RefReligion::whereId($id)->delete();
+        RefEducation::whereId($id)->delete();
     }
-
-    public static function getReligionResult($searchQuery, $perPage = 10)
+    
+    public static function getEducationResult($searchQuery, $perPage = 10)
     {
         if($searchQuery == '')
         {
-            return RefReligion::whereClientId(auth()->user()->client_id)
+            return RefEducation::whereClientId(auth()->user()->client_id)
             ->orderBy('description','ASC')
             ->paginate($perPage);
         }
         else
         {
-            return RefReligion::where(function ($query) use ($searchQuery) {
+            return RefEducation::where(function ($query) use ($searchQuery) {
                 $query->where('code', 'like', $searchQuery . '%')
                         ->orWhere('description', 'like', '%' . $searchQuery . '%');
             })

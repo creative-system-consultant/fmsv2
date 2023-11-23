@@ -21,6 +21,10 @@ class State extends Component
     #[Rule('required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/')]
     public $description;
 
+    #[Rule('numeric|min:1|max:9999')]
+    public $priority;
+
+
     public $openModal;
     public $modalTitle;
     public $modalDescription;
@@ -28,6 +32,7 @@ class State extends Component
     public $state;
     public $paginated;
     public $searchQuery;
+    public $prio_id;
 
     protected $stateService;
     protected $popupService;
@@ -47,17 +52,22 @@ class State extends Component
 
     public function openUpdateModal($id)
     {
+        $this->prio_id = $id;
         $this->state = RefState::find($id);
         $this->description = $this->state->description;
         $this->code = $this->state->code;
-        $this->setupModal("update", "Update State", "State", "update({$id})");
+        $this->priority = $this->state->priority;
+        $this->setupModal("update", "Update State", "State", "update({$this->prio_id})");
         $this->resetValidation(); // Clear validation errors
     }
 
     public function create()
     {
         
-        $this->validate();
+        $this->validate([
+            'code' => 'required|numeric|min:1|max:99',
+            'description' => 'required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/',
+        ]);
 
         $paddedCode = str_pad(trim(strtoupper($this->code)), 2, '0', STR_PAD_LEFT);
 
@@ -83,6 +93,7 @@ class State extends Component
             $data = [
                 'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
                 'code' => str_pad(trim(strtoupper($this->code)), 2, '0', STR_PAD_LEFT),
+                'priority' => $this->priority,
             ];
 
             StateService::updateState($id, $data);
@@ -92,11 +103,12 @@ class State extends Component
         }
     }
 
-    public function delete($id)
+    public function delete($id,$description)
     {
-        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete the information?',$id);
+    $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you sure you want to delete ' . $description .'?', $id);
     }
-
+    
+    
     public function ConfirmDelete($id)
     {
         StateService::deleteState($id);

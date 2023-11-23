@@ -13,11 +13,19 @@
                         />
                     </div>
                     <div  class="flex items-center space-x-2">
+                        <x-label label="Search : " />
+                        <x-input 
+                            type="text"
+                            wire:model.live.debounce.1500ms="searchQuery" 
+                            placeholder="Search"
+                            class="uppercase "
+                            /> 
                         <x-label label="List Until : " />
                         <x-input 
                             type="number"
                             wire:model.live.debounce.1500ms="paginated" 
                             placeholder="00"
+                            min="0"
                         />          
                     </div>
                 </div>
@@ -27,6 +35,7 @@
                         <x-table.table-header class="text-left" value="NO." sort="" />
                         <x-table.table-header class="text-left" value="DESCRIPTION" sort="" />
                         <x-table.table-header class="text-left" value="CODE" sort="" />
+                        <x-table.table-header class="text-left" value="PRIORITY" sort="" />
                         <x-table.table-header class="text-left" value="ACTION" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
@@ -46,6 +55,10 @@
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    {{ $thirdparty->priority }}
+                                </x-table.table-body>
+
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <x-button 
                                         wire:click="openUpdateModal({{ $thirdparty->id }})"
                                         xs  
@@ -54,7 +67,7 @@
                                         label="Edit" 
                                     />
                                     <x-button 
-                                        wire:click="delete({{ $thirdparty->id }})"
+                                        wire:click="delete({{ $thirdparty->id }},'{{ $thirdparty->description }}')"
                                         xs  
                                         icon="trash" 
                                         red 
@@ -86,13 +99,18 @@
             <div class="tooltip buttom" title="Code must be alphabetic">
                 <x-input wire:model="description" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
             </div> 
+            @if ($modalMethod == "update($prio_id)")
+            <div class="tooltip buttom" title="Priority must be number">
+                <x-input wire:model="priority" label="Priority" placeholder="" class=" "/>
+            </div>
+            @endif
         </div>
 
 
         <x-slot name="footer">
             <div class="flex justify-end">
                 <div class="flex space-x-2 items-center">
-                    <x-button flat label="Cancel" x-on:click="close" />
+                    <x-button secondary label="Cancel" x-on:click="close" />
                     <x-button primary label="Save" wire:click="{{ $modalMethod }}" />
                 </div>
             </div>

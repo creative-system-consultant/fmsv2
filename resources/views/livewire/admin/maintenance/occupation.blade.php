@@ -25,15 +25,16 @@
                             type="number"
                             wire:model.live.debounce.1500ms="paginated" 
                             placeholoder="00"
+                            min="0"
                         />          
                     </div>
                 </div>
-
                 <x-table.table loading="true" loadingtarget="paginated">
                     <x-slot name="thead">
                         <x-table.table-header class="text-left" value="NO." sort="" />
                         <x-table.table-header class="text-left" value="DESCRIPTION" sort="" />
                         <x-table.table-header class="text-left" value="OCCUPATION ID" sort="" />
+                        <x-table.table-header class="text-left" value="PRIORITY" sort="" />
                         <x-table.table-header class="text-left" value="ACTION" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
@@ -53,6 +54,10 @@
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    {{ $occupation->priority }}
+                                </x-table.table-body>
+
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <x-button 
                                         wire:click="openUpdateModal({{ $occupation->id }})"
                                         xs  
@@ -61,7 +66,7 @@
                                         label="Edit" 
                                     />
                                     <x-button 
-                                        wire:click="delete({{ $occupation->id }},{{ $occupation->occup_id }})"
+                                        wire:click="delete({{ $occupation->id }},'{{ $occupation->description }}')"
                                         xs  
                                         icon="trash" 
                                         red 
@@ -91,7 +96,7 @@
                 <x-input wire:model="occup_id" label="Occupation  ID" placeholder="" class=""/>
             </div>
             <div class="tooltip buttom" title="Description must be alphabetic">
-                <x-input wire:model="description" label="{{ $modalDescription }}" placeholder="" class=" "/>
+                <x-input wire:model="description" label="{{ $modalDescription }}" placeholder="" class=" uppercase"/>
             </div>
             @if ($modalMethod == "update($occ_id)")
                 <div class="tooltip buttom" title="Priority must be number">
@@ -109,6 +114,7 @@
                 </div>
             </div>
         </x-slot>
+
     </x-modal.card>
 
     <!-- end modal -->

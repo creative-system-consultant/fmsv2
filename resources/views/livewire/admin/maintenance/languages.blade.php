@@ -13,11 +13,19 @@
                         />
                     </div>
                     <div  class="flex items-center space-x-2">
+                        <x-label label="Search : " />
+                        <x-input 
+                            type="text"
+                            wire:model.live.debounce.1500ms="searchQuery" 
+                            placeholder="Search"
+                            class="uppercase "
+                            /> 
                         <x-label label="List Until : " />
                         <x-input 
                             type="number"
                             wire:model.live.debounce.1500ms="paginated" 
                             placeholder="00"
+                            min="0"
                         />          
                     </div>
                 </div>
@@ -54,7 +62,7 @@
                                         label="Edit" 
                                     />
                                     <x-button 
-                                        wire:click="delete({{ $language->id }})"
+                                        wire:click="delete({{ $language->id }},{{$language->institute_id}})"
                                         xs  
                                         icon="trash" 
                                         red 
@@ -92,7 +100,7 @@
         <x-slot name="footer">
             <div class="flex justify-end">
                 <div class="flex space-x-2 items-center">
-                    <x-button flat label="Cancel" x-on:click="close" />
+                    <x-button secondary label="Cancel" x-on:click="close" />
                     <x-button primary label="Save" wire:click="{{ $modalMethod }}" />
                 </div>
             </div>
