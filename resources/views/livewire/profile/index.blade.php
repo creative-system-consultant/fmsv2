@@ -5,7 +5,20 @@
                 <div class="mb-6">
                     <x-card title="Personal Information">
                         <div class="flex items-center space-x-2">
-                            <x-avatar size="w-32 h-32" class="border-primary-700 border-2" src="https://picsum.photos/300?size=lg" />
+                            @php 
+                            if(auth()->user()->client_id == 4 && auth()->user()->user_type == 2) {
+                                $img = 'https://www.maybank.com/iwov-resources/images/pages/about-us/leadership/leadership_detail/03-Dato-Muzaffar-Hisham.png';
+                            }elseif(auth()->user()->client_id == 5  && auth()->user()->user_type == 2){
+                                $img = 'https://roadcare.com.my/wp-content/uploads/2022/11/EN-YASIR-08-200x283.png';
+                            }else{
+                                $img = 'https://www.nicepng.com/png/detail/128-1280406_view-user-icon-png-user-circle-icon-png.png';
+                            }
+                            @endphp
+                            <x-avatar 
+                                size="w-32 h-32" 
+                                class="border-primary-700 border-2" 
+                                src="{{$img}}"
+                            />
                             <input type="file" id="fileInput" class="hidden w-full" />
                             <label for="fileInput" class="btn">
                                 <x-icon name="cloud-upload" class="w-4 h-4" />
