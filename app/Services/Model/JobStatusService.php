@@ -53,15 +53,20 @@ class JobStatusService
     {
         if($searchQuery == '')
         {
-            return RefJobStatus::whereClientId(auth()->user()->client_id)->paginate($perPage);
+            return RefJobStatus::whereClientId(auth()->user()->client_id)
+            ->orderBy('code','ASC')
+            ->orderBy('description','ASC')
+            ->paginate($perPage);
         }
         else
         {
-            return RefJobStatus::whereClientId(auth()->user()->client_id)->where(function ($query) use ($searchQuery) {
+            return RefJobStatus::where(function ($query) use ($searchQuery) {
                 $query->where('code', 'like', $searchQuery . '%')
                         ->orWhere('description', 'like', '%' . $searchQuery . '%');
             })
             ->whereClientId(auth()->user()->client_id)
+            ->orderBy('code','ASC')
+            ->orderBy('description','ASC')
             ->paginate($perPage);
         }
     }

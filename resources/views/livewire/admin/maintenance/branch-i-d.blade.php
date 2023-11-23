@@ -35,10 +35,11 @@
                         <x-table.table-header class="text-left" value="NO." sort="" />
                         <x-table.table-header class="text-left" value="BRANCH ID" sort="" />
                         <x-table.table-header class="text-left" value="BRANCH NAME" sort="" />
+                        <x-table.table-header class="text-left" value="PRIORITY" sort="" />
                         <x-table.table-header class="text-left" value="ACTION" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
-                        @foreach ($data as $key => $branchid)
+                        @foreach  ($data as $key => $branchid)
                             <tr>
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     {{ $data->firstItem() + $key }}
@@ -53,15 +54,19 @@
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    {{ $branchid->priority }}
+                                </x-table.table-body>
+
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <x-button 
-                                        wire:click="openUpdateModal({{ $branchid->id }})"
+                                        wire:click="openUpdateModal('{{ $branchid->id }}')"
                                         sm  
                                         icon="pencil-alt" 
                                         orange 
                                         label="Edit" 
                                     />
                                     <x-button 
-                                        wire:click="delete({{ $branchid->id }} ,'{{ $branchid->id }}')"
+                                        wire:click="delete('{{ $branchid->id }}','{{ $branchid->branch_id }}','{{ $branchid->branch_name }}')"
                                         sm  
                                         icon="trash" 
                                         red 
@@ -85,13 +90,20 @@
     <!-- modal -->
     <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="lg">
 
-        <div class="grid gap-4 my-2 lg:grid-cols-2 ">
+        <div class="grid gap-4 my-2 lg:grid-cols-1 ">
             <div class="tooltip buttom" title="Input should be a number, limited to 4 digits">
                 <x-input wire:model="branch_id" label="Branch ID " placeholder="" class="uppercase " />
             </div>
+
             <div class="tooltip buttom" title="Enter the name and location of the branch (e.g., 'AMPANG')">
                 <x-input wire:model="branch_name" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
             </div>
+
+            @if ($modalMethod === "update($branch)")
+            <div class="tooltip buttom" title="Priority must be number">
+                <x-input wire:model="priority" label="Priority" placeholder="" class=" "/>
+            </div>
+            @endif
         </div>
 
 

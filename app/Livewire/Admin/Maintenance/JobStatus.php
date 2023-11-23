@@ -94,9 +94,10 @@ class JobStatus extends Component
         }
     }
 
-    public function delete($id,$code)
+    public function delete($id, $code, $description)
     {
-        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', "Are you sure to delete code: " . $code . "?",$id);
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 
+        "Are you sure to delete CODE " . $code . " : " .$description. " ?",$id);
     }
 
     public function ConfirmDelete($id)

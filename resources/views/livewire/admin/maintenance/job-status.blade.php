@@ -61,7 +61,7 @@
                                         label="Edit" 
                                     />
                                     <x-button 
-                                        wire:click="delete({{ $jobstatus->id }}, '{{ $jobstatus->code }}')"
+                                        wire:click="delete({{ $jobstatus->id }}, '{{ $jobstatus->code }}' , '{{ $jobstatus->description }}')"
                                         sm  
                                         icon="trash" 
                                         red 

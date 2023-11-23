@@ -88,9 +88,9 @@ class MemberStatus extends Component
         }
     }
 
-    public function delete($id,$mbr_status)
+    public function delete($id, $mbr_status, $description)
     {
-        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', "Are you sure to delete code status: " . $mbr_status . "?",$id);
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', "Are you sure to delete code STATUS " . $mbr_status . " : " .$description. "?",$id);
     }
 
     public function ConfirmDelete($id)

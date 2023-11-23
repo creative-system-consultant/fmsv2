@@ -53,16 +53,19 @@ class PositionService
     {
         if($searchQuery == '')
         {
-            return RefPosition::whereClientId(auth()->user()->client_id)->paginate($perPage);
-        }
-        else
-        {
-            return RefPosition::whereClientId(auth()->user()->client_id)->where(function ($query) use ($searchQuery) {
+            return RefPosition::whereClientId(auth()->user()->client_id)
+                ->orderBy('code','ASC')
+                ->orderBy('description','ASC')
+                ->paginate($perPage);
+        } else {
+            return RefPosition::where(function ($query) use ($searchQuery) {
                 $query->where('code', 'like', $searchQuery . '%')
                         ->orWhere('description', 'like', '%' . $searchQuery . '%');
-            })
-            ->whereClientId(auth()->user()->client_id)
-            ->paginate($perPage);
+                })
+                ->whereClientId(auth()->user()->client_id)
+                ->orderBy('code','ASC')
+                ->orderBy('description','ASC')
+                ->paginate($perPage);
         }
     }
 }

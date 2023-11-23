@@ -51,15 +51,17 @@ class BranchIDService
         RefBranchID::whereId($id)->delete();
     }
 
-    public static function getBranchResult($searchQuery, $perPage = 10)
+    public static function getBranchIDResult($searchQuery, $perPage = 10)
     {
         if($searchQuery == '')
         {
-            return RefBranchID::whereClientId(auth()->user()->client_id)->paginate($perPage);
-        }
-        else
-        {
-            return RefBranchID::whereClientId(auth()->user()->client_id)->where(function ($query) use ($searchQuery) {
+            return RefBranchID::whereClientId(auth()->user()->client_id)
+            ->orderBy('priority','ASC')
+            ->orderBy('branch_id','ASC')
+            ->orderBy('branch_name','ASC')
+            ->paginate($perPage);
+        } else {
+            return RefBranchID::where(function ($query) use ($searchQuery) {
                 $query->where('branch_id', 'like', $searchQuery . '%')
                         ->orWhere('branch_name', 'like', '%' . $searchQuery . '%');
             })
@@ -67,5 +69,4 @@ class BranchIDService
             ->paginate($perPage);
         }
     }
-
 }
