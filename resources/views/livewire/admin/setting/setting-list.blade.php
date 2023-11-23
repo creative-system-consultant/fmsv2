@@ -140,6 +140,14 @@
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Occupation</span>
                                                     </a>
+                                                    <a wire:navigate href="{{ route('maintenance.department') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
+                                                        <span>Department</span>
+                                                    </a>
+                                                    <a wire:navigate href="{{ route('maintenance.cust-type') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                        <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
+                                                        <span>Customer Type</span>
+                                                    </a>
                                                     <a wire:navigate href="{{ route('maintenance.takaful') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Takaful</span>
