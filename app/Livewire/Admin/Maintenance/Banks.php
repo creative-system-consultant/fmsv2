@@ -24,8 +24,14 @@ class Banks extends Component
     #[Rule('nullable|boolean')]
     public $status;
 
+    #[Rule('required|numeric|min:1|max:100')]
+    public $bank_acc_len;
+
     #[Rule('numeric|min:1|max:9999')]
     public $priority;
+
+    #[Rule('nullable|boolean')]
+    public $bank_client;
 
     public $openModal;
     public $modalTitle;
@@ -35,6 +41,7 @@ class Banks extends Component
     public $paginated;
     public $searchQuery;
     public $bank_code;
+    public $orderBy = 'default';
 
     protected $banks_Service;
     protected $popupService;
@@ -48,8 +55,7 @@ class Banks extends Component
     public function openCreateModal()
     {
         $this->setupModal("create", "Create Bank", "Bank" );
-        $this->reset(['code','description','status']);
-        // $this->priority = $this->bank->priority;
+        $this->reset(['code','description', 'bank_acc_len','status','bank_client']);
         $this->resetValidation();
     }
 
@@ -58,7 +64,9 @@ class Banks extends Component
         $this->bank_code = $id;
         $this->bank = RefBank::find($id);
         $this->description = $this->bank->description;
+        $this->bank_acc_len = $this->bank->bank_acc_len;
         $this->bank->status == 1 ? $this->status = true : $this->status = false;
+        $this->bank->bank_client == 'Y' ? $this->bank_client = true : $this->bank_client = false;
         $this->priority = $this->bank->priority;
         $this->code = $this->bank->code;
         
@@ -71,13 +79,18 @@ class Banks extends Component
         
         $this->validate([
         'code' => 'required|numeric|min:1|max:99',
-        'description' => 'required|regex:/^[A-Za-z\s]*$/|max:50',]);
+        'description' => 'required|regex:/^[A-Za-z\s]*$/|max:50',
+        'status' =>'nullable|boolean',
+        'bank_acc_len' => 'required|numeric|min:1|max:99',
+        'bank_client' =>'nullable|boolean',
+        ]);
 
         $trim_code = trim($this->code);
-
         if(strlen($trim_code) == 1) {
             $trim_code = '0' . $trim_code;
         }
+
+        // $table->char('bank_client', 1)->default('N');
 
         if (BanksService::isCodeExists($trim_code)) {
             $this->addError('code', 'The code has already been taken.');
@@ -86,6 +99,8 @@ class Banks extends Component
                 'code' => $trim_code,
                 'description'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
                 'status' => $this->status,
+                'bank_client'=> $this->bank_client ? 'Y' : 'N',
+                'bank_client'=> $this->bank_client
             ];
             BanksService::createBanksService($data);
             $this->reset();
@@ -108,8 +123,10 @@ class Banks extends Component
             $data = [
                 'code' => $trim_code,
                 'description'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-                'priority' => $this->priority,
                 'status' => $this->status,
+                'bank_acc_len'=> trim($this->bank_acc_len),
+                'bank_client'=> $this->bank_client ? 'Y' : 'N',
+                'priority' => $this->priority,
             ];
             BanksService::updateBanksService($id, $data);
             $this->openModal = false;
@@ -132,7 +149,7 @@ class Banks extends Component
     public function render()
     {
 
-        $data = $this->banks_Service->getBanksResult($this->searchQuery, $this->paginated);
+        $data = $this->banks_Service->getBanksResult($this->searchQuery, $this->orderBy, $this->paginated);
         return view('livewire.admin.maintenance.banks',[
             'data' =>$data,
         ])->extends('layouts.main');
