@@ -50,25 +50,40 @@ class BanksService
         RefBank::whereId($id)->delete();
     }
     
-    public static function getBanksResult($searchQuery, $perPage = 10)
+    public static function getBanksResult($searchQuery, $orderBy, $perPage = 10)
     {
-        if($searchQuery == '')
-        {
-            return RefBank::whereClientId(auth()->user()->client_id)
-                ->orderBy('priority','ASC')
-                ->orderBy('code','ASC')
-                ->orderBy('description','ASC')
-                ->paginate($perPage);
-        } else {
-            return RefBank::where(function ($query) use ($searchQuery) {
-                $query->where('code', 'like', $searchQuery . '%')
-                        ->orWhere('description', 'like', '%' . $searchQuery . '%');
-                })
-                ->whereClientId(auth()->user()->client_id)
-                ->orderBy('priority','ASC')
-                ->orderBy('code','ASC')
-                ->orderBy('description','ASC')
-                ->paginate($perPage);
+        $query = RefBank::whereClientId(auth()->user()->client_id);
+    
+        if ($searchQuery) {
+            $query->where(function ($q) use ($searchQuery) {
+                $q->where('code', 'like', $searchQuery . '%')
+                    ->orWhere('description', 'like', '%' . $searchQuery . '%');
+            });
         }
+    
+        // Dynamically add order by clause based on the selected column
+        switch ($orderBy) {
+            case 'code':
+                $query->orderBy('code', 'ASC');
+                break;
+            case 'description':
+                $query->orderBy('description');
+                break;
+            case 'priority':
+                $query->orderBy('priority');
+                break;
+            case 'status':
+                $query->orderBy('status');
+                break;
+            case 'bank_client':
+                $query->orderBy('bank_client');
+                break;
+            default:
+                $query->orderBy('priority')->orderBy('code')->orderBy('description');
+                break;
+        }
+    
+        return $query->paginate($perPage);
     }
+    
 }
