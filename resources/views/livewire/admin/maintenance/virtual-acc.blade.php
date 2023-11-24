@@ -3,22 +3,6 @@
         <div class="grid grid-cols-1">
             <x-card title="">
                 <div class="flex items-center justify-between w-full mb-4">
-                    <div  class="flex items-center space-x-2">
-                        <x-label label="Search : " />
-                        <x-input 
-                            type="text"
-                            wire:model.live.debounce.1500ms="searchQuery" 
-                            placeholder="Search"
-                            class="uppercase "
-                            /> 
-                        <x-label label="List Until : " />
-                        <x-input 
-                            type="number"
-                            wire:model.live.debounce.1500ms="paginated" 
-                            placeholder="00"
-                            min='0'
-                        />          
-                    </div>
                 </div>
 
                 <x-table.table loading="true" loadingtarget="paginated,searchQuery">
