@@ -78,7 +78,7 @@ class VirtualAcc extends Component
     
     public function render()
     {
-        $data = $this->virtualAcc_Service->getVirtualAccResult($this->searchQuery, $this->paginated);
+        $data = $this->virtualAcc_Service->getVirtualAccResult($this->paginated);
         return view('livewire.admin.maintenance.virtual-acc',[
             'data' =>$data,
         ])->extends('layouts.main');

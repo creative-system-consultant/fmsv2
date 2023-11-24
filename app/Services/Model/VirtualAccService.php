@@ -35,18 +35,6 @@ class VirtualAccService
 
     public static function getVirtualAccResult($searchQuery, $perPage = 10)
     {
-
-        if($searchQuery == '')
-        {
-            return FmsGlobalParm::whereClientId(auth()->user()->client_id)
-            ->paginate($perPage);
-        }else{
-            return FmsGlobalParm::where(function ($query) use ($searchQuery) {
-                $query->where('COOLING_PERIOD','like','%'.$searchQuery.'%')
-                ->where('THRESHOLD','like','%'.$searchQuery.'%');
-            })
-            ->whereClientId(auth()->user()->client_id)
-            ->paginate($perPage);
-        }
+        return FmsGlobalParm::whereClientId(auth()->user()->client_id)->paginate($perPage);
     }
 }
