@@ -18,7 +18,7 @@ class DetailGlByAccount extends Component
 
     #[Rule('required')]
     public $startDate;
-    
+
     #[Rule('required')]
     public $endDate;
 
@@ -108,7 +108,7 @@ class DetailGlByAccount extends Component
 
         $gl_code = collect($gl_code);
 
-        return view('livewire.report.operation.g-l.detail-gl-by-account',[
+        return view('livewire.report.operation.gl.detail-gl-by-account',[
             'result' => $result,
             'glc'=>$gl_code
         ])->extends('layouts.main');

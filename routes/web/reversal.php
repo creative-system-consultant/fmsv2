@@ -12,8 +12,6 @@ use App\Livewire\Reversal\RefundAdvance;
 use App\Livewire\Reversal\Share;
 use App\Livewire\Reversal\ThirdParty;
 
-
-
 Route::get('reversal-list', ReversalList::class)->name('reversal-list');
 Route::get('contribution', Contribution::class)->name('reversal-contribution');
 Route::get('disbursement', Disbursement::class)->name('reversal-disbursement');

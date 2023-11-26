@@ -104,7 +104,7 @@ class DetailGl extends Component
 
         $gl_desc = collect($gl_desc);
 
-        return view('livewire.report.operation.g-l.detail-gl',[
+        return view('livewire.report.operation.gl.detail-gl',[
             'result' => $result,
             'gl_descs'=>$gl_desc
         ])->extends('layouts.main');

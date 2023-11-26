@@ -13,7 +13,6 @@ use App\Livewire\Finance\Category\Info\Statement;
 
 Route::get('financing-info', Info::class)->name('finance-financing-info');
 Route::get('predisbursement-create/{uuid}', PreDisbCreate::class)->name('finance-predisbursement-create');
-
 Route::get('account-info/{uuid}', AccountInfo::class)->name('finance-account-info');
 Route::get('account-master', AccountMaster::class)->name('account-master');
 Route::get('account-position', AccountPosition::class)->name('account-position');

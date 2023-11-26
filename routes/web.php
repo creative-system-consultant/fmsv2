@@ -57,7 +57,9 @@ Route::middleware('auth')->group(function () {
             ->name('password.confirm');
 
         //user management
-        Route::get('user-management', UserManagement::class)->name('userManagement')->middleware('client.permission:access user management');
+        Route::get('user-management', UserManagement::class)
+            ->name('userManagement')
+            ->middleware('client.permission:access user management');
 
         // roles
         Route::prefix('roles')->as('roles.')->group(
@@ -100,27 +102,14 @@ Route::middleware('auth')->group(function () {
         )->middleware('client.permission:access dividen');
 
         // report List
-        Route::prefix('report')->as('report.')->get('index', ReportList::class)->name('report-list')->middleware('client.permission:access report');
-
-        //report Management
-        Route::prefix('report')->as('report.management.')->group(
-            base_path('routes/web/reportManagement.php'),
-        );
-
-        //report Operation
-        Route::prefix('report')->as('report.operation.')->group(
-            base_path('routes/web/reportOperation.php'),
-        );
+        Route::prefix('report')->as('report.')->group(
+            base_path('routes/web/report.php'),
+        )->middleware('client.permission:access report');
 
         //admin/setting
-        Route::prefix('Admin/setting')->as('setting.')->group(
-            base_path('routes/web/admin/setting/setting.php'),
+        Route::prefix('admin/setting')->as('setting.')->group(
+            base_path('routes/web/admin/setting.php'),
         )->middleware('client.permission:access setting');
-
-        //admin/maintenance
-        Route::prefix('Admin/Maintenance')->as('maintenance.')->group(
-            base_path('routes/web/admin/maintenance/maintenance.php'),
-        );
 
     });
 

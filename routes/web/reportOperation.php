@@ -1,20 +1,13 @@
 <?php
 
-//Contribution
 use App\Livewire\Report\Operation\Contribution\Payment;
 use App\Livewire\Report\Operation\Contribution\Withdrawal;
-
-//DailyTransaction 
 use App\Livewire\Report\Operation\DailyTransaction\Listing;
 use App\Livewire\Report\Operation\DailyTransaction\Product;
-
-//financing
 use App\Livewire\Report\Operation\Financing\CashDetail;
 use App\Livewire\Report\Operation\Financing\Disbursement;
 use App\Livewire\Report\Operation\Financing\Summary;
 use App\Livewire\Report\Operation\Financing\Approval;
-
-//list
 use App\Livewire\Report\Operation\List\Autopay;
 use App\Livewire\Report\Operation\List\Bank;
 use App\Livewire\Report\Operation\List\BskeGoldbarTrx;
@@ -33,12 +26,8 @@ use App\Livewire\Report\Operation\List\MemberNotPayContribution;
 use App\Livewire\Report\Operation\List\NonCashProduct;
 use App\Livewire\Report\Operation\List\Retirement;
 use App\Livewire\Report\Operation\List\TakafulPayment;
-
-//member
 use App\Livewire\Report\Operation\Member\Byincome;
 use App\Livewire\Report\Operation\Member\ByState;
-
-//monthly
 use App\Livewire\Report\Operation\Monthly\MthlyNpfAcc;
 use App\Livewire\Report\Operation\Monthly\ArrearsAccount;
 use App\Livewire\Report\Operation\Monthly\ContributionDetailsMonthly;
@@ -52,17 +41,11 @@ use App\Livewire\Report\Operation\Monthly\ReportResc;
 use App\Livewire\Report\Operation\Monthly\DetailsYrlyCont;
 use App\Livewire\Report\Operation\Monthly\DetailsFinMthly;
 use App\Livewire\Report\Operation\Monthly\DetailsFinYrly;
-
-//share
 use App\Livewire\Report\Operation\Share\SharePurchase;
 use App\Livewire\Report\Operation\Share\ShareRedemption;
 use App\Livewire\Report\Operation\Share\ShareWithdrawal;
-
-//summary
 use App\Livewire\Report\Operation\Summary\SumTotalShare;
 use App\Livewire\Report\Operation\Summary\SumTotalCont;
-
-//gl
 use App\Livewire\Report\Operation\GL\DetailGlByAccount;
 use App\Livewire\Report\Operation\GL\DetailGl;
 use App\Livewire\Report\Operation\GL\GlBankRecon;
@@ -130,6 +113,6 @@ Route::get('summary/sum-total-share', SumTotalShare::class)->name('summary.sum-t
 Route::get('summary/sum-total-cont', SumTotalCont::class)->name('summary.sum-total-cont');
 
 //gl
-Route::get('g-l/detail-gl-by-account', DetailGlByAccount::class)->name('g-l.detail-gl-by-account');
-Route::get('g-l/detail-gl', DetailGl::class)->name('g-l.detail-gl');
-Route::get('g-l/gl-bank-recon', GlBankRecon::class)->name('g-l.gl-bank-recon');
+Route::get('gl/detail-gl-by-account', DetailGlByAccount::class)->name('gl.detail-gl-by-account');
+Route::get('gl/detail-gl', DetailGl::class)->name('gl.detail-gl');
+Route::get('gl/gl-bank-recon', GlBankRecon::class)->name('gl.gl-bank-recon');
