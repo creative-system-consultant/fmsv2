@@ -3,8 +3,11 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefState;
+use App\Rules\Maintenance\ValidDescription;
 use App\Services\Model\StateService;
 use App\Services\General\PopupService;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService;
 use App\Traits\MaintenanceModalTrait;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -13,34 +16,47 @@ use WireUi\Traits\Actions;
 
 class State extends Component
 {
-    use Actions, WithPagination,MaintenanceModalTrait;
+    use Actions, WithPagination, MaintenanceModalTrait;
 
-    #[Rule('required|numeric|min:1|max:99')]
-    public $code;
-
-    #[Rule('required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/')]
-    public $description;
-
-    #[Rule('numeric|min:1|max:9999')]
-    public $priority;
-
-
+    // Properties for modal and state management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $state;
+
+    // Properties for state data
+    public $code;
+    public $description;
+    public $priority;
+
+    // Pagination and searching
     public $paginated;
     public $searchQuery;
-    public $prio_id;
 
-    protected $stateService;
+    // Services
     protected $popupService;
 
     public function __construct()
     {
-        $this->stateService = new StateService();
         $this->popupService = app(PopupService::class);
+    }
+
+    protected function createRules()
+    {
+        return [
+            'code' => 'required|numeric|min:1|max:99',
+            'description' => ['required', new ValidDescription],
+        ];
+    }
+
+    protected function updateRules()
+    {
+        return [
+            'code' => 'required|numeric|min:1|max:99',
+            'description' => ['required', new ValidDescription],
+            'priority' => 'numeric|min:1|max:9999',
+        ];
     }
 
     public function openCreateModal()
@@ -52,71 +68,66 @@ class State extends Component
 
     public function openUpdateModal($id)
     {
-        $this->prio_id = $id;
-        $this->state = RefState::find($id);
+        $this->state = GeneralService::findById(RefState::class, $id);
         $this->description = $this->state->description;
         $this->code = $this->state->code;
         $this->priority = $this->state->priority;
-        $this->setupModal("update", "Update State", "State", "update({$this->prio_id})");
+        $this->setupModal("update", "Update State", "State", "update({$id})");
         $this->resetValidation(); // Clear validation errors
+    }
+
+    protected function formatData()
+    {
+        return [
+            'code' => FormattingService::formatCode($this->code),
+            'description' => FormattingService::formatDescription($this->description),
+            'priority' => $this->priority ?? 9999,
+        ];
     }
 
     public function create()
     {
-        
-        $this->validate([
-            'code' => 'required|numeric|min:1|max:99',
-            'description' => 'required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/',
-        ]);
+        $this->validate($this->createRules());
 
-        $paddedCode = str_pad(trim(strtoupper($this->code)), 2, '0', STR_PAD_LEFT);
+        $formattedData = $this->formatData();
 
-        if (StateService::isCodeExists($paddedCode)) {
+        if (GeneralService::isCodeExists(RefState::class, $formattedData['code'])) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $data = [
-                'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-                'code' => $paddedCode,
-            ];
-
-            StateService::createState($data);
-            $this->reset();
+            GeneralService::create(RefState::class, $formattedData);
+            $this->reset('code', 'description', 'priority');
             $this->openModal = false;
         }
     }
 
     public function update($id)
     {
-        $this->validate();
+        $this->validate($this->updateRules());
 
-        if (StateService::canUpdateCode($id, $this->code)) {
-            $data = [
-                'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-                'code' => str_pad(trim(strtoupper($this->code)), 2, '0', STR_PAD_LEFT),
-                'priority' => $this->priority,
-            ];
+        $formattedData = $this->formatData();
 
-            StateService::updateState($id, $data);
+        if (GeneralService::canUpdateCode(RefState::class, $id, $formattedData['code'])) {
+            GeneralService::update(RefState::class, $id, $formattedData);
+            $this->reset('code', 'description', 'priority');
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
         }
     }
 
-    public function delete($id,$description)
+    public function delete($id, $description)
     {
-    $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you sure you want to delete ' . $description .'?', $id);
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you sure you want to delete ' . $description . '?', $id);
     }
-    
-    
+
     public function ConfirmDelete($id)
     {
-        StateService::deleteState($id);
+        GeneralService::delete(RefState::class, $id);
     }
 
     public function render()
     {
-        $data = $this->stateService->getStateResult($this->searchQuery, $this->paginated);
+        $data = GeneralService::getPaginated(RefState::class, $this->paginated, $this->searchQuery);
 
         return view('livewire.admin.maintenance.state', [
             'data' => $data,

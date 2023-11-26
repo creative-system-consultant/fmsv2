@@ -4,28 +4,28 @@
             <x-card title="">
                 <div class="flex items-center justify-between w-full mb-4">
                     <div>
-                        <x-button 
+                        <x-button
                             wire:click="openCreateModal"
-                            sm  
-                            icon="plus" 
-                            green 
-                            label="Create" 
+                            sm
+                            icon="plus"
+                            green
+                            label="Create"
                         />
                     </div>
                     <div  class="flex items-center space-x-2">
                         <x-label label="Search : " />
-                        <x-input 
+                        <x-input
                             type="text"
-                            wire:model.live.debounce.1500ms="searchQuery" 
+                            wire:model.live.debounce.1500ms="searchQuery"
                             placeholder="Search"
                             class="uppercase "
-                            /> 
+                            />
                         <x-label label="List Until : " />
-                        <x-input 
+                        <x-input
                             type="number"
-                            wire:model.live.debounce.1500ms="paginated" 
+                            wire:model.live.debounce.1500ms="paginated"
                             placeholoder="00"
-                        />          
+                        />
                     </div>
                 </div>
 
@@ -58,19 +58,19 @@
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    <x-button 
+                                    <x-button
                                         wire:click="openUpdateModal({{ $state->id }})"
-                                        xs  
-                                        icon="pencil-alt" 
-                                        orange 
-                                        label="Edit" 
+                                        xs
+                                        icon="pencil-alt"
+                                        orange
+                                        label="Edit"
                                     />
-                                    <x-button 
+                                    <x-button
                                         wire:click="delete({{ $state->id }},'{{ $state->description }}')"
-                                        xs  
-                                        icon="trash" 
-                                        red 
-                                        label="Delete" 
+                                        xs
+                                        icon="trash"
+                                        red
+                                        label="Delete"
                                     />
                                 </x-table.table-body>
                             </tr>
@@ -97,10 +97,10 @@
             </div>
             <div class="tooltip buttom" title="State must be alphabetic">
                 <x-input wire:model="description" label="{{ $modalDescription }}" placeholder="" class="uppercase "/>
-            </div> 
-            @if ($modalMethod == "update($prio_id)")
+            </div>
+            @if (substr($modalMethod, 0, 6) == "update")
             <div class="tooltip buttom" title="Priority must be number">
-                <x-input wire:model="priority" label="Priority" placeholder="" class=" "/>
+                <x-input wire:model="priority" label="Priority" placeholder="" class=""/>
             </div>
             @endif
         </div>
