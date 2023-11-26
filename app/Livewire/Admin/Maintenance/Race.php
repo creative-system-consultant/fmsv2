@@ -78,7 +78,7 @@ class Race extends Component
     protected function formatData()
     {
         return [
-            'code' => FormattingService::formatCode($this->code),
+            'code' => FormattingService::formatCode($this->code, true),
             'description' => FormattingService::formatDescription($this->description),
             'priority' => $this->priority ?? 9999,
         ];

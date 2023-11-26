@@ -9,7 +9,6 @@ use App\Services\General\PopupService;
 use App\Services\Maintenance\FormattingService;
 use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
