@@ -166,5 +166,4 @@ class Banks extends Component
             'data' =>$data,
         ])->extends('layouts.main');
     }
-
 }
