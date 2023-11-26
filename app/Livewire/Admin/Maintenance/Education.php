@@ -115,7 +115,11 @@ class Education extends Component
 
     public function render()
     {
-        $data = MaintenanceService::getPaginated(RefEducation::class, $this->paginated, false, $this->searchQuery);
+        $data = MaintenanceService::getPaginated(
+            RefEducation::class,
+            $this->paginated, // $perPage
+            $this->searchQuery // $searchQuery
+        );
 
         return view('livewire.admin.maintenance.education', [
             'data' => $data,

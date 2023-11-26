@@ -126,7 +126,15 @@ class State extends Component
 
     public function render()
     {
-        $data = MaintenanceService::getPaginated(RefState::class, $this->paginated, true, $this->searchQuery);
+        $data = MaintenanceService::getPaginated(
+            RefState::class,
+            $this->paginated, // $perPage
+            $this->searchQuery, // $searchQuery
+            [
+                'priority' => 'ASC',
+                'description' => 'ASC'
+            ] // $orderByArray
+        );
 
         return view('livewire.admin.maintenance.state', [
             'data' => $data,
