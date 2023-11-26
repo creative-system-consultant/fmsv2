@@ -3,8 +3,11 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefThirdParty;
-use App\Services\Model\ThirdPartyService;
+use App\Rules\Maintenance\ValidDescription;
+use App\Services\General\ModelService;
 use App\Services\General\PopupService;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -15,6 +18,14 @@ class ThirdParty extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
+    // Properties for modal and third party management
+    public $openModal;
+    public $modalTitle;
+    public $modalDescription;
+    public $modalMethod;
+    public $thirdparty;
+
+    // Properties for third party data
     #[Rule('required|max_digits:4|numeric')]
     public $trx_code;
 
@@ -24,21 +35,32 @@ class ThirdParty extends Component
     #[Rule('numeric|min:1|max:9999')]
     public $priority;
 
-    public $openModal;
-    public $modalTitle;
-    public $modalDescription;
-    public $modalMethod;
-    public $thirdparty;
+    // Pagination & searching
     public $paginated;
     public $searchQuery;
-    public $prio_id;
 
-    protected $thirdpartyService;
+    // Services
     protected $popupService;
+
+    protected function createRules()
+    {
+        return [
+            'trx_code' => 'required|max_digits:4|numeric',
+            'description' => 'required|string',
+        ];
+    }
+
+    protected function updateRules()
+    {
+        return [
+            'trx_code' => 'required|max_digits:4|numeric',
+            'description' => 'required|string',
+            'priority' => 'numeric|min:1|max:9999',
+        ];
+    }
 
     public function __construct()
     {
-        $this->thirdpartyService = new ThirdPartyService();
         $this->popupService = app(PopupService::class);
     }
 
@@ -46,58 +68,54 @@ class ThirdParty extends Component
     {
         $this->setupModal("create", "Create Third Party", "Third Party");
         $this->reset(['description', 'trx_code']); // Clear the values for description and code
-        $this->resetValidation(); // Clear validation errors    
+        $this->resetValidation(); // Clear validation errors
     }
 
     public function openUpdateModal($id)
     {
-        $this->prio_id = $id;
-        $this->thirdparty = RefThirdParty::find($id);
+        $this->thirdparty = ModelService::findById(RefThirdParty::class, $id);
         $this->description = $this->thirdparty->description;
         $this->trx_code = $this->thirdparty->trx_code;
         $this->priority = $this->thirdparty->priority;
-        $this->setupModal("update", "Update ThirdParty", "ThirdParty", "update({$this->prio_id})");
-        $this->resetValidation(); // Clear validation errors    
+        $this->setupModal("update", "Update ThirdParty", "ThirdParty", "update({$id})");
+        $this->resetValidation(); // Clear validation errors
+    }
+
+    protected function formatData()
+    {
+        return [
+            'trx_code' => FormattingService::formatCode($this->trx_code, true, 4),
+            'description' => FormattingService::formatDescription($this->description),
+            'priority' => $this->priority ?? 9999,
+        ];
     }
 
     public function create()
     {
-        
-        $this->validate([
-            'trx_code' => 'required|max_digits:4|numeric',
-            'description' => 'required|string',
-        ]);
+        $this->validate($this->createRules());
 
-        $paddedTrxCode = str_pad(trim($this->trx_code), 4, '0', STR_PAD_LEFT);
+        $formattedData = $this->formatData();
 
-        if (ThirdPartyService::isTrxCodeExists($paddedTrxCode)) {
-            $this->addError('trx_code', 'The Transaction Code has already been taken.');
+        if (MaintenanceService::isCodeExists(RefThirdParty::class, $formattedData['trx_code'], 'trx_code')) {
+            $this->addError('trx_code', 'The code has already been taken.');
         } else {
-            $data = [
-                'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-                'trx_code' => $paddedTrxCode,
-            ];
-
-            ThirdPartyService::createThirdParty($data);
-            $this->reset();
+            ModelService::create(RefThirdParty::class, $formattedData);
+            $this->reset('trx_code', 'description', 'priority');
             $this->openModal = false;
         }
     }
     public function update($id)
     {
-        $this->validate();
+        $this->validate($this->updateRules());
 
-        if (ThirdPartyService::canUpdateTrxCode($id, $this->trx_code)) {
-            $data = [
-                'description' => trim(preg_replace('/\s+/', ' ',strtoupper($this->description))),
-                'trx_code' => str_pad(trim($this->trx_code), 4, '0', STR_PAD_LEFT),
-                'priority' => $this->priority,
-            ];
+        $formattedData = $this->formatData();
 
-            ThirdPartyService::updateThirdParty($id, $data);
+        if (MaintenanceService::canUpdateCode(RefThirdParty::class, $id, $formattedData['trx_code'], 'trx_code')) {
+            ModelService::update(RefThirdParty::class, $id, $formattedData);
+            $this->reset('trx_code', 'description', 'priority');
             $this->openModal = false;
         } else {
-            $this->addError('trx_code', 'The Code has already been taken.');
+            $this->addError('trx_code', 'The code has already been taken.');
         }
     }
     public function delete($id,$description)
@@ -107,16 +125,23 @@ class ThirdParty extends Component
 
     public function ConfirmDelete($id)
     {
-        ThirdPartyService::deleteThirdParty($id);
+        ModelService::delete(RefThirdParty::class, $id);
     }
 
     public function render()
     {
-        $data = $this->thirdpartyService->getThirdPartyResult($this->searchQuery, $this->paginated);
+        $data = MaintenanceService::getPaginated(
+            RefThirdParty::class,
+            $this->paginated, // $perPage
+            $this->searchQuery, // $searchQuery
+            [
+                'priority' => 'ASC',
+                'description' => 'ASC'
+            ] // $orderByArray
+        );
 
         return view('livewire.admin.maintenance.third-party', [
             'data' => $data,
         ])->extends('layouts.main');
     }
 }
-
