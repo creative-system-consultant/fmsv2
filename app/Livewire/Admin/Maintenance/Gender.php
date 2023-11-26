@@ -3,10 +3,12 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefGender;
-use App\Services\Maintenance\GenderService;
+use App\Rules\Maintenance\ValidDescription;
+use App\Services\General\ModelService;
 use App\Services\General\PopupService;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
-
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -16,55 +18,67 @@ class Gender extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
-    #[Rule('required|max:2|numeric')]
-    public $institute_id;
-
-    #[Rule('required|string')]
-    public $description;
-
+    // Properties for modal and gender management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $gender;
-    public $coopId;
+
+    // Properties for gender data
+    #[Rule('required|max:2|alpha')]
+    public $code;
+
+    #[Rule('required|string')]
+    public $description;
+
+    // Pagination & searching
     public $paginated;
     public $searchQuery;
 
-    protected $genderService;
+    // Services
     protected $popupService;
 
     public function __construct()
     {
-        $this->genderService = new GenderService();
         $this->popupService = app(PopupService::class);
     }
 
     public function openCreateModal()
     {
         $this->setupModal("create", "Create Gender", "Gender");
-        $this->reset(['description', 'institute_id']); // Clear the values for description and code
+        $this->reset('code', 'description'); // Clear the values for description and code
         $this->resetValidation(); // Clear validation errors
     }
 
     public function openUpdateModal($id)
     {
-        $this->gender = RefGender::find($id);
+        $this->gender = ModelService::findById(RefGender::class, $id);
         $this->description = $this->gender->description;
-        $this->institute_id = $this->gender->institute_id;
+        $this->code = $this->gender->code;
         $this->setupModal("update", "Update Gender", "Gender", "update({$id})");
         $this->resetValidation(); // Clear validation errors
+    }
+
+    protected function formatData()
+    {
+        return [
+            'code' => FormattingService::formatCode($this->code),
+            'description' => FormattingService::formatDescription($this->description),
+        ];
     }
 
     public function create()
     {
         $this->validate();
 
-        if ($this->genderService->isInstituteIdExists($this->institute_id)) {
-            $this->addError('institute_id', 'The institute id has already been taken.');
+        $formattedData = $this->formatData();
+
+        if (MaintenanceService::isCodeExists(RefGender::class, $formattedData['code'])) {
+            $this->addError('code', 'The code has already been taken.');
         } else {
-            $this->genderService->createGender($this->description, $this->institute_id);
-            $this->reset();
+            ModelService::create(RefGender::class, $formattedData);
+            $this->reset('code', 'description');
             $this->openModal = false;
         }
     }
@@ -73,27 +87,30 @@ class Gender extends Component
     {
         $this->validate();
 
-        if ($this->genderService->canUpdateInstituteId($id, $this->institute_id)) {
-            $this->genderService->updateGender($id, $this->description, $this->institute_id);
+        $formattedData = $this->formatData();
+
+        if (MaintenanceService::canUpdateCode(RefGender::class, $id, $formattedData['code'])) {
+            ModelService::update(RefGender::class, $id, $formattedData);
+            $this->reset('code', 'description');
             $this->openModal = false;
         } else {
-            $this->addError('institute_id', 'The institute id has already been taken.');
+            $this->addError('code', 'The code has already been taken.');
         }
     }
 
-    public function delete($id,$institute_id)
+    public function delete($id, $gender)
     {
-        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete INSTITUTE ID: ' .$institute_id. '?',$id);
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete Gender: ' .$gender. '?',$id);
     }
 
     public function ConfirmDelete($id)
     {
-        $this->genderService->deleteGender($id);
+        ModelService::delete(RefGender::class, $id);
     }
 
     public function render()
     {
-        $data = $this->genderService->getPaginatedGender($this->paginated);
+        $data = MaintenanceService::getPaginated(RefGender::class, $this->paginated, false, $this->searchQuery);
 
         return view('livewire.admin.maintenance.gender', [
             'data' => $data,
