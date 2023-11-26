@@ -110,7 +110,11 @@ class Gender extends Component
 
     public function render()
     {
-        $data = MaintenanceService::getPaginated(RefGender::class, $this->paginated, false, $this->searchQuery);
+        $data = MaintenanceService::getPaginated(
+            RefGender::class,
+            $this->paginated, // $perPage
+            $this->searchQuery // $searchQuery
+        );
 
         return view('livewire.admin.maintenance.gender', [
             'data' => $data,

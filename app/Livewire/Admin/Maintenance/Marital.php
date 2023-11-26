@@ -114,7 +114,11 @@ class Marital extends Component
 
     public function render()
     {
-        $data = MaintenanceService::getPaginated(RefMarital::class, $this->paginated, false, $this->searchQuery);
+        $data = MaintenanceService::getPaginated(
+            RefMarital::class,
+            $this->paginated, // $perPage
+            $this->searchQuery // $searchQuery
+        );
 
         return view('livewire.admin.maintenance.marital', [
             'data' => $data,

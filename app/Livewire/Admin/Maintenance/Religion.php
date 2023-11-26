@@ -114,7 +114,11 @@ class Religion extends Component
 
     public function render()
     {
-        $data = MaintenanceService::getPaginated(RefReligion::class, $this->paginated, false, $this->searchQuery);
+        $data = MaintenanceService::getPaginated(
+            RefReligion::class,
+            $this->paginated, // $perPage
+            $this->searchQuery, // $searchQuery
+        );
 
         return view('livewire.admin.maintenance.religion', [
             'data' => $data,

@@ -126,7 +126,15 @@ class Race extends Component
 
     public function render()
     {
-        $data = MaintenanceService::getPaginated(RefRace::class, $this->paginated, true, $this->searchQuery);
+        $data = MaintenanceService::getPaginated(
+            RefRace::class,
+            $this->paginated, // $perPage
+            $this->searchQuery, // $searchQuery
+            [
+                'priority' => 'ASC',
+                'description' => 'ASC'
+            ] // $orderByArray
+        );
 
         return view('livewire.admin.maintenance.race', [
             'data' => $data,

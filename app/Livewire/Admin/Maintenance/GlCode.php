@@ -114,7 +114,10 @@ class GlCode extends Component
 
     public function render()
     {
-        $data = MaintenanceService::getPaginated(RefGlcode::class, $this->paginated);
+        $data = MaintenanceService::getPaginated(
+            RefGlcode::class,
+            $this->paginated // $perPage
+        );
 
         return view('livewire.admin.maintenance.glcode', [
             'data' => $data,

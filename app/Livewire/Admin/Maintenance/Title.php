@@ -126,7 +126,15 @@ class Title extends Component
 
     public function render()
     {
-        $data = MaintenanceService::getPaginated(RefTitle::class, $this->paginated, true, $this->searchQuery);
+        $data = MaintenanceService::getPaginated(
+            RefTitle::class,
+            $this->paginated, // $perPage
+            $this->searchQuery, // $searchQuery
+            [
+                'priority' => 'ASC',
+                'description' => 'ASC'
+            ] // $orderByArray
+        );
 
         return view('livewire.admin.maintenance.title', [
             'data' => $data,

@@ -111,7 +111,10 @@ class Relationship extends Component
 
     public function render()
     {
-        $data = MaintenanceService::getPaginated(RefRelationship::class, $this->paginated);
+        $data = MaintenanceService::getPaginated(
+            RefRelationship::class,
+            $this->paginated, // $perPage
+        );
 
         return view('livewire.admin.maintenance.relationship', [
             'data' => $data,
