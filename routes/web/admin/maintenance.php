@@ -7,7 +7,7 @@ use App\Livewire\Admin\Maintenance\Race;
 use App\Livewire\Admin\Maintenance\Relationship;
 use App\Livewire\Admin\Maintenance\Religion;
 use App\Livewire\Admin\Maintenance\Title;
-use App\Livewire\Admin\Maintenance\BranchID;
+use App\Livewire\Admin\Maintenance\BranchId;
 use App\Livewire\Admin\Maintenance\Education;
 use App\Livewire\Admin\Maintenance\Country;
 use App\Livewire\Admin\Maintenance\Marital;
@@ -20,7 +20,6 @@ use App\Livewire\Admin\Maintenance\Banks;
 use App\Livewire\Admin\Maintenance\CustStatus;
 use App\Livewire\Admin\Maintenance\EmployerList;
 use App\Livewire\Admin\Maintenance\GuarantorStatus;
-
 use App\Livewire\Admin\Maintenance\DividendRules;
 use App\Livewire\Admin\Maintenance\Languages;
 use App\Livewire\Admin\Maintenance\IdentityType;
@@ -54,9 +53,8 @@ Route::get('languages', Languages::class)->name('languages');
 Route::get('identity-type', IdentityType::class)->name('identity-type');
 Route::get('third-party', ThirdParty::class)->name('third-party');
 Route::get('member-status', MemberStatus::class)->name('member-status');
-Route::get('branch-i-d', BranchID::class)->name('branch-i-d');
+Route::get('branch-id', BranchId::class)->name('branch-id');
 Route::get('dividend-rule', DividendRules::class)->name('dividend-rule');
-
 Route::get('position', Position::class)->name('position');
 Route::get('income', Income::class)->name('income');
 Route::get('job-status', JobStatus::class)->name('job-status');

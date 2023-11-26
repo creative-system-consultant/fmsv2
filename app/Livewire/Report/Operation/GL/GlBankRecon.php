@@ -86,7 +86,7 @@ class GlBankRecon extends Component
 
         $bank_koputra = RefBankIbt::all();
 
-        return view('livewire.report.operation.g-l.gl-bank-recon', [
+        return view('livewire.report.operation.gl.gl-bank-recon', [
             'result' => $result,
             'bank_koputras' => $bank_koputra
         ])->extends('layouts.main');

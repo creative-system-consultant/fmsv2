@@ -11,13 +11,13 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
-class BranchID extends Component
+class BranchId extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
     #[Rule('required|numeric|min:1|max:9999')]
     public $branch_id;
-    
+
     #[Rule('required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/')]
     public $branch_name;
 
@@ -64,7 +64,7 @@ class BranchID extends Component
     public function create()
     {
         $this->validate();
-        
+
         $paddedCode = str_pad(trim(strtoupper($this->branch_id)), 4, '0', STR_PAD_LEFT);
 
         if (BranchIDService::isCodeExists($paddedCode)) {
@@ -111,7 +111,7 @@ class BranchID extends Component
     public function render()
     {
         $data = $this->branchid_Service->getBranchIDResult($this->searchQuery, $this->paginated);
-        return view('livewire.admin.maintenance.branch-i-d', [
+        return view('livewire.admin.maintenance.branch-id', [
             'data' => $data
             ])->extends('layouts.main');
     }

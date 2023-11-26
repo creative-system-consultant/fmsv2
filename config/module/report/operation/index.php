@@ -381,21 +381,21 @@ return [
         'title' => 'Detail GL',
         'group' => 'GL',
         'index' =>  '14',
-        'route' => 'report.operation.g-l.detail-gl',
+        'route' => 'report.operation.gl.detail-gl',
     ],
     [
         'permission' => 'detail gl by account',
         'title' => 'Detail GL by Account',
         'group' => 'GL',
         'index' =>  '14',
-        'route' => 'report.operation.g-l.detail-gl-by-account',
+        'route' => 'report.operation.gl.detail-gl-by-account',
     ],
     [
         'permission' => 'detail gl by bank recon',
         'title' => 'Detail GL By Bank Recon',
         'group' => 'GL',
         'index' =>  '14',
-        'route' => 'report.operation.g-l.gl-bank-recon',
+        'route' => 'report.operation.gl.gl-bank-recon',
     ],
 
 ];
