@@ -4,9 +4,11 @@ namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefEducation;
 use Livewire\Component;
-use Livewire\Attributes\Rule;
-use App\Services\Model\EducationService;
+use App\Rules\Maintenance\ValidDescription;
+use App\Services\General\ModelService;
 use App\Services\General\PopupService;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
@@ -15,26 +17,34 @@ class Education extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
-    #[Rule('required|alpha|max:9')]
-    public $code;
-
-    #[Rule('required|regex:/^[A-Za-z \/ ]+(\([A-Za-z]+\))?$/')]
-    public $description;
-
+    // Properties for modal and education management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $education;
+
+    // Properties for education data
+    public $code;
+    public $description;
+
+    // Pagination & searching
     public $paginated;
     public $searchQuery;
 
-    protected $educationService;
+    // Services
     protected $popupService;
+
+    public function rules()
+    {
+        return [
+            'code' => ['required', 'alpha', 'max:9'],
+            'description' => ['required', new ValidDescription],
+        ];
+    }
 
     public function __construct()
     {
-        $this->educationService = new EducationService();
         $this->popupService = app(PopupService::class);
     }
 
@@ -47,32 +57,32 @@ class Education extends Component
 
     public function openUpdateModal($id)
     {
-        $this->education = RefEducation::find($id);
+        $this->education = ModelService::findById(RefEducation::class, $id);
         $this->description = $this->education->description;
         $this->code = $this->education->code;
         $this->setupModal("update", "Update Education", "Education", "update({$id})");
         $this->resetValidation(); // Clear validation errors
     }
 
+    protected function formatData()
+    {
+        return [
+            'code' => FormattingService::formatCode($this->code),
+            'description' => FormattingService::formatDescription($this->description),
+        ];
+    }
+
     public function create()
     {
-        
         $this->validate();
 
-        $trim_code = trim(strtoupper($this->code));
+        $formattedData = $this->formatData();
 
-        if(strlen($trim_code) == 1) 
-
-        if (EducationService::isCodeExists($trim_code)) {
+        if (MaintenanceService::isCodeExists(RefEducation::class, $formattedData['code'])) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $data = [
-                'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-                'code' => $trim_code,
-            ];
-
-            EducationService::createEducation($data);
-            $this->reset();
+            ModelService::create(RefEducation::class, $formattedData);
+            $this->reset('code', 'description');
             $this->openModal = false;
         }
     }
@@ -81,16 +91,11 @@ class Education extends Component
     {
         $this->validate();
 
-        $trim_code = trim(strtoupper($this->code));
+        $formattedData = $this->formatData();
 
-        if(strlen($trim_code) == 1) 
-
-        if (EducationService::canUpdateCode($id, $trim_code)){
-            $data = [
-                'code' => $trim_code,
-                'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-            ];
-            EducationService::updateEducation($id, $data);
+        if (MaintenanceService::canUpdateCode(RefEducation::class, $id, $formattedData['code'])) {
+            ModelService::update(RefEducation::class, $id, $formattedData);
+            $this->reset('code', 'description');
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -101,16 +106,16 @@ class Education extends Component
     {
     $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you sure you want to delete code:' . $code .'?', $id);
     }
-    
-    
+
+
     public function ConfirmDelete($id)
     {
-        EducationService::deleteEducation($id);
+        ModelService::delete(RefEducation::class, $id);
     }
 
     public function render()
     {
-        $data = $this->educationService->getEducationResult($this->searchQuery, $this->paginated);
+        $data = MaintenanceService::getPaginated(RefEducation::class, $this->paginated, false, $this->searchQuery);
 
         return view('livewire.admin.maintenance.education', [
             'data' => $data,
