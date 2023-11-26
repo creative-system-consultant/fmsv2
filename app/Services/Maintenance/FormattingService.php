@@ -4,16 +4,12 @@ namespace App\Services\Maintenance;
 
 class FormattingService
 {
-    public static function formatCode($code, $prefix = false)
+    public static function formatCode($code, $prefix = false, $totalNo = 2)
     {
         $formattedCode = strtoupper(trim($code));
 
-        if ($prefix == true) {
-            if (strlen($formattedCode) === 0) {
-                $formattedCode = '00'; // Handle the case where the string is empty after trimming
-            } elseif (strlen($formattedCode) === 1) {
-                $formattedCode = '0' . $formattedCode; // Prepend '0' if the string is one character long
-            }
+        if ($prefix) {
+            $formattedCode = str_pad($formattedCode, $totalNo, '0', STR_PAD_LEFT);
         }
 
         return $formattedCode;
