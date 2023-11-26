@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Admin\Maintenance\AddressType;
 use App\Livewire\Admin\Maintenance\State;
 use App\Livewire\Admin\Maintenance\Glcode;
 use App\Livewire\Admin\Maintenance\Gender;
@@ -48,7 +49,7 @@ Route::get('education', Education::class)->name('education');
 Route::get('country', Country::class)->name('country');
 Route::get('marital', Marital::class)->name('marital');
 Route::get('financing-rule', FinancingRule::class)->name('financing-rule');
-Route::get('add-type', AddType::class)->name('add-type');
+Route::get('address-type', AddressType::class)->name('address-type');
 Route::get('languages', Languages::class)->name('languages');
 Route::get('identity-type', IdentityType::class)->name('identity-type');
 Route::get('third-party', ThirdParty::class)->name('third-party');

@@ -100,7 +100,7 @@
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Financing Rule</span>
                                                     </a>
-                                                    <a href="{{ route('setting.maintenance.add-type') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
+                                                    <a href="{{ route('setting.maintenance.address-type') }}" class="inline-flex items-center w-full px-4 py-2 text-sm font-semibold text-gray-500 dark:text-white hover:text-primary-500">
                                                         <x-icon name="clipboard-list" class="w-4 h-4 mr-2"/>
                                                         <span>Address Type</span>
                                                     </a>
