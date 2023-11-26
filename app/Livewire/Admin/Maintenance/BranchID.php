@@ -3,10 +3,12 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefBranchID;
+use App\Rules\Maintenance\ValidDescription;
+use App\Services\General\ModelService;
 use App\Services\General\PopupService;
-use App\Services\Model\BranchIDService;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
@@ -15,30 +17,44 @@ class BranchId extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
-    #[Rule('required|numeric|min:1|max:9999')]
-    public $branch_id;
-
-    #[Rule('required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/')]
-    public $branch_name;
-
-    #[Rule('required|numeric|min:1|max:9999')]
-    public $priority;
-
+    // Properties for modal and branch id management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $branchid;
+
+    // Properties for branch id data
+    public $branch_id;
+    public $branch_name;
+    public $priority;
+
+    // Pagination and searching
     public $paginated;
     public $searchQuery;
-    public $branch;
 
-    protected $branchid_Service;
+    // Services
     protected $popupService;
+
+    protected function createRules()
+    {
+        return [
+            'branch_id' => 'required|numeric|min:1|max:99',
+            'branch_name' => ['required', new ValidDescription],
+        ];
+    }
+
+    protected function updateRules()
+    {
+        return [
+            'branch_id' => 'required|numeric|min:1|max:99',
+            'branch_name' => ['required', new ValidDescription],
+            'priority' => 'numeric|min:1|max:9999',
+        ];
+    }
 
     public function __construct()
     {
-        $this->branchid_Service = new BranchIDService();
         $this->popupService = app(PopupService::class);
     }
 
@@ -51,48 +67,49 @@ class BranchId extends Component
 
     public function openUpdateModal($id)
     {
-        $this->branch = $id;
-        $this->branchid = RefBranchID::find($id);
+        $this->branchid = ModelService::findById(RefBranchID::class, $id);
         $this->branch_id = $this->branchid->branch_id;
         $this->branch_name = $this->branchid->branch_name;
         $this->priority = $this->branchid->priority;
 
-        $this->setupModal("update", "Update Branch", "Branch Name", "update({$this->branch})");
+        $this->setupModal("update", "Update Branch", "Branch Name", "update({$id})");
         $this->resetValidation();
+    }
+
+    protected function formatData()
+    {
+        return [
+            'branch_id' => FormattingService::formatCode($this->branch_id, true, 4),
+            'branch_name' => FormattingService::formatDescription($this->branch_name),
+            'priority' => $this->priority ?? 9999,
+        ];
     }
 
     public function create()
     {
-        $this->validate();
+        $this->validate($this->createRules());
 
-        $paddedCode = str_pad(trim(strtoupper($this->branch_id)), 4, '0', STR_PAD_LEFT);
+        $formattedData = $this->formatData();
 
-        if (BranchIDService::isCodeExists($paddedCode)) {
+        if (MaintenanceService::isCodeExists(RefBranchID::class, $formattedData['branch_id'], 'branch_id')) {
             $this->addError('branch_id', 'The code has already been taken.');
         } else {
-            $data = [
-                'branch_id' => $paddedCode,
-                'branch_name' => trim(preg_replace('/\s+/', ' ', strtoupper($this->branch_name))),
-            ];
-            BranchIDService::createBranchIDService($data);
-            $this->reset();
+            ModelService::create(RefBranchID::class, $formattedData);
+            $this->reset('branch_id', 'branch_name', 'priority');
             $this->openModal = false;
         }
     }
 
     public function update($id)
     {
-        $this->validate();
+        $this->validate($this->updateRules());
 
-        if (BranchIDService::canUpdateCode($id, $this->branch_id)) {
-            $data = [
-                'branch_id' => str_pad(trim(strtoupper($this->branch_id)), 4, '0', STR_PAD_LEFT),
-                'branch_name' => trim(preg_replace('/\s+/', ' ', strtoupper($this->branch_name))),
-                'priority' => $this->priority,
-            ];
-            BranchIDService::updateBranchIDService($id, $data);
+        $formattedData = $this->formatData();
+
+        if (MaintenanceService::canUpdateCode(RefBranchID::class, $id, $formattedData['branch_id'], 'branch_id')) {
+            ModelService::update(RefBranchID::class, $id, $formattedData);
+            $this->reset('branch_id', 'branch_name', 'priority');
             $this->openModal = false;
-
         } else {
             $this->addError('branch_id', 'The code has already been taken.');
         }
@@ -105,12 +122,21 @@ class BranchId extends Component
 
     public function ConfirmDelete($id)
     {
-        BranchIDService::deleteBranchIDService($id);
+        ModelService::delete(RefBranchID::class, $id);
     }
 
     public function render()
     {
-        $data = $this->branchid_Service->getBranchIDResult($this->searchQuery, $this->paginated);
+        $data = MaintenanceService::getPaginated(
+            RefBranchID::class,
+            $this->paginated, // $perPage
+            $this->searchQuery, // $searchQuery
+            [
+                'priority' => 'ASC',
+                'branch_name' => 'ASC'
+            ] // $orderByArray
+        );
+
         return view('livewire.admin.maintenance.branch-id', [
             'data' => $data
             ])->extends('layouts.main');
