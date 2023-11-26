@@ -4,12 +4,11 @@ namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefState;
 use App\Rules\Maintenance\ValidDescription;
-use App\Services\Model\StateService;
+use App\Services\General\ModelService;
 use App\Services\General\PopupService;
 use App\Services\Maintenance\FormattingService;
-use App\Services\Maintenance\GeneralService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
@@ -68,7 +67,7 @@ class State extends Component
 
     public function openUpdateModal($id)
     {
-        $this->state = GeneralService::findById(RefState::class, $id);
+        $this->state = ModelService::findById(RefState::class, $id);
         $this->description = $this->state->description;
         $this->code = $this->state->code;
         $this->priority = $this->state->priority;
@@ -91,10 +90,10 @@ class State extends Component
 
         $formattedData = $this->formatData();
 
-        if (GeneralService::isCodeExists(RefState::class, $formattedData['code'])) {
+        if (MaintenanceService::isCodeExists(RefState::class, $formattedData['code'])) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            GeneralService::create(RefState::class, $formattedData);
+            ModelService::create(RefState::class, $formattedData);
             $this->reset('code', 'description', 'priority');
             $this->openModal = false;
         }
@@ -106,8 +105,8 @@ class State extends Component
 
         $formattedData = $this->formatData();
 
-        if (GeneralService::canUpdateCode(RefState::class, $id, $formattedData['code'])) {
-            GeneralService::update(RefState::class, $id, $formattedData);
+        if (MaintenanceService::canUpdateCode(RefState::class, $id, $formattedData['code'])) {
+            ModelService::update(RefState::class, $id, $formattedData);
             $this->reset('code', 'description', 'priority');
             $this->openModal = false;
         } else {
@@ -122,12 +121,12 @@ class State extends Component
 
     public function ConfirmDelete($id)
     {
-        GeneralService::delete(RefState::class, $id);
+        ModelService::delete(RefState::class, $id);
     }
 
     public function render()
     {
-        $data = GeneralService::getPaginated(RefState::class, $this->paginated, $this->searchQuery);
+        $data = MaintenanceService::getPaginated(RefState::class, $this->paginated, $this->searchQuery);
 
         return view('livewire.admin.maintenance.state', [
             'data' => $data,
