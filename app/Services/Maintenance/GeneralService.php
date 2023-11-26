@@ -4,14 +4,14 @@ namespace App\Services\Maintenance;
 
 class GeneralService
 {
-    public static function isCodeExists($model, $code)
+    public static function isCodeExists($model, $code, $column = 'code')
     {
-        return $model::whereClientId(auth()->user()->client_id)->whereCode($code)->exists();
+        return $model::whereClientId(auth()->user()->client_id)->where($column , $code)->exists();
     }
 
-    public static function canUpdateCode($model, $id, $code)
+    public static function canUpdateCode($model, $id, $code, $column = 'code')
     {
-        $existingCode = $model::whereClientId(auth()->user()->client_id)->whereCode($code);
+        $existingCode = $model::whereClientId(auth()->user()->client_id)->where($column, $code);
 
         return !$existingCode->exists() || $existingCode->value('id') == $id;
     }

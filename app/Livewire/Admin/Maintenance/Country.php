@@ -4,9 +4,11 @@ namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefCountry;
 use Livewire\Component;
-use Livewire\Attributes\Rule;
-use App\Services\Model\CountryService;
+use App\Rules\Maintenance\ValidDescription;
+use App\Services\General\ModelService;
 use App\Services\General\PopupService;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
 use WireUi\Traits\Actions;
 use Livewire\WithPagination;
@@ -15,30 +17,44 @@ class Country extends Component
 {
     use Actions, WithPagination, MaintenanceModalTrait;
 
-    #[Rule('required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/')]
-    public $description;
-
-    #[Rule('required|min:2|max:2|alpha')]
-    public $abbr;
-
-    #[Rule('numeric|min:1|max:9999')]
-    public $priority;
-
+    // Properties for modal and state management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $country;
+
+    // Properties for country data
+    public $description;
+    public $abbr;
+    public $priority;
+
+    // Pagination and searching
     public $paginated;
     public $searchQuery;
-    public $prio_id;
 
-    protected $countryService;
+    // Services
     protected $popupService;
+
+    protected function createRules()
+    {
+        return [
+            'abbr' => 'required|min:2|max:2|alpha',
+            'description' => ['required', new ValidDescription],
+        ];
+    }
+
+    protected function updateRules()
+    {
+        return [
+            'abbr' => 'required|min:2|max:2|alpha',
+            'description' => ['required', new ValidDescription],
+            'priority' => 'numeric|min:1|max:9999',
+        ];
+    }
 
     public function __construct()
     {
-        $this->countryService = new CountryService();
         $this->popupService = app(PopupService::class);
     }
 
@@ -51,8 +67,7 @@ class Country extends Component
 
     public function openUpdateModal($id)
     {
-        $this->prio_id = $id;
-        $this->country = RefCountry::find($id);
+        $this->country = ModelService::findById(RefCountry::class, $id);
         $this->description = $this->country->description;
         $this->abbr = $this->country->abbr;
         $this->priority = $this->country->priority;
@@ -60,42 +75,39 @@ class Country extends Component
         $this->resetValidation(); // Clear validation errors
     }
 
+    protected function formatData()
+    {
+        return [
+            'abbr' => FormattingService::formatCode($this->abbr),
+            'description' => FormattingService::formatDescription($this->description),
+            'priority' => $this->priority ?? 9999,
+        ];
+    }
+
     public function create()
     {
-        
-        $this->validate([
-            'abbr' => 'required|min:2|max:2|alpha',
-            'description' => 'required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/',
-        ]);
+        $this->validate($this->createRules());
 
-        $paddedAbbr = str_pad(trim(strtoupper($this->abbr)), 2,'A', STR_PAD_LEFT);
+        $formattedData = $this->formatData();
 
-        if (CountryService::isAbbrExists($paddedAbbr)) {
+        if (MaintenanceService::isCodeExists(RefCountry::class, $formattedData['abbr'], 'abbr')) {
             $this->addError('abbr', 'The abbr has already been taken.');
         } else {
-            $data = [
-                'description' => trim(strtoupper(preg_replace('/\s+/', ' ', ($this->description)))),
-                'abbr' => $paddedAbbr,
-            ];
-
-            CountryService::createCountry($data);
-            $this->reset();
+            ModelService::create(RefCountry::class, $formattedData);
+            $this->reset('abbr', 'description', 'priority');
             $this->openModal = false;
         }
     }
 
     public function update($id)
     {
-        $this->validate();
+        $this->validate($this->updateRules());
 
-        if (CountryService::canUpdateAbbr($id, $this->abbr)) {
-            $data = [
-                'description' => trim(strtoupper(preg_replace('/\s+/', ' ', ($this->description)))),
-                'abbr' => str_pad(trim(strtoupper($this->abbr)), 2, 'A', STR_PAD_LEFT),
-                'priority' => $this->priority,
-            ];
+        $formattedData = $this->formatData();
 
-            CountryService::updateCountry($id, $data);
+        if (MaintenanceService::canUpdateCode(RefCountry::class, $id, $formattedData['abbr'], 'abbr')) {
+            ModelService::update(RefCountry::class, $id, $formattedData);
+            $this->reset('abbr', 'description', 'priority');
             $this->openModal = false;
         } else {
             $this->addError('abbr', 'The abbr has already been taken.');
@@ -109,12 +121,20 @@ class Country extends Component
 
     public function ConfirmDelete($id)
     {
-        CountryService::deleteCountry($id);
+        ModelService::delete(RefCountry::class, $id);
     }
 
     public function render()
     {
-        $data = $this->countryService->getCountryResult($this->searchQuery, $this->paginated);
+        $data = MaintenanceService::getPaginated(
+            RefCountry::class,
+            $this->paginated, // $perPage
+            $this->searchQuery, // $searchQuery
+            [
+                'priority' => 'ASC',
+                'description' => 'ASC'
+            ] // $orderByArray
+        );
 
         return view('livewire.admin.maintenance.country', [
             'data' => $data,
