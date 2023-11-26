@@ -9,7 +9,10 @@ class ValidDescription implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!preg_match('/^[A-Za-z ]+(\([A-Za-z]+\))?$/u', $value)) {
+        if (
+            !preg_match('/^[A-Za-z\s]+$/', $value) ||
+            !preg_match('/^[A-Za-z ]+(\([A-Za-z]+\))?$/u', $value)
+        ) {
             $fail('The ' . $attribute . ' is not in a valid format.');
         }
     }

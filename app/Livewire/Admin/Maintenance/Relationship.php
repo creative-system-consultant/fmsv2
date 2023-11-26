@@ -3,7 +3,11 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefRelationship;
+use App\Rules\Maintenance\ValidDescription;
+use App\Services\General\ModelService;
 use App\Services\General\PopupService;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Services\Model\RelationshipService;
 use App\Traits\MaintenanceModalTrait;
 use Livewire\Attributes\Rule;
@@ -15,25 +19,34 @@ class Relationship extends Component
 {
     use Actions, WithPagination, MaintenanceModalTrait;
 
-    #[Rule('required|numeric')]
-    public $code;
-
-    #[Rule('required|regex:/^[A-Za-z\s]+$/')]
-    public $description;
-
+    // Properties for modal and state management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $relationship;
+
+    // Properties for relationship data
+    public $code;
+    public $description;
+
+    // Pagination
     public $paginated;
 
+    // Services
     protected $relationshipService;
     protected $popupService;
 
+    public function rules()
+    {
+        return [
+            'code' => ['required', 'numeric', 'min:1', 'max:99'],
+            'description' => ['required', new ValidDescription],
+        ];
+    }
+
     public function __construct()
     {
-        $this->relationshipService = new RelationshipService();
         $this->popupService = app(PopupService::class);
     }
 
@@ -44,27 +57,31 @@ class Relationship extends Component
 
     public function openUpdateModal($id)
     {
-        $this->relationship = RefRelationship::find($id);
+        $this->relationship = ModelService::findById(RefRelationship::class, $id);
         $this->description = $this->relationship->description;
         $this->code = $this->relationship->code;
         $this->setupModal("update", "Update Relationship", "Relationship", "update({$id})");
+    }
+
+    protected function formatData()
+    {
+        return [
+            'code' => FormattingService::formatCode($this->code),
+            'description' => FormattingService::formatDescription($this->description),
+        ];
     }
 
     public function create()
     {
         $this->validate();
 
-        if (RelationshipService::isCodeExists($this->code)) {
+        $formattedData = $this->formatData();
+
+        if (MaintenanceService::isCodeExists(RefRelationship::class, $formattedData['code'])) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $data = [
-                'description' => trim(strtoupper($this->description)),
-                'code' => trim(strtoupper($this->code)),
-            ];
-
-            RelationshipService::createRelationship($data);
-
-            $this->reset();
+            ModelService::create(RefRelationship::class, $formattedData);
+            $this->reset('code', 'description');
             $this->openModal = false;
         }
     }
@@ -73,13 +90,11 @@ class Relationship extends Component
     {
         $this->validate();
 
-        if (RelationshipService::canUpdateCode($id, $this->code)) {
-            $data = [
-                'description' => trim(strtoupper($this->description)),
-                'code' => trim(strtoupper($this->code)),
-            ];
+        $formattedData = $this->formatData();
 
-            RelationshipService::updateRelationship($id, $data);
+        if (MaintenanceService::canUpdateCode(RefRelationship::class, $id, $formattedData['code'])) {
+            ModelService::update(RefRelationship::class, $id, $formattedData);
+            $this->reset('code', 'description');
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -93,12 +108,12 @@ class Relationship extends Component
 
     public function ConfirmDelete($id)
     {
-        RelationshipService::deleteRelationship($id);
+        ModelService::delete(RefRelationship::class, $id);
     }
 
     public function render()
     {
-        $data = $this->relationshipService::getPaginatedRelationships($this->paginated);
+        $data = MaintenanceService::getPaginated(RefRelationship::class, $this->paginated);
 
         return view('livewire.admin.maintenance.relationship', [
             'data' => $data,
