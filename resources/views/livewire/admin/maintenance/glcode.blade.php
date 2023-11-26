@@ -4,21 +4,21 @@
             <x-card title="">
                 <div class="flex items-center justify-between w-full mb-4">
                     <div>
-                        <x-button 
+                        <x-button
                             wire:click="openCreateModal"
-                            sm  
-                            icon="plus" 
-                            green 
-                            label="Create" 
+                            sm
+                            icon="plus"
+                            green
+                            label="Create"
                         />
                     </div>
                     <div  class="flex items-center space-x-2">
                         <x-label label="List Until : " />
-                        <x-input 
+                        <x-input
                             type="number"
-                            wire:model.live.debounce.1500ms="paginated" 
+                            wire:model.live.debounce.1500ms="paginated"
                             placeholder="00"
-                        />          
+                        />
                     </div>
                 </div>
 
@@ -38,11 +38,11 @@
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    {{ $glcode->description }}
+                                    {{ $glcode->DESCRIPTION }}
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    {{ $glcode->code }}
+                                    {{ $glcode->GL_CODE }}
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
@@ -54,25 +54,25 @@
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    <x-button 
+                                    <x-button
                                         wire:click="openUpdateModal({{ $glcode->id }})"
-                                        xs  
-                                        icon="pencil-alt" 
-                                        orange 
-                                        label="Edit" 
+                                        xs
+                                        icon="pencil-alt"
+                                        orange
+                                        label="Edit"
                                     />
-                                    <x-button 
+                                    <x-button
                                         wire:click="delete({{ $glcode->id }})"
-                                        xs  
-                                        icon="trash" 
-                                        red 
-                                        label="Delete" 
+                                        xs
+                                        icon="trash"
+                                        red
+                                        label="Delete"
                                     />
                                 </x-table.table-body>
                             </tr>
                             @empty
                                 <tr>
-                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                    <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
                                         <x-no-data title="No data"/>
                                     </x-table.table-body>
                                 </tr>
@@ -87,7 +87,7 @@
                 </x-slot>
             </x-card>
         </div>
-        
+
     </x-container>
 
     <!-- modal -->
@@ -100,7 +100,7 @@
 
         <x-slot name="footer">
             <div class="flex justify-end">
-                <div class="flex space-x-2 items-center">
+                <div class="flex items-center space-x-2">
                     <x-button flat label="Cancel" x-on:click="close" />
                     <x-button primary label="Save" wire:click="{{ $modalMethod }}" />
                 </div>
