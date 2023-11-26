@@ -104,7 +104,7 @@ class Religion extends Component
 
     public function delete($id,$code)
     {
-    $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you sure you want to delete CODE: ' . $code .'?', $id);
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you sure you want to delete CODE: ' . $code .'?', $id);
     }
 
     public function ConfirmDelete($id)

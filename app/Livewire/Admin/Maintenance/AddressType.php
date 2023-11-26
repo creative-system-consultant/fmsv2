@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin\Maintenance;
 
-use App\Models\Ref\RefFinancingRule;
+use App\Models\Ref\AddressType as ModelAddressType;
 use App\Rules\Maintenance\ValidDescription;
 use App\Services\General\ModelService;
 use App\Services\General\PopupService;
@@ -13,22 +13,22 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
-class FinancingRule extends Component
+class AddressType extends Component
 {
     use Actions, WithPagination, MaintenanceModalTrait;
 
-    // Properties for modal and financing rule management
+    // Properties for modal and address type management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
-    public $financingRule;
+    public $addressType;
 
-    // Properties for financing rule data
+    // Properties for address type data
     public $code;
     public $description;
 
-    // Pagination and searching
+    // Pagination & searching
     public $paginated;
     public $searchQuery;
 
@@ -38,7 +38,7 @@ class FinancingRule extends Component
     public function rules()
     {
         return [
-            'code' => ['required', 'numeric', 'min:1', 'max:9999'],
+            'code' => ['required', 'alpha', 'max:1'],
             'description' => ['required', new ValidDescription],
         ];
     }
@@ -50,24 +50,25 @@ class FinancingRule extends Component
 
     public function openCreateModal()
     {
-        $this->setupModal("create", "Create Financing Rule", "Financing Rule");
+        $this->setupModal("create", "Create Address Type", "Address Type");
         $this->reset(['description', 'code']); // Clear the values for description and code
         $this->resetValidation(); // Clear validation errors
     }
 
     public function openUpdateModal($id)
     {
-        $this->financingRule = ModelService::findById(RefFinancingRule::class, $id);
-        $this->description = $this->financingRule->description;
-        $this->code = $this->financingRule->code;
-        $this->setupModal("update", "Update Financing Rule", "Financing Rule", "update({$id})");
+        $this->addressType = ModelService::findById(ModelAddressType::class, $id);
+        $this->description = $this->addressType->description;
+        $this->code = $this->addressType->code;
+        $this->setupModal("update", "Update Address Type", "Address Type", "update({$id})");
         $this->resetValidation(); // Clear validation errors
+
     }
 
     protected function formatData()
     {
         return [
-            'code' => FormattingService::formatCode($this->code, true, 4),
+            'code' => FormattingService::formatCode($this->code, true, 1),
             'description' => FormattingService::formatDescription($this->description),
         ];
     }
@@ -78,10 +79,10 @@ class FinancingRule extends Component
 
         $formattedData = $this->formatData();
 
-        if (MaintenanceService::isCodeExists(RefFinancingRule::class, $formattedData['code'])) {
+        if (MaintenanceService::isCodeExists(ModelAddressType::class, $formattedData['code'])) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            ModelService::create(RefFinancingRule::class, $formattedData);
+            ModelService::create(ModelAddressType::class, $formattedData);
             $this->reset('code', 'description');
             $this->openModal = false;
         }
@@ -93,8 +94,8 @@ class FinancingRule extends Component
 
         $formattedData = $this->formatData();
 
-        if (MaintenanceService::canUpdateCode(RefFinancingRule::class, $id, $formattedData['code'])) {
-            ModelService::update(RefFinancingRule::class, $id, $formattedData);
+        if (MaintenanceService::canUpdateCode(ModelAddressType::class, $id, $formattedData['code'])) {
+            ModelService::update(ModelAddressType::class, $id, $formattedData);
             $this->reset('code', 'description');
             $this->openModal = false;
         } else {
@@ -102,25 +103,25 @@ class FinancingRule extends Component
         }
     }
 
-    public function delete($id,$code)
+    public function delete($id, $code)
     {
-        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you sure you want to delete code:' . $code .'?', $id);
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you delete the CODE: ' . $code . '?', $id);
     }
 
     public function ConfirmDelete($id)
     {
-        ModelService::delete(RefFinancingRule::class, $id);
+        ModelService::delete(ModelAddressType::class, $id);
     }
 
     public function render()
     {
         $data = MaintenanceService::getPaginated(
-            RefFinancingRule::class,
+            ModelAddressType::class,
             $this->paginated, // $perPage
             $this->searchQuery, // $searchQuery
         );
 
-        return view('livewire.admin.maintenance.financing-rule', [
+        return view('livewire.admin.maintenance.address-type', [
             'data' => $data,
         ])->extends('layouts.main');
     }
