@@ -16,7 +16,7 @@ class GeneralService
         return !$existingCode->exists() || $existingCode->value('id') == $id;
     }
 
-    public static function getPaginated($model, $perPage = 10, $searchQuery = '')
+    public static function getPaginated($model, $perPage = 10, $priority = false, $searchQuery = '')
     {
         $query = $model::whereClientId(auth()->user()->client_id);
 
@@ -27,8 +27,13 @@ class GeneralService
             });
         }
 
-        return $query->orderBy('priority', 'ASC')
-            ->orderBy('description', 'ASC')
-            ->paginate($perPage);
+        if ($priority == true) {
+            return $query->orderBy('priority', 'ASC')
+                ->orderBy('description', 'ASC')
+                ->paginate($perPage);
+        } else {
+            return $query->orderBy('description', 'ASC')
+                ->paginate($perPage);
+        }
     }
 }
