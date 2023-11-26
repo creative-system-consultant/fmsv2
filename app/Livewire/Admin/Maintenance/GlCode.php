@@ -3,11 +3,12 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefGlcode;
-use App\Services\Maintenance\GlCodeService;
+use App\Rules\Maintenance\ValidDescription;
+use App\Services\General\ModelService;
 use App\Services\General\PopupService;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
-use Livewire\Attributes\Layout;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
@@ -16,55 +17,72 @@ class GlCode extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
-    #[Rule('required|max:3|alpha')]
-    public $code;
-
-    #[Rule('required|string')]
-    public $description;
-
-    #[Rule('nullable|boolean')]
-    public $status;
-
+    // Properties for modal and gl code management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $glcode;
-    public $coopId;
+
+    // Properties for gl code data
+    public $code;
+    public $description;
+    public $status;
+
+    // Pagination & searching
     public $paginated;
 
-    protected $glcodeService;
+    // Services
     protected $popupService;
+
+    public function rules()
+    {
+        return [
+            'code' => ['required', 'string', 'min:2', 'max:6'],
+            'description' => ['required', new ValidDescription],
+            // 'status' => ['nullable', 'boolean'],
+        ];
+    }
 
     public function __construct()
     {
-        $this->glcodeService = new GlCodeService();
         $this->popupService = app(PopupService::class);
     }
 
     public function openCreateModal()
     {
-        $this->setupModal("create", "Create Race", "Race");
+        $this->setupModal("create", "Create GL Code", "GL Code Name");
     }
 
     public function openUpdateModal($id)
     {
-        $this->glcode = RefGlcode::find($id);
+        $this->glcode = ModelService::findById(RefGlcode::class, $id);
         $this->description = $this->glcode->description;
         $this->code = $this->glcode->code;
         $this->glcode->status == 1 ? $this->status = true : $this->status = false;
-        $this->setupModal("update", "Update Race", "Race", "update({$id})");
+        $this->setupModal("update", "Update GL Code", "GL Code Name", "update({$id})");
+    }
+
+    protected function formatData()
+    {
+        return [
+            'GL_CODE' => FormattingService::formatCode($this->code),
+            'DESCRIPTION' => FormattingService::formatDescription($this->description),
+            // 'status' => $this->status,
+        ];
     }
 
     public function create()
     {
         $this->validate();
 
-        if ($this->glcodeService->isCodeExists($this->code)) {
+        $formattedData = $this->formatData();
+
+        if (MaintenanceService::isCodeExists(RefGlcode::class, $formattedData['GL_CODE'])) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $this->glcodeService->createGlCode($this->description, $this->code, $this->status);
-            $this->reset();
+            ModelService::create(RefGlcode::class, $formattedData);
+            $this->reset('code', 'description', 'status');
             $this->openModal = false;
         }
     }
@@ -73,8 +91,11 @@ class GlCode extends Component
     {
         $this->validate();
 
-        if ($this->glcodeService->canUpdateCode($id, $this->code)) {
-            $this->glcodeService->updateGlcode($id, $this->description, $this->code, $this->status);
+        $formattedData = $this->formatData();
+
+        if (MaintenanceService::canUpdateCode(RefGlcode::class, $id, $formattedData['GL_CODE'])) {
+            ModelService::update(RefGlcode::class, $id, $formattedData);
+            $this->reset('code', 'description', 'status');
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -88,12 +109,12 @@ class GlCode extends Component
 
     public function ConfirmDelete($id)
     {
-        $this->glcodeService->deleteGlcode($id);
+        ModelService::delete(RefGlcode::class, $id);
     }
 
     public function render()
     {
-        $data = $this->glcodeService->getPaginatedGlcode($this->paginated);
+        $data = MaintenanceService::getPaginated(RefGlcode::class, $this->paginated);
 
         return view('livewire.admin.maintenance.glcode', [
             'data' => $data,

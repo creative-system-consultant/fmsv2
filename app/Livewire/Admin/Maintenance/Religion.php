@@ -5,7 +5,6 @@ namespace App\Livewire\Admin\Maintenance;
 use App\Models\Ref\RefReligion;
 use App\Rules\Maintenance\ValidDescription;
 use App\Services\General\ModelService;
-use App\Services\Model\ReligionService;
 use App\Services\General\PopupService;
 use App\Services\Maintenance\FormattingService;
 use App\Services\Maintenance\GeneralService as MaintenanceService;
