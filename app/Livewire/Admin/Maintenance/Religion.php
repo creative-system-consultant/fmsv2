@@ -3,8 +3,12 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefReligion;
+use App\Rules\Maintenance\ValidDescription;
+use App\Services\General\ModelService;
 use App\Services\Model\ReligionService;
 use App\Services\General\PopupService;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -15,26 +19,34 @@ class Religion extends Component
 {
     use Actions, WithPagination, MaintenanceModalTrait;
 
-    #[Rule('required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/')]
-    public $description;
-
-    #[Rule('required|min:2|max:2|alpha')]
-    public $code;
-
+    // Properties for modal and religion management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $religion;
+
+    // Properties for relationship data
+    public $code;
+    public $description;
+
+    // Pagination & searching
     public $paginated;
     public $searchQuery;
 
-    protected $religionService;
+    // Services
     protected $popupService;
+
+    public function rules()
+    {
+        return [
+            'code' => ['required', 'alpha', 'min:2', 'max:2'],
+            'description' => ['required', new ValidDescription],
+        ];
+    }
 
     public function __construct()
     {
-        $this->religionService = new ReligionService();
         $this->popupService = app(PopupService::class);
     }
 
@@ -47,30 +59,32 @@ class Religion extends Component
 
     public function openUpdateModal($id)
     {
-        $this->religion = RefReligion::find($id);
+        $this->religion = ModelService::findById(RefReligion::class, $id);
         $this->description = $this->religion->description;
         $this->code = $this->religion->code;
         $this->setupModal("update", "Update Religion", "Religion", "update({$id})");
         $this->resetValidation(); // Clear validation errors
     }
 
+    protected function formatData()
+    {
+        return [
+            'code' => FormattingService::formatCode($this->code),
+            'description' => FormattingService::formatDescription($this->description),
+        ];
+    }
+
     public function create()
     {
-        
         $this->validate();
 
-        $paddedCode = str_pad(trim(strtoupper($this->code)), 2,'A', STR_PAD_LEFT);
+        $formattedData = $this->formatData();
 
-        if (ReligionService::isCodeExists($paddedCode)) {
+        if (MaintenanceService::isCodeExists(RefReligion::class, $formattedData['code'])) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $data = [
-                'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-                'code' => $paddedCode,
-            ];
-
-            ReligionService::createReligion($data);
-            $this->reset();
+            ModelService::create(RefReligion::class, $formattedData);
+            $this->reset('code', 'description');
             $this->openModal = false;
         }
     }
@@ -79,13 +93,11 @@ class Religion extends Component
     {
         $this->validate();
 
-        if (ReligionService::canUpdateCode($id, $this->code)) {
-            $data = [
-                'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-                'code' => str_pad(trim(strtoupper($this->code)), 2, 'A', STR_PAD_LEFT),
-            ];
+        $formattedData = $this->formatData();
 
-            ReligionService::updateReligion($id, $data);
+        if (MaintenanceService::canUpdateCode(RefReligion::class, $id, $formattedData['code'])) {
+            ModelService::update(RefReligion::class, $id, $formattedData);
+            $this->reset('code', 'description');
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -99,12 +111,12 @@ class Religion extends Component
 
     public function ConfirmDelete($id)
     {
-        ReligionService::deleteReligion($id);
+        ModelService::delete(RefReligion::class, $id);
     }
 
     public function render()
     {
-        $data = $this->religionService->getReligionResult($this->searchQuery, $this->paginated);
+        $data = MaintenanceService::getPaginated(RefReligion::class, $this->paginated, false, $this->searchQuery);
 
         return view('livewire.admin.maintenance.religion', [
             'data' => $data,
