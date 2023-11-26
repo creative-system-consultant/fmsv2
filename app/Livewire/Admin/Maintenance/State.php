@@ -36,11 +36,6 @@ class State extends Component
     // Services
     protected $popupService;
 
-    public function __construct()
-    {
-        $this->popupService = app(PopupService::class);
-    }
-
     protected function createRules()
     {
         return [
@@ -56,6 +51,11 @@ class State extends Component
             'description' => ['required', new ValidDescription],
             'priority' => 'numeric|min:1|max:9999',
         ];
+    }
+
+    public function __construct()
+    {
+        $this->popupService = app(PopupService::class);
     }
 
     public function openCreateModal()

@@ -3,9 +3,11 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefRace;
-use App\Services\Model\RaceService;
+use App\Rules\Maintenance\ValidDescription;
+use App\Services\General\ModelService;
 use App\Services\General\PopupService;
-use Livewire\Attributes\Rule;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -15,30 +17,44 @@ class Race extends Component
 {
     use Actions, WithPagination, MaintenanceModalTrait;
 
-    #[Rule('required|numeric|min:1|max:99')]
-    public $code;
-
-    #[Rule('required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/')]
-    public $description;
-
-    #[Rule('numeric|min:1|max:9999')]
-    public $priority;
-
+    // Properties for modal and race management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $race;
+
+    // Properties for relationship data
+    public $code;
+    public $description;
+    public $priority;
+
+    // Pagination and searching
     public $paginated;
     public $searchQuery;
-    public $prio_id;
 
-    protected $raceService;
+    // Services
     protected $popupService;
+
+    protected function createRules()
+    {
+        return [
+            'code' => 'required|numeric|min:1|max:99',
+            'description' => ['required', new ValidDescription],
+        ];
+    }
+
+    protected function updateRules()
+    {
+        return [
+            'code' => 'required|numeric|min:1|max:99',
+            'description' => ['required', new ValidDescription],
+            'priority' => 'numeric|min:1|max:9999',
+        ];
+    }
 
     public function __construct()
     {
-        $this->raceService = new RaceService();
         $this->popupService = app(PopupService::class);
     }
 
@@ -51,51 +67,47 @@ class Race extends Component
 
     public function openUpdateModal($id)
     {
-        $this->prio_id = $id;
-        $this->race = RefRace::find($id);
+        $this->race = ModelService::findById(RefRace::class, $id);
         $this->description = $this->race->description;
         $this->code = $this->race->code;
         $this->priority = $this->race->priority;
         $this->resetValidation(); // Clear validation errors
-        $this->setupModal("update", "Update Race", "Race", "update({$this->prio_id})");
+        $this->setupModal("update", "Update Race", "Race", "update({$id})");
+    }
+
+    protected function formatData()
+    {
+        return [
+            'code' => FormattingService::formatCode($this->code),
+            'description' => FormattingService::formatDescription($this->description),
+            'priority' => $this->priority ?? 9999,
+        ];
     }
 
     public function create()
     {
-        
-        $this->validate([
-            'code' => 'required|numeric|min:1|max:99',
-            'description' => 'required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/',
-        ]);
+        $this->validate($this->createRules());
 
-        $paddedCode = str_pad(trim(strtoupper($this->code)), 2, '0', STR_PAD_LEFT);
+        $formattedData = $this->formatData();
 
-        if (RaceService::isCodeExists($paddedCode)) {
+        if (MaintenanceService::isCodeExists(RefRace::class, $formattedData['code'])) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $data = [
-                'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-                'code' => $paddedCode,
-            ];
-
-            RaceService::createRace($data);
-            $this->reset();
+            ModelService::create(RefRace::class, $formattedData);
+            $this->reset('code', 'description', 'priority');
             $this->openModal = false;
         }
     }
 
     public function update($id)
     {
-        $this->validate();
+        $this->validate($this->updateRules());
 
-        if (RaceService::canUpdateCode($id, $this->code)) {
-            $data = [
-                'description' => trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-                'priority' => $this->priority,
-                'code' => str_pad(trim(strtoupper($this->code)), 2, '0', STR_PAD_LEFT),
-            ];
+        $formattedData = $this->formatData();
 
-            RaceService::updateRace($id, $data);
+        if (MaintenanceService::canUpdateCode(RefRace::class, $id, $formattedData['code'])) {
+            ModelService::update(RefRace::class, $id, $formattedData);
+            $this->reset('code', 'description', 'priority');
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -109,12 +121,12 @@ class Race extends Component
 
     public function ConfirmDelete($id)
     {
-        RaceService::deleteRace($id);
+        ModelService::delete(RefRace::class, $id);
     }
 
     public function render()
     {
-        $data = $this->raceService->getRaceResult($this->searchQuery, $this->paginated);
+        $data = MaintenanceService::getPaginated(RefRace::class, $this->paginated, true, $this->searchQuery);
 
         return view('livewire.admin.maintenance.race', [
             'data' => $data,

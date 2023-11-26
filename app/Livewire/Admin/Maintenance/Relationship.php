@@ -8,9 +8,7 @@ use App\Services\General\ModelService;
 use App\Services\General\PopupService;
 use App\Services\Maintenance\FormattingService;
 use App\Services\Maintenance\GeneralService as MaintenanceService;
-use App\Services\Model\RelationshipService;
 use App\Traits\MaintenanceModalTrait;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
@@ -19,7 +17,7 @@ class Relationship extends Component
 {
     use Actions, WithPagination, MaintenanceModalTrait;
 
-    // Properties for modal and state management
+    // Properties for modal and relationship management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
