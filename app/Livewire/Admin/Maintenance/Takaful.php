@@ -3,10 +3,12 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefTakaful;
+use App\Rules\Maintenance\ValidDescription;
+use App\Services\General\ModelService;
 use App\Services\General\PopupService;
-use App\Services\Model\TakafulService;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
@@ -15,27 +17,34 @@ class Takaful extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
-    #[Rule('required|numeric|min:1|max:99')]
-    public $code;
-    
-    #[Rule('required|regex:/^[A-Za-z\s]*$/|max:50')]
-    public $description;
-    
+    // Properties for modal and takaful management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $takaful;
+
+    // Properties for takaful data
+    public $code;
+    public $description;
+
+    // Pagination & searching
     public $paginated;
     public $searchQuery;
 
-    protected $takaful_Service;
+    // Services
     protected $popupService;
 
+    public function rules()
+    {
+        return [
+            'code' => ['required', 'numeric', 'min:1', 'max:99'],
+            'description' => ['required', new ValidDescription],
+        ];
+    }
 
     public function __construct()
     {
-        $this->takaful_Service = new TakafulService();
         $this->popupService = app(PopupService::class);
     }
 
@@ -46,54 +55,47 @@ class Takaful extends Component
         $this->resetValidation();
     }
 
-    public function openUpdateModal($code)
+    public function openUpdateModal($id)
     {
-        $this->takaful = RefTakaful::find($code);
+        $this->takaful = ModelService::findById(RefTakaful::class, $id);
         $this->code = $this->takaful->code;
         $this->description = $this->takaful->description;
-        $this->setupModal("update", "Update Takaful", "Description", "update({$code})");
+        $this->setupModal("update", "Update Takaful", "Description", "update({$id})");
         $this->resetValidation();
+    }
+
+    protected function formatData()
+    {
+        return [
+            'code' => FormattingService::formatCode($this->code, true),
+            'description' => FormattingService::formatDescription($this->description),
+        ];
     }
 
     public function create()
     {
         $this->validate();
 
-        $trim_code = trim($this->code);
+        $formattedData = $this->formatData();
 
-        if(strlen($trim_code) == 1) {
-            $trim_code = '0' . $trim_code;
-        }
-        
-        if (TakafulService::isCodeExists($trim_code)) {
+        if (MaintenanceService::isCodeExists(RefTakaful::class, $formattedData['code'])) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $data = [
-                'code' => $trim_code,
-                'description'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-            ];
-            TakafulService::createTakaful($data);
-            $this->reset();
+            ModelService::create(RefTakaful::class, $formattedData);
+            $this->reset('code', 'description');
             $this->openModal = false;
         }
     }
-    
+
     public function update($id)
     {
         $this->validate();
 
-        $trim_code = trim($this->code);
+        $formattedData = $this->formatData();
 
-        if(strlen($trim_code) == 1) {
-            $trim_code = '0' . $trim_code;
-        }
-        
-        if (TakafulService::canUpdateCode($id, $trim_code)){
-            $data = [
-                'code' => $trim_code,
-                'description'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-            ];
-            TakafulService::updateTakaful($id, $data);
+        if (MaintenanceService::canUpdateCode(RefTakaful::class, $id, $formattedData['code'])) {
+            ModelService::update(RefTakaful::class, $id, $formattedData);
+            $this->reset('code', 'description');
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -102,18 +104,27 @@ class Takaful extends Component
 
     public function delete($id, $code, $description)
     {
-        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?',
         "Are you sure to delete CODE " . $code . " : " .$description. "?",$id);
     }
 
     public function ConfirmDelete($id)
     {
-        TakafulService::deleteTakaful($id);
+        ModelService::delete(RefTakaful::class, $id);
     }
-    
+
     public function render()
     {
-        $data = $this->takaful_Service->getTakafulResult($this->searchQuery, $this->paginated);
+        $data = MaintenanceService::getPaginated(
+            RefTakaful::class,
+            $this->paginated, // $perPage
+            $this->searchQuery, // $searchQuery
+            [
+                'code' => 'ASC',
+                'description' => 'ASC'
+            ]
+        );
+
         return view('livewire.admin.maintenance.takaful',[
             'data' =>$data,
         ])->extends('layouts.main');
