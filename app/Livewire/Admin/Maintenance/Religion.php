@@ -24,7 +24,7 @@ class Religion extends Component
     public $modalMethod;
     public $religion;
 
-    // Properties for relationship data
+    // Properties for religion data
     public $code;
     public $description;
 
