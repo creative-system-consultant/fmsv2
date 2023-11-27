@@ -1,4 +1,3 @@
-
 const colorThemes = {
     Slate: {
         50 : '#f8fafc',
@@ -264,7 +263,5 @@ const colorThemes = {
         800: '#9f1239',
         900: '#881337',
     },
-
 };
-
 export default colorThemes;

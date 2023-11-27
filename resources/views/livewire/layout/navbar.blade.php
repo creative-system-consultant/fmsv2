@@ -19,7 +19,6 @@
                 </div>
 
                 <div class="flex items-center space-x-4 animate__animated animate__fadeInRight">
-
                     <!-- select client -->
                     @if(auth()->user()->user_type == 3 && count(auth()->user()->clients) > 1)
                         <div>
@@ -97,8 +96,6 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>

@@ -31,7 +31,6 @@ class Navbar extends Component
         ['bg-fuchsia-600', 'Fuchsia'],
         ['bg-pink-600', 'Pink'],
         ['bg-rose-600', 'Rose']
-        
     ];
 
     public function selectClient($id)
