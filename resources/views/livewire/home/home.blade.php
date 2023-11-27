@@ -383,7 +383,7 @@
                         <div class="relative flex flex-col px-4 py-6 mt-6 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:border-black dark:text-white">
                             <div class="flex items-center space-x-4">
                                 <div class="relative">
-                                    <div class="relative w-32 h-32 rounded-full bg-gradient-to-r from-primary-500 to-cyan-400"
+                                    <div class="relative w-32 h-32 rounded-full bg-gradient-to-r from-primary-500 to-primary-600"
                                         :class="tab == 0 ? 'animate-spin' : ''">
                                     </div>
                                     <div class="absolute inset-x-0 flex items-center justify-center w-24 h-24 mx-auto bg-white rounded-full dark:bg-gray-800 top-4">
@@ -409,7 +409,7 @@
                         <div class="flex flex-col px-4 py-6 mt-6 border rounded-lg shadow-lg dark:bg-gray-800 dark:text-white dark:border-black">
                             <div class="flex items-center space-x-4">
                                 <div class="relative">
-                                    <div class="relative w-32 h-32 rounded-full bg-gradient-to-r from-cyan-400 to-primary-500"
+                                    <div class="relative w-32 h-32 rounded-full bg-gradient-to-r from-primary-600 to-primary-500"
                                     :class="tab == 1 ? 'animate-spin' : ''">
                                     </div>
                                     <div class="absolute inset-x-0 flex items-center justify-center w-24 h-24 mx-auto bg-white rounded-full dark:bg-gray-800 top-4">
@@ -435,7 +435,7 @@
                             <div class="flex flex-col px-4 py-6 mt-6 border rounded-lg shadow-lg bg-white dark:bg-gray-800 dark:text-white dark:border-black">
                                 <div class="flex items-center space-x-4">
                                     <div class="relative">
-                                        <div class="relative w-32 h-32 rounded-full bg-gradient-to-r from-cyan-400 to-primary-500"
+                                        <div class="relative w-32 h-32 rounded-full bg-gradient-to-r from-primary-600 to-primary-500"
                                         :class="tab == 0 ? 'animate-spin' : ''">
                                         </div>
                                         <div class="absolute inset-x-0 flex items-center justify-center w-24 h-24 mx-auto bg-white rounded-full dark:bg-gray-800 top-4">
@@ -451,7 +451,7 @@
                             <div class="flex flex-col px-4 py-6 mt-6 border rounded-lg shadow-lg bg-white dark:bg-gray-800 dark:text-white dark:border-black">
                                 <div class="flex items-center space-x-4">
                                     <div class="relative">
-                                        <div class="relative w-32 h-32 rounded-full bg-gradient-to-r from-cyan-400 to-primary-500"
+                                        <div class="relative w-32 h-32 rounded-full bg-gradient-to-r from-primary-600 to-primary-500"
                                         :class="tab == 0 ? 'animate-spin' : ''">
                                         </div>
                                         <div class="absolute inset-x-0 flex items-center justify-center w-24 h-24 mx-auto bg-white rounded-full dark:bg-gray-800 top-4">

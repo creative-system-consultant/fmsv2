@@ -7,6 +7,7 @@ import googleCalendarPlugin from '@fullcalendar/google-calendar';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { Calendar } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import colorThemes from '../../public/js/colorThemes';
 import preline from 'preline'
 
 Alpine.plugin(Tooltip);
@@ -18,5 +19,6 @@ window.echarts = echarts
 window.googleCalendarPlugin = googleCalendarPlugin
 window.dayGridPlugin = dayGridPlugin
 window.Calendar = Calendar
+window.colorThemes = colorThemes
 window.timeGridPlugin = timeGridPlugin
 

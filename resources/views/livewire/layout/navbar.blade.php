@@ -1,4 +1,4 @@
-<div class="sticky top-0 z-10" x-data="{showCilent:false , clickClient : false}">
+<div class="sticky top-0 z-10" x-data="{showCilent:false , clickClient : false, showTheme: false}">
     <div x-show="clickClient">
         @include('misc.loading')
     </div>
@@ -18,8 +18,7 @@
                 </div>
                 </div>
 
-                <div class="flex items-center space-x-6 animate__animated animate__fadeInRight">
-
+                <div class="flex items-center space-x-4 animate__animated animate__fadeInRight">
                     <!-- select client -->
                     @if(auth()->user()->user_type == 3 && count(auth()->user()->clients) > 1)
                         <div>
@@ -76,6 +75,13 @@
                                     Profile
                                 </a>
                             </div>
+                            <div>
+                                <a href="#" x-on:click="showTheme = !showTheme" 
+                                    class="flex items-center px-4 py-2 text-sm font-medium text-gray-500 rounded-lg hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700">
+                                    <x-icon name="color-swatch" class="w-4 h-4 mr-2" />
+                                    Change Theme
+                                </a>
+                            </div>
 
                             <div>
                                 <a href="{{ route('logout') }}"
@@ -95,6 +101,7 @@
         </div>
     </header>
 
+    <! -- slider show client -->
     <div x-show="showCilent" x-cloak>
         <x-general.slideover-container
             title="List Of Client"
@@ -128,5 +135,56 @@
             @endforelse
         </x-general.slideover-container>
     </div>
+
+
+    <! -- slider show change theme -->
+    <div x-show="showTheme" x-cloak>
+        <x-general.slideover-container
+        title="List of Colors"
+        xdataName="showTheme"
+        placeholderSearch="Search Colors"
+        >
+        <div class="grid grid-cols-6 gap-y-1">
+            @foreach ($color as $item)
+                <li>
+                    <div class="flex flex-col items-center">
+                        <button 
+                            type="button" 
+                            class="w-12 h-12 my-1 {{strtolower($item[0])}} rounded-lg cursor-pointer hover:scale-110" 
+                            data-theme="{{$item[1]}}" 
+                            onclick="changeTheme(this.getAttribute('data-theme'))">
+                        </button>
+                        <div class="text-sm dark:text-white">
+                            <span>{{$item[1]}}</span>
+                        </div>
+                    </div>
+                </li>
+            @endforeach
+        </div>
+    </x-general.slideover-container>
+    </div>
 </div>
+
+@push('js')
+    <script>
+        function changeTheme(theme) {
+        const colors = colorThemes[theme];
+            for (const shade in colors) {
+                document.documentElement.style.setProperty(`--primary-${shade}`, colors[shade]);
+            }
+            localStorage.setItem('selectedTheme', theme);
+        }
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const storedTheme = localStorage.getItem('selectedTheme');
+            if (storedTheme) {
+                changeTheme(storedTheme);
+                const themePicker = document.getElementById('themePicker');
+                if (themePicker) {
+                    themePicker.value = storedTheme;
+                }
+            }
+        });
+    </script>
+@endpush
+
 
