@@ -30,12 +30,12 @@
                                     </x-table.table-body>
 
                                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                        <x-button 
-                                            wire:click="openUpdateModal('{{ $virtualAcc-> COOLING_PERIOD }}')"
-                                            sm  
-                                            icon="pencil-alt" 
-                                            orange 
-                                            label="Edit" 
+                                        <x-button
+                                            wire:click="openUpdateModal('{{ $virtualAcc->COOLING_PERIOD }}')"
+                                            sm
+                                            icon="pencil-alt"
+                                            orange
+                                            label="Edit"
                                         />
 
                                     </x-table.table-body>
@@ -58,12 +58,12 @@
                                     </x-table.table-body>
 
                                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                        <x-button 
-                                            wire:click="openUpdateModal('{{ $virtualAcc-> THRESHOLD }}')"
-                                            sm  
-                                            icon="pencil-alt" 
-                                            orange 
-                                            label="Edit" 
+                                        <x-button
+                                            wire:click="openUpdateModal('{{ $virtualAcc->THRESHOLD }}')"
+                                            sm
+                                            icon="pencil-alt"
+                                            orange
+                                            label="Edit"
                                         />
                                     </x-table.table-body>
                                 @endif
