@@ -4,7 +4,6 @@ namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\FMS\DividendRules as FMSDividendRules;
 use App\Models\Ref\RefRace;
-use App\Services\Model\RaceService;
 use App\Services\General\PopupService;
 use Livewire\Attributes\Rule;
 use App\Traits\MaintenanceModalTrait;
@@ -32,12 +31,10 @@ class DividendRules extends Component
     public $dividendRules;
     public $paginated;
 
-    protected $raceService;
     protected $popupService;
 
     public function __construct()
     {
-        $this->raceService = new RaceService();
         $this->popupService = app(PopupService::class);
     }
 
@@ -54,7 +51,6 @@ class DividendRules extends Component
         $this->clientID = $this->dividendRules->client_id;
         $this->minShare = $this->dividendRules->min_share;
         $this->years = $this->dividendRules->years;
-
 
         $this->openModal = true;
         $this->modalTitle = 'Update Dividend Rules';
@@ -76,14 +72,12 @@ class DividendRules extends Component
 
     public function update($id)
     {
-
         FMSDividendRules::where('id', $id)->update([
             'client_id'         => $this->clientID,
             'min_share'         => $this->minShare,
             'years'             => $this->years,
             'flag_dividend'     => 1,
         ]);
-
 
         $this->reset();
         $this->openModal = false;

@@ -32,7 +32,6 @@ class Relationship extends Component
     public $paginated;
 
     // Services
-    protected $relationshipService;
     protected $popupService;
 
     public function rules()
