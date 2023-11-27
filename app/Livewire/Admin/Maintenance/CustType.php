@@ -3,10 +3,12 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefCustType;
+use App\Rules\Maintenance\ValidDescription;
+use App\Services\General\ModelService;
 use App\Services\General\PopupService;
-use App\Services\Model\CustTypeService;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
@@ -15,27 +17,34 @@ class CustType extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
-    #[Rule('required|alpha|max:1')]
-    public $cust_type;
-    
-    #[Rule('required|regex:/^[A-Za-z\s]*$/|max:50')]
-    public $description;
-    
+    // Properties for modal and cust type management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $custType;
+
+    // Properties for cust type data
+    public $cust_type;
+    public $description;
+
+    // Pagination & searching
     public $paginated;
     public $searchQuery;
 
-    protected $custType_Service;
+    // Services
     protected $popupService;
 
+    public function rules()
+    {
+        return [
+            'cust_type' => ['required', 'alpha', 'max:1'],
+            'description' => ['required', new ValidDescription],
+        ];
+    }
 
     public function __construct()
     {
-        $this->custType_Service = new CustTypeService();
         $this->popupService = app(PopupService::class);
     }
 
@@ -46,46 +55,47 @@ class CustType extends Component
         $this->resetValidation();
     }
 
-    public function openUpdateModal($cust_type)
+    public function openUpdateModal($id)
     {
-        $this->custType = RefCustType::find($cust_type);
+        $this->custType = ModelService::findById(RefCustType::class, $id);
         $this->cust_type = $this->custType->cust_type;
         $this->description = $this->custType->description;
-        $this->setupModal("update", "Update Customer Type", "Description", "update({$cust_type})");
+        $this->setupModal("update", "Update Customer Type", "Description", "update({$id})");
         $this->resetValidation();
+    }
+
+    protected function formatData()
+    {
+        return [
+            'cust_type' => FormattingService::formatCode($this->cust_type),
+            'description' => FormattingService::formatDescription($this->description),
+        ];
     }
 
     public function create()
     {
         $this->validate();
 
-        $trim_code = trim($this->cust_type);
-        
-        if (CustTypeService::isCodeExists($trim_code)) {
+        $formattedData = $this->formatData();
+
+        if (MaintenanceService::isCodeExists(RefCustType::class, $formattedData['cust_type'], 'cust_type')) {
             $this->addError('cust_type', 'The code has already been taken.');
         } else {
-            $data = [
-                'cust_type' => strtoupper($trim_code),
-                'description'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-            ];
-            CustTypeService::createCustType($data);
-            $this->reset();
+            ModelService::create(RefCustType::class, $formattedData);
+            $this->reset('cust_type', 'description');
             $this->openModal = false;
         }
     }
-    
+
     public function update($id)
     {
         $this->validate();
 
-        $trim_code = trim($this->cust_type);
+        $formattedData = $this->formatData();
 
-        if (CustTypeService::canUpdateCode($id, $trim_code)){
-            $data = [
-                'cust_type' => strtoupper($trim_code),
-                'description'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-            ];
-            CustTypeService::updateCustType($id, $data);
+        if (MaintenanceService::canUpdateCode(RefCustType::class, $id, $formattedData['cust_type'], 'cust_type')) {
+            ModelService::update(RefCustType::class, $id, $formattedData);
+            $this->reset('cust_type', 'description');
             $this->openModal = false;
         } else {
             $this->addError('cust_type', 'The code has already been taken.');
@@ -94,18 +104,26 @@ class CustType extends Component
 
     public function delete($id, $cust_type, $description)
     {
-        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', "Are you sure to delete STATUS " . $cust_type . " : "
-        . $description . "?",$id);
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', "Are you sure to delete STATUS " . $cust_type . " : " . $description . "?",$id);
     }
 
     public function ConfirmDelete($id)
     {
-        CustTypeService::deleteCustType($id);
+        ModelService::delete(RefCustType::class, $id);
     }
-    
+
     public function render()
     {
-        $data = $this->custType_Service->getCustTypeResult($this->searchQuery, $this->paginated);
+        $data = MaintenanceService::getPaginated(
+            RefCustType::class,
+            $this->paginated, // $perPage
+            $this->searchQuery, // $searchQuery
+            [
+                'cust_type' => 'ASC',
+                'description' => 'ASC'
+            ]
+        );
+
         return view('livewire.admin.maintenance.cust-type',[
             'data' =>$data,
         ])->extends('layouts.main');
