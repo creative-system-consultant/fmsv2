@@ -3,10 +3,12 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefDepartment;
+use App\Rules\Maintenance\ValidDescription;
+use App\Services\General\ModelService;
 use App\Services\General\PopupService;
-use App\Services\Model\DepartmentService;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
@@ -15,26 +17,34 @@ class Department extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
-    #[Rule('required|numeric|min:1|max:99')]
-    public $dept_kod;
-    
-    #[Rule('required|regex:/^[A-Za-z ]+(\([A-Za-z]+\))?$/')]
-    public $dept_desc;
-    
+    // Properties for modal and department management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $department;
+
+    // Properties for department data
+    public $dept_kod;
+    public $dept_desc;
+
+    // Pagination & searching
     public $paginated;
     public $searchQuery;
 
-    protected $department_Service;
+    // Services
     protected $popupService;
+
+    public function rules()
+    {
+        return [
+            'dept_kod' => ['required', 'numeric', 'min:1', 'max:99'],
+            'dept_desc' => ['required', new ValidDescription],
+        ];
+    }
 
     public function __construct()
     {
-        $this->department_Service = new DepartmentService();
         $this->popupService = app(PopupService::class);
     }
 
@@ -45,54 +55,47 @@ class Department extends Component
         $this->resetValidation();
     }
 
-    public function openUpdateModal($dept_kod)
+    public function openUpdateModal($id)
     {
-        $this->department = RefDepartment::find($dept_kod);
+        $this->department = ModelService::findById(RefDepartment::class, $id);
         $this->dept_kod = $this->department->dept_kod;
         $this->dept_desc = $this->department->dept_desc;
-        $this->setupModal("update", "Update Department", "Description", "update({$dept_kod})");
+        $this->setupModal("update", "Update Department", "Description", "update({$id})");
         $this->resetValidation();
+    }
+
+    protected function formatData()
+    {
+        return [
+            'dept_kod' => FormattingService::formatCode($this->dept_kod, true),
+            'dept_desc' => FormattingService::formatDescription($this->dept_desc),
+        ];
     }
 
     public function create()
     {
         $this->validate();
 
-        $trim_code = trim($this->dept_kod);
+        $formattedData = $this->formatData();
 
-        if(strlen($trim_code) == 1) {
-            $trim_code = '0' . $trim_code;
-        }
-        
-        if (DepartmentService::isCodeExists($trim_code)) {
+        if (MaintenanceService::isCodeExists(RefDepartment::class, $formattedData['dept_kod'], 'dept_kod')) {
             $this->addError('dept_kod', 'The code has already been taken.');
         } else {
-            $data = [
-                'dept_kod' => $trim_code,
-                'dept_desc'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->dept_desc))),
-            ];
-            DepartmentService::createDepartment($data);
-            $this->reset();
+            ModelService::create(RefDepartment::class, $formattedData);
+            $this->reset('dept_kod', 'dept_desc');
             $this->openModal = false;
         }
     }
-    
+
     public function update($id)
     {
         $this->validate();
 
-        $trim_code = trim($this->dept_kod);
+        $formattedData = $this->formatData();
 
-        if(strlen($trim_code) == 1) {
-            $trim_code = '0' . $trim_code;
-        }
-        
-        if (DepartmentService::canUpdateCode($id, $trim_code)){
-            $data = [
-                'dept_kod' => $trim_code,
-                'dept_desc'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->dept_desc))),
-            ];
-            DepartmentService::updateDepartment($id, $data);
+        if (MaintenanceService::canUpdateCode(RefDepartment::class, $id, $formattedData['dept_kod'], 'dept_kod')) {
+            ModelService::update(RefDepartment::class, $id, $formattedData);
+            $this->reset('dept_kod', 'dept_desc');
             $this->openModal = false;
         } else {
             $this->addError('dept_kod', 'The code has already been taken.');
@@ -106,12 +109,21 @@ class Department extends Component
 
     public function ConfirmDelete($id)
     {
-        DepartmentService::deleteDepartment($id);
+        ModelService::delete(RefDepartment::class, $id);
     }
-    
+
     public function render()
     {
-        $data = $this->department_Service->getDepartmentResult($this->searchQuery, $this->paginated);
+        $data = MaintenanceService::getPaginated(
+            RefDepartment::class,
+            $this->paginated, // $perPage
+            $this->searchQuery, // $searchQuery
+            [
+                'dept_kod' => 'ASC',
+                'dept_desc' => 'ASC'
+            ]
+        );
+
         return view('livewire.admin.maintenance.department',[
             'data' =>$data,
         ])->extends('layouts.main');
