@@ -3,10 +3,12 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefIncome;
+use App\Rules\Maintenance\ValidRangeDescription;
+use App\Services\General\ModelService;
 use App\Services\General\PopupService;
-use App\Services\Model\IncomeService;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
@@ -15,27 +17,34 @@ class Income extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
-    #[Rule('required|numeric|min:1|max:99')]
-    public $code;
-
-    #[Rule('required|regex:/^\s*(\d+)\s*-\s*(\d+)\s*$/')]
-    public $description;    
-    
+    // Properties for modal and income management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $income;
+
+    // Properties for income data
+    public $code;
+    public $description;
+
+    // Pagination and searching
     public $paginated;
     public $searchQuery;
 
-    protected $income_Service;
+    // Services
     protected $popupService;
 
+    public function rules()
+    {
+        return [
+            'code' => 'required|numeric|min:1|max:99',
+            'description' => ['required', new ValidRangeDescription],
+        ];
+    }
 
     public function __construct()
     {
-        $this->income_Service = new IncomeService();
         $this->popupService = app(PopupService::class);
     }
 
@@ -46,59 +55,47 @@ class Income extends Component
         $this->resetValidation();
     }
 
-    public function openUpdateModal($code)
+    public function openUpdateModal($id)
     {
-        $this->income = RefIncome::find($code);
+        $this->income = ModelService::findById(RefIncome::class, $id);
         $this->code = $this->income->code;
         $this->description = $this->income->description;
-        $this->setupModal("update", "Update Income", "Description", "update({$code})");
+        $this->setupModal("update", "Update Income", "Description", "update({$id})");
         $this->resetValidation();
+    }
+
+    protected function formatData()
+    {
+        return [
+            'code' => FormattingService::formatCode($this->code, true),
+            'description' => FormattingService::formatDescription($this->description, $range = true),
+        ];
     }
 
     public function create()
     {
         $this->validate();
 
-        $trim_code = trim($this->code);
+        $formattedData = $this->formatData();
 
-        if(strlen($trim_code) == 1) {
-            $trim_code = '0' . $trim_code;
-        }
-        
-        $this->description = str_replace(" ","",$this->description);
-        $this->description = str_replace("-"," - ",$this->description);
-
-        if (IncomeService::isCodeExists($trim_code)) {
+        if (MaintenanceService::isCodeExists(RefIncome::class, $formattedData['code'])) {
             $this->addError('code', 'The code has already been taken.');
         } else {
-            $data = [
-                'description' => $this-> description,
-                'code' => $trim_code,
-            ];
-            IncomeService::createIncome($data);
-            $this->reset();
+            ModelService::create(RefIncome::class, $formattedData);
+            $this->reset('code', 'description');
             $this->openModal = false;
         }
     }
-    
+
     public function update($id)
     {
         $this->validate();
 
-        $trim_code = trim($this->code);
+        $formattedData = $this->formatData();
 
-        if(strlen($trim_code) == 1) {
-            $trim_code = '0' . $trim_code;
-        }
-        $this->description = str_replace(" ","",$this->description);
-        $this->description = str_replace("-"," - ",$this->description);
-
-        if (IncomeService::canUpdateCode($id, $trim_code)){
-            $data = [
-                'code' => $trim_code,
-                'description' => $this->description
-            ];
-            IncomeService::updateIncome($id, $data);
+        if (MaintenanceService::canUpdateCode(RefIncome::class, $id, $formattedData['code'])) {
+            ModelService::update(RefIncome::class, $id, $formattedData);
+            $this->reset('code', 'description');
             $this->openModal = false;
         } else {
             $this->addError('code', 'The code has already been taken.');
@@ -112,12 +109,21 @@ class Income extends Component
 
     public function ConfirmDelete($id)
     {
-        IncomeService::deleteIncome($id);
+        ModelService::delete(RefIncome::class, $id);
     }
-    
+
     public function render()
     {
-        $data = $this->income_Service->getIncomeResult($this->searchQuery, $this->paginated);
+        $data = MaintenanceService::getPaginated(
+            RefIncome::class,
+            $this->paginated, // $perPage
+            $this->searchQuery, // $searchQuery
+            [
+                'code' => 'ASC',
+                'description' => 'ASC'
+            ] // $orderByArray
+        );
+
         return view('livewire.admin.maintenance.income',[
             'data' =>$data,
         ])->extends('layouts.main');
