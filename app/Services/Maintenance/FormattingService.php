@@ -15,8 +15,15 @@ class FormattingService
         return $formattedCode;
     }
 
-    public static function formatDescription($description)
+    public static function formatDescription($description, $range = false)
     {
-        return trim(preg_replace('/\s+/', ' ', strtoupper($description)));
+        $formattedDescription = trim(preg_replace('/\s+/', ' ', strtoupper($description)));
+
+        if ($range) {
+            $formattedDescription = str_replace(" ", "", $formattedDescription);
+            $formattedDescription = str_replace("-", " - ", $formattedDescription);
+        }
+
+        return $formattedDescription;
     }
 }
