@@ -36,15 +36,6 @@ class GeneralService
             $query->orderBy('description', 'ASC');
         }
 
-        // if ($priority == true) {
-        //     return $query->orderBy('priority', 'ASC')
-        //         ->orderBy('description', 'ASC')
-        //         ->paginate($perPage);
-        // } else {
-        //     return $query->orderBy('description', 'ASC')
-        //         ->paginate($perPage);
-        // }
-
         return $query->paginate($perPage);
     }
 }
