@@ -3,8 +3,11 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefOccupations;
-use App\Services\Model\OccupationService;
+use App\Rules\Maintenance\ValidDescription;
+use App\Services\General\ModelService;
 use App\Services\General\PopupService;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -16,6 +19,14 @@ class Occupation extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
+    // Properties for modal and occupation management
+    public $openModal;
+    public $modalTitle;
+    public $modalDescription;
+    public $modalMethod;
+    public $occupation;
+
+    // Properties for occupation data
     #[Rule('required|numeric|min:1|max:9999')]
     public $occup_id;
 
@@ -25,22 +36,32 @@ class Occupation extends Component
     #[Rule('numeric|min:1|max:9999')]
     public $priority;
 
-
-    public $openModal;
-    public $modalTitle;
-    public $modalDescription;
-    public $modalMethod;
-    public $occupation;
-    public $paginated;
+    // Pagination and searching
+    public $paginated = 20;
     public $searchQuery;
-    public $occ_id;
 
-    protected $occupationService;
+    // Services
     protected $popupService;
+
+    protected function createRules()
+    {
+        return [
+            'occup_id' => 'required|numeric|min:1|max:99',
+            'description' => 'required|string',
+        ];
+    }
+
+    protected function updateRules()
+    {
+        return [
+            'occup_id' => 'required|numeric|min:1|max:99',
+            'description' => 'required|string',
+            'priority' => 'numeric|min:1|max:9999',
+        ];
+    }
 
     public function __construct()
     {
-        $this->occupationService = new OccupationService();
         $this->popupService = app(PopupService::class);
     }
 
@@ -53,71 +74,74 @@ class Occupation extends Component
 
     public function openUpdateModal($id)
     {
-        $this->occ_id = $id;
-        $this->occupation = RefOccupations::find($id);
+        $this->occupation = ModelService::findById(RefOccupations::class, $id);
         $this->description = $this->occupation->description;
         $this->occup_id = $this->occupation->occup_id;
-        $this->setupModal("update", "Update Occupation", "Occupation", "update({$this->occ_id})");
+        $this->priority = $this->occupation->priority;
+        $this->setupModal("update", "Update Occupation", "Occupation", "update({$id})");
         $this->resetValidation(); // Clear validation errors
+    }
+
+    protected function formatData()
+    {
+        return [
+            'occup_id' => FormattingService::formatCode($this->occup_id, true, 4),
+            'description' => FormattingService::formatDescription($this->description),
+            'priority' => $this->priority ?? 9999,
+        ];
     }
 
     public function create()
     {
-        
-        $this->validate([
-            'occup_id' => 'required|numeric|min:1|max:9999',
-            'description' => 'required|string',
-    ]);
+        $this->validate($this->createRules());
 
-        $paddedOccupId = str_pad(trim($this->occup_id), 4, '0', STR_PAD_LEFT);
+        $formattedData = $this->formatData();
 
-        if (OccupationService::isOccupIdExists($paddedOccupId)) {
+        if (MaintenanceService::isCodeExists(RefOccupations::class, $formattedData['occup_id'], 'occup_id')) {
             $this->addError('occup_id', 'The occupation id has already been taken.');
         } else {
-            $data = [
-                'description' => trim(strtoupper(preg_replace('/\s+/', ' ', ($this->description)))),
-                'occup_id' => $paddedOccupId,
-            ];
-
-            OccupationService::createOccupation($data);
-            $this->reset();
+            ModelService::create(RefOccupations::class, $formattedData);
+            $this->reset('occup_id', 'description', 'priority');
             $this->openModal = false;
         }
     }
 
     public function update($id)
     {
-        $this->validate();
+        $this->validate($this->updateRules());
 
-        if (OccupationService::canUpdateOccupId($id, $this->occup_id)) {
-            $data = [
-                'description' => trim(strtoupper(preg_replace('/\s+/', ' ',($this->description)))),
-                'occup_id' => str_pad(trim($this->occup_id), 4, '0', STR_PAD_LEFT),
-                'priority' => $this->priority,
-            ];
+        $formattedData = $this->formatData();
 
-            OccupationService::updateOccupation($id, $data);
+        if (MaintenanceService::canUpdateCode(RefOccupations::class, $id, $formattedData['occup_id'], 'occup_id')) {
+            ModelService::update(RefOccupations::class, $id, $formattedData);
+            $this->reset('occup_id', 'description', 'priority');
             $this->openModal = false;
         } else {
-            $this->addError('occup_id', 'The Occupation ID has already been taken.');
+            $this->addError('occup_id', 'The occupation id has already been taken.');
         }
     }
 
     public function delete($id,$description)
     {
-    $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you sure you want to delete OCCUPATION: '.$description.'?', $id);
+        $this->popupService->confirm($this, 'ConfirmDelete', 'Delete the information?', 'Are you sure you want to delete OCCUPATION: '.$description.'?', $id);
     }
-    
-    
+
     public function ConfirmDelete($id)
     {
-        OccupationService::deleteOccupation($id);
+        ModelService::delete(RefOccupations::class, $id);
     }
 
     public function render()
-    {  
-        $data = $this->occupationService->getOccupationResult($this->searchQuery,20);
-        
+    {
+        $data = MaintenanceService::getPaginated(
+            RefOccupations::class,
+            $this->paginated, // $perPage
+            $this->searchQuery, // $searchQuery
+            [
+                'priority' => 'ASC',
+                'description' => 'ASC'
+            ] // $orderByArray
+        );
 
         return view('livewire.admin.maintenance.occupation', [
             'data' => $data,
