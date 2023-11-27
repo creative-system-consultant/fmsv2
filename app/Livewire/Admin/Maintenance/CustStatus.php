@@ -3,10 +3,12 @@
 namespace App\Livewire\Admin\Maintenance;
 
 use App\Models\Ref\RefCustStatus;
+use App\Rules\Maintenance\ValidDescription;
+use App\Services\General\ModelService;
 use App\Services\General\PopupService;
-use App\Services\Model\CustStatusService;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
@@ -15,24 +17,32 @@ class CustStatus extends Component
 {
     use Actions, WithPagination,MaintenanceModalTrait;
 
-    #[Rule('required|regex:/^[A-Za-z\s]*$/|max:50')]
-    public $description;
-    
+    // Properties for modal and cust status management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $custStatus;
+
+    // Properties for cust status data
+    public $description;
+
+    // Pagination & searching
     public $paginated;
     public $searchQuery;
 
-    protected $custStatus_Service;
+    // Services
     protected $popupService;
 
+    public function rules()
+    {
+        return [
+            'description' => ['required', new ValidDescription, 'max:50'],
+        ];
+    }
 
     public function __construct()
     {
-        $this->custStatus_Service = new CustStatusService();
         $this->popupService = app(PopupService::class);
     }
 
@@ -45,37 +55,43 @@ class CustStatus extends Component
 
     public function openUpdateModal($description)
     {
-        $this->custStatus = RefCustStatus::find($description);
+        $this->custStatus = ModelService::findById(RefCustStatus::class, $description);
         $this->description = $this->custStatus->description;
         $this->setupModal("update", "Update Customer Status", "Description", "update({$description})");
         $this->resetValidation();
     }
 
+    protected function formatData()
+    {
+        return [
+            'description' => FormattingService::formatDescription($this->description),
+        ];
+    }
+
     public function create()
     {
         $this->validate();
-        
-        if (CustStatusService::isCodeExists($this->description)) {
+
+        $formattedData = $this->formatData();
+
+        if (MaintenanceService::isCodeExists(RefCustStatus::class, $formattedData['description'], 'description')) {
             $this->addError('description', 'The status has already been taken.');
         } else {
-            $data = [
-                'description'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-            ];
-            CustStatusService::createCustStatus($data);
-            $this->reset();
+            ModelService::create(RefCustStatus::class, $formattedData);
+            $this->reset('description');
             $this->openModal = false;
         }
     }
-    
+
     public function update($id)
     {
         $this->validate();
 
-        if (CustStatusService::canUpdateStatus($id, $this->description)){
-            $data = [
-                'description'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->description))),
-            ];
-            CustStatusService::updateCustStatus($id, $data);
+        $formattedData = $this->formatData();
+
+        if (MaintenanceService::canUpdateCode(RefCustStatus::class, $id, $formattedData['description'], 'description')) {
+            ModelService::update(RefCustStatus::class, $id, $formattedData);
+            $this->reset('description');
             $this->openModal = false;
         } else {
             $this->addError('description', 'The status has already been taken.');
@@ -89,12 +105,20 @@ class CustStatus extends Component
 
     public function ConfirmDelete($id)
     {
-        CustStatusService::deleteCustStatus($id);
+        ModelService::delete(RefCustStatus::class, $id);
     }
-    
+
     public function render()
     {
-        $data = $this->custStatus_Service->getCustStatusResult($this->searchQuery, $this->paginated);
+        $data = MaintenanceService::getPaginated(
+            RefCustStatus::class,
+            $this->paginated, // $perPage
+            $this->searchQuery, // $searchQuery
+            [
+                'description' => 'ASC'
+            ]
+        );
+
         return view('livewire.admin.maintenance.cust-status',[
             'data' =>$data,
         ])->extends('layouts.main');
