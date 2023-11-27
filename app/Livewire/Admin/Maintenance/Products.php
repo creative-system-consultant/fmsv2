@@ -5,139 +5,138 @@ namespace App\Livewire\Admin\Maintenance;
 use App\Models\Siskop\SiskopAccountProduct;
 use Livewire\Component;
 use Livewire\Attributes\Rule;
+use App\Rules\Maintenance\ValidDescription;
+use App\Services\General\ModelService;
 use App\Services\General\PopupService;
-use App\Services\Model\ProductsService;
+use App\Services\Maintenance\FormattingService;
+use App\Services\Maintenance\GeneralService as MaintenanceService;
 use App\Traits\MaintenanceModalTrait;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
 class Products extends Component
 {
-    use Actions,WithPagination,MaintenanceModalTrait;
+    use Actions, WithPagination, MaintenanceModalTrait;
 
-    #[Rule('required|string|max:255')]
-    public $name;
-
-    #[Rule('required|numeric|min:1| max:9999')]
-    public $priority;
-
-    #[Rule('required|numeric|min:0.00')]
-    public $profit_rate;
-
-    #[Rule('required|numeric|min:0.00')]
-    public $payout_max;
-
-    #[Rule('required|numeric|min:0.00')]
-    public $process_fee;
-
-    #[Rule('required|numeric|min:0.00')]
-    public $amount_min;
-
-    #[Rule('required|numeric|min:0.00')]
-    public $amount_max;
-
-    #[Rule('required|numeric|min:0.00')]
-    public $amount_default;
-
-    public $updated_by;
-    public $updated_at;
-
+    // Properties for modal and product management
     public $openModal;
     public $modalTitle;
     public $modalDescription;
     public $modalMethod;
     public $products;
-    public $product_id;
+
+    // Properties for cust product data
+    public $name;
+    public $priority;
+    public $profit_rate;
+    public $payout_max;
+    public $process_fee;
+    public $amount_min;
+    public $amount_max;
+    public $amount_default;
+
+    public $updated_by;
+    public $updated_at;
+
+    // Pagination & searching
     public $paginated;
     public $searchQuery;
 
-    protected $products_Service;
+    // Services
     protected $popupService;
+
+    protected function createRules()
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'profit_rate' => 'required|numeric|min:0.00',
+            'payout_max' => 'required|numeric|min:0.00',
+            'process_fee' => 'required|numeric|min:0.00',
+            'amount_min' => 'required|numeric|min:0.00',
+            'amount_max' => 'required|numeric|min:0.00',
+            'amount_default' => 'required|numeric|min:0.00'
+        ];
+    }
+
+    protected function updateRules()
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'profit_rate' => 'required|numeric|min:0.00',
+            'payout_max' => 'required|numeric|min:0.00',
+            'process_fee' => 'required|numeric|min:0.00',
+            'amount_min' => 'required|numeric|min:0.00',
+            'amount_max' => 'required|numeric|min:0.00',
+            'amount_default' => 'required|numeric|min:0.00',
+            'priority' => 'numeric|min:1|max:9999',
+        ];
+    }
 
     public function __construct()
     {
-        $this->products_Service = new ProductsService();
         $this->popupService = app(PopupService::class);
     }
 
     public function openCreateModal()
     {
         $this->setupModal("create", "Create Product", "Name" );
-        $this->reset(['name','profit_rate','payout_max','process_fee','amount_min','amount_max','amount_default','updated_by','updated_at']);
+        $this->reset('name','profit_rate','payout_max','process_fee','amount_min','amount_max','amount_default');
         $this->resetValidation();
     }
 
     public function openUpdateModal($id)
     {
-        $this->product_id = $id;
-        $this->products = SiskopAccountProduct::find($id);
-    
-        $fields = ['name', 'profit_rate', 'payout_max', 'process_fee', 'amount_min', 'amount_max', 'amount_default', 'priority','updated_by','updated_at'];
-    
+        $this->products = ModelService::findById(SiskopAccountProduct::class, $id);
+
+        $fields = ['name', 'profit_rate', 'payout_max', 'process_fee', 'amount_min', 'amount_max', 'amount_default', 'priority'];
+
         foreach ($fields as $field) {
                 $this->$field = $this->products->$field;
             }
-        $this->setupModal("update", "Update Product", "Name", "update({$this->product_id})");
+        $this->setupModal("update", "Update Product", "Name", "update({$id})");
         $this->resetValidation();
+    }
+
+    protected function formatData()
+    {
+        return [
+            'name' => FormattingService::formatDescription($this->name),
+            'profit_rate' => $this->profit_rate,
+            'payout_max' => $this->payout_max,
+            'process_fee' => $this->process_fee,
+            'amount_min' => $this->amount_min,
+            'amount_max' => $this->amount_max,
+            'amount_default' => $this->amount_default,
+            'priority' => $this->priority ?? 9999,
+        ];
     }
 
     public function create()
     {
-        
-        $this->validate([
-        'name' => 'required|string|max:255',
-        'profit_rate' => 'required|numeric|min:0.00',
-        'payout_max' => 'required|numeric|min:0.00',
-        'process_fee' => 'required|numeric|min:0.00',
-        'amount_min' => 'required|numeric|min:0.00',
-        'amount_max' => 'required|numeric|min:0.00',
-        'amount_default' => 'required|numeric|min:0.00',
-        ]);
+        $this->validate($this->createRules());
 
+        $formattedData = $this->formatData();
 
-        if (ProductsService::isProductExists($this->name)) {
+        if (MaintenanceService::isCodeExists(SiskopAccountProduct::class, $formattedData['name'], 'name')) {
             $this->addError('name', 'The name has already been taken.');
         } else {
-            $data = [
-                'name'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->name))),
-                'profit_rate' => $this->profit_rate,
-                'payout_max' => $this->payout_max,
-                'process_fee' => $this->process_fee,
-                'amount_min' => $this->amount_min,
-                'amount_max' => $this->amount_max,
-                'amount_default' => $this->amount_default,
-                'updated_by' =>  $this->updated_by,
-                'updated_at' =>  $this->updated_at,
-            ];
-            ProductsService::createAllProducts($data);
-            $this->reset();
+            ModelService::create(SiskopAccountProduct::class, $formattedData);
+            $this->reset('name', 'profit_rate', 'payout_max', 'process_fee', 'amount_min', 'amount_max', 'amount_default', 'priority');
             $this->openModal = false;
         }
-        dd($data);
     }
 
     public function update($id)
     {
-        $this->validate();
+        $this->validate($this->updateRules());
 
-        if (ProductsService::canUpdateProducts($id, $this->name)) {
-    
-            $data = [
-                'name'=> trim(preg_replace('/\s+/', ' ', strtoupper($this->name))),
-                'profit_rate' => trim($this->profit_rate),
-                'payout_max' => $this->payout_max,
-                'process_fee' => $this->process_fee,
-                'amount_min' => $this->amount_min,
-                'amount_max' => $this->amount_max,
-                'amount_default' => $this->amount_default,
-                'updated_by' =>  $this->updated_by,
-                'updated_at' =>  $this->updated_at,
-                'priority' => $this->priority,
-            ];
-            ProductsService::UpdateProducts($id, $data);
+        $formattedData = $this->formatData();
+
+        if (MaintenanceService::canUpdateCode(SiskopAccountProduct::class, $id, $formattedData['name'], 'name')) {
+            ModelService::update(SiskopAccountProduct::class, $id, $formattedData);
+            $this->reset('name', 'profit_rate', 'payout_max', 'process_fee', 'amount_min', 'amount_max', 'amount_default', 'priority');
             $this->openModal = false;
-        } 
-        else {
+        } else {
             $this->addError('name', 'The name has already been taken.');
         }
     }
@@ -149,17 +148,23 @@ class Products extends Component
 
     public function ConfirmDelete($id)
     {
-        ProductsService::deleteProducts($id);
+        ModelService::delete(SiskopAccountProduct::class, $id);
     }
 
     public function render()
     {
-        $data = $this->products_Service->getProductsResult($this->searchQuery, $this->paginated);
+        $data = MaintenanceService::getPaginated(
+            SiskopAccountProduct::class,
+            $this->paginated, // $perPage
+            $this->searchQuery, // $searchQuery
+            [
+                'priority' => 'ASC',
+                'name' => 'ASC'
+            ] // $orderByArray
+        );
+
         return view('livewire.admin.maintenance.products',[
             'data' =>$data,
         ])->extends('layouts.main');
-        
-        
     }
-    
 }
