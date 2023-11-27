@@ -31,9 +31,6 @@ class GeneralService
             foreach ($orderByArray as $orderBy => $orderDirection) {
                 $query->orderBy($orderBy, $orderDirection);
             }
-        } else {
-            // Default ordering if no specific order is requested
-            $query->orderBy('description', 'ASC');
         }
 
         return $query->paginate($perPage);
