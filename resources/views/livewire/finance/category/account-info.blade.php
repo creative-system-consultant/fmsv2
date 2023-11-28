@@ -15,55 +15,19 @@
                 </div>
             
                 <div class="flex flex-wrap justify-start sm:justify-start">
-
-                    <x-hovertab.title name="0" wire:click="setState(0)">
-                        <x-icon name="information-circle" class="w-6 h-6 mr-2"/>
-                        <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
-                            Account Master
-                        </span>
-                    </x-hovertab.title>
-
-                    <x-hovertab.title name="1" wire:click="setState(1)">
-                        <x-icon name="clipboard-list" class="w-6 h-6 mr-2"/>
-                        <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
-                            Account Position
-                        </span>
-                    </x-hovertab.title>
-
-                    <x-hovertab.title name="2" wire:click="setState(2)">
-                        <x-icon name="view-list" class="w-6 h-6 mr-2"/>
-                        <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
-                            Repayment Schedule
-                        </span>
-                    </x-hovertab.title>
-
-                    <x-hovertab.title name="3" wire:click="setState(3)">
-                        <x-icon name="collection" class="w-6 h-6 mr-2"/>
-                        <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
-                            Statements
-                        </span>
-                    </x-hovertab.title>
-
-                    <x-hovertab.title name="4" wire:click="setState(4)">
-                        <x-icon name="document-text" class="w-6 h-6 mr-2"/>
-                        <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
-                            Pre-Disbursement Conditions
-                        </span>
-                    </x-hovertab.title>
-
-                    <x-hovertab.title name="5" wire:click="setState(5)">
-                        <x-icon name="paper-airplane" class="w-6 h-6 mr-2"/>
-                        <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
-                            Early Settlement
-                        </span>
-                    </x-hovertab.title>
-
-                    <x-hovertab.title name="6" wire:click="setState(6)">
-                        <x-icon name="calendar" class="w-6 h-6 mr-2"/>
-                        <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
-                            Reschedule
-                        </span>
-                    </x-hovertab.title>
+                    @foreach(config('module.financing-info.account-info.index') as $config)
+                        @php
+                            $hasPermission = auth()->check() && auth()->user()->hasClientSpecificPermission($config['permission'], auth()->user()->client_id);
+                        @endphp
+                        @if($hasPermission)
+                            <x-hovertab.title name="{{ $config['index'] }}" wire:click="setState({{ $config['index'] }})">
+                                <x-icon name="{{ $config['icon'] }}" class="w-6 h-6 mr-2"/>
+                                <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
+                                    {{ $config['name'] }}
+                                </span>
+                            </x-hovertab.title>
+                        @endif
+                    @endforeach
                 </div>
 
             </div>
@@ -84,6 +48,39 @@
                 @elseif($setIndex  == '6')
                     <livewire:finance.category.info.reschedule :uuid="$uuid"/>
                 @endif
+
+                @foreach(config('module.financing-info.account-info.index') as $config)
+                    @php
+                        $hasPermission = auth()->check() && auth()->user()->hasClientSpecificPermission($config['permission'], auth()->user()->client_id);
+                    @endphp
+                    @if($setIndex == $config['index'])
+                        @if($hasPermission)
+                            @switch($setIndex)
+                                @case('0')
+                                    <livewire:finance.category.info.account-master :uuid="$uuid"/>
+                                    @break
+                                @case('1')
+                                    <livewire:finance.category.info.account-position :uuid="$uuid"/>
+                                    @break
+                                @case('2')
+                                    <livewire:finance.category.info.repayment-schedule :uuid="$uuid" />
+                                    @break
+                                @case('3')
+                                    <livewire:finance.category.info.statement :uuid="$uuid"/>
+                                    @break
+                                @case('4')
+                                    <livewire:finance.category.info.pre-disb-condition :uuid="$uuid"/>
+                                    @break
+                                @case('5')
+                                    <livewire:finance.category.info.early-settlement :uuid="$uuid"/>
+                                    @break
+                                @case('6')
+                                    <livewire:finance.category.info.reschedule :uuid="$uuid"/>
+                                    @break
+                            @endswitch
+                        @endif
+                    @endif
+                @endforeach
             </div>
         </div>
     </x-container>
