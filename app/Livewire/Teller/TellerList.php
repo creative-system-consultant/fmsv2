@@ -6,76 +6,49 @@ use Livewire\Component;
 
 class TellerList extends Component
 {
+    public $list_tab;
+    public $tabIndex;
     public $type_payment_in = '';
     public $option_payment_in;
 
     public $type_payment_out = '';
     public $option_payment_out;
 
+
+    public function checkPermission($option){
+        return auth()->check() && auth()->user()->hasClientSpecificPermission($option['permission'], auth()->user()->client_id);
+    }
+
     public function mount()
     {
-        $this->option_payment_in = [
-            (object)[
-                "value" => "Payment Contribution"
-            ],
-            (object)[
-                "value" => "Purchase Share"
-            ],
-            (object)[
-                "value" => "Financing Repayment"
-            ],
-            (object)[
-                "value" => "Early Settlement Payment"
-            ],
-            (object)[
-                "value" => "Third Party"
-            ],
-            (object)[
-                "value" => "Miscellaneous in"
-            ],
-            (object)[
-                "value" => "Autopay"
-            ],
-            (object)[
-                "value" => "Early Settlement Overlap"
-            ],
-            (object)[
-                "value" => "Bulk Payment"
-            ],
-        ];
+        $data_tab = config('module.teller.index');
+        $this->list_tab = [];
+        $found = false;
+        foreach ($data_tab as $option_tab) {
+            if ($this->checkPermission($option_tab)) {
+                $this->list_tab[] = $option_tab;
+                if (!$found) {
+                    $this->tabIndex = (int) $option_tab['index'];
+                    $found = true;
+                }
+            }
+        }
+        
+        $data_payment_in = config('module.teller.payment-in.index');
+        $this->option_payment_in = [];
+        foreach ($data_payment_in as $option_payment_in) {
+            if ($this->checkPermission($option_payment_in)) {
+                $this->option_payment_in[] = $option_payment_in;
+            }
+        }
 
-        $this->option_payment_out = [
-            (object)[
-                "value" => 'Withdraw Contribution'
-            ],
-            (object)[
-                "value" => "Withdraw Share"
-            ],
-            (object)[
-                "value" => "Close Membership"
-            ],
-            (object)[
-                "value" => "Payment to Members"
-            ],
-            (object)[
-                "value" => "Dividend Withdrawal"
-            ],
-            (object)[
-                "value" => "Disbursement"
-            ],
-            (object)[
-                "value" => "Miscellaneous Out"
-            ],
-            (object)[
-                "value" => "Refund Advance"
-            ],
-            (object)[
-                "value" => "Dividen Batch Widthdrawal"
-            ],
-            (object)[
-                "value" => "Transfer Share"
-            ],
-        ];
+        $data_payment_out = config('module.teller.payment-out.index');
+        $this->option_payment_out = [];
+        foreach ($data_payment_out as $option_payment_out) {
+            if ($this->checkPermission($option_payment_out)) {
+                $this->option_payment_out[] = $option_payment_out;
+            }
+        }
     }
 
     public function clearPaymentIn()
