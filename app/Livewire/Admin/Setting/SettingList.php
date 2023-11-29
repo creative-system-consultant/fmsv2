@@ -9,6 +9,9 @@ class SettingList extends Component
 {
     public function render()
     {
-        return view('livewire.admin.setting.setting-list')->extends('layouts.main');
+        $settingMaintenance = collect(config('module.setting.maintenance.index'))->groupBy('group');
+        return view('livewire.admin.setting.setting-list',[
+            "settingMaintenance" => $settingMaintenance
+        ])->extends('layouts.main');
     }
 }

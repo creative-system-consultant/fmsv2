@@ -11,37 +11,43 @@
                     <h1 class="font-semibold text-lg dark:text-white">Category</h1>
                 </div>
                 <div class="flex flex-wrap justify-start sm:justify-start">
-                    <x-hovertab.title name="0" wire:click="setState(0)">
-                        <x-icon name="calculator" class="w-6 h-6 mr-2"/>
-                        <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
-                            Pre Disbursement
-                        </span>
-                    </x-hovertab.title>
-
-                    <x-hovertab.title name="1" wire:click="setState(1)">
-                        <x-icon name="identification" class="w-6 h-6 mr-2"/>
-                        <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
-                            Active Account
-                        </span>
-                    </x-hovertab.title>
-
-                    <x-hovertab.title name="2" wire:click="setState(2)">
-                        <x-icon name="lock-closed" class="w-6 h-6 mr-2"/>
-                        <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
-                            Closed Account
-                        </span>
-                    </x-hovertab.title>
+                    @foreach(config('module.financing-info.index') as $config)
+                        @php
+                            $hasPermission = auth()->check() && auth()->user()->hasClientSpecificPermission($config['permission'], auth()->user()->client_id);
+                        @endphp
+                        @if($hasPermission)
+                            <x-hovertab.title name="{{ $config['index'] }}" wire:click="setState({{ $config['index'] }})">
+                                <x-icon name="{{ $config['icon'] }}" class="w-6 h-6 mr-2"/>
+                                <span class="text-sm tooltip-text bg-primary-500 border rounded border-primary-500 text-white -mt-14">
+                                    {{ $config['name'] }}
+                                </span>
+                            </x-hovertab.title>
+                        @endif
+                    @endforeach
                 </div>
             </div>
 
             <div class="mt-6">
-                @if($setIndex == '0')
-                    <livewire:finance.pre-disbursement.pre-disb-list />
-                @elseif($setIndex  == '1')
-                    <livewire:finance.active-account.active-account-list />
-                @elseif($setIndex  == '2')
-                    <livewire:finance.closed-account.closed-account-list />
-                @endif
+                @foreach(config('module.financing-info.index') as $config)
+                    @php
+                        $hasPermission = auth()->check() && auth()->user()->hasClientSpecificPermission($config['permission'], auth()->user()->client_id);
+                    @endphp
+                    @if($setIndex == $config['index'])
+                        @if($hasPermission)
+                            @switch($setIndex)
+                                @case('0')
+                                    <livewire:finance.pre-disbursement.pre-disb-list />
+                                    @break
+                                @case('1')
+                                    <livewire:finance.active-account.active-account-list />
+                                    @break
+                                @case('2')
+                                    <livewire:finance.closed-account.closed-account-list />
+                                    @break
+                            @endswitch
+                        @endif
+                    @endif
+                @endforeach
             </div>
 
         </div>

@@ -20,6 +20,15 @@ class Index extends Component
     {
         $CustomerInfo = CifCustomer::where('uuid', $this->uuid)->first();
         $this->uuid = $CustomerInfo->uuid;
+
+        // Default to the first permitted tab
+        foreach (config('module.other-info.tab.index') as $config) {
+            $hasPermission = auth()->check() && auth()->user()->hasClientSpecificPermission($config['permission'], auth()->user()->client_id);
+            if ($hasPermission) {
+                $this->setIndex = (int) $config['index'];
+                break;
+            }
+        }
     }
 
 

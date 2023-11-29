@@ -7,49 +7,49 @@ use Livewire\Component;
 
 class ReversalList extends Component
 {
+    public $list_tab;
+    public $tabIndex;
     public $type_financing = '';
     public $option_financing;
 
     public $type_general = '';
     public $option_general;
 
+    public function checkPermission($option){
+        return auth()->check() && auth()->user()->hasClientSpecificPermission($option['permission'], auth()->user()->client_id);
+    }
+
     public function mount()
     {
-        $this->option_financing = [
-            (object)[
-                "value" => "Disbursement"
-            ],
-            (object)[
-                "value" => "Financing Repayment"
-            ],
-            (object)[
-                "value" => "Early Settlement"
-            ],
-        ];
+        $data_tab = config('module.reversal.index');
+        $this->list_tab = [];
+        $found = false;
+        foreach ($data_tab as $option_tab) {
+            if ($this->checkPermission($option_tab)) {
+                $this->list_tab[] = $option_tab;
+                if (!$found) {
+                    $this->tabIndex = (int) $option_tab['index'];
+                    $found = true;
+                }
+            }
+        }
 
-        $this->option_general = [
-            (object)[
-                "value" => 'Share'
-            ],
-            (object)[
-                "value" => 'Contribution'
-            ],
-            (object)[
-                "value" => 'Other Payment'
-            ],
-            (object)[
-                "value" => 'Miscellaneous'
-            ],
-            (object)[
-                "value" => 'Third Party'
-            ],
-            (object)[
-                "value" => 'Dividend'
-            ],
-            (object)[
-                "value" => 'Refund Advance'
-            ],
-        ];
+        $data_financing = config('module.reversal.financing.index');
+        $this->option_financing = [];
+        foreach ($data_financing as $option_financing) {
+            if ($this->checkPermission($option_financing)) {
+                $this->option_financing[] = $option_financing;
+            }
+        }
+
+        $data_general = config('module.reversal.general.index');
+        $this->option_general = [];
+        foreach ($data_general as $option_general) {
+            if ($this->checkPermission($option_general)) {
+                $this->option_general[] = $option_general;
+            }
+        }
+
     }
 
     public function clearFinancing()

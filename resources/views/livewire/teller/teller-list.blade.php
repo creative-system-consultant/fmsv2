@@ -2,23 +2,19 @@
     <div wire:loading wire:target="type_payment_in,type_payment_out">
         @include('misc.loading')
     </div>
-    <div x-data="{tab:0}">
+    <div x-data="{tab:@entangle('tabIndex')}">
         <x-container title="Teller" routeBackBtn="" titleBackBtn="" disableBackBtn="">
             <div class="grid grid-cols-1">
                 <div class="flex mb-4 bg-white rounded-lg shadow-sm dark:bg-gray-900">
                     <div class="flex items-center ">
-                        <x-tab.title name="0" wire:click="clearPaymentOut">
+                        @foreach($list_tab as $item)
+                        <x-tab.title name="{{$item['index']}}" wire:click="{{$item['wireClickFunction']}}">
                             <div class="flex items-center text-sm spcae-x-2">
-                                <x-icon name="login" class="w-5 h-5 mr-2"/>
-                                <h1>Payment In</h1>
+                                <x-icon name="{{$item['icon']}}" class="w-5 h-5 mr-2"/>
+                                <h1>{{$item['label']}}</h1>
                             </div>
                         </x-tab.title>
-                        <x-tab.title name="1" wire:click="clearPaymentIn">
-                            <div class="flex items-center text-sm spcae-x-2">
-                                <x-icon name="logout" class="w-5 h-5 mr-2"/>
-                                <h1>Payment Out</h1>
-                            </div>
-                        </x-tab.title>
+                        @endforeach
                     </div>
                 </div>
 
@@ -33,7 +29,7 @@
                                 wire:model.live="type_payment_in"
                             >
                                 @foreach($option_payment_in as $item)
-                                    <x-select.option label="{{ $item->value }}" value="{{  $item->value }}" />
+                                    <x-select.option label="{{ $item['value'] }}" value="{{ $item['value'] }}" />
                                 @endforeach
                             </x-select>
                         </div>
@@ -110,7 +106,7 @@
                                 wire:model.live="type_payment_out"
                             >
                                 @foreach($option_payment_out as $item)
-                                    <x-select.option label="{{ $item->value }}" value="{{  $item->value }}" />
+                                    <x-select.option label="{{ $item['value'] }}" value="{{  $item['value'] }}" />
                                 @endforeach
                             </x-select>
                         </div>

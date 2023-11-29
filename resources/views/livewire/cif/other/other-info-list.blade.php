@@ -64,9 +64,19 @@
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    <div class="flex items-center space-x-2">
-                                        <x-button xs  href="{{ route('other.other-info',['uuid'=>$item->uuid]) }}" icon="eye" primary label="Details"/>
-                                    </div>
+                                    @foreach(config('module.other-info.index') as $config)
+                                        @can($config['permission'])
+                                            <div class="flex items-center space-x-2">
+                                                <x-button 
+                                                    xs  
+                                                    href="{{ route($config['route'], ['uuid'=>$item->uuid]) }}"
+                                                    icon="{{ $config['icon'] }}"
+                                                    primary
+                                                    label="{{ $config['label'] }}"
+                                                />
+                                            </div>
+                                        @endcan
+                                    @endforeach
                                 </x-table.table-body>
 
                             </tr>
