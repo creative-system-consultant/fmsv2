@@ -5,6 +5,7 @@ namespace App\Livewire\SysAdmin;
 use App\Models\Ref\System;
 use App\Models\Ref\SystemModule;
 use App\Models\User;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -47,7 +48,7 @@ class EditRoleBody extends Component
         foreach ($this->modules as $module) {
             $modulePermissions = Permission::where('system_id', $this->currentSystem)->where('module_id', $module->id)->pluck('id')->toArray();
             if (!array_diff($modulePermissions, $this->selectedPermission) && count($modulePermissions) > 0) {
-                $this->selectedModule[] = $module->id;
+                $this->selectedModule[] = (int) $module->id;
             }
         }
 
@@ -88,7 +89,6 @@ class EditRoleBody extends Component
     {
         foreach ($this->selectedModule as $moduleId) {
             $moduleId = (int) $moduleId; // Cast to integer
-            // Fetch permissions for this module that the SA role has
             $modulePermissions = Permission::where('module_id', $moduleId)
                 ->whereIn('id', $this->clientRole->permissions->pluck('id'))
                 ->pluck('id')
@@ -98,6 +98,8 @@ class EditRoleBody extends Component
         }
 
         $this->selectedPermission = array_values(array_unique($this->selectedPermission));
+
+        // Update selectedSystem status
         $this->updateSystemSelection();
     }
 
@@ -129,6 +131,7 @@ class EditRoleBody extends Component
         $this->modules = SystemModule::whereSystemId($this->currentSystem)->whereIn('id', $this->permissions->pluck('module_id')->unique())->get();
     }
 
+    #[On('updateRole')]
     public function update()
     {
         $this->role->update([

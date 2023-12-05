@@ -28,6 +28,11 @@ class EditRole extends Component
         $this->currentSystem = $index;
     }
 
+    public function update()
+    {
+        $this->dispatch('updateRole')->to(EditRoleBody::class);
+    }
+
     public function render()
     {
         return view('livewire.sys-admin.edit-role')->extends('layouts.main');
