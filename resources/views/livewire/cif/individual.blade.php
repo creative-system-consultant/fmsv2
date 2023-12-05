@@ -1,7 +1,7 @@
 <div>
     <x-container title="Member Info" routeBackBtn="" titleBackBtn="" disableBackBtn="">
         <div class="grid grid-cols-1">
-            <div class="flex sm:items-center space-y-2 sm:space-x-2 flex-col sm:flex-row">
+            <div class="flex flex-col space-y-2 sm:items-center sm:space-x-2 sm:flex-row">
                 <x-label label="Search :"/>
                 <div>
                     <x-native-select  wire:model="searchBy">
@@ -78,10 +78,9 @@
                                         @endforeach
                                     </div>
                                 </x-table.table-body>
-
                             </tr>
                             @empty
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                            <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
                                 <x-no-data title="No data"/>
                             </x-table.table-body>
                             @endforelse

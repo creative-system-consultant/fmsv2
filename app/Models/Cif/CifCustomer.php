@@ -37,4 +37,9 @@ class CifCustomer extends Model
     {
         return $this->belongsTo(Membership::class, 'id', 'cif_id');
     }
+
+    public function employer()
+    {
+        return $this->hasOne(Employer::class, 'cif_id', 'id');
+    }
 }

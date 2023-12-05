@@ -66,7 +66,7 @@ Route::middleware('auth')->group(function () {
             base_path('routes/web/role.php'),
         )->middleware('client.permission:access roles');
 
-        // cif
+        // member info / cif
         Route::prefix('cif')->as('cif.')->group(
             base_path('routes/web/cif.php'),
         )->middleware('client.permission:access member info');

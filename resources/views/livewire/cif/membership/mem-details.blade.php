@@ -9,7 +9,7 @@
                     <x-button icon="save" primary label="Save" sm/>
                 </div>
             </x-slot>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+            <div class="grid grid-cols-1 gap-2 md:grid-cols-3">
                 <div class="hidden">
                     <x-input label="Client ID" placeholder="" wire:model="client_id" :disabled="true"/>
                 </div>
@@ -119,18 +119,6 @@
                     <x-input label="Entrance Fee Date" placeholder="" wire:model="entrance_fee_date" :disabled="true" />
                 </div>
                 <div>
-                    <x-input label="Introducer Name" placeholder="" wire:model="introducer_name" :disabled="true" />
-                </div>
-                <div>
-                    <x-input label="Introducer MBRID" placeholder="" wire:model="introducer_mbrid" :disabled="true" />
-                </div>
-                <div>
-                    <x-input label="Introducer IC No" placeholder="" wire:model="introducer_icno" :disabled="true" />
-                </div>
-                <div class="hidden">
-                    <x-input label="Introducer Flag" placeholder="" wire:model="introducer_flag" :disabled="true" />
-                </div>
-                <div>
                     <x-input label="No of Withdrawal" placeholder="" wire:model="no_of_withdrawal" :disabled="true" />
                 </div>
                 <div class="hidden">
@@ -172,10 +160,49 @@
                 <div class="hidden">
                     <x-input label="Closed MBR PV" placeholder="" wire:model="closed_mbr_pv" :disabled="true" />
                 </div>
-                
+
             </div>
-            
+        </x-card>
+    </div>
+
+    <div class="mt-6">
+        <x-card title="Introducer List">
+            <x-table.table>
+                <x-slot name="thead">
+                    <x-table.table-header class="text-left" value="NAME" sort="" />
+                    <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
+                    <x-table.table-header class="text-left" value="IC NO" sort="" />
+                    <x-table.table-header class="text-left" value="PAYMENT AMOUNT" sort="" />
+                    <x-table.table-header class="text-left" value="PAYMENT DATE" sort="" />
+                </x-slot>
+                <x-slot name="tbody">
+                    @forelse ($introducers as $introducer)
+                        <tr>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                {{ $introducer->customer->name }}
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                {{ $introducer->introducer_mbr_no }}
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                {{ $introducer->introducer_identityno }}
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                {{ $introducer->payment_amount }}
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                {{ $introducer->payment_date }}
+                            </x-table.table-body>
+                        </tr>
+                        @empty
+                            <tr>
+                                <x-table.table-body colspan="5" class="text-xs font-medium text-center text-gray-700 ">
+                                    <x-no-data title="No data"/>
+                                </x-table.table-body>
+                            </tr>
+                        @endforelse
+                </x-slot>
+            </x-table.table>
         </x-card>
     </div>
 </div>
-
