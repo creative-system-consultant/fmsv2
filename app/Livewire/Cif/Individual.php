@@ -23,9 +23,6 @@ class Individual extends Component
 
     public function render()
     {
-        // Retrieve customers based on conditions, search field and search term
-        $customers = CifCustomer::fetchByCondition([], $this->searchBy, $this->search, null, null, []);
-
         $customer = DB::table('CIF.CUSTOMERS')
             ->select(
                 'CIF.CUSTOMERS.uuid',

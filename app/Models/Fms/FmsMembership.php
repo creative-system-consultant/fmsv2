@@ -28,4 +28,9 @@ class FmsMembership extends Model
     {
         return $this->hasOne(FmsMiscAccount::class, 'mbr_no', 'mbr_no');
     }
+
+    public function introducerList()
+    {
+        return $this->hasMany(IntroducerList::class, 'mbr_no', 'mbr_no');
+    }
 }
