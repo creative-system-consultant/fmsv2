@@ -35,21 +35,23 @@
                                     Welcome to <span class="text-primary-500">FMS</span> Web
                                 </h1>
                                 <h4 class="text-sm leading-6 text-center text-gray-500 dark:text-white sm:text-left">
-                                    Your dedicated management system for '{{ auth()->user()->refClient->name }}.'
+                                    Your dedicated management system for '{{ auth()->user()->refClient->name ?? auth()->user()->name }}.'
                                     This sophisticated platform is designed to streamline the organization and retrieval of information pertaining to
-                                    '{{ auth()->user()->refClient->name }},' ensuring that staff can efficiently access and manage their
-                                    @if(auth()->user()->refClient->clientType->description == 'COOP')
+                                    '{{ auth()->user()->refClient->name ?? auth()->user()->name }},' ensuring that staff can efficiently access and manage their
+                                    @if(auth()->user()->refClient->clientType->description ?? ''  == 'COOP')
                                         Cooperative's
-                                    @elseif(auth()->user()->refClient->clientType->description == 'CLUB')
+                                    @elseif(auth()->user()->refClient->clientType->description ?? '' == 'CLUB')
                                         Club's
-                                    @elseif(auth()->user()->refClient->clientType->description == 'BANK')
+                                    @elseif(auth()->user()->refClient->clientType->description ?? '' == 'BANK')
                                         Bank
-                                    @elseif(auth()->user()->refClient->clientType->description == 'ARRAHNU')
+                                    @elseif(auth()->user()->refClient->clientType->description ?? '' == 'ARRAHNU')
                                         Arrahnu
-                                    @elseif(auth()->user()->refClient->clientType->description == 'JMB')
+                                    @elseif(auth()->user()->refClient->clientType->description ?? '' == 'JMB')
                                         Joint Management Body
-                                    @elseif(auth()->user()->refClient->clientType->description == 'ASSOCIATION')
+                                    @elseif(auth()->user()->refClient->clientType->description ?? '' == 'ASSOCIATION')
                                         Association's
+                                    @else
+                                        {{auth()->user()->name}}
                                     @endif
                                     data.
                                 </h4>
