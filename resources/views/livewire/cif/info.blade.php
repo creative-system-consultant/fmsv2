@@ -3,7 +3,7 @@
     <div wire:loading wire:target="setState">
         @include('misc.loading')
     </div>
-    <x-container title="Member Information" routeBackBtn="{{ route('cif.main') }}" titleBackBtn="member info" disableBackBtn="true">
+    <x-container title="CIF Information" routeBackBtn="{{ route('cif.main') }}" titleBackBtn="member info" disableBackBtn="true">
         <div x-data="{ active: @entangle('setIndex') }" class="relative">
             <div class=" bg-white border rounded-lg shadow-md w-full dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700 ">
                 <div class="flex items-center justify-between px-4 py-4 border-b dark:border-gray-700">
@@ -49,23 +49,8 @@
                                     <livewire:cif.info.beneficiary :uuid="$uuid" />
                                     @break
                                 @case('3')
-                                    <livewire:cif.info.contribution :uuid="$uuid" />
-                                    @break
-                                @case('4')
-                                    <livewire:cif.info.share :uuid="$uuid" />
-                                    @break
-                                @case('5')
-                                    <livewire:cif.info.others-payment :uuid="$uuid" />
-                                    @break
-                                @case('6')
-                                    <livewire:cif.info.monthly-payment-summary :uuid="$uuid" />
-                                    @break
-                                @case('7')
-                                    <livewire:cif.info.dividend-statement :uuid="$uuid" />
-                                    @break
-                                @case('8')
-                                    <livewire:cif.info.miscellaneous :uuid="$uuid" />
-                                    @break
+                                    <livewire:cif.info.employer :uuid="$uuid" />
+                                @break
                             @endswitch
                         @endif
                     @endif

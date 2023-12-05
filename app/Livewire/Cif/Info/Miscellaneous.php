@@ -15,15 +15,14 @@ class Miscellaneous extends Component
 
     public function mount()
     {
+        $this->customer = CifCustomer::where('uuid', $this->uuid)->first();
         $this->startDateMisc    =  '2021-12-31';
         $this->endDateMisc      =  now()->format('Y-m-d');
-        $this->customer = CifCustomer::where('uuid', $this->uuid)->first();
     }
 
     public function render()
     {
         $this->miscacc = FmsMiscAccount::where('mbr_no', $this->customer->membership->mbr_no)->first();
-
 
         $MiscStmt = FmsMiscStatement::with('transaction')
             ->select(DB::raw('createdby = 1'))

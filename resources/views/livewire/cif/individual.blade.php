@@ -73,7 +73,6 @@
                                                     icon="{{ $config['icon'] }}"
                                                     primary
                                                     label="{{ $config['label'] }}"
-                                                   
                                                 />
                                             @endcan
                                         @endforeach
