@@ -31,7 +31,7 @@
             </div>
                 
         </div>
-
+        <div>
             <x-table.table>
                 
                 <x-slot name="thead">
@@ -95,7 +95,6 @@
                     @endforelse
                 </x-slot>
             </x-table.table>
-
         </div>
     </x-card>
 </div>

@@ -1,5 +1,4 @@
 <div>
-
     <!-- Membership Overview -->
     <div class="mt-6">
         <x-card title="Membership Overview" >
@@ -178,7 +177,5 @@
             
         </x-card>
     </div>
-
-
 </div>
 

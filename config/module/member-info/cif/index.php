@@ -8,57 +8,27 @@ return [
     */
 
     [
-        'permission' => 'details tab',
+        'permission' => 'cif-customer details tab',
         'index' => '0',
         'icon' => 'user-circle',
-        'name' => 'Details',
+        'name' => 'Customer Details',
     ],
     [
-        'permission' => 'address tab',
+        'permission' => 'cif-address tab',
         'index' => '1',
         'icon' => 'home',
         'name' => 'Address',
     ],
     [
-        'permission' => 'beneficiary tab',
+        'permission' => 'cif-beneficiary tab',
         'index' => '2',
         'icon' => 'user-group',
         'name' => 'Beneficiary',
     ],
     [
-        'permission' => 'contribution tab',
+        'permission' => 'cif-employer details tab',
         'index' => '3',
-        'icon' => 'cash',
-        'name' => 'Contribution',
+        'icon' => 'briefcase',
+        'name' => 'Employer Details',
     ],
-    [
-        'permission' => 'share tab',
-        'index' => '4',
-        'icon' => 'presentation-chart-line',
-        'name' => 'Share',
-    ],
-    [
-        'permission' => 'others payment tab',
-        'index' => '5',
-        'icon' => 'credit-card',
-        'name' => 'Others Payment',
-    ],
-    [
-        'permission' => 'monthly payment summary tab',
-        'index' => '6',
-        'icon' => 'calendar',
-        'name' => 'Monthly Payment Summary',
-    ],
-    [
-        'permission' => 'dividend statements tab',
-        'index' => '7',
-        'icon' => 'clipboard-list',
-        'name' => 'Dividend Statements',
-    ],
-    [
-        'permission' => 'miscellaneous tab',
-        'index' => '8',
-        'icon' => 'inbox',
-        'name' => 'Miscellaneous',
-    ]
 ];
