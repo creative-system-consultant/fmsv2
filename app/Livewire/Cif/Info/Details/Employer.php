@@ -13,19 +13,19 @@ class Employer extends Component
 
     public function mount()
     {
-        $customerInfo = CifCustomer::with('employer')->where('uuid', $this->uuid)->first();
+        $customerInfo = CifCustomer::with('employer', 'employer.address')->where('uuid', $this->uuid)->first();
         $job_group = RefJobGroups::select('groups')->where('id',  $customerInfo->job_group_id)->first();
         $job_status = RefJobStatus::select('description')->where('id',  $customerInfo->job_status_id)->first();
 
-        $this->current_employer_name = $customerInfo->employer->name;
-        $this->company_address = '';
-        $this->company_phone_no = $customerInfo->employer->office_num;
-        $this->company_fax_no = '';
+        $this->current_employer_name = ($customerInfo->employer) ? $customerInfo->employer->name : '';
+        $this->company_address = $customerInfo->employer->fullAddress ?? '';
+        $this->company_phone_no = ($customerInfo->employer) ? $customerInfo->employer->office_num : '';
+        $this->company_fax_no = $customerInfo->employer->faxNo ?? '';
         $this->job_group_id = $job_group->groups ?? '';
         $this->job_status_id = $job_status->description ?? '';
-        $this->job_position = $customerInfo->employer->position_id;
-        $this->current_employment_date = $customerInfo->employer->work_start;
-        $this->current_salary = $customerInfo->employer->salary_ref;
+        $this->job_position = ($customerInfo->employer) ? $customerInfo->employer->position_id : '';
+        $this->current_employment_date = ($customerInfo->employer) ? $customerInfo->employer->work_start : '';
+        $this->current_salary = ($customerInfo->employer) ? $customerInfo->employer->salary_ref : '';
     }
 
     public function render()

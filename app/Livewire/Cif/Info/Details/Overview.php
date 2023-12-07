@@ -11,7 +11,7 @@ use Livewire\Component;
 
 class Overview extends Component
 {
-    public $uuid, $staff_no, $ref_no, $name, $identity_no, $cust_status, $status_id, $apply_date, $start_date, $status_change_date, $approved_retirement_date, $effective_retirement_date, $entrance_fee, $entrance_fee_date, $introducer_name, $introducer_mbrid, $introducer_icno, $bank_id, $bank_acct_no, $payment_type, $staffno_payer, $va_account;
+    public $uuid, $staff_no, $ref_no, $name, $identity_no, $cust_status, $status_id, $apply_date, $start_date, $status_change_date, $approved_retirement_date, $effective_retirement_date, $entrance_fee, $entrance_fee_date, $bank_id, $bank_acct_no, $payment_type, $staffno_payer, $va_account;
 
     public function mount()
     {
@@ -34,9 +34,6 @@ class Overview extends Component
         $this->effective_retirement_date = $membershipInfo->effective_retirement_date;
         $this->entrance_fee = $membershipInfo->entrance_fee;
         $this->entrance_fee_date = $membershipInfo->entrance_fee_date;
-        $this->introducer_name = $membershipInfo->introducer_name;
-        $this->introducer_mbrid = $membershipInfo->introducer_mbrid;
-        $this->introducer_icno = $membershipInfo->introducer_icno;
         $this->bank_id = $bank_name->description ?? '';
         $this->bank_acct_no = $customerInfo->bank_acct_no;
         $this->payment_type = $paymentType->description ?? '';

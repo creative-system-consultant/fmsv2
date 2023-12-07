@@ -56,7 +56,7 @@ class CifCustomer
                 'CIF.Customers.bank_id',
                 'CIF.Customers.bank_acct_no',
                 'FMS.MEMBERSHIP.mbr_no',
-                'FMS.MEMBERSHIP.staff_no',
+                // 'FMS.MEMBERSHIP.staff_no',
                 'FMS.MEMBERSHIP.total_contribution',
                 'FMS.MEMBERSHIP.total_share',
                 'FMS.MISC_ACCOUNT.misc_amt',

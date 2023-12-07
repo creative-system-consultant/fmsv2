@@ -17,9 +17,6 @@
                     <x-input label="ID" placeholder="" wire:model="id" :disabled="true" />
                 </div>
                 <div>
-                    <x-input label="UUID" placeholder="" wire:model="uuid" :disabled="true" />
-                </div>
-                <div>
                     <x-input label="Ref No" placeholder="" wire:model="ref_no" :disabled="true" />
                 </div>
                 <div>
@@ -101,9 +98,6 @@
                     <x-input label="Updated At" placeholder="" wire:model="updated_at" :disabled="true" />
                 </div>
                 <div>
-                    <x-input label="Deleted At" placeholder="" wire:model="deleted_at" :disabled="true" />
-                </div>
-                <div>
                     <x-input label="Approved Retirement Date" placeholder="" wire:model="approved_retirement_date" :disabled="true" />
                 </div>
                 <div>
@@ -119,7 +113,7 @@
                     <x-input label="Entrance Fee Date" placeholder="" wire:model="entrance_fee_date" :disabled="true" />
                 </div>
                 <div>
-                    <x-input label="No of Withdrawal" placeholder="" wire:model="no_of_withdrawal" :disabled="true" />
+                    <x-input label="No of Contribution Withdrawal" placeholder="" wire:model="no_of_withdrawal" :disabled="true" />
                 </div>
                 <div class="hidden">
                     <x-input label="Source" placeholder="" wire:model="source" :disabled="true" />
@@ -132,12 +126,6 @@
                 </div>
                 <div>
                     <x-input label="VA Account" placeholder="" wire:model="va_account" :disabled="true" />
-                </div>
-                <div>
-                    <x-input label="Year Tabung Khirat" placeholder="" wire:model="year_tabung_khirat" :disabled="true" />
-                </div>
-                <div>
-                    <x-input label="Amount Tabung Khirat" placeholder="" wire:model="amt_tabung_khirat" :disabled="true" />
                 </div>
                 <div>
                     <x-input label="Payment Type" placeholder="" wire:model="payment_type" :disabled="true" />

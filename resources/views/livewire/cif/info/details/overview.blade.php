@@ -35,12 +35,6 @@
 
                 <x-input label="Entrance Fee Date" placeholder="" wire:model="entrance_fee_date" :disabled="true" />
 
-                <x-input label="Introducer Name" placeholder="" wire:model="introducer_name" :disabled="true" />
-
-                <x-input label="Introducer MBRID" placeholder="" wire:model="introducer_mbrid" :disabled="true" />
-
-                <x-input label="Introducer IC No" placeholder="" wire:model="introducer_icno" :disabled="true" />
-
                 <x-input label="Bank ID" placeholder="" wire:model="bank_id" :disabled="true" />
 
                 <x-input label="Bank Acct No" placeholder="" wire:model="bank_acct_no" :disabled="true" />
