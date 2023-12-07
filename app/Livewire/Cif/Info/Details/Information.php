@@ -42,8 +42,8 @@ class Information extends Component
         $this->race_id = $race->description ?? '';
         $this->bumi = (($customerInfo->race_id != 6 || $customerInfo->race_id != 9 || $customerInfo->race_id != 14) ? 'Yes' : 'No');
         $this->language_id = $language->description;
-        $this->marital_id = $marital->description;
-        $this->country_id = $country->description;
+        $this->marital_id = $marital->description ?? '';
+        $this->country_id = $country->description ?? '';
         $this->monthly_contribution = $membershipInfo->monthly_contribution;
         $this->year_tabung_khirat = $membershipInfo->year_tabung_khirat;
         $this->amt_tabung_khirat = $membershipInfo->amt_tabung_khirat;

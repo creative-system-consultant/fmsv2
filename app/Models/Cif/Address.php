@@ -18,7 +18,7 @@ class Address extends Model
 
     public function state()
     {
-        return $this->belongsTo(RefState::class, 'def_state_id', 'id');
+        return $this->belongsTo(RefState::class, 'state_id', 'code');
     }
 
     public function country()

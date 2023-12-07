@@ -11,9 +11,9 @@ class MemDetails extends Component
     public $client_id, $id, $uuid, $ref_no, $apply_date, $start_date, $end_date, $total_share, $monthly_share, $last_purchase_amount,
         $last_purchase_date, $last_selling_amount, $last_selling_date, $total_contribution, $monthly_contribution, $last_payment_amount,
         $last_payment_date, $last_withdraw_amount, $last_withdraw_date, $total_withdraw_amount, $staff_no, $status_id, $status_change_date,
-        $type_id, $data_status, $created_by, $updated_by, $deleted_by, $created_at, $updated_at, $deleted_at, $approved_retirement_date,
+        $type_id, $data_status, $created_by, $updated_by, $deleted_by, $created_at, $updated_at, $approved_retirement_date,
         $effective_retirement_date, $retirement_flag, $entrance_fee, $entrance_fee_date, $introducer_name, $introducer_mbrid, $introducer_icno,
-        $introducer_flag, $no_of_withdrawal, $source, $tkk_amount, $tkk_last_pay_dt, $va_account, $year_tabung_khirat, $amt_tabung_khirat,
+        $introducer_flag, $no_of_withdrawal, $source, $tkk_amount, $tkk_last_pay_dt, $va_account,
         $payment_type, $staffno_payer, $withdraw_share_pv, $withdraw_con_pv, $kebajikan_pv, $khairat_pv, $closed_mbr_pv;
 
     public $introducers;
@@ -32,7 +32,6 @@ class MemDetails extends Component
 
         $this->client_id = $CustomerInfo->client_id ?? "null";
         $this->id = $CustomerInfo->id ?? "null";
-        $this->uuid = $CustomerInfo->uuid ?? "null";
         $this->ref_no = $MembershipInfo->mbr_no ?? "null";
         $this->apply_date = $MembershipInfo->apply_date ?? "null";
         $this->start_date = $MembershipInfo->start_date ?? "null";
@@ -60,7 +59,6 @@ class MemDetails extends Component
         $this->deleted_by = $MembershipInfo->deleted_by ?? "null";
         $this->created_at = $MembershipInfo->created_at ?? "null";
         $this->updated_at = $MembershipInfo->updated_at ?? "null";
-        $this->deleted_at = $MembershipInfo->deleted_at ?? "null";
         $this->approved_retirement_date = $MembershipInfo->approved_retirement_date ?? "null";
         $this->effective_retirement_date = $MembershipInfo->effective_retirement_date ?? "null";
         $this->retirement_flag = $MembershipInfo->retirement_flag ?? "null";
@@ -71,8 +69,6 @@ class MemDetails extends Component
         $this->tkk_amount = $MembershipInfo->tkk_amount ?? "null";
         $this->tkk_last_pay_dt = $MembershipInfo->tkk_last_pay_dt ?? "null";
         $this->va_account = $MembershipInfo->va_account ?? "null";
-        $this->year_tabung_khirat = $MembershipInfo->year_tabung_khirat ?? "null";
-        $this->amt_tabung_khirat = $MembershipInfo->amt_tabung_khirat ?? "null";
         $this->payment_type = $MembershipInfo->payment_type ?? "null";
         $this->staffno_payer = $MembershipInfo->staffno_payer ?? "null";
         $this->withdraw_share_pv = $MembershipInfo->withdraw_share_pv ?? "null";

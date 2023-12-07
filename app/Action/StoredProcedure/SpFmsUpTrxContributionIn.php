@@ -20,7 +20,7 @@ class SpFmsUpTrxContributionIn
     public static function handle($data)
     {
         // Define the name of the stored procedure.
-        $sp = 'up_trx_contribution_in';
+        $sp = 'fms.up_trx_contribution_in';
 
         // Construct the SQL statement to execute the stored procedure with provided parameters.
         $sql = "SET NOCOUNT ON; exec " . $sp . "  :clientId, :mbrNo, :txnAmt, :txnDate, :docNo, :txnCode, :remarks, :bankMember, :userId, :chequeDate, :bankClient";
