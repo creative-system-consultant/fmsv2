@@ -319,8 +319,11 @@ class CommonPage extends Component
         $this->bankMember = $customer['bank_id'];
         $this->mbrNo = (string) $customer['mbr_no'];
 
-        if($this->module == 'withdrawShare')
-        {
+        if($this->module == 'earlySettlementPayment') {
+            $this->accId = $customer['id'];
+            $this->idMsg = mt_rand(100000000, 999999999);
+
+        } elseif($this->module == 'withdrawShare') {
             $this->totalShareValid = $customer['total_share'] - $this->minShare;
             $this->txnAmt = $this->totalShareValid;
             $this->saveButton = $this->bankMember && $customer['bank_acct_no'];
@@ -503,7 +506,9 @@ class CommonPage extends Component
                 'bankMember' => $this->bankMember,
                 'userId' => auth()->id(),
                 'chequeDate' => $this->chequeDate,
-                'bankClient' => $this->bankClient
+                'bankClient' => $this->bankClient,
+                'idRvs' => $this->accId,
+                'idMsg' => $this->idMsg
             ]);
         }
 
@@ -652,9 +657,14 @@ class CommonPage extends Component
             ]);
         }
 
-        $result
-            ? $this->dialog()->success('Success!', 'The transaction has been recorded.')
-            : $this->dialog()->error('Error!', 'Something went wrong.');
+        if ($result) {
+            $messageArray = (array)$result[0];
+            $message = $messageArray[""];
+
+            $this->dialog()->info('Info!', $message);
+        } else {
+            $this->dialog()->error('Error!', 'Something went wrong.');
+        }
 
         if ($this->module == 'financingRepayment' || $this->module == 'refundAdvance') {
             $this->dispatch('refreshComponentAccNo', accNo: $this->accNo)->to(CustomerSearch::class);
