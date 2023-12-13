@@ -40,6 +40,10 @@ return [
         'value' => 'Refund Advance',
     ],
     [
+        'permission' => 'po-dividen approval',
+        'value' => 'Dividen Approval',
+    ],
+    [
         'permission' => 'po-dividen batch widthdrawal',
         'value' => 'Dividen Batch Widthdrawal',
     ],

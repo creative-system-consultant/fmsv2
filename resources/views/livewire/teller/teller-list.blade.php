@@ -156,6 +156,8 @@
                                 searchAccNo=true
                                 searchAdvPayment=true
                             />
+                        @elseif($type_payment_out == 'Dividen Approval')
+                            <livewire:teller.dividen-approval.dividen-approval />
 
                         @elseif($type_payment_out == 'Dividen Batch Widthdrawal')
                             <livewire:teller.dividen-batch.dividen-batch />
