@@ -11,20 +11,23 @@ use DB;
 class CustomerSearch
 {
     public static function getData(
+        $clientId,
         $searchBy = null,
         $search = null
     ) {
         $query = CifCustomer::select(
-                'CIF.CUSTOMERS.uuid',
-                'CIF.CUSTOMERS.staff_no',
-                'CIF.CUSTOMERS.identity_no',
-                'FMS.MEMBERSHIP.mbr_no',
-                'CIF.CUSTOMERS.name',
-            )
+            'CIF.CUSTOMERS.uuid',
+            'CIF.CUSTOMERS.staff_no',
+            'CIF.CUSTOMERS.identity_no',
+            'FMS.MEMBERSHIP.mbr_no',
+            'CIF.CUSTOMERS.name',
+        )
             ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', 'CIF.CUSTOMERS.id')
             ->whereNotNull('FMS.MEMBERSHIP.mbr_no')
             ->where('FMS.MEMBERSHIP.status_id', '<>', 4)
-            ->where('CIF.CUSTOMERS.name', 'NOT LIKE', '%Administrator%');
+            ->where('CIF.CUSTOMERS.name', 'NOT LIKE', '%Administrator%')
+            ->where('CIF.CUSTOMERS.client_id', $clientId)
+            ->where('FMS.MEMBERSHIP.client_id', $clientId);
 
         if ($search && $searchBy) {
             $query->where($searchBy, 'like', '%' . $search . '%');
@@ -58,7 +61,7 @@ class CustomerSearch
             ->leftJoin('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_POSITIONS.account_no', 'FMS.ACCOUNT_MASTERS.account_no')
             ->whereIn('FMS.ACCOUNT_MASTERS.account_status', [1, 7, 8, 10])
             ->where('FMS.ACCOUNT_POSITIONS.bal_outstanding', '>', 0)
-            ->where('FMS.ACCOUNT_POSITIONS.disbursed_amount', '>', 0);  // delete this once live
+            ->where('FMS.ACCOUNT_POSITIONS.disbursed_amount', '>', 0); // delete this once live
 
         if ($search && $searchBy) {
             $query->where($searchBy, 'like', '%' . $search . '%');
@@ -73,18 +76,18 @@ class CustomerSearch
         $search = null
     ) {
         $query = CifCustomer::select(
-                'CIF.CUSTOMERS.uuid',
-                'CIF.CUSTOMERS.name',
-                'CIF.CUSTOMERS.identity_no',
-                'CIF.CUSTOMERS.id as user_id',
-                'FMS.MEMBERSHIP.mbr_no',
-                'FMS.MEMBERSHIP.last_purchase_amount',
-                'FMS.ACCOUNT_MASTERS.account_no',
-                'FMS.ACCOUNT_MASTERS.instal_amount',
-                'FMS.ACCOUNT_MASTERS.approved_limit',
-                'FMS.ACCOUNT_POSITIONS.bal_outstanding',
-                DB::raw('product = FMS.uf_get_product(' . $clientId . ', FMS.ACCOUNT_MASTERS.product_id)')
-            )
+            'CIF.CUSTOMERS.uuid',
+            'CIF.CUSTOMERS.name',
+            'CIF.CUSTOMERS.identity_no',
+            'CIF.CUSTOMERS.id as user_id',
+            'FMS.MEMBERSHIP.mbr_no',
+            'FMS.MEMBERSHIP.last_purchase_amount',
+            'FMS.ACCOUNT_MASTERS.account_no',
+            'FMS.ACCOUNT_MASTERS.instal_amount',
+            'FMS.ACCOUNT_MASTERS.approved_limit',
+            'FMS.ACCOUNT_POSITIONS.bal_outstanding',
+            DB::raw('product = FMS.uf_get_product(' . $clientId . ', FMS.ACCOUNT_MASTERS.product_id)')
+        )
             ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', 'CIF.CUSTOMERS.id')
             ->join('FMS.ACCOUNT_MASTERS', 'FMS.ACCOUNT_MASTERS.mbr_no', 'FMS.MEMBERSHIP.mbr_no')
             ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_POSITIONS.account_no', 'FMS.ACCOUNT_MASTERS.account_no')
@@ -117,13 +120,13 @@ class CustomerSearch
             'FMS.THIRDPARTY_LIST.status_effective_dt',
             'FMS.THIRDPARTY_LIST.remarks',
         )
-        ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', 'FMS.THIRDPARTY_LIST.mbr_no')
-        ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', 'FMS.MEMBERSHIP.cif_id')
-        ->join('REF.THIRDPARTY', 'REF.THIRDPARTY.id', 'FMS.THIRDPARTY_LIST.institution_code')
-        ->join('FMS.MISC_ACCOUNT', 'FMS.MISC_ACCOUNT.mbr_no', 'FMS.THIRDPARTY_LIST.mbr_no')
-        ->where('REF.THIRDPARTY.client_id', $clientId)
-        ->where('flag', NULL)
-        ->where('status', '<>', '2');
+            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', 'FMS.THIRDPARTY_LIST.mbr_no')
+            ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', 'FMS.MEMBERSHIP.cif_id')
+            ->join('REF.THIRDPARTY', 'REF.THIRDPARTY.id', 'FMS.THIRDPARTY_LIST.institution_code')
+            ->join('FMS.MISC_ACCOUNT', 'FMS.MISC_ACCOUNT.mbr_no', 'FMS.THIRDPARTY_LIST.mbr_no')
+            ->where('REF.THIRDPARTY.client_id', $clientId)
+            ->where('flag', null)
+            ->where('status', '<>', '2');
 
         if ($search && $searchBy) {
             $query->where($searchBy, 'like', '%' . $search . '%');
@@ -145,10 +148,10 @@ class CustomerSearch
             'FMS.THIRDPARTY_LIST.mode',
             'FMS.THIRDPARTY_LIST.institution_code'
         )
-        ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', 'FMS.THIRDPARTY_LIST.mbr_no')
-        ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', 'FMS.MEMBERSHIP.cif_id')
-        ->join('REF.THIRDPARTY', 'REF.THIRDPARTY.id', 'FMS.THIRDPARTY_LIST.institution_code')
-        ->where('FMS.THIRDPARTY_LIST.id', $id);
+            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', 'FMS.THIRDPARTY_LIST.mbr_no')
+            ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', 'FMS.MEMBERSHIP.cif_id')
+            ->join('REF.THIRDPARTY', 'REF.THIRDPARTY.id', 'FMS.THIRDPARTY_LIST.institution_code')
+            ->where('FMS.THIRDPARTY_LIST.id', $id);
 
         return $query->first();
     }
@@ -158,12 +161,12 @@ class CustomerSearch
         $search = null
     ) {
         $query = CifCustomer::select(
-                'CIF.CUSTOMERS.uuid',
-                'CIF.CUSTOMERS.name',
-                'FMS.MEMBERSHIP.mbr_no',
-                'FMS.MEMBERSHIP.total_share',
-                'FMS.MEMBERSHIP.last_payment_date',
-            )
+            'CIF.CUSTOMERS.uuid',
+            'CIF.CUSTOMERS.name',
+            'FMS.MEMBERSHIP.mbr_no',
+            'FMS.MEMBERSHIP.total_share',
+            'FMS.MEMBERSHIP.last_payment_date',
+        )
             ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', 'CIF.CUSTOMERS.id')
             ->where('FMS.MEMBERSHIP.total_share', '>', 500);
 
@@ -177,8 +180,7 @@ class CustomerSearch
     public static function getAllCloseMembership(
         $searchBy = null,
         $search = null
-    )
-    {
+    ) {
         $query = CifCustomer::select([
             'CIF.CUSTOMERS.uuid',
             'CIF.CUSTOMERS.name',
@@ -190,10 +192,10 @@ class CustomerSearch
             DB::raw('ISNULL(FMS.MEMBERSHIP.total_share, 0) AS total_share'),
             DB::raw('ISNULL(m.advance_payment, 0) AS advance_payment'),
             DB::raw('ISNULL(FMS.MISC_ACCOUNT.misc_amt, 0) AS misc_amt'),
-            DB::raw('ISNULL(FMS.DIVIDEND_FINAL.bal_dividen, 0) AS bal_dividen')
+            DB::raw('ISNULL(FMS.DIVIDEND_FINAL.bal_dividen, 0) AS bal_dividen'),
         ])
-        ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', '=', 'CIF.CUSTOMERS.id')
-        ->leftJoin(DB::raw('(
+            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', '=', 'CIF.CUSTOMERS.id')
+            ->leftJoin(DB::raw('(
                 SELECT
                     SUM(p.advance_payment) AS advance_payment,
                     m.mbr_no,
@@ -209,15 +211,15 @@ class CustomerSearch
                     m.mbr_no,
                     m.account_no
             ) AS m'), 'm.mbr_no', '=', 'FMS.MEMBERSHIP.mbr_no')
-        ->leftJoin('FMS.MISC_ACCOUNT', 'FMS.MISC_ACCOUNT.mbr_no', '=', 'FMS.MEMBERSHIP.mbr_no')
-        ->leftJoin('FMS.DIVIDEND_FINAL', 'FMS.DIVIDEND_FINAL.mbr_no', '=', 'FMS.MEMBERSHIP.mbr_no')
-        ->where(function ($query) {
-            $query->where('FMS.MEMBERSHIP.retirement_flag', 0)
-            ->orWhereNull('FMS.MEMBERSHIP.retirement_flag');
-        })
-        ->whereNotNull('FMS.MEMBERSHIP.effective_retirement_date')
-        ->where('FMS.MEMBERSHIP.status_id', '!=', 4)
-        ->whereNotNull('m.mbr_no');
+            ->leftJoin('FMS.MISC_ACCOUNT', 'FMS.MISC_ACCOUNT.mbr_no', '=', 'FMS.MEMBERSHIP.mbr_no')
+            ->leftJoin('FMS.DIVIDEND_FINAL', 'FMS.DIVIDEND_FINAL.mbr_no', '=', 'FMS.MEMBERSHIP.mbr_no')
+            ->where(function ($query) {
+                $query->where('FMS.MEMBERSHIP.retirement_flag', 0)
+                    ->orWhereNull('FMS.MEMBERSHIP.retirement_flag');
+            })
+            ->whereNotNull('FMS.MEMBERSHIP.effective_retirement_date')
+            ->where('FMS.MEMBERSHIP.status_id', '!=', 4)
+            ->whereNotNull('m.mbr_no');
 
         if ($search && $searchBy) {
             $query->where($searchBy, 'like', '%' . $search . '%');
@@ -239,10 +241,10 @@ class CustomerSearch
             DB::raw('ISNULL(total_share, 0) AS total_share'),
             DB::raw('ISNULL(m.advance_payment, 0) AS advance_payment'),
             DB::raw('ISNULL(misc_amt, 0) AS misc_amt'),
-            DB::raw('ISNULL(bal_dividen, 0) AS bal_dividen')
+            DB::raw('ISNULL(bal_dividen, 0) AS bal_dividen'),
         ])
-        ->join('FMS.MEMBERSHIP as fm', 'fm.cif_id', '=', 'CIF.CUSTOMERS.id')
-        ->leftJoin(DB::raw('(
+            ->join('FMS.MEMBERSHIP as fm', 'fm.cif_id', '=', 'CIF.CUSTOMERS.id')
+            ->leftJoin(DB::raw('(
                 SELECT
                     SUM(p.advance_payment) AS advance_payment,
                     m.mbr_no,
@@ -258,10 +260,10 @@ class CustomerSearch
                     m.mbr_no,
                     m.account_no
             ) AS m'), 'm.mbr_no', '=', 'fm.mbr_no')
-        ->leftJoin('FMS.MISC_ACCOUNT as i', 'i.mbr_no', '=', 'fm.mbr_no')
-        ->leftJoin('FMS.DIVIDEND_FINAL as d', 'd.mbr_no', '=', 'fm.mbr_no')
-        ->where('CIF.CUSTOMERS.uuid', $uuid)
-        ->first();
+            ->leftJoin('FMS.MISC_ACCOUNT as i', 'i.mbr_no', '=', 'fm.mbr_no')
+            ->leftJoin('FMS.DIVIDEND_FINAL as d', 'd.mbr_no', '=', 'fm.mbr_no')
+            ->where('CIF.CUSTOMERS.uuid', $uuid)
+            ->first();
 
         return $query;
     }
@@ -272,11 +274,11 @@ class CustomerSearch
         $search = null
     ) {
         $query = FmsMiscAccount::select([
-                'FMS.MISC_ACCOUNT.mbr_no',
-                'CIF.CUSTOMERS.identity_no',
-                'CIF.CUSTOMERS.name',
-                'FMS.MISC_ACCOUNT.misc_amt'
-            ])
+            'FMS.MISC_ACCOUNT.mbr_no',
+            'CIF.CUSTOMERS.identity_no',
+            'CIF.CUSTOMERS.name',
+            'FMS.MISC_ACCOUNT.misc_amt',
+        ])
             ->leftJoin('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.MISC_ACCOUNT.mbr_no')
             ->leftJoin('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'FMS.MEMBERSHIP.cif_id')
             ->where('FMS.MISC_ACCOUNT.misc_amt', '>', 0);
@@ -294,19 +296,19 @@ class CustomerSearch
         $condition = true
     ) {
         $query = FmsMiscAccount::select([
-                'FMS.MISC_ACCOUNT.mbr_no',
-                'CIF.CUSTOMERS.identity_no',
-                'CIF.CUSTOMERS.name',
-                'CIF.CUSTOMERS.bank_id',
-                'CIF.CUSTOMERS.bank_acct_no',
-                'FMS.MISC_ACCOUNT.misc_amt',
-                'FMS.ACCOUNT_MASTERS.instal_amount',
-            ])
+            'FMS.MISC_ACCOUNT.mbr_no',
+            'CIF.CUSTOMERS.identity_no',
+            'CIF.CUSTOMERS.name',
+            'CIF.CUSTOMERS.bank_id',
+            'CIF.CUSTOMERS.bank_acct_no',
+            'FMS.MISC_ACCOUNT.misc_amt',
+            'FMS.ACCOUNT_MASTERS.instal_amount',
+        ])
             ->leftJoin('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.MISC_ACCOUNT.mbr_no')
             ->leftJoin('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'FMS.MEMBERSHIP.cif_id')
             ->leftJoin('FMS.ACCOUNT_MASTERS', 'FMS.ACCOUNT_MASTERS.mbr_no', '=', 'FMS.MISC_ACCOUNT.mbr_no');
 
-        if(!$condition) {
+        if (!$condition) {
             $query->where('FMS.MISC_ACCOUNT.misc_amt', '>', 0);
         }
 
@@ -324,17 +326,17 @@ class CustomerSearch
         $query = FmsAccountMaster::select([
             'FMS.ACCOUNT_MASTERS.account_no',
             'SISKOP.ACCOUNT_PRODUCTS.name as product',
-            'FMS.ACCOUNT_MASTERS.instal_amount'
+            'FMS.ACCOUNT_MASTERS.instal_amount',
         ])
-        ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_POSITIONS.account_no', '=', 'FMS.ACCOUNT_MASTERS.account_no')
-        ->join('CIF.ACCOUNT_STATUSES', 'CIF.ACCOUNT_STATUSES.id', '=', 'FMS.ACCOUNT_MASTERS.account_status')
-        ->join('SISKOP.ACCOUNT_PRODUCTS', 'SISKOP.ACCOUNT_PRODUCTS.id', '=', 'FMS.ACCOUNT_MASTERS.product_id')
-        ->whereNotNull('FMS.ACCOUNT_POSITIONS.disbursed_amount')
-        ->where('FMS.ACCOUNT_MASTERS.client_id', $clientId)
-        ->where('FMS.ACCOUNT_MASTERS.account_status', 1)
-        ->where('FMS.ACCOUNT_MASTERS.mbr_no', $mbrNo)
-        ->orderBy('FMS.ACCOUNT_MASTERS.account_no')
-        ->get();
+            ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_POSITIONS.account_no', '=', 'FMS.ACCOUNT_MASTERS.account_no')
+            ->join('CIF.ACCOUNT_STATUSES', 'CIF.ACCOUNT_STATUSES.id', '=', 'FMS.ACCOUNT_MASTERS.account_status')
+            ->join('SISKOP.ACCOUNT_PRODUCTS', 'SISKOP.ACCOUNT_PRODUCTS.id', '=', 'FMS.ACCOUNT_MASTERS.product_id')
+            ->whereNotNull('FMS.ACCOUNT_POSITIONS.disbursed_amount')
+            ->where('FMS.ACCOUNT_MASTERS.client_id', $clientId)
+            ->where('FMS.ACCOUNT_MASTERS.account_status', 1)
+            ->where('FMS.ACCOUNT_MASTERS.mbr_no', $mbrNo)
+            ->orderBy('FMS.ACCOUNT_MASTERS.account_no')
+            ->get();
 
         return $query;
     }
@@ -345,18 +347,18 @@ class CustomerSearch
         $search = null
     ) {
         $query = CifCustomer::select([
-                'CIF.CUSTOMERS.uuid',
-                'CIF.CUSTOMERS.identity_no',
-                'CIF.CUSTOMERS.name',
-                'FMS.MEMBERSHIP.mbr_no',
-                'FMS.ACCOUNT_MASTERS.account_no',
-                DB::raw('products = FMS.uf_get_product('. $clientId .', FMS.ACCOUNT_MASTERS.product_id)'),
-                'FMS.ACCOUNT_POSITIONS.disbursed_amount',
-                'FMS.ACCOUNT_POSITIONS.prin_outstanding',
-                'FMS.ACCOUNT_POSITIONS.uei_outstanding',
-                'FMS.ACCOUNT_POSITIONS.advance_payment',
-                'FMS.ACCOUNT_POSITIONS.bal_outstanding'
-            ])
+            'CIF.CUSTOMERS.uuid',
+            'CIF.CUSTOMERS.identity_no',
+            'CIF.CUSTOMERS.name',
+            'FMS.MEMBERSHIP.mbr_no',
+            'FMS.ACCOUNT_MASTERS.account_no',
+            DB::raw('products = FMS.uf_get_product(' . $clientId . ', FMS.ACCOUNT_MASTERS.product_id)'),
+            'FMS.ACCOUNT_POSITIONS.disbursed_amount',
+            'FMS.ACCOUNT_POSITIONS.prin_outstanding',
+            'FMS.ACCOUNT_POSITIONS.uei_outstanding',
+            'FMS.ACCOUNT_POSITIONS.advance_payment',
+            'FMS.ACCOUNT_POSITIONS.bal_outstanding',
+        ])
             ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', '=', 'CIF.CUSTOMERS.id')
             ->join('FMS.ACCOUNT_MASTERS', 'FMS.ACCOUNT_MASTERS.mbr_no', '=', 'FMS.MEMBERSHIP.mbr_no')
             ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_MASTERS.ACCOUNT_NO', 'FMS.ACCOUNT_POSITIONS.ACCOUNT_NO')
@@ -383,16 +385,16 @@ class CustomerSearch
             'FMS.ACCOUNT_MASTERS.account_no',
             'FMS.ACCOUNT_POSITIONS.advance_payment',
         ])
-        ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', '=', 'CIF.CUSTOMERS.id')
-        ->join('FMS.ACCOUNT_MASTERS', 'FMS.ACCOUNT_MASTERS.mbr_no', '=', 'FMS.MEMBERSHIP.mbr_no')
-        ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_MASTERS.ACCOUNT_NO', 'FMS.ACCOUNT_POSITIONS.ACCOUNT_NO')
-        ->where(function ($query) {
-            $query->where('FMS.ACCOUNT_POSITIONS.disbursed_amount', '>', 0)
-                ->orWhereNull('FMS.ACCOUNT_POSITIONS.disbursed_amount');
-        })
-        ->where('FMS.ACCOUNT_POSITIONS.advance_payment', '>', 0)
-        ->where('FMS.ACCOUNT_MASTERS.account_no', $accNo)
-        ->first();
+            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', '=', 'CIF.CUSTOMERS.id')
+            ->join('FMS.ACCOUNT_MASTERS', 'FMS.ACCOUNT_MASTERS.mbr_no', '=', 'FMS.MEMBERSHIP.mbr_no')
+            ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_MASTERS.ACCOUNT_NO', 'FMS.ACCOUNT_POSITIONS.ACCOUNT_NO')
+            ->where(function ($query) {
+                $query->where('FMS.ACCOUNT_POSITIONS.disbursed_amount', '>', 0)
+                    ->orWhereNull('FMS.ACCOUNT_POSITIONS.disbursed_amount');
+            })
+            ->where('FMS.ACCOUNT_POSITIONS.advance_payment', '>', 0)
+            ->where('FMS.ACCOUNT_MASTERS.account_no', $accNo)
+            ->first();
 
         return $query;
     }

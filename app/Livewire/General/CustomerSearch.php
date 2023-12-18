@@ -17,23 +17,23 @@ class CustomerSearch extends Component
 
     public $complete = false;
     public $name;
-    public $searchMbrNo, $searchMbrNoValue;
-    public $searchStaffNo, $searchStaffNoValue;
-    public $searchAccNo, $searchAccNoValue;
-    public $searchTotContribution, $searchTotContributionAmt;
-    public $searchTotShare, $searchTotShareAmt;
-    public $searchMthInstallAmt, $searchMthInstallAmtValue;
-    public $searchInstallAmtArear, $searchInstallAmtArearAmt;
-    public $searchBalOutstanding, $searchBalOutstandingAmt;
-    public $searchRebate, $searchRebateAmt;
-    public $searchSettleProfit, $searchSettleProfitAmt;
-    public $searchMiscAmt, $searchMiscAmtValue;
-    public $searchFee, $searchFeeValue = 10;
-    public $searchBalDividen, $searchBalDividenValue;
-    public $searchAdvPayment, $searchAdvPaymentValue;
-    public $searchInstitute, $searchInstituteValue;
-    public $searchTrxAmt, $searchTrxAmtValue;
-    public $searchModeId, $searchModeIdValue;
+    public $searchMbrNo = false, $searchMbrNoValue;
+    public $searchStaffNo = false, $searchStaffNoValue;
+    public $searchAccNo = false, $searchAccNoValue;
+    public $searchTotContribution = false, $searchTotContributionAmt;
+    public $searchTotShare = false, $searchTotShareAmt;
+    public $searchMthInstallAmt = false, $searchMthInstallAmtValue;
+    public $searchInstallAmtArear = false, $searchInstallAmtArearAmt;
+    public $searchBalOutstanding = false, $searchBalOutstandingAmt;
+    public $searchRebate = false, $searchRebateAmt;
+    public $searchSettleProfit = false, $searchSettleProfitAmt;
+    public $searchMiscAmt = false, $searchMiscAmtValue;
+    public $searchFee = false, $searchFeeValue = 10;
+    public $searchBalDividen = false, $searchBalDividenValue;
+    public $searchAdvPayment = false, $searchAdvPaymentValue;
+    public $searchInstitute = false, $searchInstituteValue;
+    public $searchTrxAmt = false, $searchTrxAmtValue;
+    public $searchModeId = false, $searchModeIdValue;
 
     public $customQuery = '';
 
@@ -56,7 +56,7 @@ class CustomerSearch extends Component
                 "ACCOUNT NO",
                 "APPROVED AMOUNT",
                 "FINANCING",
-                "ACTION"
+                "ACTION",
             ];
         } elseif ($this->customQuery == 'thirdParty') {
             $this->headers = [
@@ -69,7 +69,7 @@ class CustomerSearch extends Component
                 "STATUS",
                 "EFFECTIVE DATE",
                 "REMARKS",
-                "ACTION"
+                "ACTION",
             ];
         } elseif ($this->customQuery == 'withdrawShare') {
             $this->headers = [
@@ -77,14 +77,14 @@ class CustomerSearch extends Component
                 "NAME",
                 "TOTAL SHARE",
                 "LAST PAYMENT DATE",
-                "ACTION"
+                "ACTION",
             ];
         } elseif ($this->customQuery == 'closeMembership') {
             $this->headers = [
                 "MEMBERSHIP NO",
                 "IDENTITY NO",
                 "NAME",
-                "ACTION"
+                "ACTION",
             ];
         } elseif ($this->customQuery == 'miscellaneousOut') {
             $this->headers = [
@@ -92,7 +92,7 @@ class CustomerSearch extends Component
                 "IDENTITY NO",
                 "NAME",
                 "MISCELLANEOUS AMOUNT",
-                "ACTION"
+                "ACTION",
             ];
         } elseif ($this->customQuery == 'refundAdvance') {
             $this->headers = [
@@ -106,7 +106,7 @@ class CustomerSearch extends Component
                 "UEI OUTSTANDING",
                 "ADV AMOUNT",
                 "BAL OUTS",
-                "ACTION"
+                "ACTION",
             ];
         } else {
             $this->headers = [
@@ -114,7 +114,7 @@ class CustomerSearch extends Component
                 "IDENTITY NO.",
                 "MEMBERSHIP NO",
                 "NAME",
-                "ACTION"
+                "ACTION",
             ];
         }
     }
@@ -135,10 +135,10 @@ class CustomerSearch extends Component
 
     private function getData($uuid)
     {
-        if($this->customQuery == 'closeMembership') {
+        if ($this->customQuery == 'closeMembership') {
             $customer = GeneralCustomerSearch::getCloseMembership($uuid);
         } else {
-            $customer = CifCustomer::getCustomerSearchData($uuid);
+            $customer = CifCustomer::getCustomerSearchData($this->clientId, $uuid);
         }
 
         $this->name = $customer->name;
@@ -201,7 +201,7 @@ class CustomerSearch extends Component
 
     private function getIdData($id)
     {
-        if($this->customQuery == 'thirdParty') {
+        if ($this->customQuery == 'thirdParty') {
             $customer = GeneralCustomerSearch::getThirdPartyIdData($id);
         }
 
@@ -216,7 +216,7 @@ class CustomerSearch extends Component
         }
 
         if ($this->searchTrxAmt) {
-            $this->searchTrxAmtValue = number_format($customer-> transaction_amt, 2) ?? 0;
+            $this->searchTrxAmtValue = number_format($customer->transaction_amt, 2) ?? 0;
         }
 
         if ($this->searchModeId) {
@@ -237,7 +237,7 @@ class CustomerSearch extends Component
 
     private function getMbrData($mbrNo)
     {
-        if($this->customQuery == 'miscellaneousOut') {
+        if ($this->customQuery == 'miscellaneousOut') {
             $customer = GeneralCustomerSearch::getMiscellaneousOutMbrData($this->clientId, $mbrNo, $this->complete);
             \Log::info($customer);
         }
@@ -356,7 +356,7 @@ class CustomerSearch extends Component
                 $customers = GeneralCustomerSearch::getAllRefundAdvance($this->clientId, $this->searchBy, $this->search);
                 break;
             default:
-                $customers = GeneralCustomerSearch::getData($this->searchBy, $this->search);
+                $customers = GeneralCustomerSearch::getData($this->clientId, $this->searchBy, $this->search);
         }
 
         return view('livewire.general.customer-search', ['customers' => $customers]);

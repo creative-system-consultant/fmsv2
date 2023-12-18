@@ -1,15 +1,12 @@
 <div>
     <div class="grid grid-cols-1">
         <div class="flex items-center space-x-2">
-            <x-label label="Search :"/>
+            <x-label label="Search :" />
             <div class="w-64">
-                <x-input 
-                    wire:model="search"
-                    placeholder="sellerid/buyer id"
-                />
+                <x-input wire:model="search" placeholder="sellerid/buyer id" />
             </div>
         </div>
-        
+
         <div style="margin-top: 30px;">
             <x-table.table>
                 <x-slot name="thead">
@@ -21,50 +18,40 @@
                     <x-table.table-header class="text-left" value="TRANSFER AMOUNT" sort="" />
                     <x-table.table-header class="text-left" value="APPROVE DATE" sort="" />
                     <x-table.table-header class="text-left" value="ACTION" sort="" />
-                    <x-table.table-header class="text-left" value="ACTION" sort="" />
                 </x-slot>
                 <x-slot name="tbody">
+                    @forelse($datas as $item)
                     <tr>
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            1
+                            <p>{{$item->id}}</p>
                         </x-table.table-body>
-            
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            2
+                            <p>{{$item->seller_no}}</p>
                         </x-table.table-body>
-
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            3
+                            <p>{{$item->seller->name}}</p>
                         </x-table.table-body>
-                    
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            4
+                            <p>{{ $item->cust_id }}</p>
                         </x-table.table-body>
-
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            5
+                            <p>{{$item->buyer->name}}</p>
                         </x-table.table-body>
-
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            6
+                            <p>{{ number_format($item->share_approved, 2) }}</p>
                         </x-table.table-body>
-
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            7
+                            <p>{{ date('d-m-Y', strtotime($item->approval_at)) }}</p>
                         </x-table.table-body>
-
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            8
-                        </x-table.table-body>
-            
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <x-button sm  icon="switch-horizontal" primary label="Transfer"/>
+                            <x-button sm icon="switch-horizontal" primary label="Transfer" />
                         </x-table.table-body>
                     </tr>
+                    @empty
+                    @endforelse
                 </x-slot>
             </x-table.table>
         </div>
-        
+
     </div>
 </div>
-

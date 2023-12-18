@@ -2,13 +2,21 @@
 
 namespace App\Livewire\Teller\TransferShare;
 
-use Livewire\Attributes\Layout;
+use App\Models\Siskop\SiskopTransferShare;
 use Livewire\Component;
 
 class TransferShare extends Component
 {
+    public $searchTerm = '';
+
     public function render()
     {
-        return view('livewire.teller.transfer-share.transfer-share')->extends('layouts.main');
+        $datas = SiskopTransferShare::where('direction', 'exchange')
+            ->where('flag', 0)
+            ->get();
+
+        return view('livewire.teller.transfer-share.transfer-share', [
+            'datas' => $datas,
+        ])->extends('layouts.main');
     }
 }

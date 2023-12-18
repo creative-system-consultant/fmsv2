@@ -41,16 +41,17 @@ class CifCustomer
         return ModelCifCustomer::whereUuid($uuid)->first();
     }
 
-    public static function getCustomerSearchData($uuid)
+    public static function getCustomerSearchData($clientId, $uuid)
     {
         return ModelCifCustomer::join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', '=', 'CIF.Customers.id')
             ->leftJoin('FMS.MISC_ACCOUNT', 'FMS.MISC_ACCOUNT.mbr_no', '=', 'FMS.MEMBERSHIP.mbr_no')
             ->leftJoin('FMS.ACCOUNT_MASTERS', 'FMS.ACCOUNT_MASTERS.mbr_no', '=', 'FMS.MEMBERSHIP.mbr_no')
             ->leftJoin('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_POSITIONS.account_no', '=', 'FMS.ACCOUNT_MASTERS.account_no')
             ->where('CIF.Customers.uuid', $uuid)
+            ->where('CIF.Customers.client_id', $clientId)
             ->select(
                 'CIF.Customers.uuid',
-                'CIF.Customers.id',
+                'FMS.MEMBERSHIP.id',
                 'CIF.Customers.name',
                 'CIF.Customers.identity_no',
                 'CIF.Customers.bank_id',
