@@ -72,13 +72,11 @@
 
                     <div class="mt-5">
                         @if($type_payment_out == 'Withdraw Contribution')
-                        <livewire:teller.withdraw-contribution.withdraw-contribution />
-
+                            <livewire:teller.withdraw-contribution.withdraw-contribution />
                         @elseif($type_payment_out == 'Withdraw Share')
-                        <livewire:general.teller.common-page module='withdrawShare' searchMbrNo=true searchTotShare=true />
-
+                            <livewire:teller.withdraw-share />
                         @elseif($type_payment_out == 'Close Membership')
-                        <livewire:general.teller.common-page module='closeMembership' searchMbrNo=true searchTotShare=true searchTotContribution=true searchFee=true searchMiscAmt=true searchBalDividen=true searchAdvPayment=true />
+                            <livewire:general.teller.common-page module='closeMembership' searchMbrNo=true searchTotShare=true searchTotContribution=true searchFee=true searchMiscAmt=true searchBalDividen=true searchAdvPayment=true />
 
                         @elseif($type_payment_out == 'Payment to Members')
                         <livewire:teller.payment-member.payment-member />

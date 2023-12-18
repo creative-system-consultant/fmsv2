@@ -24,7 +24,6 @@ class PaymentContribution extends Component
     public $refBank;
     public $refBankIbt;
     public $minContribution;
-    public $idMsg;
     public $categoryList = [];
     public $selectedType;
     public $txnCode;
@@ -33,7 +32,6 @@ class PaymentContribution extends Component
     // fetch from customer search component
     public $customer;
     public $mbrNo;
-    public $accId;
 
     // input
     public $chequeDate;
@@ -53,7 +51,6 @@ class PaymentContribution extends Component
         $this->refBankIbt = BankIbtService::getAllRefBankIbts();
         $this->docNo = "N/A";
         $this->minContribution = (float) FmsGlobalParm::getAllFmsGlobalParm()->MIN_CONTRIBUTION;
-        $this->idMsg = mt_rand(100000000, 999999999);
 
         $this->categoryList = [
             ['name' => 'cheque', 'code' => '4020', 'icon' => 'credit-card'],
@@ -79,7 +76,6 @@ class PaymentContribution extends Component
         $this->customer = $customer;
         $this->bankMember = $customer['bank_id'];
         $this->mbrNo = (string) $customer['mbr_no'];
-        $this->accId = $customer['id'];
 
         $this->saveButton = true;
         // $this->dispatch('endProcessing');
@@ -113,8 +109,6 @@ class PaymentContribution extends Component
             'userId' => auth()->id(),
             'chequeDate' => $this->chequeDate,
             'bankClient' => $this->bankClient,
-            'idRvs' => $this->accId,
-            'idMsg' => $this->idMsg,
         ]);
 
         if (!$result) {

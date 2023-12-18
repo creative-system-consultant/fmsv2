@@ -2,21 +2,23 @@
 
 namespace App\Livewire\Teller;
 
+use App\Action\StoredProcedure\SpFmsGenerateMbrWithdrawShare;
 use App\Action\StoredProcedure\SpFmsUpTrxContributionIn;
 use App\Livewire\General\CustomerSearch;
+use App\Livewire\Teller\General\MembersBankInfo;
 use App\Services\General\ActgPeriod;
 use App\Services\General\PopupService;
 use App\Services\Model\BankIbtService;
 use App\Services\Model\BankService;
 use App\Services\Model\FmsGlobalParm;
-use App\Traits\PurchaseShareRulesTrait;
+use App\Traits\WithdrawShareRulesTrait;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 
-class PurchaseShare extends Component
+class WithdrawShare extends Component
 {
-    use Actions, PurchaseShareRulesTrait;
+    use Actions, WithdrawShareRulesTrait;
 
     public $clientId;
     public $startDate;
@@ -24,6 +26,7 @@ class PurchaseShare extends Component
     public $refBank;
     public $refBankIbt;
     public $minShare;
+    public $idMsg;
     public $categoryList = [];
     public $selectedType;
     public $txnCode;
@@ -32,6 +35,9 @@ class PurchaseShare extends Component
     // fetch from customer search component
     public $customer;
     public $mbrNo;
+    public $accId;
+    public $totalShareValid;
+    public $ic;
 
     // input
     public $chequeDate;
@@ -44,30 +50,13 @@ class PurchaseShare extends Component
 
     public function mount()
     {
-        $this->clientId = auth()->user()->client_id;
+        $this->clientId = (int) auth()->user()->client_id;
         $this->startDate = ActgPeriod::determinePeriodRange()['startDate'];
         $this->endDate = ActgPeriod::determinePeriodRange()['endDate'];
         $this->refBank = BankService::getAllRefBanks();
         $this->refBankIbt = BankIbtService::getAllRefBankIbts();
-
-        $this->docNo = "N/A";
         $this->minShare = (float) FmsGlobalParm::getAllFmsGlobalParm()->MIN_SHARE;
-
-        $this->categoryList = [
-            ['name' => 'cheque', 'code' => '3020', 'icon' => 'credit-card'],
-            ['name' => 'cash/cdm', 'code' => '3030', 'icon' => 'cash'],
-            ['name' => 'ibt/si', 'code' => '3040', 'icon' => 'cash'],
-        ];
-
-        $this->setDefaultCategory();
-    }
-
-    private function setDefaultCategory()
-    {
-        if (!empty($this->categoryList)) {
-            $this->selectedType = $this->categoryList[0]['name'];
-            $this->txnCode = $this->categoryList[0]['code'];
-        }
+        $this->txnCode = '3104';
     }
 
     #[On('customerSelected')]
@@ -77,22 +66,28 @@ class PurchaseShare extends Component
         $this->customer = $customer;
         $this->bankMember = $customer['bank_id'];
         $this->mbrNo = (string) $customer['mbr_no'];
+        $this->totalShareValid = $customer['total_share'] - $this->minShare;
+        $this->txnAmt = $this->totalShareValid;
+        $this->saveButton = $this->bankMember && $customer['bank_acct_no'];
 
-        $this->saveButton = true;
+        $this->ic = $customer['identity_no'];
+        $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
+        $this->docNo = 'N/A';
+        // $this->docNo = SpFmsGenerateMbrWithdrawShare::handle($this->clientId, $this->mbrNo);
+
+        // $this->saveButton = true;
         // $this->dispatch('endProcessing');
     }
 
-    public function selectType($name, $code)
+    #[On('updatePayButton')]
+    public function updatePayButton($data)
     {
-        $this->selectedType = $name;
-        $this->txnCode = $code;
-        // $this->reset();  need to reset input field when change type
-        $this->resetValidation();
+        $this->saveButton = $data['bankMember'] && $data['memberBankAccNo'];
     }
 
     public function saveTransaction()
     {
-        $this->validate($this->getPurchaseShareRules());
+        $this->validate($this->getWithdrawShareRules());
         PopupService::confirm($this, 'confirmSaveTransaction', 'Save Transaction?', 'Are you sure to proceed with the transaction?');
     }
 
@@ -129,6 +124,6 @@ class PurchaseShare extends Component
 
     public function render()
     {
-        return view('livewire.teller.purchase-share');
+        return view('livewire.teller.withdraw-share');
     }
 }

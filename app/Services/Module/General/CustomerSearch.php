@@ -157,6 +157,7 @@ class CustomerSearch
     }
 
     public static function getWithdrawShareData(
+        $clientId,
         $searchBy = null,
         $search = null
     ) {
@@ -168,7 +169,9 @@ class CustomerSearch
             'FMS.MEMBERSHIP.last_payment_date',
         )
             ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', 'CIF.CUSTOMERS.id')
-            ->where('FMS.MEMBERSHIP.total_share', '>', 500);
+            ->where('FMS.MEMBERSHIP.total_share', '>', 500)
+            ->where('CIF.CUSTOMERS.client_id', $clientId)
+            ->where('FMS.MEMBERSHIP.client_id', $clientId);
 
         if ($search && $searchBy) {
             $query->where($searchBy, 'like', '%' . $search . '%');

@@ -344,7 +344,7 @@ class CustomerSearch extends Component
                 $customers = GeneralCustomerSearch::getThirdPartyData($this->clientId, $this->searchBy, $this->search);
                 break;
             case 'withdrawShare':
-                $customers = GeneralCustomerSearch::getWithdrawShareData($this->searchBy, $this->search);
+                $customers = GeneralCustomerSearch::getWithdrawShareData($this->clientId, $this->searchBy, $this->search);
                 break;
             case 'closeMembership':
                 $customers = GeneralCustomerSearch::getAllCloseMembership($this->searchBy, $this->search);
