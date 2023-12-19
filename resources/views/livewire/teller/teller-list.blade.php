@@ -32,9 +32,9 @@
 
                     <div class="mt-5">
                         @if($type_payment_in == 'Payment Contribution')
-                        <livewire:teller.payment-contribution />
+                            <livewire:teller.payment-contribution />
                         @elseif($type_payment_in == 'Purchase Share')
-                        <livewire:teller.purchase-share />
+                            <livewire:teller.purchase-share />
                         @elseif($type_payment_in == 'Financing Repayment')
                         <livewire:general.teller.common-page module='financingRepayment' searchMthInstallAmt=true searchInstallAmtArear=true searchTotContribution=true />
                         @elseif($type_payment_in == 'Early Settlement Payment')
@@ -44,8 +44,7 @@
                         <livewire:general.teller.common-page module='thirdParty' searchMbrNo=true searchInstitute=true searchTrxAmt=true searchModeId=true />
 
                         @elseif($type_payment_in == 'Miscellaneous in')
-                        <livewire:general.teller.common-page module='miscellaneousIn' searchMbrNo=true searchStaffNo=true searchMiscAmt=true />
-
+                            <livewire:teller.misc-in />
                         @elseif($type_payment_in == 'Autopay')
                         <livewire:teller.autopay.autopay />
 
@@ -88,8 +87,7 @@
                         <livewire:teller.disbursement.disbursement-transaction />
 
                         @elseif($type_payment_out == 'Miscellaneous Out')
-                        <livewire:general.teller.common-page module='miscellaneousOut' searchMbrNo=true searchMiscAmt=true />
-
+                            <livewire:teller.misc-out />
                         @elseif($type_payment_out == 'Refund Advance')
                         <livewire:general.teller.common-page module='refundAdvance' searchAccNo=true searchAdvPayment=true />
                         @elseif($type_payment_out == 'Dividen Approval')

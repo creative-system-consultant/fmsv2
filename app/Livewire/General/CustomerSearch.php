@@ -18,7 +18,6 @@ class CustomerSearch extends Component
     public $complete = false;
     public $name;
     public $searchMbrNo = false, $searchMbrNoValue;
-    public $searchStaffNo = false, $searchStaffNoValue;
     public $searchAccNo = false, $searchAccNoValue;
     public $searchTotContribution = false, $searchTotContributionAmt;
     public $searchTotShare = false, $searchTotShareAmt;
@@ -147,10 +146,6 @@ class CustomerSearch extends Component
             $this->searchMbrNoValue = $customer->mbr_no;
         }
 
-        if ($this->searchStaffNo) {
-            $this->searchStaffNoValue = $customer->staff_no;
-        }
-
         if ($this->searchAccNo) {
             $this->searchAccNoValue = $customer->account_no;
         }
@@ -239,7 +234,6 @@ class CustomerSearch extends Component
     {
         if ($this->customQuery == 'miscellaneousOut') {
             $customer = GeneralCustomerSearch::getMiscellaneousOutMbrData($this->clientId, $mbrNo, $this->complete);
-            \Log::info($customer);
         }
 
         $this->name = $customer->name;

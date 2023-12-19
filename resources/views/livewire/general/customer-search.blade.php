@@ -20,16 +20,6 @@
                     </div>
                 @endif
 
-                @if($searchStaffNo)
-                    <div class="w-full md:w-64">
-                        <x-input
-                            label="Staff No"
-                            wire:model="searchStaffNoValue"
-                            disabled
-                        />
-                    </div>
-                @endif
-
                 @if($searchAccNo)
                     <div class="w-full md:w-64">
                         <x-input

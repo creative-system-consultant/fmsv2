@@ -272,7 +272,7 @@ class CustomerSearch
     }
 
     public static function getAllMiscellaneousOut(
-        $clientId = null,
+        $clientId,
         $searchBy = null,
         $search = null
     ) {
@@ -284,6 +284,9 @@ class CustomerSearch
         ])
             ->leftJoin('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.MISC_ACCOUNT.mbr_no')
             ->leftJoin('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'FMS.MEMBERSHIP.cif_id')
+            ->where('FMS.MISC_ACCOUNT.client_id', $clientId)
+            ->where('FMS.MEMBERSHIP.client_id', $clientId)
+            ->where('CIF.CUSTOMERS.client_id', $clientId)
             ->where('FMS.MISC_ACCOUNT.misc_amt', '>', 0);
 
         if ($search && $searchBy) {
@@ -316,6 +319,9 @@ class CustomerSearch
         }
 
         $query->where('FMS.MISC_ACCOUNT.client_id', $clientId)
+            ->where('CIF.CUSTOMERS.client_id', $clientId)
+            ->where('FMS.ACCOUNT_MASTERS.client_id', $clientId)
+            ->where('FMS.MEMBERSHIP.client_id', $clientId)
             ->where('FMS.MISC_ACCOUNT.mbr_no', $mbrNo);
 
         return $query->first();
@@ -336,6 +342,9 @@ class CustomerSearch
             ->join('SISKOP.ACCOUNT_PRODUCTS', 'SISKOP.ACCOUNT_PRODUCTS.id', '=', 'FMS.ACCOUNT_MASTERS.product_id')
             ->whereNotNull('FMS.ACCOUNT_POSITIONS.disbursed_amount')
             ->where('FMS.ACCOUNT_MASTERS.client_id', $clientId)
+            ->where('FMS.ACCOUNT_POSITIONS.client_id', $clientId)
+            ->where('CIF.ACCOUNT_STATUSES.client_id', $clientId)
+            ->where('SISKOP.ACCOUNT_PRODUCTS.client_id', $clientId)
             ->where('FMS.ACCOUNT_MASTERS.account_status', 1)
             ->where('FMS.ACCOUNT_MASTERS.mbr_no', $mbrNo)
             ->orderBy('FMS.ACCOUNT_MASTERS.account_no')

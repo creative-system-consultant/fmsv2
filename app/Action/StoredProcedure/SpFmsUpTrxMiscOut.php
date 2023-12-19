@@ -26,7 +26,7 @@ class SpFmsUpTrxMiscOut
         $sql = "SET NOCOUNT ON; exec " . $sp . " :clientId, :mbrNo, :txnAmt, :txnDate, :txnCode, :remarks, :docNo, :userId, :bankMember, :accNo, :instiCode, :bankClient";
 
         // Execute the statement using Laravel's database query builder and capture the result.
-        $result = DB::statement($sql, $data);
+        $result = DB::select($sql, $data);
 
         // Return the result of the statement execution.
         return $result;
