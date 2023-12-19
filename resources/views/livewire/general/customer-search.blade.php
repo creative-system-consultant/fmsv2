@@ -1,33 +1,15 @@
 <div>
     <div class="w-full p-4 bg-white border rounded-lg shadow-md dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700">
-        <div class="flex items-center justify-between">
-            <div class="flex flex-col items-start w-full space-x-0 space-y-2 md:flex-row md:items-center md:space-x-2 md:space-y-0">
-                <div class="w-full md:w-96">
-                    <x-input
-                        label="Name"
-                        wire:model="name"
-                        disabled
-                    />
-                </div>
+        <div>
+            <div class="grid grid-cols-4 gap-4">
+                <x-input label="Name" wire:model="name" disabled />
 
                 @if($searchMbrNo)
-                    <div class="w-full md:w-64">
-                        <x-input
-                            label="Membership No"
-                            wire:model="searchMbrNoValue"
-                            disabled
-                        />
-                    </div>
+                    <x-input label="Membership No" wire:model="searchMbrNoValue" disabled />
                 @endif
 
                 @if($searchAccNo)
-                    <div class="w-full md:w-64">
-                        <x-input
-                            label="Account No"
-                            wire:model="searchAccNoValue"
-                            disabled
-                        />
-                    </div>
+                    <x-input label="Account No" wire:model="searchAccNoValue" disabled />
                 @endif
 
                 @if($searchMthInstallAmt)
@@ -190,7 +172,7 @@
                     />
                 @endif
             </div>
-            <div class="mt-3">
+            <div class="flex justify-end mt-3">
                 <x-button
                     onclick="$openModal('search-modal')"
                     sm

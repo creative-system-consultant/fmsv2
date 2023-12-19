@@ -75,8 +75,7 @@
                         @elseif($type_payment_out == 'Withdraw Share')
                             <livewire:teller.withdraw-share />
                         @elseif($type_payment_out == 'Close Membership')
-                            <livewire:general.teller.common-page module='closeMembership' searchMbrNo=true searchTotShare=true searchTotContribution=true searchFee=true searchMiscAmt=true searchBalDividen=true searchAdvPayment=true />
-
+                            <livewire:teller.close-membership />
                         @elseif($type_payment_out == 'Payment to Members')
                         <livewire:teller.payment-member.payment-member />
 

@@ -181,6 +181,7 @@ class CustomerSearch
     }
 
     public static function getAllCloseMembership(
+        $clientId,
         $searchBy = null,
         $search = null
     ) {
@@ -222,7 +223,11 @@ class CustomerSearch
             })
             ->whereNotNull('FMS.MEMBERSHIP.effective_retirement_date')
             ->where('FMS.MEMBERSHIP.status_id', '!=', 4)
-            ->whereNotNull('m.mbr_no');
+            ->whereNotNull('m.mbr_no')
+            ->where('CIF.CUSTOMERS.client_id', $clientId)
+            ->where('FMS.MEMBERSHIP.client_id', $clientId)
+            ->where('FMS.MISC_ACCOUNT.client_id', $clientId)
+            ->where('FMS.DIVIDEND_FINAL.client_id', $clientId);
 
         if ($search && $searchBy) {
             $query->where($searchBy, 'like', '%' . $search . '%');
