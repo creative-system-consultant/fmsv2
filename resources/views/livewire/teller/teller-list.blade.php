@@ -80,8 +80,7 @@
                         <livewire:teller.payment-member.payment-member />
 
                         @elseif($type_payment_out == 'Dividend Withdrawal')
-                        <livewire:teller.withdraw-dividen.withdraw-dividen />
-
+                            <livewire:teller.dividend-withdrawal />
                         @elseif($type_payment_out == 'Disbursement')
                         <livewire:teller.disbursement.disbursement-transaction />
 

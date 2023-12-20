@@ -306,6 +306,16 @@
                                                 null // placeholder for the button
                                             ];
                                             @endphp
+                                        @elseif($customQuery == 'dividendWithdrawal')
+                                            @php
+                                            $values = [
+                                                $item->mbr_no,
+                                                $item->identity_no,
+                                                $item->name,
+                                                $item->bal_dividen,
+                                                null // placeholder for the button
+                                            ];
+                                            @endphp
                                         @else
                                             @php
                                             $values = [
@@ -325,7 +335,7 @@
                                                 $wireClickFunction = 'selectedAccNo(\''.$item->account_no.'\')';
                                             } elseif($customQuery == 'thirdParty') {
                                                 $wireClickFunction = 'selectedId(\''.$item->id.'\')';
-                                            } elseif($customQuery == 'miscellaneousOut') {
+                                            } elseif($customQuery == 'miscellaneousOut' || $customQuery == 'dividendWithdrawal') {
                                                 $wireClickFunction = 'selectedMbr(\''.$item->mbr_no.'\')';
                                             }  else {
                                                 $wireClickFunction = 'selectedUuid(\''.$item->uuid.'\')';

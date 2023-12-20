@@ -3,6 +3,7 @@
 namespace App\Services\Module\General;
 
 use App\Models\Cif\CifCustomer;
+use App\Models\Fms\DividendFinal;
 use App\Models\Fms\FmsAccountMaster;
 use App\Models\Fms\FmsMiscAccount;
 use App\Models\Fms\FmsThirdParty;
@@ -414,5 +415,42 @@ class CustomerSearch
             ->first();
 
         return $query;
+    }
+
+    public static function getAllDividendWithdrawal(
+        $clientId = null,
+        $searchBy = null,
+        $search = null
+    ) {
+        $query = DividendFinal::select(
+            'mbr_no',
+            'identity_no',
+            'name',
+            'bal_dividen')
+            ->whereRaw('ISNULL(bal_dividen, 0) > 0')
+            ->where('client_id', $clientId);
+
+        if ($search && $searchBy) {
+            $query->where($searchBy, 'like', '%' . $search . '%');
+        }
+
+        return $query->paginate(10);
+    }
+
+    public static function getDividendWithdrawalData(
+        $clientId = null,
+        $mbrNo = null
+    ) {
+        $query = DividendFinal::select([
+            'mbr_no',
+            'identity_no',
+            'name',
+            'bal_dividen'
+        ])
+            ->whereRaw('ISNULL(bal_dividen, 0) > 0')
+            ->where('client_id', $clientId)
+            ->where('mbr_no', $mbrNo);
+
+        return $query->first();
     }
 }

@@ -40,6 +40,8 @@ class CustomerSearch extends Component
 
     public $headers = [];
 
+    protected $listeners = ['refresh' => '$refresh'];
+
     public function mount()
     {
         $this->clientId = auth()->user()->client_id;
@@ -105,6 +107,14 @@ class CustomerSearch extends Component
                 "UEI OUTSTANDING",
                 "ADV AMOUNT",
                 "BAL OUTS",
+                "ACTION",
+            ];
+        } elseif ($this->customQuery == 'dividendWithdrawal') {
+            $this->headers = [
+                "MEMBERSHIP NO",
+                "IC NO",
+                "NAME",
+                "BALANCE",
                 "ACTION",
             ];
         } else {
@@ -234,6 +244,14 @@ class CustomerSearch extends Component
     {
         if ($this->customQuery == 'miscellaneousOut') {
             $customer = GeneralCustomerSearch::getMiscellaneousOutMbrData($this->clientId, $mbrNo, $this->complete);
+        } elseif ($this->customQuery == 'dividendWithdrawal') {
+            $customer = GeneralCustomerSearch::getDividendWithdrawalData($this->clientId, $mbrNo);
+
+            if (!$customer) {
+                $this->reset('name', 'searchMbrNoValue', 'searchBalDividenValue');
+                $this->dispatch('refresh')->self();
+                return;
+            }
         }
 
         $this->name = $customer->name;
@@ -244,6 +262,10 @@ class CustomerSearch extends Component
 
         if ($this->searchMiscAmt) {
             $this->searchMiscAmtValue = number_format($customer->misc_amt, 2) ?? 0;
+        }
+
+        if ($this->searchBalDividen) {
+            $this->searchBalDividenValue = number_format($customer->bal_dividen, 2) ?? 0;
         }
 
         return $customer;
@@ -322,7 +344,14 @@ class CustomerSearch extends Component
     public function reloadMbrNoData($mbrNo)
     {
         $this->complete = true;
-        $this->getMbrData($mbrNo);
+        $customer = $this->getMbrData($mbrNo);
+
+        if ($customer) {
+            $this->dispatch(
+                'mbrSelected',
+                customer: $customer,
+            );
+        }
     }
 
     public function render()
@@ -348,6 +377,9 @@ class CustomerSearch extends Component
                 break;
             case 'refundAdvance':
                 $customers = GeneralCustomerSearch::getAllRefundAdvance($this->clientId, $this->searchBy, $this->search);
+                break;
+            case 'dividendWithdrawal':
+                $customers = GeneralCustomerSearch::getAllDividendWithdrawal($this->clientId, $this->searchBy, $this->search);
                 break;
             default:
                 $customers = GeneralCustomerSearch::getData($this->clientId, $this->searchBy, $this->search);
