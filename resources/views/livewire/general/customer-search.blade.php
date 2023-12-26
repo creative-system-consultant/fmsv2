@@ -316,6 +316,16 @@
                                                 null // placeholder for the button
                                             ];
                                             @endphp
+                                        @elseif($customQuery == 'withdrawContribution')
+                                            @php
+                                            $values = [
+                                                $item->mbr_no,
+                                                $item->name,
+                                                $item->approved_amt ?? 0,
+                                                $item->start_approved ?? '2023-12-01',
+                                                null // placeholder for the button
+                                            ];
+                                            @endphp
                                         @else
                                             @php
                                             $values = [

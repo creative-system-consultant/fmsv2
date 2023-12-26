@@ -71,32 +71,27 @@
 
                     <div class="mt-5">
                         @if($type_payment_out == 'Withdraw Contribution')
-                            <livewire:teller.withdraw-contribution.withdraw-contribution />
+                            <livewire:teller.withdraw-contribution />
                         @elseif($type_payment_out == 'Withdraw Share')
                             <livewire:teller.withdraw-share />
                         @elseif($type_payment_out == 'Close Membership')
                             <livewire:teller.close-membership />
                         @elseif($type_payment_out == 'Payment to Members')
-                        <livewire:teller.payment-member.payment-member />
-
+                            <livewire:teller.payment-member.payment-member />
                         @elseif($type_payment_out == 'Dividend Withdrawal')
                             <livewire:teller.dividend-withdrawal />
                         @elseif($type_payment_out == 'Disbursement')
-                        <livewire:teller.disbursement.disbursement-transaction />
-
+                            <livewire:teller.disbursement.disbursement-transaction />
                         @elseif($type_payment_out == 'Miscellaneous Out')
                             <livewire:teller.misc-out />
                         @elseif($type_payment_out == 'Refund Advance')
-                        <livewire:general.teller.common-page module='refundAdvance' searchAccNo=true searchAdvPayment=true />
+                            <livewire:general.teller.common-page module='refundAdvance' searchAccNo=true searchAdvPayment=true />
                         @elseif($type_payment_out == 'Dividen Approval')
-                        <livewire:teller.dividen-approval.dividen-approval />
-
+                            <livewire:teller.dividen-approval.dividen-approval />
                         @elseif($type_payment_out == 'Dividen Batch Widthdrawal')
-                        <livewire:teller.dividen-batch.dividen-batch />
-
+                            <livewire:teller.dividen-batch.dividen-batch />
                         @elseif($type_payment_out == 'Transfer Share')
-                        <livewire:teller.transfer-share.transfer-share />
-
+                            <livewire:teller.transfer-share.transfer-share />
                         @endif
                     </div>
                 </div>

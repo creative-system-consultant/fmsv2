@@ -7,6 +7,7 @@ use App\Models\Fms\DividendFinal;
 use App\Models\Fms\FmsAccountMaster;
 use App\Models\Fms\FmsMiscAccount;
 use App\Models\Fms\FmsThirdParty;
+use App\Models\Siskop\SiskopContribution;
 use DB;
 
 class CustomerSearch
@@ -450,6 +451,62 @@ class CustomerSearch
             ->whereRaw('ISNULL(bal_dividen, 0) > 0')
             ->where('client_id', $clientId)
             ->where('mbr_no', $mbrNo);
+
+        return $query->first();
+    }
+
+    public static function getAllContributionWithdrawal(
+        $clientId = null,
+        $searchBy = null,
+        $search = null
+    ) {
+        $query = SiskopContribution::select(
+            'SISKOP.CONTRIBUTION.uuid',
+            'CIF.CUSTOMERS.mbr_no',
+            'CIF.CUSTOMERS.name',
+            'CIF.CUSTOMERS.bank_id',
+            'CIF.CUSTOMERS.bank_acct_no',
+            'CIF.CUSTOMERS.identity_no',
+            'SISKOP.CONTRIBUTION.approved_amt',
+            'SISKOP.CONTRIBUTION.start_approved',
+            'CIF.CUSTOMERS.email',
+            'FMS.MEMBERSHIP.total_contribution')
+            ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'SISKOP.CONTRIBUTION.cust_id')
+            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', '=', 'CIF.CUSTOMERS.id')
+            ->where('SISKOP.CONTRIBUTION.direction', 'withdraw')
+            ->where('SISKOP.CONTRIBUTION.client_id', $clientId)
+            ->where('CIF.CUSTOMERS.client_id', $clientId)
+            ->where('FMS.MEMBERSHIP.client_id', $clientId);
+
+        if ($search && $searchBy) {
+            $query->where($searchBy, 'like', '%' . $search . '%');
+        }
+
+        return $query->paginate(10);
+    }
+
+    public static function getContributionWithdrawalData(
+        $clientId = null,
+        $uuid = null
+    ) {
+        $query = SiskopContribution::select(
+            'SISKOP.CONTRIBUTION.uuid',
+            'CIF.CUSTOMERS.mbr_no',
+            'CIF.CUSTOMERS.name',
+            'CIF.CUSTOMERS.bank_id',
+            'CIF.CUSTOMERS.bank_acct_no',
+            'CIF.CUSTOMERS.identity_no',
+            'SISKOP.CONTRIBUTION.approved_amt',
+            'SISKOP.CONTRIBUTION.start_approved',
+            'CIF.CUSTOMERS.email',
+            'FMS.MEMBERSHIP.total_contribution')
+            ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'SISKOP.CONTRIBUTION.cust_id')
+            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', '=', 'CIF.CUSTOMERS.id')
+            ->where('SISKOP.CONTRIBUTION.direction', 'withdraw')
+            ->where('SISKOP.CONTRIBUTION.client_id', $clientId)
+            ->where('CIF.CUSTOMERS.client_id', $clientId)
+            ->where('FMS.MEMBERSHIP.client_id', $clientId)
+            ->where('SISKOP.CONTRIBUTION.uuid', $uuid);
 
         return $query->first();
     }

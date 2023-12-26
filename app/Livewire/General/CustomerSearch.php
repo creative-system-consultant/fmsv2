@@ -117,6 +117,14 @@ class CustomerSearch extends Component
                 "BALANCE",
                 "ACTION",
             ];
+        } elseif ($this->customQuery == 'withdrawContribution') {
+            $this->headers = [
+                "MEMBERSHIP NO",
+                "NAME",
+                "APPROVED AMOUNT",
+                "APPROVED DATE",
+                "ACTION",
+            ];
         } else {
             $this->headers = [
                 "STAFF NO",
@@ -146,6 +154,8 @@ class CustomerSearch extends Component
     {
         if ($this->customQuery == 'closeMembership') {
             $customer = GeneralCustomerSearch::getCloseMembership($uuid);
+        } elseif ($this->customQuery == 'withdrawContribution') {
+            $customer = GeneralCustomerSearch::getContributionWithdrawalData($this->clientId, $uuid);
         } else {
             $customer = CifCustomer::getCustomerSearchData($this->clientId, $uuid);
         }
@@ -380,6 +390,9 @@ class CustomerSearch extends Component
                 break;
             case 'dividendWithdrawal':
                 $customers = GeneralCustomerSearch::getAllDividendWithdrawal($this->clientId, $this->searchBy, $this->search);
+                break;
+            case 'withdrawContribution':
+                $customers = GeneralCustomerSearch::getAllContributionWithdrawal($this->clientId, $this->searchBy, $this->search);
                 break;
             default:
                 $customers = GeneralCustomerSearch::getData($this->clientId, $this->searchBy, $this->search);
