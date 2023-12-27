@@ -2,7 +2,6 @@
 
 namespace App\Models\Fms;
 
-use App\Models\Cif\CifCustomer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +14,11 @@ class IntroducerList extends Model
 
     public function customer()
     {
-        return $this->hasOne(CifCustomer::class, 'introducer_identityno', 'identity_no');
+        return $this->hasOne(FmsMembership::class, 'mbr_no', 'mbr_no');
+    }
+
+    public function introducer()
+    {
+        return $this->hasOne(FmsMembership::class, 'mbr_no', 'introducer_mbr_no');
     }
 }
