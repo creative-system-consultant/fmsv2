@@ -41,8 +41,9 @@
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <div class="flex items-center space-x-2">
                                     <x-button
-                                        sm
-                                        icon="plus"
+                                        xs
+                                        icon="cursor-click"
+                                        label="select"
                                         green
                                         wire:click="selectIntroducer('{{ $list->customer->mbr_no }}')"
                                     />

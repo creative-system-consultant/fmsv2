@@ -59,11 +59,11 @@
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                             <div class="flex items-center space-x-2">
-                                <x-button 
-                                    sm  
-                                    icon="plus" 
-                                    green 
-                                    
+                                <x-button
+                                    xs
+                                    icon="cursor-click"
+                                    label="select"
+                                    green
                                 />
                             </div>
                         </x-table.table-body>
