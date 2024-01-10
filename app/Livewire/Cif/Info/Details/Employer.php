@@ -9,11 +9,11 @@ use Livewire\Component;
 
 class Employer extends Component
 {
-    public $uuid, $current_employer_name, $company_address, $company_phone_no, $company_fax_no, $job_group_id, $job_status_id, $job_position, $current_employment_date, $current_salary;
+    public $uuid, $current_employer_name, $company_address, $company_phone_no, $company_fax_no, $job_group_id, $job_status_id, $job_position, $current_employment_date, $current_salary, $clientID;
 
     public function mount()
     {
-        $customerInfo = CifCustomer::with('employer', 'employer.address')->where('uuid', $this->uuid)->first();
+        $customerInfo = CifCustomer::with('employer', 'employer.address')->where('uuid', $this->uuid)->where('client_id', $this->clientID)->first();
         $job_group = RefJobGroups::select('groups')->where('id',  $customerInfo->job_group_id)->first();
         $job_status = RefJobStatus::select('description')->where('id',  $customerInfo->job_status_id)->first();
 

@@ -15,11 +15,12 @@ use Livewire\Component;
 
 class Information extends Component
 {
-    public $uuid, $title_id, $name, $identity_type_id, $identity_no, $email, $email2, $phone, $resident_phone, $gender_id, $birth_date, $race_id, $bumi, $language_id, $marital_id, $country_id, $monthly_contribution, $year_tabung_khirat, $amt_tabung_khirat;
+    public $uuid, $title_id, $name, $identity_type_id, $identity_no, $email, $email2, $phone, $resident_phone, $gender_id, $birth_date, $race_id, $bumi, $language_id, $marital_id, $country_id, $monthly_contribution, $year_tabung_khirat, $amt_tabung_khirat, $clientID;
 
     public function mount()
     {
-        $customerInfo = CifCustomer::where('uuid', $this->uuid)->first();
+        $this->clientID = auth()->user()->client_id;
+        $customerInfo = CifCustomer::where('uuid', $this->uuid)->where('client_id', $this->clientID)->first();
         $membershipInfo = Membership::where('cif_id', $customerInfo->id)->first();
         $title = RefTitle::select('description')->where('id', $customerInfo->title_id)->first();
         $identityType = RefIdentityType::select('description')->where('id', $customerInfo->identity_type_id)->first();

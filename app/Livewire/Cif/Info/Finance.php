@@ -14,8 +14,8 @@ class Finance extends Component
 
     public function mount()
     {
-
-        $this->customer = CifCustomer::where('uuid', $this->uuid)->first();
+        $clientID = auth()->user()->client_id;
+        $this->customer = CifCustomer::where('uuid', $this->uuid)->where('client_id', $clientID)->first();
         $MembershipInfo = Membership::where('cif_id', $this->customer->id)->first();
         $clientID = auth()->user()->client_id;
 

@@ -7,12 +7,13 @@ use Livewire\Component;
 
 class Membership extends Component
 {
-    public $uuid, $name, $cID;
+    public $uuid, $name, $cID, $clientID;
     public $setIndex;
 
     public function mount()
     {
-        $customerName = CifCustomer::select('name', 'id')->where('uuid', $this->uuid)->first();
+        $this->clientID = auth()->user()->client_id;
+        $customerName = CifCustomer::select('name', 'id')->where('uuid', $this->uuid)->where('client_id', $this->clientID)->first();
         $this->name = $customerName->name;
         $this->cID = $customerName->id;
 

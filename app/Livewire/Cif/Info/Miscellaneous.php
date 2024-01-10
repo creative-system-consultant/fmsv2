@@ -15,7 +15,8 @@ class Miscellaneous extends Component
 
     public function mount()
     {
-        $this->customer = CifCustomer::where('uuid', $this->uuid)->first();
+        $clientID = auth()->user()->client_id;
+        $this->customer = CifCustomer::where('uuid', $this->uuid)->where('client_id', $clientID)->first();
         $this->startDateMisc    =  '2021-12-31';
         $this->endDateMisc      =  now()->format('Y-m-d');
     }

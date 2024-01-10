@@ -10,7 +10,7 @@ use Rap2hpoutre\FastExcel\FastExcel;
 
 class Share extends Component
 {
-    public $customer, $uuid, $startDateShare, $endDateShare;
+    public $customer, $uuid, $startDateShare, $endDateShare, $clientID;
 
     public $totalShare, $lastPurchaseAmt, $lastPurchaseDate, $monthly, $lastSellAmt, $lastSellDate;
     public $shares;
@@ -19,7 +19,8 @@ class Share extends Component
     {
         $this->startDateShare    =  '2021-12-31';
         $this->endDateShare      =  now()->format('Y-m-d');
-        $this->customer = CifCustomer::where('uuid', $this->uuid)->first();
+        $this->clientID = auth()->user()->client_id;
+        $this->customer = CifCustomer::where('uuid', $this->uuid)->where('client_id', $this->clientID)->first();
         $membershipInfo = $this->customer->membership;
 
         $this->totalShare = number_format($membershipInfo->total_share, 2);
