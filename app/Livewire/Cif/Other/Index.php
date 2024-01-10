@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    public $uuid;
+    public $uuid , $name;
     public $setIndex = 0;
 
 
@@ -20,6 +20,7 @@ class Index extends Component
     {
         $CustomerInfo = CifCustomer::where('uuid', $this->uuid)->first();
         $this->uuid = $CustomerInfo->uuid;
+        $this->name = $CustomerInfo->name;
 
         // Default to the first permitted tab
         foreach (config('module.other-info.tab.index') as $config) {
