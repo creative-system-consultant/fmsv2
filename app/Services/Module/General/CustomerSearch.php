@@ -266,7 +266,7 @@ class CustomerSearch
         return $query->paginate(10);
     }
 
-    public static function getCloseMembership($uuid)
+    public static function getCloseMembership($clientId, $uuid)
     {
         $query = CifCustomer::select([
             'CIF.CUSTOMERS.uuid',
@@ -301,6 +301,7 @@ class CustomerSearch
             ->leftJoin('FMS.MISC_ACCOUNT as i', 'i.mbr_no', '=', 'fm.mbr_no')
             ->leftJoin('FMS.DIVIDEND_FINAL as d', 'd.mbr_no', '=', 'fm.mbr_no')
             ->where('CIF.CUSTOMERS.uuid', $uuid)
+            ->where('CIF.CUSTOMERS.client_id', $clientId)
             ->first();
 
         return $query;
