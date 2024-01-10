@@ -24,69 +24,56 @@
                     <tr>
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                             <p>{{ $item->account_no }}</p>
-
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                             <p>{{ $item->status }}</p>
-
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                             <p>{{ $item->product }}</p>
-
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                             <p>{{ $item->payment_type }}</p>
-
                         </x-table.table-body>
 
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
+                        <x-table.table-body colspan="" class="text-xs font-medium text-right text-gray-700">
                             <p>{{ number_format($item->selling_price,2,'.',',') }}</p>
-
                         </x-table.table-body>
 
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
+                        <x-table.table-body colspan="" class="text-xs font-medium text-right text-gray-700">
                             <p>{{ number_format($item->disbursed_amount,2,'.',',') }}</p>
-
                         </x-table.table-body>
 
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
+                        <x-table.table-body colspan="" class="text-xs font-medium text-right text-gray-700">
                             <p>{{ number_format($item->advance_payment,2,'.',',') }}</p>
-
                         </x-table.table-body>
 
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
+                        <x-table.table-body colspan="" class="text-xs font-medium text-right text-gray-700">
                             <p>{{ number_format($item->instal_amount,2,'.',',') }}</p>
-
                         </x-table.table-body>
 
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                             <p>{{ date('d-m-Y', strtotime($item->start_disbursed_date)) }}</p>
-
                         </x-table.table-body>
 
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
+                        <x-table.table-body colspan="" class="text-xs font-medium text-right text-gray-700">
                             <p>{{ number_format($item->bal_outstanding,2,'.',',') }}</p>
-
                         </x-table.table-body>
                     </tr>
                     @empty @endforelse
-
                     <tr class="bg-gray-50">
-                        <x-table.table-body colspan="4" class="text-xs  text-gray-700 font-bold text-right">
+                        <x-table.table-body colspan="4" class="text-xs font-bold text-right text-gray-700">
                             Total
                         </x-table.table-body>
-                        <x-table.table-body colspan="1" class="text-xs  text-gray-700 font-bold text-right">
+                        <x-table.table-body colspan="1" class="text-xs font-bold text-right text-gray-700">
                             <p>{{ number_format($selling_price,2,'.',',') }}</p>
-
                         </x-table.table-body>
-                        <x-table.table-body colspan="1" class="text-xs  text-gray-700 font-bold text-right">
+                        <x-table.table-body colspan="1" class="text-xs font-bold text-right text-gray-700">
                             <p>{{ number_format($disbursed_amount,2,'.',',') }}</p>
-
                         </x-table.table-body>
-                        <x-table.table-body colspan="4" class="text-xs  text-gray-700 font-bold text-right">
+                        <x-table.table-body colspan="4" class="text-xs font-bold text-right text-gray-700">
                         </x-table.table-body>
                     </tr>
                 </x-slot>

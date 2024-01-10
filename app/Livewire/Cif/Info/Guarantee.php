@@ -38,7 +38,6 @@ class Guarantee extends Component
             ->where('FMS.MEMBERSHIP.client_id', $clientID)
             ->where('CIF.CUSTOMERS.client_id', $clientID)
             ->where('FMS.GUARANTOR_LIST.mbr_id', $this->MembershipInfo->mbr_no)
-
             ->orderBy('FMS.ACCOUNT_MASTERS.account_status')
             ->get();
 

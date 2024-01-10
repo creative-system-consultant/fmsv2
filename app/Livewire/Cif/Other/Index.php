@@ -18,7 +18,8 @@ class Index extends Component
 
     public function mount()
     {
-        $CustomerInfo = CifCustomer::where('uuid', $this->uuid)->first();
+        $clientID = auth()->user()->client_id;
+        $CustomerInfo = CifCustomer::where('uuid', $this->uuid)->where('client_id', $clientID)->first();
         $this->uuid = $CustomerInfo->uuid;
         $this->name = $CustomerInfo->name;
 
@@ -31,7 +32,6 @@ class Index extends Component
             }
         }
     }
-
 
     public function render()
     {

@@ -5,10 +5,10 @@
                 <x-label label="Search :"/>
                 <div>
                     <x-native-select  wire:model="searchBy">
-                        <option value="name">Name</option>
-                        <option value="identity_no">Identity No</option>
-                        <option value="ref_no">Membership Id</option>
-                        <option value="staff_no">Staff No</option>
+                        <option value="CIF.CUSTOMERS.name">Name</option>
+                        <option value="CIF.CUSTOMERS.identity_no">Identity No</option>
+                        <option value="FMS.MEMBERSHIP.mbr_no">Membership Id</option>
+                        <option value="CIF.CUSTOMERS.staff_no">Staff No</option>
                     </x-native-select>
                 </div>
 
