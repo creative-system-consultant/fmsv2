@@ -153,7 +153,7 @@ class CustomerSearch extends Component
     private function getData($uuid)
     {
         if ($this->customQuery == 'closeMembership') {
-            $customer = GeneralCustomerSearch::getCloseMembership($uuid);
+            $customer = GeneralCustomerSearch::getCloseMembership($this->clientId,$uuid);
         } else {
             $customer = CifCustomer::getCustomerSearchData($this->clientId, $uuid);
         }
