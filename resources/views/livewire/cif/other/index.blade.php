@@ -3,9 +3,16 @@
     <div wire:loading wire:target="setState">
         @include('misc.loading')
     </div>
-    <x-container title="Others Information" routeBackBtn="" titleBackBtn="" disableBackBtn="false">
+    <x-container title="Others Information" routeBackBtn="{{ route('other.info-list') }}" titleBackBtn="other info"  disableBackBtn="true">
         <div x-data="{ active: @entangle('setIndex') }" class="relative">
             <div class=" bg-white border rounded-lg shadow-md w-full dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700 ">
+                <div class="flex items-center justify-between px-4 py-4 border-b dark:border-gray-700">
+                    <h1 class="font-semibold text-lg dark:text-white">Category</h1>
+                    <div class="bg-white border-2 border-black dark:border-gray-400 dark:text-white dark:bg-gray-800 px-4 py-2 text-xs rounded-lg text-black flex space-x-2 items-center">
+                        <x-icon name="user-circle" class="w-5 h-5"/>
+                        <p>{{ $name }}</p>
+                    </div>
+                </div>
                 <div class="flex flex-wrap justify-start sm:justify-start">
                     @foreach(config('module.other-info.tab.index') as $config)
                         @php

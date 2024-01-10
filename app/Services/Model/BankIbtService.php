@@ -14,8 +14,8 @@ class BankIbtService
      *
      * @return \Illuminate\Database\Eloquent\Collection Collection of RefBankIbt records.
      */
-    public static function getAllRefBankIbts()
+    public static function getAllRefBankIbts($clientID)
     {
-        return RefBankIbt::all();
+        return RefBankIbt::where('client_id', $clientID)->get();
     }
 }

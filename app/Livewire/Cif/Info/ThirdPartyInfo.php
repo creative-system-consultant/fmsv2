@@ -29,7 +29,8 @@ class ThirdPartyInfo extends Component
 
     public function mount()
     {
-        $this->customer = CifCustomer::where('uuid', $this->uuid)->first();
+        $clientID = auth()->user()->client_id;
+        $this->customer = CifCustomer::where('uuid', $this->uuid)->where('client_id', $clientID)->first();
         $this->MembershipInfo = Membership::where('cif_id', $this->customer->id)->first();
         $this->clientID = auth()->user()->client_id;
 

@@ -14,7 +14,7 @@ class MonthlyPaymentSummary extends Component
     {
         $this->clientID = auth()->user()->client_id;
 
-        $this->customer = CifCustomer::where('uuid', $this->uuid)->first();
+        $this->customer = CifCustomer::where('uuid', $this->uuid)->where('client_id', $this->clientID)->first();
 
         $PaySummary = DB::select("
         select
@@ -25,17 +25,17 @@ class MonthlyPaymentSummary extends Component
             v.monthly_payble as monthly_payble,
             t.monthly_thirdparty
         from FMS.MEMBERSHIP c left join
-            (select m.mbr_no,sum(m.instal_amount) as instal_amount 
+            (select m.mbr_no,sum(m.instal_amount) as instal_amount
             from FMS.ACCOUNT_MASTERS m,FMS.ACCOUNT_POSITIONS p
 			where m.account_no = p.account_no
 			and isnull(p.disbursed_amount,0) > 0
             and m.account_status in (1,10)
             group by mbr_no
-            ) m 
+            ) m
             on c.mbr_no = m.mbr_no
-            left join 
+            left join
             (
-            select mbr_no,sum(transaction_amt) as monthly_thirdparty 
+            select mbr_no,sum(transaction_amt) as monthly_thirdparty
             from FMS.THIRDPARTY_LIST
             where mode <> 1 and status = 1
             group by mbr_no
@@ -43,8 +43,8 @@ class MonthlyPaymentSummary extends Component
             on c.mbr_no = t.mbr_no
             left join
             (
-            select mbr_no,sum(isnull(transaction_amt,0)) as monthly_payble 
-            from FMS.THIRDPARTY_LIST  
+            select mbr_no,sum(isnull(transaction_amt,0)) as monthly_payble
+            from FMS.THIRDPARTY_LIST
             where mode = 1 and status = 1
             group by mbr_no
             ) v

@@ -5,10 +5,10 @@
                 <x-label label="Search :"/>
                 <div>
                     <x-native-select  wire:model="searchBy">
-                        <option value="name">Name</option>
-                        <option value="identity_no">Identity No</option>
-                        <option value="ref_no">Membership Id</option>
-                        <option value="staff_no">Staff No</option>
+                        <option value="CIF.CUSTOMERS.name">Name</option>
+                        <option value="CIF.CUSTOMERS.identity_no">Identity No</option>
+                        <option value="FMS.MEMBERSHIP.mbr_no">Membership Id</option>
+                        <option value="CIF.CUSTOMERS.staff_no">Staff No</option>
                     </x-native-select>
                 </div>
 
@@ -43,7 +43,7 @@
                                     <p>{{$item->staff_no}}</p>
                                 </x-table.table-body>
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
-                                    <p>{{$item->membership->mbr_no}}</p>
+                                    <p>{{$item->mbr_no}}</p>
                                 </x-table.table-body>
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{$item->identity_no}}</p>
@@ -51,24 +51,21 @@
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{$item->name}}</p>
                                 </x-table.table-body>
-
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{ $item->status_id ?  ($item->status_id ==1 ? 'Active' :'Inactive') : 'N/A' }}</p>
                                 </x-table.table-body>
-
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{ $item->created_at ?  date('d/m/Y', strtotime($item->created_at)) : 'N/A' }}</p>
                                 </x-table.table-body>
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{ $item->updated_at ?  date('d/m/Y', strtotime($item->updated_at)) : 'N/A' }}</p>
                                 </x-table.table-body>
-
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     @foreach(config('module.other-info.index') as $config)
                                         @can($config['permission'])
                                             <div class="flex items-center space-x-2">
-                                                <x-button 
-                                                    xs  
+                                                <x-button
+                                                    xs
                                                     href="{{ route($config['route'], ['uuid'=>$item->uuid]) }}"
                                                     icon="{{ $config['icon'] }}"
                                                     primary
@@ -78,14 +75,12 @@
                                         @endcan
                                     @endforeach
                                 </x-table.table-body>
-
                             </tr>
                             @empty
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
-                                <x-no-data title="No data"/>
-                            </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
+                                    <x-no-data title="No data"/>
+                                </x-table.table-body>
                             @endforelse
-
                     </x-slot>
 
                 </x-table.table>
@@ -97,5 +92,3 @@
         </div>
     </x-container>
 </div>
-
-                

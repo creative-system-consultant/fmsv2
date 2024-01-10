@@ -11,7 +11,7 @@ use Rap2hpoutre\FastExcel\FastExcel;
 
 class DividendStatement extends Component
 {
-    public $customer, $uuid;
+    public $customer, $uuid, $clientId;
     public $startDateDividen, $endDateDividen, $clientID, $bal_div, $dividendstmt;
 
     public function mount()
@@ -19,7 +19,7 @@ class DividendStatement extends Component
         $this->clientID = auth()->user()->client_id;
         $this->startDateDividen    =  '2021-12-31';
         $this->endDateDividen       =  now()->format('Y-m-d');
-        $this->customer = CifCustomer::where('uuid', $this->uuid)->first();
+        $this->customer = CifCustomer::where('uuid', $this->uuid)->where('client_id', $this->clientID)->first();
         $this->bal_div = DB::table('fms.dividend_final')
             ->select('bal_dividen', DB::raw('bal_div_withdrawal = isnull(bal_div_withdrawal,0.00)'))
             ->where('mbr_no', $this->customer->membership->mbr_no)

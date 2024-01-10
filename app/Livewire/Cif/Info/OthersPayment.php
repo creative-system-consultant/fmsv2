@@ -15,7 +15,6 @@ class OthersPayment extends Component
 
     public function mount()
     {
-
         $this->startDT    =  '2021-12-31';
         $this->endDT      =  now()->format('Y-m-d');
     }
@@ -27,7 +26,8 @@ class OthersPayment extends Component
 
     public function render()
     {
-        $this->customer = CifCustomer::where('uuid', $this->uuid)->first();
+        $clientID = auth()->user()->client_id;
+        $this->customer = CifCustomer::where('uuid', $this->uuid)->where('client_id', $clientID)->first();
 
         $othersPayment = DB::table('FMS.MEMBERSHIP_STATEMENTS')
             ->select(

@@ -1,43 +1,15 @@
 <div>
     <div class="w-full p-4 bg-white border rounded-lg shadow-md dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700">
-        <div class="flex items-center justify-between">
-            <div class="flex flex-col items-start w-full space-x-0 space-y-2 md:flex-row md:items-center md:space-x-2 md:space-y-0">
-                <div class="w-full md:w-96">
-                    <x-input
-                        label="Name"
-                        wire:model="name"
-                        disabled
-                    />
-                </div>
+        <div>
+            <div class="grid grid-cols-4 gap-4">
+                <x-input label="Name" wire:model="name" disabled />
 
                 @if($searchMbrNo)
-                    <div class="w-full md:w-64">
-                        <x-input
-                            label="Membership No"
-                            wire:model="searchMbrNoValue"
-                            disabled
-                        />
-                    </div>
-                @endif
-
-                @if($searchStaffNo)
-                    <div class="w-full md:w-64">
-                        <x-input
-                            label="Staff No"
-                            wire:model="searchStaffNoValue"
-                            disabled
-                        />
-                    </div>
+                    <x-input label="Membership No" wire:model="searchMbrNoValue" disabled />
                 @endif
 
                 @if($searchAccNo)
-                    <div class="w-full md:w-64">
-                        <x-input
-                            label="Account No"
-                            wire:model="searchAccNoValue"
-                            disabled
-                        />
-                    </div>
+                    <x-input label="Account No" wire:model="searchAccNoValue" disabled />
                 @endif
 
                 @if($searchMthInstallAmt)
@@ -200,7 +172,7 @@
                     />
                 @endif
             </div>
-            <div class="mt-3">
+            <div class="flex justify-end mt-3">
                 <x-button
                     onclick="$openModal('search-modal')"
                     sm
@@ -334,6 +306,26 @@
                                                 null // placeholder for the button
                                             ];
                                             @endphp
+                                        @elseif($customQuery == 'dividendWithdrawal')
+                                            @php
+                                            $values = [
+                                                $item->mbr_no,
+                                                $item->identity_no,
+                                                $item->name,
+                                                $item->bal_dividen,
+                                                null // placeholder for the button
+                                            ];
+                                            @endphp
+                                        @elseif($customQuery == 'withdrawContribution')
+                                            @php
+                                            $values = [
+                                                $item->mbr_no,
+                                                $item->name,
+                                                $item->approved_amt ?? 0,
+                                                $item->start_approved ?? '-',
+                                                null // placeholder for the button
+                                            ];
+                                            @endphp
                                         @else
                                             @php
                                             $values = [
@@ -353,7 +345,7 @@
                                                 $wireClickFunction = 'selectedAccNo(\''.$item->account_no.'\')';
                                             } elseif($customQuery == 'thirdParty') {
                                                 $wireClickFunction = 'selectedId(\''.$item->id.'\')';
-                                            } elseif($customQuery == 'miscellaneousOut') {
+                                            } elseif($customQuery == 'miscellaneousOut' || $customQuery == 'dividendWithdrawal' || $customQuery == 'withdrawContribution' || $customQuery == 'withdrawShare') {
                                                 $wireClickFunction = 'selectedMbr(\''.$item->mbr_no.'\')';
                                             }  else {
                                                 $wireClickFunction = 'selectedUuid(\''.$item->uuid.'\')';

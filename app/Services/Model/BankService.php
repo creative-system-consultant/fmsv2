@@ -14,8 +14,8 @@ class BankService
      *
      * @return \Illuminate\Database\Eloquent\Collection Collection of RefBank models.
      */
-    public static function getAllRefBanks()
+    public static function getAllRefBanks($clientID)
     {
-        return RefBank::all();
+        return RefBank::where('client_id', $clientID)->get();
     }
 }

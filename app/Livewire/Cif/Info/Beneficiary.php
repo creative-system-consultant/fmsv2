@@ -15,7 +15,6 @@ class Beneficiary extends Component
     public $customer, $uuid, $families, $identity_types, $races, $religions, $relations;
     public $editFamily = false;
 
-
     public function editFamilybtn()
     {
         $this->editFamily = true;
@@ -38,7 +37,8 @@ class Beneficiary extends Component
 
     public function mount()
     {
-        $customer = CifCustomer::where('uuid', $this->uuid)->first();
+        $clientID = auth()->user()->client_id;
+        $customer = CifCustomer::where('uuid', $this->uuid)->where('client_id', $clientID)->first();
 
         $this->families                 = ($customer->families) ? $customer->families->toArray() : 0;
         $this->identity_types           = RefIdentityType::all();

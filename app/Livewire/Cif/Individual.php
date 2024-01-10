@@ -2,9 +2,7 @@
 
 namespace App\Livewire\Cif;
 
-use App\Services\Model\CifCustomer;
 use DB;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
 

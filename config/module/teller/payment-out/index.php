@@ -47,8 +47,8 @@ return [
         'permission' => 'po-dividen batch widthdrawal',
         'value' => 'Dividen Batch Widthdrawal',
     ],
-    [
-        'permission' => 'po-transfer share',
-        'value' => 'Transfer Share',
-    ],
+    // [
+    //     'permission' => 'po-transfer share',
+    //     'value' => 'Transfer Share',
+    // ],
 ];

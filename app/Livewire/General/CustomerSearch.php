@@ -17,29 +17,30 @@ class CustomerSearch extends Component
 
     public $complete = false;
     public $name;
-    public $searchMbrNo, $searchMbrNoValue;
-    public $searchStaffNo, $searchStaffNoValue;
-    public $searchAccNo, $searchAccNoValue;
-    public $searchTotContribution, $searchTotContributionAmt;
-    public $searchTotShare, $searchTotShareAmt;
-    public $searchMthInstallAmt, $searchMthInstallAmtValue;
-    public $searchInstallAmtArear, $searchInstallAmtArearAmt;
-    public $searchBalOutstanding, $searchBalOutstandingAmt;
-    public $searchRebate, $searchRebateAmt;
-    public $searchSettleProfit, $searchSettleProfitAmt;
-    public $searchMiscAmt, $searchMiscAmtValue;
-    public $searchFee, $searchFeeValue = 10;
-    public $searchBalDividen, $searchBalDividenValue;
-    public $searchAdvPayment, $searchAdvPaymentValue;
-    public $searchInstitute, $searchInstituteValue;
-    public $searchTrxAmt, $searchTrxAmtValue;
-    public $searchModeId, $searchModeIdValue;
+    public $searchMbrNo = false, $searchMbrNoValue;
+    public $searchAccNo = false, $searchAccNoValue;
+    public $searchTotContribution = false, $searchTotContributionAmt;
+    public $searchTotShare = false, $searchTotShareAmt;
+    public $searchMthInstallAmt = false, $searchMthInstallAmtValue;
+    public $searchInstallAmtArear = false, $searchInstallAmtArearAmt;
+    public $searchBalOutstanding = false, $searchBalOutstandingAmt;
+    public $searchRebate = false, $searchRebateAmt;
+    public $searchSettleProfit = false, $searchSettleProfitAmt;
+    public $searchMiscAmt = false, $searchMiscAmtValue;
+    public $searchFee = false, $searchFeeValue = 10;
+    public $searchBalDividen = false, $searchBalDividenValue;
+    public $searchAdvPayment = false, $searchAdvPaymentValue;
+    public $searchInstitute = false, $searchInstituteValue;
+    public $searchTrxAmt = false, $searchTrxAmtValue;
+    public $searchModeId = false, $searchModeIdValue;
 
     public $customQuery = '';
 
     public $searchBy = 'name', $search, $sortField, $sortDirection;
 
     public $headers = [];
+
+    protected $listeners = ['refresh' => '$refresh'];
 
     public function mount()
     {
@@ -56,7 +57,7 @@ class CustomerSearch extends Component
                 "ACCOUNT NO",
                 "APPROVED AMOUNT",
                 "FINANCING",
-                "ACTION"
+                "ACTION",
             ];
         } elseif ($this->customQuery == 'thirdParty') {
             $this->headers = [
@@ -69,7 +70,7 @@ class CustomerSearch extends Component
                 "STATUS",
                 "EFFECTIVE DATE",
                 "REMARKS",
-                "ACTION"
+                "ACTION",
             ];
         } elseif ($this->customQuery == 'withdrawShare') {
             $this->headers = [
@@ -77,14 +78,14 @@ class CustomerSearch extends Component
                 "NAME",
                 "TOTAL SHARE",
                 "LAST PAYMENT DATE",
-                "ACTION"
+                "ACTION",
             ];
         } elseif ($this->customQuery == 'closeMembership') {
             $this->headers = [
                 "MEMBERSHIP NO",
                 "IDENTITY NO",
                 "NAME",
-                "ACTION"
+                "ACTION",
             ];
         } elseif ($this->customQuery == 'miscellaneousOut') {
             $this->headers = [
@@ -92,7 +93,7 @@ class CustomerSearch extends Component
                 "IDENTITY NO",
                 "NAME",
                 "MISCELLANEOUS AMOUNT",
-                "ACTION"
+                "ACTION",
             ];
         } elseif ($this->customQuery == 'refundAdvance') {
             $this->headers = [
@@ -106,7 +107,23 @@ class CustomerSearch extends Component
                 "UEI OUTSTANDING",
                 "ADV AMOUNT",
                 "BAL OUTS",
-                "ACTION"
+                "ACTION",
+            ];
+        } elseif ($this->customQuery == 'dividendWithdrawal') {
+            $this->headers = [
+                "MEMBERSHIP NO",
+                "IC NO",
+                "NAME",
+                "BALANCE",
+                "ACTION",
+            ];
+        } elseif ($this->customQuery == 'withdrawContribution') {
+            $this->headers = [
+                "MEMBERSHIP NO",
+                "NAME",
+                "APPROVED AMOUNT",
+                "APPROVED DATE",
+                "ACTION",
             ];
         } else {
             $this->headers = [
@@ -114,7 +131,7 @@ class CustomerSearch extends Component
                 "IDENTITY NO.",
                 "MEMBERSHIP NO",
                 "NAME",
-                "ACTION"
+                "ACTION",
             ];
         }
     }
@@ -135,20 +152,16 @@ class CustomerSearch extends Component
 
     private function getData($uuid)
     {
-        if($this->customQuery == 'closeMembership') {
+        if ($this->customQuery == 'closeMembership') {
             $customer = GeneralCustomerSearch::getCloseMembership($uuid);
         } else {
-            $customer = CifCustomer::getCustomerSearchData($uuid);
+            $customer = CifCustomer::getCustomerSearchData($this->clientId, $uuid);
         }
 
         $this->name = $customer->name;
 
         if ($this->searchMbrNo) {
             $this->searchMbrNoValue = $customer->mbr_no;
-        }
-
-        if ($this->searchStaffNo) {
-            $this->searchStaffNoValue = $customer->staff_no;
         }
 
         if ($this->searchAccNo) {
@@ -201,7 +214,7 @@ class CustomerSearch extends Component
 
     private function getIdData($id)
     {
-        if($this->customQuery == 'thirdParty') {
+        if ($this->customQuery == 'thirdParty') {
             $customer = GeneralCustomerSearch::getThirdPartyIdData($id);
         }
 
@@ -216,7 +229,7 @@ class CustomerSearch extends Component
         }
 
         if ($this->searchTrxAmt) {
-            $this->searchTrxAmtValue = number_format($customer-> transaction_amt, 2) ?? 0;
+            $this->searchTrxAmtValue = number_format($customer->transaction_amt, 2) ?? 0;
         }
 
         if ($this->searchModeId) {
@@ -237,9 +250,20 @@ class CustomerSearch extends Component
 
     private function getMbrData($mbrNo)
     {
-        if($this->customQuery == 'miscellaneousOut') {
+        if ($this->customQuery == 'miscellaneousOut') {
             $customer = GeneralCustomerSearch::getMiscellaneousOutMbrData($this->clientId, $mbrNo, $this->complete);
-            \Log::info($customer);
+        } elseif ($this->customQuery == 'dividendWithdrawal') {
+            $customer = GeneralCustomerSearch::getDividendWithdrawalData($this->clientId, $mbrNo);
+
+            if (!$customer) {
+                $this->reset('name', 'searchMbrNoValue', 'searchBalDividenValue');
+                $this->dispatch('refresh')->self();
+                return;
+            }
+        } elseif ($this->customQuery == 'withdrawContribution') {
+            $customer = GeneralCustomerSearch::getContributionWithdrawalData($this->clientId, $mbrNo);
+        } elseif ($this->customQuery == 'withdrawShare') {
+            $customer = GeneralCustomerSearch::getWithdrawShareData($this->clientId, $mbrNo);
         }
 
         $this->name = $customer->name;
@@ -250,6 +274,18 @@ class CustomerSearch extends Component
 
         if ($this->searchMiscAmt) {
             $this->searchMiscAmtValue = number_format($customer->misc_amt, 2) ?? 0;
+        }
+
+        if ($this->searchBalDividen) {
+            $this->searchBalDividenValue = number_format($customer->bal_dividen, 2) ?? 0;
+        }
+
+        if ($this->searchTotContribution) {
+            $this->searchTotContributionAmt = number_format($customer->total_contribution, 2) ?? 0;
+        }
+
+        if ($this->searchTotShare) {
+            $this->searchTotShareAmt = number_format($customer->total_share, 2) ?? 0;
         }
 
         return $customer;
@@ -328,7 +364,16 @@ class CustomerSearch extends Component
     public function reloadMbrNoData($mbrNo)
     {
         $this->complete = true;
-        $this->getMbrData($mbrNo);
+        $customer = $this->getMbrData($mbrNo);
+
+        if ($customer) {
+            $this->dispatch(
+                'mbrSelected',
+                customer: $customer,
+            );
+        } else {
+            $this->reset('name', 'searchMbrNoValue', 'searchMiscAmtValue', 'searchBalDividenValue', 'searchTotContributionAmt', 'searchTotShareAmt');
+        }
     }
 
     public function render()
@@ -344,10 +389,10 @@ class CustomerSearch extends Component
                 $customers = GeneralCustomerSearch::getThirdPartyData($this->clientId, $this->searchBy, $this->search);
                 break;
             case 'withdrawShare':
-                $customers = GeneralCustomerSearch::getWithdrawShareData($this->searchBy, $this->search);
+                $customers = GeneralCustomerSearch::getAllWithdrawShareData($this->clientId, $this->searchBy, $this->search);
                 break;
             case 'closeMembership':
-                $customers = GeneralCustomerSearch::getAllCloseMembership($this->searchBy, $this->search);
+                $customers = GeneralCustomerSearch::getAllCloseMembership($this->clientId, $this->searchBy, $this->search);
                 break;
             case 'miscellaneousOut':
                 $customers = GeneralCustomerSearch::getAllMiscellaneousOut($this->clientId, $this->searchBy, $this->search);
@@ -355,8 +400,14 @@ class CustomerSearch extends Component
             case 'refundAdvance':
                 $customers = GeneralCustomerSearch::getAllRefundAdvance($this->clientId, $this->searchBy, $this->search);
                 break;
+            case 'dividendWithdrawal':
+                $customers = GeneralCustomerSearch::getAllDividendWithdrawal($this->clientId, $this->searchBy, $this->search);
+                break;
+            case 'withdrawContribution':
+                $customers = GeneralCustomerSearch::getAllContributionWithdrawal($this->clientId, $this->searchBy, $this->search);
+                break;
             default:
-                $customers = GeneralCustomerSearch::getData($this->searchBy, $this->search);
+                $customers = GeneralCustomerSearch::getData($this->clientId, $this->searchBy, $this->search);
         }
 
         return view('livewire.general.customer-search', ['customers' => $customers]);

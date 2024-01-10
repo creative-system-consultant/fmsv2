@@ -25,7 +25,7 @@ class Contribution extends Component
     public function mount()
     {
         $this->clientID = auth()->user()->client_id;
-        $this->customer = CifCustomer::where('uuid', $this->uuid)->first();
+        $this->customer = CifCustomer::where('uuid', $this->uuid)->where('client_id', $this->clientID)->first();
         $membershipInfo = $this->customer->membership;
 
         $this->totalContribution = number_format($membershipInfo->total_contribution, 2);
@@ -35,17 +35,12 @@ class Contribution extends Component
         $this->lastWithdrawDate = date('d/m/Y', strtotime($membershipInfo->last_withdraw_date));
         $this->numWithdraw = number_format($membershipInfo->no_of_withdrawal, 2);
         $this->totalWithdraw = number_format($membershipInfo->total_withdraw_amount, 2);
-
         $this->ChangedMonthlyCon        = ChangeMonthlyContribution::where('mbrID', '=', $membershipInfo->mbr_no)->first();
-
         $this->startDateContribution    =  '2021-12-31';
         $this->endDateContribution      =  now()->format('Y-m-d');
-
         $this->startDateContributionOut = '2021-12-31';
         $this->endDateContributionOut   =  now()->format('Y-m-d');
-
         $this->changedMonthlyCon =  ChangeMonthlyContribution::where('mbrID', $this->customer->membership->mbr_no)->get();
-
 
         $this->contributions = DB::table('FMS.MEMBERSHIP_STATEMENTS')
             ->select(
@@ -80,7 +75,6 @@ class Contribution extends Component
 
     public function renderReportList()
     {
-
         foreach ($this->contributions as $item) {
             yield $item;
         }
@@ -88,7 +82,6 @@ class Contribution extends Component
 
     public function generateExcel()
     {
-
         return response()->streamDownload(function () {
             $header_style = (new Style())->setFontBold();
             $rows_style = (new Style())->setShouldWrapText(false);
@@ -109,12 +102,8 @@ class Contribution extends Component
         }, sprintf('Contributions-%s.xlsx', now()->format('Y-m-d')));
     }
 
-
-
     public function render()
     {
-
-
         return view('livewire.cif.info.contribution', [
             'changedMonthlyCon' => $this->changedMonthlyCon,
             'contributions' => $this->contributions,

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DividendFinal extends Model
 {
     use HasFactory;
-    use \OwenIt\Auditing\Auditable;
+    // use \OwenIt\Auditing\Auditable;
 
     protected $table = 'FMS.dividend_final';
 

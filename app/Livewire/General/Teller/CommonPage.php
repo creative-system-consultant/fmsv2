@@ -102,8 +102,8 @@ class CommonPage extends Component
     public function mount()
     {
         $this->clientId = auth()->user()->client_id;
-        $this->refBank = BankService::getAllRefBanks();
-        $this->refBankIbt = BankIbtService::getAllRefBankIbts();
+        $this->refBank = BankService::getAllRefBanks($this->clientId);
+        $this->refBankIbt = BankIbtService::getAllRefBankIbts($this->clientId);
         $this->startDate = ActgPeriod::determinePeriodRange()['startDate'];
         $this->endDate = ActgPeriod::determinePeriodRange()['endDate'];
 

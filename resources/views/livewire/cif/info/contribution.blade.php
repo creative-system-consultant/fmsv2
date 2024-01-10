@@ -1,6 +1,6 @@
 <div>
     <x-card title="Contribution Information">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-2 items-center">
+        <div class="grid items-center grid-cols-1 gap-2 md:grid-cols-3">
             <x-input label="Total" wire:model="totalContribution" disabled />
             <x-input label="Last Payment Amount" wire:model="lastPaymentAmt" disabled />
             <x-input label="Monthly" wire:model="monthlyContribution" disabled />
@@ -10,10 +10,10 @@
             <x-input label="Total of Withdraw" wire:model="totalWithdraw" disabled />
 
             <div class="mt-6">
-                <x-button 
-                    onclick="$openModal('contribution-histrory-modal')" 
-                    primary 
-                    label="Contribution History" 
+                <x-button
+                    onclick="$openModal('contribution-histrory-modal')"
+                    primary
+                    label="Contribution History"
                     sm
                 />
             </div>
@@ -34,11 +34,11 @@
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{date('d/m/Y',strtotime(optional($item->effective_date)))}}</p>
-                                
+
                             </x-table.table-body>
                         </tr>
                         @empty
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                        <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
                             <x-no-data title="No data"/>
                         </x-table.table-body>
                         @endforelse
@@ -49,18 +49,17 @@
         </div>
     </x-card>
 
-
     <div class="mt-12" x-data="{tab:0}">
-        <div class="bg-gray-50 rounded-lg shadow-sm mb-4 dark:bg-gray-900">
+        <div class="mb-4 rounded-lg shadow-sm bg-gray-50 dark:bg-gray-900">
             <div class="flex items-center space-x-4">
                 <x-tab.title name="0">
-                    <div class="flex items-center spcae-x-2 text-sm">
+                    <div class="flex items-center text-sm spcae-x-2">
                         <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
                         <h1>Contribution Statements</h1>
                     </div>
                 </x-tab.title>
                 <x-tab.title name="1">
-                    <div class="flex items-center spcae-x-2 text-sm">
+                    <div class="flex items-center text-sm spcae-x-2">
                         <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
                         <h1>Contribution Out Statements</h1>
                     </div>
@@ -69,7 +68,6 @@
         </div>
 
         <div>
-
             <div x-show="tab == 0">
                 <x-card title="Contribution Statements">
                     <div class="flex items-center justify-between mb-4">
@@ -145,7 +143,7 @@
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     @if ($item->transaction_code_id == 4101)
                                     <div class="inline-flex rounded-md sm:pr-0">
-{{--                                        
+{{--
                                         <x-general.button.icon href="" target="_blank" label="Payment Voucher" color="{{auth()->user()->primary_color}}" livewire="">
                                             <x-heroicon-o-document-report class="-ml-0.5 mr-2 h-4 w-4"/>
                                         </x-general.button.icon> --}}

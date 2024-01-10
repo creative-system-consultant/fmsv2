@@ -11,11 +11,12 @@ use Livewire\Component;
 
 class Overview extends Component
 {
-    public $uuid, $staff_no, $ref_no, $name, $identity_no, $cust_status, $status_id, $apply_date, $start_date, $status_change_date, $approved_retirement_date, $effective_retirement_date, $entrance_fee, $entrance_fee_date, $bank_id, $bank_acct_no, $payment_type, $staffno_payer, $va_account;
+    public $uuid, $staff_no, $ref_no, $name, $identity_no, $cust_status, $status_id, $apply_date, $start_date, $status_change_date, $approved_retirement_date, $effective_retirement_date, $entrance_fee, $entrance_fee_date, $bank_id, $bank_acct_no, $payment_type, $staffno_payer, $va_account, $clientID;
 
     public function mount()
     {
-        $customerInfo = CifCustomer::where('uuid', $this->uuid)->first();
+        $this->clientID = auth()->user()->client_id;
+        $customerInfo = CifCustomer::where('uuid', $this->uuid)->where('client_id', $this->clientID)->first();
         $membershipInfo = Membership::where('cif_id', $customerInfo->id)->first();
         $memberStatus = RefMemStatus::select('description')->where('id', $membershipInfo->status_id)->first();
         $bank_name = RefBank::select('description')->where('id',  $customerInfo->bank_id)->first();

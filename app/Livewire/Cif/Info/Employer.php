@@ -35,22 +35,18 @@ class Employer extends Component
         $introducer_name, $introducer_mbrid, $introducer_icno, $introducer_flag, $no_of_withdrawal, $source, $tkk_amount, $tkk_last_pay_dt, $va_account,
         $year_tabung_khirat, $amt_tabung_khirat, $payment_type, $withdraw_share_pv, $withdraw_con_pv, $kebajikan_pv, $khairat_pv, $closed_mbr_pv, $bumi;
 
-
     public $editDetail = false;
 
     public function mount()
     {
-        $CustomerInfo = CifCustomer::where('uuid', $this->uuid)->first();
+        $clientID = auth()->user()->client_id;
+        $CustomerInfo = CifCustomer::where('uuid', $this->uuid)->where('client_id', $clientID)->first();
         $MembershipInfo = Membership::where('cif_id', $CustomerInfo->id)->first();
 
         if ($CustomerInfo) {
-
-            // Assuming you have a $CustomerInfo object from your database query
-
             $this->client_id = $CustomerInfo->client_id;
             $this->id = $CustomerInfo->id ;
             $this->uuid = $CustomerInfo->uuid;
-
             $this->current_employment_date = $CustomerInfo->current_employment_date ?? '';
             $this->current_employer_name = $CustomerInfo->current_employer_name ?? '';
             $this->company_address = $CustomerInfo->company_address ?? '';

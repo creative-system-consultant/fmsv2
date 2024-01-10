@@ -14,8 +14,8 @@ class TellerList extends Component
     public $type_payment_out = '';
     public $option_payment_out;
 
-
-    public function checkPermission($option){
+    public function checkPermission($option)
+    {
         return auth()->check() && auth()->user()->hasClientSpecificPermission($option['permission'], auth()->user()->client_id);
     }
 
@@ -33,7 +33,7 @@ class TellerList extends Component
                 }
             }
         }
-        
+
         $data_payment_in = config('module.teller.payment-in.index');
         $this->option_payment_in = [];
         foreach ($data_payment_in as $option_payment_in) {
