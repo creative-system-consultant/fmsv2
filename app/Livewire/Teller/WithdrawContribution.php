@@ -54,10 +54,9 @@ class WithdrawContribution extends Component
         $this->txnCode = '4101';
     }
 
-    #[On('customerSelected')]
+    #[On('mbrSelected')]
     public function handleCustomerSelection($customer)
     {
-        // $this->loading = true;
         $this->customer = $customer;
         $this->bankMember = $customer['bank_id'];
         $this->mbrNo = (string) $customer['mbr_no'];
@@ -66,7 +65,7 @@ class WithdrawContribution extends Component
         $this->ic = $customer['identity_no'];
         $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
         $this->docNo = 'N/A';
-        // $this->dispatch('endProcessing');
+        $this->txnAmt = $customer['approved_amt'];
     }
 
     #[On('updatePayButton')]
@@ -109,7 +108,7 @@ class WithdrawContribution extends Component
         $this->dialog()->$dialogType($messageText, $message["SP_RETURN_MSG"]);
 
         $this->reset('chequeDate', 'txnAmt', 'txnDate');
-        $this->dispatch('refreshComponent', uuid: $this->customer['uuid'])->to(CustomerSearch::class);
+        $this->dispatch('refreshComponentMbrNo', mbrNo: $this->customer['mbr_no'])->to(CustomerSearch::class);
     }
 
     public function render()

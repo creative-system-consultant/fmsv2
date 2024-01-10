@@ -59,10 +59,9 @@ class WithdrawShare extends Component
         $this->txnCode = '3104';
     }
 
-    #[On('customerSelected')]
+    #[On('mbrSelected')]
     public function handleCustomerSelection($customer)
     {
-        // $this->loading = true;
         $this->customer = $customer;
         $this->bankMember = $customer['bank_id'];
         $this->mbrNo = (string) $customer['mbr_no'];
@@ -73,10 +72,6 @@ class WithdrawShare extends Component
         $this->ic = $customer['identity_no'];
         $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
         $this->docNo = 'N/A';
-        // $this->docNo = SpFmsGenerateMbrWithdrawShare::handle($this->clientId, $this->mbrNo);
-
-        // $this->saveButton = true;
-        // $this->dispatch('endProcessing');
     }
 
     #[On('updatePayButton')]

@@ -154,8 +154,6 @@ class CustomerSearch extends Component
     {
         if ($this->customQuery == 'closeMembership') {
             $customer = GeneralCustomerSearch::getCloseMembership($uuid);
-        } elseif ($this->customQuery == 'withdrawContribution') {
-            $customer = GeneralCustomerSearch::getContributionWithdrawalData($this->clientId, $uuid);
         } else {
             $customer = CifCustomer::getCustomerSearchData($this->clientId, $uuid);
         }
@@ -262,6 +260,10 @@ class CustomerSearch extends Component
                 $this->dispatch('refresh')->self();
                 return;
             }
+        } elseif ($this->customQuery == 'withdrawContribution') {
+            $customer = GeneralCustomerSearch::getContributionWithdrawalData($this->clientId, $mbrNo);
+        } elseif ($this->customQuery == 'withdrawShare') {
+            $customer = GeneralCustomerSearch::getWithdrawShareData($this->clientId, $mbrNo);
         }
 
         $this->name = $customer->name;
@@ -276,6 +278,14 @@ class CustomerSearch extends Component
 
         if ($this->searchBalDividen) {
             $this->searchBalDividenValue = number_format($customer->bal_dividen, 2) ?? 0;
+        }
+
+        if ($this->searchTotContribution) {
+            $this->searchTotContributionAmt = number_format($customer->total_contribution, 2) ?? 0;
+        }
+
+        if ($this->searchTotShare) {
+            $this->searchTotShareAmt = number_format($customer->total_share, 2) ?? 0;
         }
 
         return $customer;
@@ -377,7 +387,7 @@ class CustomerSearch extends Component
                 $customers = GeneralCustomerSearch::getThirdPartyData($this->clientId, $this->searchBy, $this->search);
                 break;
             case 'withdrawShare':
-                $customers = GeneralCustomerSearch::getWithdrawShareData($this->clientId, $this->searchBy, $this->search);
+                $customers = GeneralCustomerSearch::getAllWithdrawShareData($this->clientId, $this->searchBy, $this->search);
                 break;
             case 'closeMembership':
                 $customers = GeneralCustomerSearch::getAllCloseMembership($this->clientId, $this->searchBy, $this->search);

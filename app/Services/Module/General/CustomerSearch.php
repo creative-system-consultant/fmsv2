@@ -5,7 +5,9 @@ namespace App\Services\Module\General;
 use App\Models\Cif\CifCustomer;
 use App\Models\Fms\DividendFinal;
 use App\Models\Fms\FmsAccountMaster;
+use App\Models\Fms\FmsContributionReqHistory;
 use App\Models\Fms\FmsMiscAccount;
+use App\Models\Fms\FmsShareReqHistory;
 use App\Models\Fms\FmsThirdParty;
 use App\Models\Siskop\SiskopContribution;
 use DB;
@@ -158,20 +160,22 @@ class CustomerSearch
         return $query->first();
     }
 
-    public static function getWithdrawShareData(
+    public static function getAllWithdrawShareData(
         $clientId,
         $searchBy = null,
         $search = null
     ) {
-        $query = CifCustomer::select(
-            'CIF.CUSTOMERS.uuid',
+        $query = FmsShareReqHistory::select(
+            'FMS.SHARES_REQ_HISTORY.mbr_no',
             'CIF.CUSTOMERS.name',
-            'FMS.MEMBERSHIP.mbr_no',
             'FMS.MEMBERSHIP.total_share',
             'FMS.MEMBERSHIP.last_payment_date',
         )
-            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', 'CIF.CUSTOMERS.id')
+            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', 'FMS.SHARES_REQ_HISTORY.mbr_no')
+            ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', 'FMS.MEMBERSHIP.cif_id')
+            ->where('FMS.SHARES_REQ_HISTORY.direction', 'sell')
             ->where('FMS.MEMBERSHIP.total_share', '>', 500)
+            ->where('FMS.SHARES_REQ_HISTORY.client_id', $clientId)
             ->where('CIF.CUSTOMERS.client_id', $clientId)
             ->where('FMS.MEMBERSHIP.client_id', $clientId);
 
@@ -180,6 +184,30 @@ class CustomerSearch
         }
 
         return $query->paginate(10);
+    }
+
+    public static function getWithdrawShareData(
+        $clientId = null,
+        $mbrNo = null
+    ) {
+        $query = FmsShareReqHistory::select(
+            'FMS.SHARES_REQ_HISTORY.mbr_no',
+            'CIF.CUSTOMERS.name',
+            'FMS.MEMBERSHIP.total_share',
+            'FMS.MEMBERSHIP.last_payment_date',
+            'CIF.CUSTOMERS.identity_no',
+            'CIF.CUSTOMERS.bank_id',
+            'CIF.CUSTOMERS.bank_acct_no'
+        )
+            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', 'FMS.SHARES_REQ_HISTORY.mbr_no')
+            ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', 'FMS.MEMBERSHIP.cif_id')
+            ->where('FMS.SHARES_REQ_HISTORY.direction', 'sell')
+            ->where('FMS.SHARES_REQ_HISTORY.mbr_no', $mbrNo)
+            ->where('FMS.SHARES_REQ_HISTORY.client_id', $clientId)
+            ->where('CIF.CUSTOMERS.client_id', $clientId)
+            ->where('FMS.MEMBERSHIP.client_id', $clientId);
+
+        return $query->first();
     }
 
     public static function getAllCloseMembership(
@@ -460,23 +488,24 @@ class CustomerSearch
         $searchBy = null,
         $search = null
     ) {
-        $query = SiskopContribution::select(
-            'SISKOP.CONTRIBUTION.uuid',
-            'CIF.CUSTOMERS.mbr_no',
-            'CIF.CUSTOMERS.name',
-            'CIF.CUSTOMERS.bank_id',
-            'CIF.CUSTOMERS.bank_acct_no',
-            'CIF.CUSTOMERS.identity_no',
-            'SISKOP.CONTRIBUTION.approved_amt',
-            'SISKOP.CONTRIBUTION.start_approved',
-            'CIF.CUSTOMERS.email',
-            'FMS.MEMBERSHIP.total_contribution')
-            ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'SISKOP.CONTRIBUTION.cust_id')
-            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', '=', 'CIF.CUSTOMERS.id')
-            ->where('SISKOP.CONTRIBUTION.direction', 'withdraw')
-            ->where('SISKOP.CONTRIBUTION.client_id', $clientId)
+        $query = FmsContributionReqHistory::select(
+                'FMS.CONTRIBUTION_REQ_HISTORY.mbr_no',
+                'CIF.CUSTOMERS.name',
+                'CIF.CUSTOMERS.bank_id',
+                'CIF.CUSTOMERS.bank_acct_no',
+                'CIF.CUSTOMERS.identity_no',
+                'FMS.CONTRIBUTION_REQ_HISTORY.approved_amt',
+                'FMS.CONTRIBUTION_REQ_HISTORY.start_approved',
+                'CIF.CUSTOMERS.email',
+                'FMS.MEMBERSHIP.total_contribution')
+            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.CONTRIBUTION_REQ_HISTORY.mbr_no')
+            ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'FMS.MEMBERSHIP.cif_id')
+            ->where('FMS.CONTRIBUTION_REQ_HISTORY.client_id', $clientId)
+            ->where('FMS.MEMBERSHIP.client_id', $clientId)
             ->where('CIF.CUSTOMERS.client_id', $clientId)
-            ->where('FMS.MEMBERSHIP.client_id', $clientId);
+            ->where('FMS.MEMBERSHIP.no_of_cont_withdrawal', '<', '5')
+            ->where('FMS.CONTRIBUTION_REQ_HISTORY.req_status', '1')
+            ->where('FMS.MEMBERSHIP.mbr_status', 'A');
 
         if ($search && $searchBy) {
             $query->where($searchBy, 'like', '%' . $search . '%');
@@ -487,26 +516,27 @@ class CustomerSearch
 
     public static function getContributionWithdrawalData(
         $clientId = null,
-        $uuid = null
+        $mbrNo = null
     ) {
-        $query = SiskopContribution::select(
-            'SISKOP.CONTRIBUTION.uuid',
-            'CIF.CUSTOMERS.mbr_no',
+        $query = FmsContributionReqHistory::select(
+            'FMS.CONTRIBUTION_REQ_HISTORY.mbr_no',
             'CIF.CUSTOMERS.name',
             'CIF.CUSTOMERS.bank_id',
             'CIF.CUSTOMERS.bank_acct_no',
             'CIF.CUSTOMERS.identity_no',
-            'SISKOP.CONTRIBUTION.approved_amt',
-            'SISKOP.CONTRIBUTION.start_approved',
+            'FMS.CONTRIBUTION_REQ_HISTORY.approved_amt',
+            'FMS.CONTRIBUTION_REQ_HISTORY.start_approved',
             'CIF.CUSTOMERS.email',
             'FMS.MEMBERSHIP.total_contribution')
-            ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'SISKOP.CONTRIBUTION.cust_id')
-            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', '=', 'CIF.CUSTOMERS.id')
-            ->where('SISKOP.CONTRIBUTION.direction', 'withdraw')
-            ->where('SISKOP.CONTRIBUTION.client_id', $clientId)
-            ->where('CIF.CUSTOMERS.client_id', $clientId)
-            ->where('FMS.MEMBERSHIP.client_id', $clientId)
-            ->where('SISKOP.CONTRIBUTION.uuid', $uuid);
+        ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.CONTRIBUTION_REQ_HISTORY.mbr_no')
+        ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'FMS.MEMBERSHIP.cif_id')
+        ->where('FMS.CONTRIBUTION_REQ_HISTORY.client_id', $clientId)
+        ->where('FMS.MEMBERSHIP.client_id', $clientId)
+        ->where('CIF.CUSTOMERS.client_id', $clientId)
+        ->where('FMS.MEMBERSHIP.no_of_cont_withdrawal', '<', '5')
+        ->where('FMS.CONTRIBUTION_REQ_HISTORY.req_status', '1')
+        ->where('FMS.MEMBERSHIP.mbr_status', 'A')
+        ->where('FMS.CONTRIBUTION_REQ_HISTORY.mbr_no', $mbrNo);
 
         return $query->first();
     }

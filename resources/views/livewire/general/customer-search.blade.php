@@ -322,7 +322,7 @@
                                                 $item->mbr_no,
                                                 $item->name,
                                                 $item->approved_amt ?? 0,
-                                                $item->start_approved ?? '2023-12-01',
+                                                $item->start_approved ?? '-',
                                                 null // placeholder for the button
                                             ];
                                             @endphp
@@ -345,7 +345,7 @@
                                                 $wireClickFunction = 'selectedAccNo(\''.$item->account_no.'\')';
                                             } elseif($customQuery == 'thirdParty') {
                                                 $wireClickFunction = 'selectedId(\''.$item->id.'\')';
-                                            } elseif($customQuery == 'miscellaneousOut' || $customQuery == 'dividendWithdrawal') {
+                                            } elseif($customQuery == 'miscellaneousOut' || $customQuery == 'dividendWithdrawal' || $customQuery == 'withdrawContribution' || 'withdrawShare') {
                                                 $wireClickFunction = 'selectedMbr(\''.$item->mbr_no.'\')';
                                             }  else {
                                                 $wireClickFunction = 'selectedUuid(\''.$item->uuid.'\')';
