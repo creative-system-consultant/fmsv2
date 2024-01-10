@@ -12,13 +12,12 @@ class FmsMiscAccount extends Model
     use HasFactory;
     protected $table   = 'FMS.MISC_ACCOUNT';
     protected $guarded = [];
-
+    protected $primaryKey = 'seq';
 
     public function membership()
     {
         return $this->belongsTo(Membership::class, 'mbr_no', 'mbr_no');
     }
-
 
     public function bank()
     {
