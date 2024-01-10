@@ -53,8 +53,8 @@ class WithdrawShare extends Component
         $this->clientId = (int) auth()->user()->client_id;
         $this->startDate = ActgPeriod::determinePeriodRange()['startDate'];
         $this->endDate = ActgPeriod::determinePeriodRange()['endDate'];
-        $this->refBank = BankService::getAllRefBanks();
-        $this->refBankIbt = BankIbtService::getAllRefBankIbts();
+        $this->refBank = BankService::getAllRefBanks($this->clientId);
+        $this->refBankIbt = BankIbtService::getAllRefBankIbts($this->clientId);
         $this->minShare = (float) FmsGlobalParm::getAllFmsGlobalParm()->MIN_SHARE;
         $this->txnCode = '3104';
     }

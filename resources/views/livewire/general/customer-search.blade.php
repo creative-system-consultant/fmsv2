@@ -345,7 +345,7 @@
                                                 $wireClickFunction = 'selectedAccNo(\''.$item->account_no.'\')';
                                             } elseif($customQuery == 'thirdParty') {
                                                 $wireClickFunction = 'selectedId(\''.$item->id.'\')';
-                                            } elseif($customQuery == 'miscellaneousOut' || $customQuery == 'dividendWithdrawal' || $customQuery == 'withdrawContribution' || 'withdrawShare') {
+                                            } elseif($customQuery == 'miscellaneousOut' || $customQuery == 'dividendWithdrawal' || $customQuery == 'withdrawContribution' || $customQuery == 'withdrawShare') {
                                                 $wireClickFunction = 'selectedMbr(\''.$item->mbr_no.'\')';
                                             }  else {
                                                 $wireClickFunction = 'selectedUuid(\''.$item->uuid.'\')';

@@ -43,7 +43,7 @@ class MembersTransaction extends Component
 
     public function mount()
     {
-        $this->refBankIbt = BankIbtService::getAllRefBankIbts();
+        $this->refBankIbt = BankIbtService::getAllRefBankIbts($this->clientId);
 
         $miscAcc = FmsMiscAccount::getFmsMiscAccountByMbrNo($this->mbrNo);
         ($miscAcc->misc_pv_no)

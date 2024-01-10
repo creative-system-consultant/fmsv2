@@ -52,8 +52,8 @@ class CloseMembership extends Component
         $this->clientId = (int) auth()->user()->client_id;
         $this->startDate = ActgPeriod::determinePeriodRange()['startDate'];
         $this->endDate = ActgPeriod::determinePeriodRange()['endDate'];
-        $this->refBank = BankService::getAllRefBanks();
-        $this->refBankIbt = BankIbtService::getAllRefBankIbts();
+        $this->refBank = BankService::getAllRefBanks($this->clientId);
+        $this->refBankIbt = BankIbtService::getAllRefBankIbts($this->clientId);
         $this->txnCode = '3101';
     }
 
@@ -64,6 +64,7 @@ class CloseMembership extends Component
         $this->customer = $customer;
         $this->bankMember = $customer['bank_id'];
         $this->mbrNo = (string) $customer['mbr_no'];
+        $this->txnAmt = $customer['total_contribution'] + $customer['total_share'] + $customer['misc_amt'] + $customer['bal_dividen'];
         $this->saveButton = $this->bankMember && $customer['bank_acct_no'];
         $this->ic = $customer['identity_no'];
         $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);

@@ -371,6 +371,8 @@ class CustomerSearch extends Component
                 'mbrSelected',
                 customer: $customer,
             );
+        } else {
+            $this->reset('name', 'searchMbrNoValue', 'searchMiscAmtValue', 'searchBalDividenValue', 'searchTotContributionAmt', 'searchTotShareAmt');
         }
     }
 

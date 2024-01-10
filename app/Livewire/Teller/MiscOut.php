@@ -59,8 +59,8 @@ class MiscOut extends Component
         $this->clientId = (int) auth()->user()->client_id;
         $this->startDate = ActgPeriod::determinePeriodRange()['startDate'];
         $this->endDate = ActgPeriod::determinePeriodRange()['endDate'];
-        $this->refBank = BankService::getAllRefBanks();
-        $this->refBankIbt = BankIbtService::getAllRefBankIbts();
+        $this->refBank = BankService::getAllRefBanks($this->clientId);
+        $this->refBankIbt = BankIbtService::getAllRefBankIbts($this->clientId);
 
         $this->categoryList = [
             ['name' => 'contribution', 'code' => '2220', 'icon' => 'credit-card'],

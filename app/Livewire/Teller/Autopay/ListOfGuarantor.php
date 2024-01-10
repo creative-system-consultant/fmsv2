@@ -52,7 +52,7 @@ class ListOfGuarantor extends Component
 
     public function mount()
     {
-        $this->refBankIbt = BankIbtService::getAllRefBankIbts();
+        $this->refBankIbt = BankIbtService::getAllRefBankIbts($this->clientId);
     }
 
     public function generateExcel()

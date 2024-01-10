@@ -28,7 +28,7 @@ class MembersBankInfo extends Component
 
     public function mount()
     {
-        $this->refBank = BankService::getAllRefBanks();
+        $this->refBank = BankService::getAllRefBanks($this->clientId);
 
         $cifCustAcc = CifCustomer::getCifCustomerByIc($this->ic);
         $this->bankMember = $cifCustAcc->bank_id ?? null;
