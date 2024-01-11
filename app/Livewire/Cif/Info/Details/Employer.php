@@ -13,7 +13,8 @@ class Employer extends Component
 
     public function mount()
     {
-        $customerInfo = CifCustomer::with('employer', 'employer.address')->where('uuid', $this->uuid)->where('client_id', $this->clientID)->first();
+        $clientID = auth()->user()->client_id;
+        $customerInfo = CifCustomer::with('employer', 'employer.address')->where('uuid', $this->uuid)->where('client_id', $clientID)->first();
         $job_group = RefJobGroups::select('groups')->where('id',  $customerInfo->job_group_id)->first();
         $job_status = RefJobStatus::select('description')->where('id',  $customerInfo->job_status_id)->first();
 
