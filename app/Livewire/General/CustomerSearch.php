@@ -215,7 +215,7 @@ class CustomerSearch extends Component
     private function getIdData($id)
     {
         if ($this->customQuery == 'thirdParty') {
-            $customer = GeneralCustomerSearch::getThirdPartyIdData($id);
+            $customer = GeneralCustomerSearch::getThirdPartyIdData($this->clientId, $id);
         }
 
         $this->name = $customer->name;

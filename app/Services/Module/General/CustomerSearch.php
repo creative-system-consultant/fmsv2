@@ -118,17 +118,19 @@ class CustomerSearch
             'FMS.THIRDPARTY_LIST.transaction_amt',
             'FMS.MEMBERSHIP.total_contribution',
             'FMS.MISC_ACCOUNT.misc_amt',
-            'REF.THIRDPARTY.description',
+            DB::raw('FMS.uf_get_pro_3rdparty(FMS.THIRDPARTY_LIST.client_id, FMS.THIRDPARTY_LIST.institution_code) as description'),
             'FMS.THIRDPARTY_LIST.mode',
             'FMS.THIRDPARTY_LIST.status',
             'FMS.THIRDPARTY_LIST.status_effective_dt',
-            'FMS.THIRDPARTY_LIST.remarks',
+            'FMS.THIRDPARTY_LIST.remarks'
         )
             ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', 'FMS.THIRDPARTY_LIST.mbr_no')
             ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', 'FMS.MEMBERSHIP.cif_id')
-            ->join('REF.THIRDPARTY', 'REF.THIRDPARTY.id', 'FMS.THIRDPARTY_LIST.institution_code')
             ->join('FMS.MISC_ACCOUNT', 'FMS.MISC_ACCOUNT.mbr_no', 'FMS.THIRDPARTY_LIST.mbr_no')
-            ->where('REF.THIRDPARTY.client_id', $clientId)
+            ->where('FMS.THIRDPARTY_LIST.client_id', $clientId)
+            ->where('FMS.MEMBERSHIP.client_id', $clientId)
+            ->where('CIF.CUSTOMERS.client_id', $clientId)
+            ->where('FMS.MISC_ACCOUNT.client_id', $clientId)
             ->where('flag', null)
             ->where('status', '<>', '2');
 
@@ -139,7 +141,7 @@ class CustomerSearch
         return $query->paginate(10);
     }
 
-    public static function getThirdPartyIdData($id)
+    public static function getThirdPartyIdData($clientId, $id)
     {
         $query = FmsThirdParty::select(
             'FMS.THIRDPARTY_LIST.id',
@@ -147,15 +149,17 @@ class CustomerSearch
             'CIF.CUSTOMERS.bank_id',
             'CIF.CUSTOMERS.bank_acct_no',
             'FMS.THIRDPARTY_LIST.mbr_no',
-            'REF.THIRDPARTY.description',
+            DB::raw('FMS.uf_get_pro_3rdparty(FMS.THIRDPARTY_LIST.client_id, FMS.THIRDPARTY_LIST.institution_code) as description'),
             'FMS.THIRDPARTY_LIST.transaction_amt',
             'FMS.THIRDPARTY_LIST.mode',
             'FMS.THIRDPARTY_LIST.institution_code'
         )
             ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', 'FMS.THIRDPARTY_LIST.mbr_no')
             ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', 'FMS.MEMBERSHIP.cif_id')
-            ->join('REF.THIRDPARTY', 'REF.THIRDPARTY.id', 'FMS.THIRDPARTY_LIST.institution_code')
-            ->where('FMS.THIRDPARTY_LIST.id', $id);
+            ->where('FMS.THIRDPARTY_LIST.id', $id)
+            ->where('FMS.THIRDPARTY_LIST.client_id', $clientId)
+            ->where('FMS.MEMBERSHIP.client_id', $clientId)
+            ->where('CIF.CUSTOMERS.client_id', $clientId);
 
         return $query->first();
     }
