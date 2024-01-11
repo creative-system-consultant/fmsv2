@@ -657,14 +657,16 @@ class CommonPage extends Component
             ]);
         }
 
-        if ($result) {
-            $messageArray = (array)$result[0];
-            $message = $messageArray[""];
-
-            $this->dialog()->info('Info!', $message);
-        } else {
+        if (!$result) {
             $this->dialog()->error('Error!', 'Something went wrong.');
+            return;
         }
+
+        $message = (array) $result[0];
+        $dialogType = $message["SP_RETURN_CODE"] == 0 ? 'success' : 'error';
+        $messageText = $message["SP_RETURN_CODE"] == 0 ? 'Success!' : 'Error!';
+
+        $this->dialog()->$dialogType($messageText, $message["SP_RETURN_MSG"]);
 
         if ($this->module == 'financingRepayment' || $this->module == 'refundAdvance') {
             $this->dispatch('refreshComponentAccNo', accNo: $this->accNo)->to(CustomerSearch::class);
