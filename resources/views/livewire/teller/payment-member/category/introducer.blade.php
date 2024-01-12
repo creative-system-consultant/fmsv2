@@ -22,7 +22,11 @@
                 </x-slot>
                 <x-slot name="tbody">
                     @forelse($lists as $list)
-                        <tr>
+                        <tr
+                            @if($customer && $list->customer->mbr_no == $customer->mbr_no && $list->customer->client_id == $customer->client_id)
+                                class="bg-green-300"
+                            @endif
+                        >
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700">
                                 {{ $list->customer->mbr_no }}
                             </x-table.table-body>
@@ -39,15 +43,11 @@
                                 {{ $list->introducer->cifCustomer->identity_no }}
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                <div class="flex items-center space-x-2">
-                                    <x-button
-                                        xs
-                                        icon="cursor-click"
-                                        label="select"
-                                        green
-                                        wire:click="selectIntroducer('{{ $list->customer->mbr_no }}')"
-                                    />
-                                </div>
+                                @unless($customer && $list->customer->mbr_no == $customer->mbr_no && $list->customer->client_id == $customer->client_id)
+                                    <div class="flex items-center space-x-2">
+                                        <x-button xs icon="cursor-click" label="select" green wire:click="selectIntroducer('{{ $list->customer->mbr_no }}')" />
+                                    </div>
+                                @endunless
                             </x-table.table-body>
                         </tr>
                     @empty

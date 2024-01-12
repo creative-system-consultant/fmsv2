@@ -28,6 +28,7 @@ class Miscellaneous extends Component
 
         $MiscStmt = FmsMiscStatement::with('transaction')
             ->where('mbr_no', $this->customer->membership->mbr_no)
+            ->where('client_id', $clientID)
             ->whereBetween(DB::raw('cast(transaction_date as date)'), [$this->startDateMisc, $this->endDateMisc])
             ->orderby('id', 'asc')
             ->paginate(10);
