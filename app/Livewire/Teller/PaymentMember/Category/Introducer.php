@@ -62,7 +62,10 @@ class Introducer extends Component
 
     public function confirmSelectIntroducer($mbrNo)
     {
-        $user = IntroducerList::with('customer', 'introducer')->where('mbr_no', $mbrNo)->first();
+        $user = IntroducerList::with('customer', 'introducer')
+                                ->where('mbr_no', $mbrNo)
+                                ->where('client_id', $this->clientId)
+                                ->first();
 
         $this->customer = $user;
         $this->bank = $user->introducer->cifCustomer->bank_id;
@@ -122,8 +125,21 @@ class Introducer extends Component
 
     public function render()
     {
+        $clientId = $this->clientId;
+
+        $lists = IntroducerList::with([
+            'customer' => function ($query) use ($clientId) {
+                $query->where('client_id', $clientId);
+            },
+            'introducer' => function ($query) use ($clientId) {
+                $query->where('client_id', $clientId);
+            },
+        ])->where('client_id', $clientId)
+            ->paginate(10);
+
+
         return view('livewire.teller.payment-member.category.introducer', [
-            'lists' => IntroducerList::with('customer', 'introducer')->paginate(10)
+            'lists' => $lists
         ]);
     }
 }
