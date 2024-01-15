@@ -124,7 +124,7 @@
                                 N/A
                             </x-table.table-body> --}}
                             <x-table.table-body colspan="1" class="text-left">
-                                <x-button primary label="Statement" sm />
+                                <x-button wire:click="statement({{ $item->id }})" primary label="Statement" sm />
                                 <x-button wire:click="openUpdateThirdPartyModal({{ $item->id }})" warning label="Edit" sm />
                                 <x-button wire:click="delete({{ $item->id }})" negative label="Delete" sm/>
                             </x-table.table-body>
@@ -138,4 +138,91 @@
             </x-table.table>
         </div>
     </x-card>
+
+    <x-modal.card title="statement Info" align="center" max-width="8xl" blur wire:model.defer="thirdPartyModalStatement">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <x-datetime-picker
+                    label="Start Date"
+                    wire:model="startDate"
+                    without-time=true
+                    display-format="DD/MM/YYYY"
+                />
+                <x-datetime-picker
+                    label="End Date"
+                    wire:model="startDate"
+                    without-time=true
+                    display-format="DD/MM/YYYY"
+                />
+            </div>
+            <div class="flex items-center space-x-2">
+                <x-button
+                    sm
+                    icon="document-report"
+                    green
+                    label="Excel"
+                    wire:click=""
+                />
+                <x-button
+                    sm
+                    icon="document-report"
+                    orange
+                    label="Pdf"
+                    wire:click=""
+                />
+            </div>
+        </div>
+        <div class="mt-4">
+            <x-table.table>
+                <x-slot name="thead">
+                    <x-table.table-header class="text-left" value="TRANSACTION AMOUNT" sort="" />
+                    <x-table.table-header class="text-left" value="PAYMENT MODE" sort="" />
+                    <x-table.table-header class="text-left" value="TOTAL AMOUNT" sort="" />
+                    <x-table.table-header class="text-left" value="TRANSACTION DATE" sort="" />
+                    <x-table.table-header class="text-left" value="REMARKS" sort="" />
+                    <x-table.table-header class="text-left" value="CREATED BY" sort="" />
+                    <x-table.table-header class="text-left" value="CREATED AT" sort="" />
+                    <x-table.table-header class="text-left" value="ACTION" sort="" />
+                    
+                
+                </x-slot>
+                <x-slot name="tbody">
+                        <tr>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
+                                <p>10.00</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>Payment by Salary Deductions</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
+                                <p>10.00</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>31/01/2022</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>JAN 22 - CIMB</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>N/A</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>21/05/202212:05:00</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <div class="flex items-center justify-center">
+                                    <x-button
+                                        xs
+                                        icon="document-report"
+                                        primary
+                                        label="RECEIPT"
+                                        wire:click=""
+                                    />
+                                </div>
+                            </x-table.table-body>
+                        </tr>
+                </x-slot>
+            </x-table.table>
+        </div>
+    </x-modal.card>
 </div>

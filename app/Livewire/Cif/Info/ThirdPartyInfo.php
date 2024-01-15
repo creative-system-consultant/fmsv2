@@ -17,7 +17,7 @@ class ThirdPartyInfo extends Component
 {
     use Actions, WithPagination;
     public $customer, $uuid, $ThirdPartyStatement, $priority, $status, $transaction_amt, $status_effective_dt, $RefThirdParty, $mode, $institution_code, $expiry_dt, $remarks, $MembershipInfo, $ThirdPartys, $clientID;
-    public $thirdPartyModal, $modalTitle = 'Create', $modalSubmit;
+    public $thirdPartyModal, $thirdPartyModalStatement, $modalTitle = 'Create', $modalSubmit;
 
     protected $rules = [
         'transaction_amt'                       => 'required',
@@ -41,10 +41,12 @@ class ThirdPartyInfo extends Component
 
     public function statement($id)
     {
-        $this->ThirdPartyStatement = FmsThirdPartyStatement::with('detail')
-            ->where('mbr_id', $this->MembershipInfo->mbr_no)
-            ->where('id_thirdparty', $id)
-            ->orderby('id')->get();
+        // $this->ThirdPartyStatement = FmsThirdPartyStatement::with('detail')
+        //     ->where('mbr_id', $this->MembershipInfo->mbr_no)
+        //     ->where('id_thirdparty', $id)
+        //     ->orderby('id')->get();
+
+        $this->thirdPartyModalStatement = true;
     }
 
     public function resetThirdParty()
