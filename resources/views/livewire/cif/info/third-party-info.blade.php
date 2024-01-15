@@ -1,63 +1,67 @@
 <div>
     <x-card title="Third Party Information">
         <x-slot name="action">
-            <x-button onclick="$openModal('create-tp')" icon="plus" primary label="Create" sm />
+            <x-button wire:click="openCreateThirdPartyModal" icon="plus" primary label="Create" sm />
         </x-slot>
         <! -- start create third party modal -->
-        <x-modal.card  title="Create Third Party" align="center"  wire:model.defer="create-tp">
+        <x-modal.card  title="{{ $modalTitle }} Third Party" align="center"  wire:model.defer="thirdPartyModal">
             <div class="grid grid-cols-2 gap-4">
-                <x-native-select label="Mode" wire:model="" >
+                <x-native-select label="Mode" wire:model.live="mode" >
+                    <option hidden>Please Choose</option>
                     <option value="1">One Of Payment</option>
                     <option value="2">No Expiry</option>
-                    <option value="3" x-hide:selected="selected === '3'">Period</option>
+                    <option value="3">Period</option>
                 </x-native-select>
 
                 <x-native-select label="Description" wire:model="institution_code" >
-                    @forelse ($RefThirdParty as $type)
-                    <option value="{{ $type->id }}">{{ $type->description }}</option>
-                    @empty @endforelse
+                    <option hidden>Please Choose</option>
+                    @foreach ($RefThirdParty as $type)
+                        <option value="{{ $type->id }}">{{ $type->description }}</option>
+                    @endforeach
                 </x-native-select>
 
-                <x-input 
+                <x-input
                     label="Trasaction Amount"
                     wire:model="transaction_amt"
                 />
 
-                <x-input 
+                <x-input
                     label="Priority"
                     wire:model="priority"
                 />
 
-                <x-input 
+                <x-input
                     label="Effective Date"
                     type="date"
                     wire:model="status_effective_dt"
                 />
 
-                <x-input 
-                    label="Expiry Date"
-                    type="date"
-                    wire:model="expiry_dt"
-                />
+                <div class="{{ $mode == 3 ? 'show' : 'hidden' }}">
+                    <x-input
+                        label="Expiry Date"
+                        type="date"
+                        wire:model="expiry_dt"
+                    />
+                </div>
             </div>
             <div class="grid grid-cols-1 mt-4">
-                <x-textarea 
-                    label="Remarks" 
-                    wire:model=""  
+                <x-textarea
+                    label="Remarks"
+                    wire:model="remarks"
                 />
             </div>
             <x-slot name="footer">
                 <div class="flex justify-end gap-x-4">
                     <div class="flex">
                         <x-button flat label="Cancel" x-on:click="close" />
-                        <x-button primary label="Save" wire:click="" />
+                        <x-button primary label="Save" wire:click="{{ $modalSubmit }}" />
                     </div>
                 </div>
             </x-slot>
         </x-modal.card>
         <! -- end create third party modal -->
 
-        <div class="grid grid-cols-1  mt-2">
+        <div class="grid grid-cols-1 mt-2">
             <x-table.table>
                 <x-slot name="thead">
                     <x-table.table-header class="text-left" value="INSTITUTION ID" sort="" />
@@ -74,133 +78,157 @@
                 </x-slot>
                 <x-slot name="tbody">
                     @forelse($ThirdPartys as $item)
-
-                    <tr>
-                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        <p>{{optional($item->institution)->description}}</p>
-
-                    </x-table.table-body>
-
-                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        <p>{{ number_format($item->transaction_amt, 2) }}</p>
-
-                    </x-table.table-body>
-
-                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        <p>{{ date('d/m/Y', strtotime($item->status_effective_dt)) }}</p>
-
-                    </x-table.table-body>
-
-                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        <p>{{ $item->expiry_dt ?  date('d/m/Y', strtotime($item->expiry_dt)) : 'N/A' }} </p>
-
-                    </x-table.table-body>
-
-                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        <p>{{ $item->priority }}</p>
-
-                    </x-table.table-body>
-
-                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        <p>
-                            @if($item->mode == '1')
-                                One Of Payment
-                            @elseif($item->mode == '2')
-                                No Expiry
-                            @elseif($item->mode == '3')
-                                Period
-                            @endif
-                        </p>
-
-                    </x-table.table-body>
-
-                    {{-- <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        N/A
-                    </x-table.table-body> --}}
-
-                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        @if($item->status == '1')
-                            ACTIVE
-                        @elseif($item->status == '2')
-                            CLOSED
-                        @elseif($item->status == '3')
-                            FREEZE
-                        @endif
-                    </x-table.table-body>
-
-                    {{-- <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        N/A
-                    </x-table.table-body>
-
-                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        N/A
-                    </x-table.table-body> --}}
-
-
-                    <x-table.table-body colspan="1" class="text-left">
-                        <x-button  primary label="Statement" sm />
-                        <x-button  onclick="$openModal('edit-tp')" warning label="Edit" sm />
-                        <x-button  negative label="Delete" sm/>
-                    </x-table.table-body>
-
-                    </tr>
+                        <tr>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{optional($item->institution)->description}}</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{ number_format($item->transaction_amt, 2) }}</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{ date('d/m/Y', strtotime($item->status_effective_dt)) }}</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{ $item->expiry_dt ?  date('d/m/Y', strtotime($item->expiry_dt)) : 'N/A' }} </p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{ $item->priority }}</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>
+                                    @if($item->mode == '1')
+                                        One Of Payment
+                                    @elseif($item->mode == '2')
+                                        No Expiry
+                                    @elseif($item->mode == '3')
+                                        Period
+                                    @endif
+                                </p>
+                            </x-table.table-body>
+                            {{-- <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                N/A
+                            </x-table.table-body> --}}
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                @if($item->status == '1')
+                                    ACTIVE
+                                @elseif($item->status == '2')
+                                    CLOSED
+                                @elseif($item->status == '3')
+                                    FREEZE
+                                @endif
+                            </x-table.table-body>
+                            {{-- <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                N/A
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                N/A
+                            </x-table.table-body> --}}
+                            <x-table.table-body colspan="1" class="text-left">
+                                <x-button wire:click="statement({{ $item->id }})" primary label="Statement" sm />
+                                <x-button wire:click="openUpdateThirdPartyModal({{ $item->id }})" warning label="Edit" sm />
+                                <x-button wire:click="delete({{ $item->id }})" negative label="Delete" sm/>
+                            </x-table.table-body>
+                        </tr>
                     @empty
-                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
-                        <x-no-data title="No data"/>
-                    </x-table.table-body>
+                        <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
+                            <x-no-data title="No data"/>
+                        </x-table.table-body>
                     @endforelse
                 </x-slot>
             </x-table.table>
         </div>
     </x-card>
-    <! -- start edit third party modal -->
-    <x-modal.card  title="Edit Third Party" align="center"  wire:model.defer="edit-tp">
-        <div class="grid grid-cols-2 gap-4">
-            <x-native-select label="Mode" wire:model="" >
-                <option></option>
-            </x-native-select>
 
-            <x-native-select label="Description" wire:model="" >
-                <option></option>
-            </x-native-select>
-
-            <x-input 
-                label="Trasaction Amount"
-                wire:model=""
-            />
-
-            <x-input 
-                label="Priority"
-                wire:model=""
-            />
-
-            <x-input 
-                label="Effective Date"
-                type="date"
-                wire:model=""
-            />
-
-            <x-input 
-                label="Expiry Date"
-                type="date"
-                wire:model=""
-            />
-        </div>
-        <div class="grid grid-cols-1 mt-4">
-            <x-textarea 
-                label="Remarks" 
-                wire:model=""  
-            />
-        </div>
-        <x-slot name="footer">
-            <div class="flex justify-end gap-x-4">
-                <div class="flex">
-                    <x-button flat label="Cancel" x-on:click="close" />
-                    <x-button primary label="Save" wire:click="" />
-                </div>
+    <x-modal.card title="Statement Info" align="center" max-width="7xl" blur wire:model.defer="thirdPartyModalStatement">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <x-datetime-picker
+                    label="Start Date"
+                    wire:model.live="startDate"
+                    without-time=true
+                    display-format="DD/MM/YYYY"
+                />
+                <x-datetime-picker
+                    label="End Date"
+                    wire:model.live="endDate"
+                    without-time=true
+                    display-format="DD/MM/YYYY"
+                />
             </div>
-        </x-slot>
+            <div class="flex items-center space-x-2">
+                <x-button
+                    sm
+                    icon="document-report"
+                    green
+                    label="Excel"
+                    wire:click=""
+                />
+                <x-button
+                    sm
+                    icon="document-report"
+                    orange
+                    label="Pdf"
+                    wire:click=""
+                />
+            </div>
+        </div>
+        <div class="mt-4">
+            <x-table.table>
+                <x-slot name="thead">
+                    <x-table.table-header class="text-left" value="TRANSACTION AMOUNT" sort="" />
+                    <x-table.table-header class="text-left" value="PAYMENT MODE" sort="" />
+                    <x-table.table-header class="text-left" value="TOTAL AMOUNT" sort="" />
+                    <x-table.table-header class="text-left" value="TRANSACTION DATE" sort="" />
+                    <x-table.table-header class="text-left" value="REMARKS" sort="" />
+                    <x-table.table-header class="text-left" value="CREATED BY" sort="" />
+                    <x-table.table-header class="text-left" value="CREATED AT" sort="" />
+                    <x-table.table-header class="text-left" value="ACTION" sort="" />
+                </x-slot>
+                <x-slot name="tbody">
+                    @forelse ($ThirdPartyStatement as $item)
+                        <tr>
+                            <x-table.table-body colspan="" class="text-xs font-medium {{ $item->detail->dr_cr == 'D' ? 'text-red-600' : 'text-gray-900' }} text-right">
+                                <p>
+                                    @if($item->detail->dr_cr == 'D')
+                                    -
+                                    @endif
+                                    {{number_format($item->transaction_amount,2)}}
+                                </p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{$item->mode_description}}</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-right text-gray-700">
+                                <p>{{$item->total_amount}}</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                {{ $item->transaction_date->format('d/m/Y') }}
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{$item->remarks ? $item->remarks: 'N/A'}}</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                {{ $item->creator->name }}
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                {{ $item->created_at->format('d/m/Y') }} <br>
+                                {{ $item->created_at->format('h:i:s A') }}
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <div class="flex items-center justify-center">
+                                    <x-button xs icon="document-report" primary label="RECEIPT" wire:click="" />
+                                </div>
+                            </x-table.table-body>
+                        </tr>
+                    @empty
+                        <tr>
+                            <x-table.table-body colspan="8" class="text-xs font-medium text-center text-gray-700 ">
+                                NO DATA
+                            </x-table.table-body>
+                        </tr>
+                    @endforelse
+                </x-slot>
+            </x-table.table>
+        </div>
     </x-modal.card>
-    <! -- end edit third party modal -->
-    
 </div>
