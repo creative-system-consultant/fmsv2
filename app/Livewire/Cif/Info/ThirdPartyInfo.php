@@ -17,6 +17,7 @@ class ThirdPartyInfo extends Component
 {
     use Actions, WithPagination;
     public $customer, $uuid, $ThirdPartyStatement, $priority, $status, $transaction_amt, $status_effective_dt, $RefThirdParty, $mode, $institution_code, $expiry_dt, $remarks, $MembershipInfo, $ThirdPartys, $clientID;
+    public $thirdPartyId, $startDate, $endDate;
     public $thirdPartyModal, $thirdPartyModalStatement, $modalTitle = 'Create', $modalSubmit;
 
     protected $rules = [
@@ -37,16 +38,35 @@ class ThirdPartyInfo extends Component
         $this->MembershipInfo = Membership::where('cif_id', $this->customer->id)->first();
         $this->clientID = auth()->user()->client_id;
         $this->ThirdPartyStatement      = [];
+
+        $this->startDate = now()->subYear()->format('Y-m-d');
+        $this->endDate = now()->format('Y-m-d');
+    }
+
+    public function updatedStartDate()
+    {
+        $this->getStatementData();
+    }
+
+    public function updatedEndDate()
+    {
+        $this->getStatementData();
     }
 
     public function statement($id)
     {
-        // $this->ThirdPartyStatement = FmsThirdPartyStatement::with('detail')
-        //     ->where('mbr_id', $this->MembershipInfo->mbr_no)
-        //     ->where('id_thirdparty', $id)
-        //     ->orderby('id')->get();
-
+        $this->thirdPartyId = $id;
+        $this->getStatementData();
         $this->thirdPartyModalStatement = true;
+    }
+
+    public function getStatementData()
+    {
+        $this->ThirdPartyStatement = FmsThirdPartyStatement::with('detail', 'creator')
+            ->where('mbr_no', $this->MembershipInfo->mbr_no)
+            ->where('id_thirdparty', $this->thirdPartyId)
+            ->whereBetween('transaction_date', [$this->startDate, $this->endDate])
+            ->orderby('id')->get();
     }
 
     public function resetThirdParty()

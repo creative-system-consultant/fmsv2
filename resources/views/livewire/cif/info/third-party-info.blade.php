@@ -139,18 +139,18 @@
         </div>
     </x-card>
 
-    <x-modal.card title="statement Info" align="center" max-width="8xl" blur wire:model.defer="thirdPartyModalStatement">
+    <x-modal.card title="Statement Info" align="center" max-width="7xl" blur wire:model.defer="thirdPartyModalStatement">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-2">
                 <x-datetime-picker
                     label="Start Date"
-                    wire:model="startDate"
+                    wire:model.live="startDate"
                     without-time=true
                     display-format="DD/MM/YYYY"
                 />
                 <x-datetime-picker
                     label="End Date"
-                    wire:model="startDate"
+                    wire:model.live="endDate"
                     without-time=true
                     display-format="DD/MM/YYYY"
                 />
@@ -183,44 +183,50 @@
                     <x-table.table-header class="text-left" value="CREATED BY" sort="" />
                     <x-table.table-header class="text-left" value="CREATED AT" sort="" />
                     <x-table.table-header class="text-left" value="ACTION" sort="" />
-                    
-                
                 </x-slot>
                 <x-slot name="tbody">
+                    @forelse ($ThirdPartyStatement as $item)
                         <tr>
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                <p>10.00</p>
+                            <x-table.table-body colspan="" class="text-xs font-medium {{ $item->detail->dr_cr == 'D' ? 'text-red-600' : 'text-gray-900' }} text-right">
+                                <p>
+                                    @if($item->detail->dr_cr == 'D')
+                                    -
+                                    @endif
+                                    {{number_format($item->transaction_amount,2)}}
+                                </p>
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                <p>Payment by Salary Deductions</p>
+                                <p>{{$item->mode_description}}</p>
                             </x-table.table-body>
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
-                                <p>10.00</p>
-                            </x-table.table-body>
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                <p>31/01/2022</p>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-right text-gray-700">
+                                <p>{{$item->total_amount}}</p>
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                <p>JAN 22 - CIMB</p>
+                                {{ $item->transaction_date->format('d/m/Y') }}
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                <p>N/A</p>
+                                <p>{{$item->remarks ? $item->remarks: 'N/A'}}</p>
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                <p>21/05/202212:05:00</p>
+                                {{ $item->creator->name }}
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                {{ $item->created_at->format('d/m/Y') }} <br>
+                                {{ $item->created_at->format('h:i:s A') }}
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <div class="flex items-center justify-center">
-                                    <x-button
-                                        xs
-                                        icon="document-report"
-                                        primary
-                                        label="RECEIPT"
-                                        wire:click=""
-                                    />
+                                    <x-button xs icon="document-report" primary label="RECEIPT" wire:click="" />
                                 </div>
                             </x-table.table-body>
                         </tr>
+                    @empty
+                        <tr>
+                            <x-table.table-body colspan="8" class="text-xs font-medium text-center text-gray-700 ">
+                                NO DATA
+                            </x-table.table-body>
+                        </tr>
+                    @endforelse
                 </x-slot>
             </x-table.table>
         </div>
