@@ -26,7 +26,7 @@ class Information extends Component
         $identityType = RefIdentityType::select('description')->where('id', $customerInfo->identity_type_id)->first();
         $gender = RefGender::select('description')->where('id', $customerInfo->gender_id)->first();
         $race = RefRace::select('description')->where('id', $customerInfo->race_id)->first();
-        $language = RefLanguage::select('description')->where('id', $customerInfo->language_id)->first();
+        // $language = RefLanguage::select('description')->where('id', $customerInfo->language_id)->first();
         $marital = RefMarital::select('description')->where('id', $customerInfo->marital_id)->first();
         $country = RefCountry::select('description')->where('id', $customerInfo->country_id)->first();
 
@@ -42,7 +42,7 @@ class Information extends Component
         $this->birth_date = $customerInfo->birth_date;
         $this->race_id = $race->description ?? '';
         $this->bumi = (($customerInfo->race_id != 6 || $customerInfo->race_id != 9 || $customerInfo->race_id != 14) ? 'Yes' : 'No');
-        $this->language_id = $language->description;
+        // $this->language_id = $language->description;
         $this->marital_id = $marital->description ?? '';
         $this->country_id = $country->description ?? '';
         $this->monthly_contribution = $membershipInfo->monthly_contribution;
