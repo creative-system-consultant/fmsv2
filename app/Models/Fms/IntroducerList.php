@@ -12,7 +12,7 @@ class IntroducerList extends Model
     protected $table   = 'FMS.INTRODUCER_LIST';
     protected $guarded = [];
 
-    public function customer()
+    public function membership()
     {
         return $this->hasOne(FmsMembership::class, 'mbr_no', 'mbr_no');
     }

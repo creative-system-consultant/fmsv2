@@ -167,7 +167,7 @@
                     @forelse ($introducers as $introducer)
                         <tr>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                {{ $introducer->customer->name }}
+                                {{ $introducer->membership->cifCustomer->name }}
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 {{ $introducer->introducer_mbr_no }}
