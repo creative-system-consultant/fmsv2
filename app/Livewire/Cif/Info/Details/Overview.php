@@ -18,7 +18,7 @@ class Overview extends Component
         $this->clientID = auth()->user()->client_id;
         $customerInfo = CifCustomer::where('uuid', $this->uuid)->where('client_id', $this->clientID)->first();
         $membershipInfo = Membership::where('cif_id', $customerInfo->id)->first();
-        $memberStatus = RefMemStatus::select('description')->where('id', $membershipInfo->status_id)->first();
+        $memberStatus = RefMemStatus::select('description')->where('mbr_status', $membershipInfo->mbr_status)->first();
         $bank_name = RefBank::select('description')->where('id',  $customerInfo->bank_id)->first();
         $paymentType = RefPaymentType::select('description')->where('id', $membershipInfo->payment_type)->first();
 

@@ -27,8 +27,6 @@
 
                 <x-input label="Bumiputra Status" placeholder="" wire:model="bumi" :disabled="true" />
 
-                <x-input label="Language ID" placeholder="" wire:model="language_id" :disabled="true" />
-
                 <x-input label="Marital ID" placeholder="" wire:model="marital_id" :disabled="true" />
 
                 <x-input label="Country ID" placeholder="" wire:model="country_id" :disabled="true" />
