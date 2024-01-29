@@ -38,15 +38,6 @@ class Info extends Component
             $address->delete();
         }
         unset($this->addresses[$key]);
-        // $this->dispatchBrowserEvent('swal', [
-        //     'title' => 'Deleted!',
-        //     'text'  => 'The detail has been deleted.',
-        //     'icon'  => 'success',
-        //     'showConfirmButton' => false,
-        //     'timer' => 1500,
-        // ]);
-
-        // $this->emit('deleteAddressShow', $key);
     }
 
     public function setState($index)
