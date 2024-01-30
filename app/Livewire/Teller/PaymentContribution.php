@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Teller;
 
-use App\Action\StoredProcedure\SpFmsUpTrxContributionIn;
+use App\Action\StoredProcedure\SpFmsUpTrxContribution;
 use App\Livewire\General\CustomerSearch;
 use App\Services\General\ActgPeriod;
 use App\Services\General\PopupService;
@@ -97,7 +97,7 @@ class PaymentContribution extends Component
 
     public function confirmSaveTransaction()
     {
-        $result = SpFmsUpTrxContributionIn::handle([
+        $result = SpFmsUpTrxContribution::handle([
             'clientId' => $this->clientId,
             'mbrNo' => $this->mbrNo,
             'txnAmt' => $this->txnAmt,
