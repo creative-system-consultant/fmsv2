@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Teller;
 
-use App\Action\StoredProcedure\SpFmsUpTrxContributionIn;
+use App\Action\StoredProcedure\SpFmsUpTrxContribution;
 use App\Livewire\General\CustomerSearch;
 use App\Livewire\Teller\General\MembersBankInfo;
 use App\Services\General\ActgPeriod;
@@ -82,7 +82,7 @@ class WithdrawContribution extends Component
 
     public function confirmSaveTransaction()
     {
-        $result = SpFmsUpTrxContributionIn::handle([
+        $result = SpFmsUpTrxContribution::handle([
             'clientId' => $this->clientId,
             'mbrNo' => $this->mbrNo,
             'txnAmt' => $this->txnAmt,
