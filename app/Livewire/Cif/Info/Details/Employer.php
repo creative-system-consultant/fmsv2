@@ -35,7 +35,7 @@ class Employer extends Component
     #[On('edit')]
     public function editData()
     {
-        $this->disabled = false;
+        // $this->disabled = false;
     }
 
     #[On('save')]
