@@ -15,13 +15,11 @@ class Address extends Component
     public $uuid, $editAddress = true;
     public $states, $countries, $addressTypes, $add1, $add2, $add3, $postcode, $town, $addresses;
 
-
     protected $rules = [
         'addresses.*.address1'                      => '',
         'addresses.*.postcode'                  => '',
         'addresses.*.town'                      => '',
         'addresses.*.state_id'                  => 'required',
-        'addresses.*.country_id'                => '',
         'addresses.*.address_type_id'           => 'required|distinct',
         'addresses.*.phone'                     => '',
         'addresses.*.fax'                       => '',
@@ -42,12 +40,21 @@ class Address extends Component
 
     public function mount()
     {
-        $customer = CifCustomer::where('uuid', $this->uuid)->first();
+        $clientID = auth()->user()->client_id;
+        $customer = CifCustomer::where('uuid', $this->uuid)->where('client_id', $clientID)->first();
 
-        $this->addresses                = ($customer->addresses) ? $customer->addresses->toArray() : 0;
         $this->states                   = RefState::all();
         $this->countries                = RefCountry::all();
         $this->addressTypes             = AddressType::whereIn('id', [2, 3, 11])->get();
+
+        if ($customer->addresses) {
+            $this->addresses = $customer->addresses->map(function ($address) {
+                $address->mail_flag = $address->mail_flag === '1'; // Convert '1' to true, otherwise false
+                return $address;
+            })->toArray();
+        } else {
+            $this->addresses = [];
+        }
     }
 
     public function editAddressbtn()
@@ -57,7 +64,6 @@ class Address extends Component
 
     public function saveAddress()
     {
-
         $this->rules['addresses.*.address_type_id'] = [
             'required',
             function ($attribute, $value, $fail) {
@@ -71,10 +77,8 @@ class Address extends Component
             }
         ];
 
-
         if (array_sum(array_column($this->addresses, 'mail_flag')) == 1) {
             foreach ($this->addresses as $index => $address) {
-
                 CifAddress::where('id', $address['id'])->update([
                     'mail_flag'         => $address['mail_flag'] == true ? '1' : 0,
                     'address_type_id'   => $address['address_type_id'],
@@ -84,16 +88,11 @@ class Address extends Component
                     'postcode'          => $address['postcode'],
                     'town'              => $address['town'],
                     'state_id'          => $address['state_id'],
-                    'country_id'        => $address['country_id'],
                     'phone'             => $address['phone'],
                     'fax'               => $address['fax'],
                     'updated_by'        => auth()->user()->id,
                     'updated_at'        => date("Y-m-d h:i:sa"),
                 ]);
-
-
-
-
 
                 if (isset($address['id'])) {
                     CifAddress::where('id', $address['id'])->update([
@@ -105,7 +104,6 @@ class Address extends Component
                         'postcode'          => $address['postcode'],
                         'town'              => $address['town'],
                         'state_id'          => $address['state_id'],
-                        'country_id'        => $address['country_id'],
                         'phone'             => $address['phone'],
                         'fax'               => $address['fax'],
                         'updated_by'        => auth()->user()->id,
@@ -124,7 +122,6 @@ class Address extends Component
                         'postcode'          => $address['postcode'],
                         'town'              => $address['town'],
                         'state_id'          => $address['state_id'],
-                        'country_id'        => $address['country_id'],
                         'phone'             => $address['phone'],
                         'fax'               => $address['fax'],
                         'updated_by'        => auth()->user()->id,
