@@ -13,7 +13,8 @@ class Info extends Component
 
     public function mount()
     {
-        $this->customer = CifCustomer::select('name', 'id')->where('uuid', $this->uuid)->first();
+        $clientID = auth()->user()->client_id;
+        $this->customer = CifCustomer::select('name', 'id')->where('uuid', $this->uuid)->where('client_id', $clientID)->first();
         $this->name = $this->customer->name;
         $this->cID = $this->customer->id;
 

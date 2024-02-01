@@ -15,10 +15,10 @@
                 <x-input label="Effective Retirement Date" placeholder="" wire:model="effective_retirement_date" :disabled=$disabled />
                 <x-input label="Entrance Fee" placeholder="" wire:model="entrance_fee" :disabled="true" />
                 <x-input label="Entrance Fee Date" placeholder="" wire:model="entrance_fee_date" :disabled="true" />
-                <x-native-select label="Select Bank" :options="$bankOptions" option-label="name" option-value="id" wire:model="bank_id" :disabled=$disabled />
+                <x-native-select label="Bank" placeholder="Select Bank" :options="$bankOptions" option-label="name" option-value="id" wire:model="bank_id" :disabled=$disabled />
                 <x-input label="Bank Acct No" placeholder="" wire:model="bank_acct_no" :disabled=$disabled />
-                <x-input label="Payment Type" placeholder="" wire:model="payment_type" :disabled=$disabled />
-                <x-input label="Staff No (Payer)" placeholder="" wire:model="staffno_payer" :disabled=$disabled />
+                <x-native-select label="Payment Type" placeholder="Select Payment Type" :options="$paymentTypeOptions" option-label="name" option-value="id" wire:model="payment_type_id" :disabled=$disabled />
+                <x-input label="Staff No (Payer)" placeholder="" wire:model="staffno_payer_id" :disabled=$disabled />
                 <x-input label="VA Account" placeholder="" wire:model="va_account" :disabled="true" />
             </div>
         </x-card>
