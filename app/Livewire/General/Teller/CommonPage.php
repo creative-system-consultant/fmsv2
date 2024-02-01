@@ -8,12 +8,14 @@ use App\Action\StoredProcedure\SpFmsGenerateMbrWithdrawShare;
 use App\Action\StoredProcedure\SpFmsUpTrx3800FinancingPayment;
 use App\Action\StoredProcedure\SpFmsUpTrx3920EarlySettlement;
 use App\Action\StoredProcedure\SpFmsUpTrx3950RefundAdvance;
+use App\Action\StoredProcedure\SpFmsUpTrxContribution;
 use App\Action\StoredProcedure\SpFmsUpTrxContributionIn;
 use App\Action\StoredProcedure\SpFmsUpTrxMiscInBk;
 use App\Action\StoredProcedure\SpFmsUpTrxMiscOut;
 use App\Action\StoredProcedure\SpFmsUpTrxPaymentAll;
 use App\Action\StoredProcedure\SpFmsUpTrxPreSettlemtPostn;
 use App\Action\StoredProcedure\SpFmsUpTrxRetirementProcess;
+use App\Action\StoredProcedure\SpFmsUpTrxShare;
 use App\Action\StoredProcedure\SpFmsUpTrxThirdparty;
 use App\Livewire\General\CustomerSearch;
 use App\Livewire\Teller\General\MembersBankInfo;
@@ -494,8 +496,26 @@ class CommonPage extends Component
     public function confirmSaveTransaction()
     {
         // payment in
-        if ($this->module == 'paymentContribution' || $this->module == 'purchaseShare' || $this->module == 'withdrawShare') {
-            $result = SpFmsUpTrxContributionIn::handle([
+        if ($this->module == 'paymentContribution') {
+            $result = SpFmsUpTrxContribution::handle([
+                'clientId' => $this->clientId,
+                'mbrNo' => $this->mbrNo,
+                'txnAmt' => $this->txnAmt,
+                'txnDate' => $this->txnDate,
+                'docNo' => $this->docNo,
+                'txnCode' => $this->txnCode,
+                'remarks' => $this->remarks,
+                'bankMember' => $this->bankMember,
+                'userId' => auth()->id(),
+                'chequeDate' => $this->chequeDate,
+                'bankClient' => $this->bankClient,
+                'idRvs' => $this->accId,
+                'idMsg' => $this->idMsg
+            ]);
+        }
+
+        if ($this->module == 'purchaseShare' || $this->module == 'withdrawShare') {
+            $result = SpFmsUpTrxShare::handle([
                 'clientId' => $this->clientId,
                 'mbrNo' => $this->mbrNo,
                 'txnAmt' => $this->txnAmt,

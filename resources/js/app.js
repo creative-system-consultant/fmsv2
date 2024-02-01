@@ -21,4 +21,3 @@ window.dayGridPlugin = dayGridPlugin
 window.Calendar = Calendar
 window.colorThemes = colorThemes
 window.timeGridPlugin = timeGridPlugin
-

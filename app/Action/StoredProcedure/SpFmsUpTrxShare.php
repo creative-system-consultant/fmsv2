@@ -4,12 +4,7 @@ namespace App\Action\StoredProcedure;
 
 use DB;
 
-/**
- * Class SpFmsUpTrxContributionIn
- *
- * This class handles the execution of the `up_trx_contribution_in` stored procedure.
- */
-class SpFmsUpTrxContributionIn
+class SpFmsUpTrxShare
 {
     /**
      * Execute the stored procedure with the provided data.
@@ -20,7 +15,7 @@ class SpFmsUpTrxContributionIn
     public static function handle($data)
     {
         // Define the name of the stored procedure.
-        $sp = 'fms.up_trx_contribution_in';
+        $sp = 'fms.up_trx_shares';
 
         // Construct the SQL statement to execute the stored procedure with provided parameters.
         $sql = "SET NOCOUNT ON; exec " . $sp . "  :clientId, :mbrNo, :txnAmt, :txnDate, :docNo, :txnCode, :remarks, :bankMember, :userId, :chequeDate, :bankClient";

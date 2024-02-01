@@ -51,16 +51,7 @@
                     <div class="relative " x-data="{menuOpen:false}" x-cloak>
                         <div x-on:click="menuOpen = !menuOpen" @click.away="menuOpen = false"
                             class="flex items-center space-x-2 cursor-pointer">
-                            @php 
-                                if(auth()->user()->client_id == 4 && auth()->user()->user_type == 2) {
-                                    $img = 'https://www.maybank.com/iwov-resources/images/pages/about-us/leadership/leadership_detail/03-Dato-Muzaffar-Hisham.png';
-                                }elseif(auth()->user()->client_id == 5  && auth()->user()->user_type == 2){
-                                    $img = 'https://roadcare.com.my/wp-content/uploads/2022/11/EN-YASIR-08-200x283.png';
-                                }else{
-                                    $img = 'https://www.nicepng.com/png/detail/128-1280406_view-user-icon-png-user-circle-icon-png.png';
-                                }
-                            @endphp
-                            <x-avatar md src={{$img}} />
+                            <x-avatar md src="{{ (auth()->user()->profile_photo_path) ? asset('storage/'.auth()->user()->profile_photo_path) : auth()->user()->profile_photo_url }}" />
                             <p class="w-12 text-sm lg:w-full dark:text-gray-200 line-clamp-1" :class="{'': atTop, ' text-black xl:text-white': !atTop}">
                                 {{ auth()->user()->name }}
                             </p>
@@ -76,7 +67,7 @@
                                 </a>
                             </div>
                             <div>
-                                <a href="#" x-on:click="showTheme = !showTheme" 
+                                <a href="#" x-on:click="showTheme = !showTheme"
                                     class="flex items-center px-4 py-2 text-sm font-medium text-gray-500 rounded-lg hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700">
                                     <x-icon name="color-swatch" class="w-4 h-4 mr-2" />
                                     Change Theme
@@ -148,10 +139,10 @@
             @foreach ($color as $item)
                 <li>
                     <div class="flex flex-col items-center">
-                        <button 
-                            type="button" 
-                            class="w-12 h-12 my-1 {{strtolower($item[0])}} rounded-lg cursor-pointer hover:scale-110" 
-                            data-theme="{{$item[1]}}" 
+                        <button
+                            type="button"
+                            class="w-12 h-12 my-1 {{strtolower($item[0])}} rounded-lg cursor-pointer hover:scale-110"
+                            data-theme="{{$item[1]}}"
                             onclick="changeTheme(this.getAttribute('data-theme'))">
                         </button>
                         <div class="text-sm dark:text-white">
@@ -186,5 +177,3 @@
         });
     </script>
 @endpush
-
-

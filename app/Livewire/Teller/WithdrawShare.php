@@ -2,8 +2,7 @@
 
 namespace App\Livewire\Teller;
 
-use App\Action\StoredProcedure\SpFmsGenerateMbrWithdrawShare;
-use App\Action\StoredProcedure\SpFmsUpTrxContributionIn;
+use App\Action\StoredProcedure\SpFmsUpTrxShare;
 use App\Livewire\General\CustomerSearch;
 use App\Livewire\Teller\General\MembersBankInfo;
 use App\Services\General\ActgPeriod;
@@ -88,7 +87,7 @@ class WithdrawShare extends Component
 
     public function confirmSaveTransaction()
     {
-        $result = SpFmsUpTrxContributionIn::handle([
+        $result = SpFmsUpTrxShare::handle([
             'clientId' => $this->clientId,
             'mbrNo' => $this->mbrNo,
             'txnAmt' => $this->txnAmt,

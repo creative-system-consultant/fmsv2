@@ -8,6 +8,8 @@ use Livewire\Component;
 
 class Navbar extends Component
 {
+    protected $listeners = ['pondReset' => '$refresh'];
+
     public $color = [
         ['bg-slate-600', 'Slate'],
         ['bg-gray-600', 'Gray'],

@@ -1,17 +1,14 @@
 @props([
-    'label' => '',
-    'name' => ''
+'label' => '',
+'name' => ''
 ])
 
-<label >
+<label>
     <label class="block mb-2 text-sm font-medium
-        {{$errors->has($name) ? 'text-negative-600' : 'text-gray-700 dark:text-gray-400'}}" >
+        {{$errors->has($name) ? 'text-negative-600' : 'text-gray-700 dark:text-gray-400'}}">
         {{$label}}
     </label>
-    <div
-        wire:ignore
-        x-data
-        x-init="
+    <div wire:ignore x-data x-init="
             () => {
                 const post = FilePond.create($refs.{{ $attributes->get('ref') ?? 'input' }});
                 post.setOptions({
@@ -29,15 +26,15 @@
                     allowFileTypeValidation: {{ $attributes->has('allowFileTypeValidation') ? 'true' : 'false' }},
                     acceptedFileTypes: {!! $attributes->get('acceptedFileTypes') ?? 'null' !!},
                     allowFileSizeValidation: {{ $attributes->has('allowFileSizeValidation') ? 'true' : 'false' }},
-                    maxFileSize: {!! $attributes->has('maxFileSize') ? "'".$attributes->get('maxFileSize')."'" : 'null' !!}
+                    maxFileSize: {!! $attributes->has('maxFileSize') ? "'".$attributes->get(' maxFileSize')."'" : 'null' !!}
                 });
-                this.addEventListener('pondReset', e => {
+                this.addEventListener('pondReset', e=> {
                     post.removeFiles();
                 });
             }
         "
     >
-        <input type="file" x-ref="{{ $attributes->get('ref') ?? 'input' }}"  class=""  />
+        <input type="file" x-ref="{{ $attributes->get('ref') ?? 'input' }}" class="" />
     </div>
     @if($errors->has($name)) <p class="-mt-2 text-sm text-negative-600">{{ $errors->first($name) }}</p> @endif
 </label>

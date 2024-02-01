@@ -2,13 +2,16 @@
 
 namespace App\Livewire\Cif\Info\Details;
 
+use App\Livewire\Cif\Info\Details;
 use App\Models\Cif\CifCustomer;
 use App\Models\Ref\RefJobGroups;
 use App\Models\Ref\RefJobStatus;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Employer extends Component
 {
+    public $disabled = true;
     public $uuid, $current_employer_name, $company_address, $company_phone_no, $company_fax_no, $job_group_id, $job_status_id, $job_position, $current_employment_date, $current_salary, $clientID;
 
     public function mount()
@@ -27,6 +30,19 @@ class Employer extends Component
         $this->job_position = ($customerInfo->employer) ? $customerInfo->employer->position_id : '';
         $this->current_employment_date = ($customerInfo->employer) ? $customerInfo->employer->work_start : '';
         $this->current_salary = ($customerInfo->employer) ? $customerInfo->employer->salary_ref : '';
+    }
+
+    #[On('edit')]
+    public function editData()
+    {
+        $this->disabled = false;
+    }
+
+    #[On('save')]
+    public function saveData()
+    {
+        $this->disabled = true;
+        $this->dispatch('doneSave')->to(Details::class);
     }
 
     public function render()
