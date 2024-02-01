@@ -359,16 +359,7 @@
                 <div class="col-span-12 sm:col-span-12 md:col-span-12 xl:col-span-4 2xl:col-span-4">
                     <div class="hidden xl:block">
                         <div class="flex flex-col items-center justify-center p-4 px-12 border rounded-lg shadow-lg bg-white/70 dark:bg-gray-900/50 dark:border-black dark:text-white backdrop-blur-lg h-72">
-                            @php 
-                                if(auth()->user()->client_id == 4 && auth()->user()->user_type == 2) {
-                                    $img = 'https://www.maybank.com/iwov-resources/images/pages/about-us/leadership/leadership_detail/03-Dato-Muzaffar-Hisham.png';
-                                }elseif(auth()->user()->client_id == 5  && auth()->user()->user_type == 2){
-                                    $img = 'https://roadcare.com.my/wp-content/uploads/2022/11/EN-YASIR-08-200x283.png';
-                                }else{
-                                    $img = 'https://www.nicepng.com/png/detail/128-1280406_view-user-icon-png-user-circle-icon-png.png';
-                                }
-                            @endphp
-                            <x-avatar size="w-24 h-24" class="border-2 border-primary-700" src={{$img}} />
+                            <x-avatar class="border-2 border-primary-700" size="w-32 h-32" src="{{ (auth()->user()->profile_photo_path) ? asset('storage/'.auth()->user()->profile_photo_path) : auth()->user()->profile_photo_url }}" />
                             <h1 class="pt-2">
                                 {{ auth()->user()->name }}
                             </h1>
@@ -434,7 +425,7 @@
                     </div>
                     @else
                         @if(auth()->user()->client_id == 4)
-                            <div class="flex flex-col px-4 py-6 mt-6 border rounded-lg shadow-lg bg-white dark:bg-gray-800 dark:text-white dark:border-black">
+                            <div class="flex flex-col px-4 py-6 mt-6 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:text-white dark:border-black">
                                 <div class="flex items-center space-x-4">
                                     <div class="relative">
                                         <div class="relative w-32 h-32 rounded-full bg-gradient-to-r from-primary-600 to-primary-500"
@@ -450,7 +441,7 @@
                                 </div>
                             </div>
                         @else
-                            <div class="flex flex-col px-4 py-6 mt-6 border rounded-lg shadow-lg bg-white dark:bg-gray-800 dark:text-white dark:border-black">
+                            <div class="flex flex-col px-4 py-6 mt-6 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:text-white dark:border-black">
                                 <div class="flex items-center space-x-4">
                                     <div class="relative">
                                         <div class="relative w-32 h-32 rounded-full bg-gradient-to-r from-primary-600 to-primary-500"
