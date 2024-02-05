@@ -30,7 +30,7 @@ class Individual extends Component
                 'CIF.CUSTOMERS.name',
                 'CIF.CUSTOMERS.created_at',
                 'CIF.CUSTOMERS.updated_at',
-                DB::raw('FMS.uf_get_cust_status(' . $this->clientID . ',status_id) as status_id')
+                DB::raw('FMS.uf_get_cust_status(' . $this->clientID . ', FMS.MEMBERSHIP.mbr_status) as status')
             )
             ->leftJoin('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.cif_id', 'CIF.CUSTOMERS.id')
             ->where($this->searchBy, 'like', '%' . $this->search . '%')
@@ -38,6 +38,7 @@ class Individual extends Component
             ->where('CIF.CUSTOMERS.client_id', $this->clientID)
             ->where('FMS.MEMBERSHIP.client_id', $this->clientID)
             ->whereNotNull('FMS.MEMBERSHIP.mbr_no')
+            ->orderBy('created_at', 'DESC')
             ->paginate(10);
 
         return view('livewire.cif.individual', ['customers' => $customer])->extends('layouts.main');
