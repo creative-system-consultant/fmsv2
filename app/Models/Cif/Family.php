@@ -11,4 +11,7 @@ class Family extends Model
 
     protected $table   = 'CIF.FAMILIES';
     protected $guarded = [];
+    protected $casts = [
+        'nominee_flag' => 'boolean',
+    ];
 }
