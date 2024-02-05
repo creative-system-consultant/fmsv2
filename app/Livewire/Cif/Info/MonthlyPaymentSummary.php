@@ -30,6 +30,7 @@ class MonthlyPaymentSummary extends Component
 			where m.account_no = p.account_no
 			and isnull(p.disbursed_amount,0) > 0
             and m.account_status in (1,10)
+            and mbr_no = '" . $this->customer->membership->mbr_no . "'
             group by mbr_no
             ) m
             on c.mbr_no = m.mbr_no
@@ -38,6 +39,7 @@ class MonthlyPaymentSummary extends Component
             select mbr_no,sum(transaction_amt) as monthly_thirdparty
             from FMS.THIRDPARTY_LIST
             where mode <> 1 and status = 1
+            and mbr_no = '" . $this->customer->membership->mbr_no . "'
             group by mbr_no
             ) t
             on c.mbr_no = t.mbr_no
@@ -46,6 +48,7 @@ class MonthlyPaymentSummary extends Component
             select mbr_no,sum(isnull(transaction_amt,0)) as monthly_payble
             from FMS.THIRDPARTY_LIST
             where mode = 1 and status = 1
+            and mbr_no = '" . $this->customer->membership->mbr_no . "'
             group by mbr_no
             ) v
         on c.mbr_no = v.mbr_no
