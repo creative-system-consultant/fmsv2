@@ -179,6 +179,7 @@ class CustomerSearch
             ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', 'FMS.MEMBERSHIP.cif_id')
             ->where('FMS.SHARES_REQ_HISTORY.direction', 'sell')
             ->where('FMS.MEMBERSHIP.total_share', '>', 500)
+            ->where('FMS.SHARES_REQ_HISTORY.req_status', 1)
             ->where('FMS.SHARES_REQ_HISTORY.client_id', $clientId)
             ->where('CIF.CUSTOMERS.client_id', $clientId)
             ->where('FMS.MEMBERSHIP.client_id', $clientId);

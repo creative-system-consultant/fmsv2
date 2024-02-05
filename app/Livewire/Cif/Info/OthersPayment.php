@@ -12,6 +12,7 @@ class OthersPayment extends Component
     use WithPagination;
     public $customer, $uuid;
     public $startDT, $endDT;
+    public $clientID;
 
     public function mount()
     {
@@ -47,6 +48,8 @@ class OthersPayment extends Component
             )
             ->join('REF.TRANSACTION_CODES', 'REF.TRANSACTION_CODES.id', 'FMS.MEMBERSHIP_STATEMENTS.transaction_code_id')
             ->where('FMS.MEMBERSHIP_STATEMENTS.mbr_no', '=', $this->customer->membership->mbr_no)
+            ->where('FMS.MEMBERSHIP_STATEMENTS.client_id', $this->clientID)
+            ->where('REF.TRANSACTION_CODES.client_id', $this->clientID)
             ->whereIn('REF.TRANSACTION_CODES.trx_group', array('OTHER PMT - INTRODUCER', 'TABUNG', 'OTHER PMT - INTRODUCER (REVERSAL)', 'TABUNG (REVERSAL)'))
             ->orderBy('FMS.MEMBERSHIP_STATEMENTS.id', 'asc')
             ->get();
