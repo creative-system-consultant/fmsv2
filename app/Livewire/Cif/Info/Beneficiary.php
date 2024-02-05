@@ -8,17 +8,17 @@ use App\Models\Ref\RefIdentityType;
 use App\Models\Ref\RefRace;
 use App\Models\Ref\RefRelationship;
 use App\Models\Ref\RefReligion;
+use App\Services\General\PopupService;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class Beneficiary extends Component
 {
-    public $customer, $uuid, $families, $identity_types, $races, $religions, $relations;
-    public $editFamily = false;
+    use Actions;
 
-    public function editFamilybtn()
-    {
-        $this->editFamily = true;
-    }
+    public $customer, $uuid, $families, $identity_types, $races, $religions, $relations;
+    public $edit = false;
+    public $disabled = true;
 
     protected $rules = [
         'families.*.name'                       => '',
@@ -45,6 +45,44 @@ class Beneficiary extends Component
         $this->races                    = RefRace::all();
         $this->religions                = RefReligion::all();
         $this->relations                = RefRelationship::all();
+    }
+
+    public function editBeneficiary()
+    {
+        $this->edit = true;
+        $this->disabled = false;
+    }
+
+    public function saveBeneficiary()
+    {
+        PopupService::confirm($this, 'confirmSaveData', 'Save Updated Data?', 'Are you sure to proceed with the action?');
+    }
+
+    public function confirmSaveData()
+    {
+        $this->edit = false;
+        $this->disabled = true;
+
+        foreach ($this->families as $family) {
+            Family::where('id', $family['id'])->update([
+                'name'              => $family['name'],
+                'identity_type_id'  => $family['identity_type_id'],
+                'identity_no'       => $family['identity_no'],
+                'race_id'           => $family['race_id'],
+                'religion_id'       => $family['religion_id'],
+                'relation_id'       => $family['relation_id'],
+                'nominee_flag'      => $family['nominee_flag'] == true ? 1 : NULL,
+                'nominee_share'     => $family['nominee_share'],
+                'phone_no'          => $family['phone_no'],
+                'employer_name'     => $family['employer_name'],
+                'work_post'         => $family['work_post'],
+                'salary'            => $family['salary'],
+                'updated_by'        => auth()->user()->id,
+                'updated_at'        => now(),
+            ]);
+        }
+
+        $this->dialog()->success('Success!' , 'Data have been updated.');
     }
 
     public function newFamily()
@@ -87,7 +125,6 @@ class Beneficiary extends Component
 
     public function saveFamily()
     {
-        //$this->validate();
         if (array_sum(array_column($this->families, 'nominee_flag')) == 1) {
             foreach ($this->families as $index => $family) {
                 if (isset($family['id'])) {
