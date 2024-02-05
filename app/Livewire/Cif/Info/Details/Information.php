@@ -13,6 +13,7 @@ use App\Models\Ref\RefMarital;
 use App\Models\Ref\RefRace;
 use App\Models\Ref\RefTitle;
 use App\Services\General\PopupService;
+use Carbon\Carbon;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use WireUi\Traits\Actions;
@@ -21,7 +22,7 @@ class Information extends Component
 {
     public $disabled = true;
     public $customerInfo;
-    public $uuid, $title_id, $name, $identity_type_id, $identity_no, $email, $email2, $phone, $resident_phone, $gender_id, $birth_date, $race_id, $bumi, $language_id, $marital_id, $country_id, $monthly_contribution, $year_tabung_khirat, $amt_tabung_khirat, $clientID;
+    public $uuid, $title_id, $name, $identity_type_id, $identity_no, $email, $email2, $phone, $resident_phone, $gender_id, $birth_date, $race_id, $bumi, $language_id, $marital_id, $country_id, $monthly_contribution, $year_tabung_khairat, $amt_tabung_khairat, $clientID;
 
     public function mount()
     {
@@ -30,7 +31,7 @@ class Information extends Component
         $membershipInfo = Membership::where('cif_id', $this->customerInfo->id)->first();
         $title = RefTitle::select('description')->where('id', $this->customerInfo->title_id)->first();
         $identityType = RefIdentityType::select('description')->where('id', $this->customerInfo->identity_type_id)->first();
-        $gender = RefGender::select('description')->where('id', $this->customerInfo->gender_id)->first();
+        $gender = RefGender::select('description')->where('code', $this->customerInfo->gender_code)->first();
         $race = RefRace::select('description')->where('id', $this->customerInfo->race_id)->first();
         // $language = RefLanguage::select('description')->where('id', $this->customerInfo->language_id)->first();
         $marital = RefMarital::select('description')->where('id', $this->customerInfo->marital_id)->first();
@@ -45,15 +46,15 @@ class Information extends Component
         $this->phone = $this->customerInfo->phone;
         $this->resident_phone = $this->customerInfo->resident_phone;
         $this->gender_id = $gender->description ?? '';
-        $this->birth_date = $this->customerInfo->birth_date;
+        $this->birth_date = Carbon::parse($this->customerInfo->birth_date)->format('d-m-Y');
         $this->race_id = $race->description ?? '';
         $this->bumi = (($this->customerInfo->race_id != 6 || $this->customerInfo->race_id != 9 || $this->customerInfo->race_id != 14) ? 'Yes' : 'No');
         // $this->language_id = $language->description;
         $this->marital_id = $marital->description ?? '';
         $this->country_id = $country->description ?? '';
         $this->monthly_contribution = $membershipInfo->monthly_contribution;
-        $this->year_tabung_khirat = $membershipInfo->year_tabung_khirat;
-        $this->amt_tabung_khirat = $membershipInfo->amt_tabung_khirat;
+        $this->year_tabung_khairat = $membershipInfo->year_tabung_khairat;
+        $this->amt_tabung_khairat = $membershipInfo->amt_tabung_khairat;
     }
 
     #[On('edit')]

@@ -6,6 +6,7 @@ use App\Livewire\Cif\Info\Details;
 use App\Models\Cif\CifCustomer;
 use App\Models\Ref\RefJobGroups;
 use App\Models\Ref\RefJobStatus;
+use Carbon\Carbon;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -28,7 +29,7 @@ class Employer extends Component
         $this->job_group_id = $job_group->groups ?? '';
         $this->job_status_id = $job_status->description ?? '';
         $this->job_position = ($customerInfo->employer) ? $customerInfo->employer->position_id : '';
-        $this->current_employment_date = ($customerInfo->employer) ? $customerInfo->employer->work_start : '';
+        $this->current_employment_date = ($customerInfo->employer) ? Carbon::parse($customerInfo->employer->work_start)->format('d-m-Y') : '';
         $this->current_salary = ($customerInfo->employer) ? $customerInfo->employer->salary_ref : '';
     }
 

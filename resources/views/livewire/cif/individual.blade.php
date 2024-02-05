@@ -51,18 +51,15 @@
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{$item->name}}</p>
                                 </x-table.table-body>
-
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
-                                    <p>{{ $item->status_id ?  ($item->status_id ==1 ? 'Active' :'Inactive') : 'N/A' }}</p>
+                                    <p>{{ strtoupper($item->status) }}</p>
                                 </x-table.table-body>
-
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{ $item->created_at ?  date('d/m/Y', strtotime($item->created_at)) : 'N/A' }}</p>
                                 </x-table.table-body>
                                 <x-table.table-body colspan="" class="text-left text-gray-500">
                                     <p>{{ $item->updated_at ?  date('d/m/Y', strtotime($item->updated_at)) : 'N/A' }}</p>
                                 </x-table.table-body>
-
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <div class="flex items-center space-x-2">
                                         @foreach(config('module.member-info.index') as $config)
