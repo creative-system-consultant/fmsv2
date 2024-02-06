@@ -1,11 +1,15 @@
 <div>
     <x-card title="Contribution Information">
         <div class="grid items-center grid-cols-1 gap-2 md:grid-cols-3">
-            <x-input label="Total" wire:model="totalContribution" disabled />
+            <x-input label="Total Balance Contribution" wire:model="totalBalContribution" disabled />
+            <x-input label="Total Add Contribution" wire:model="totalAddContribution" disabled />
+            <x-input label="Total Withdraw Contribution" wire:model="totalWithdrawContribution" disabled />
             <x-input label="Last Payment Amount" wire:model="lastPaymentAmt" disabled />
-            <x-input label="Monthly" wire:model="monthlyContribution" disabled />
+            <x-input label="Last Payment Date" wire:model="lastPaymentDate" disabled />
+            <x-input label="Last Withdraw Amount" wire:model="lastWithdrawAmt" disabled />
             <x-input label="Last Withraw Amount"  wire:model="lastWithdrawAmt" disabled />
             <x-input label="Last Withdraw Date"  wire:model="lastWithdrawDate" disabled/>
+            <x-input label="Monthly" wire:model="monthlyContribution" disabled />
             <x-input label="Number of Withdraw" wire:model="numWithdraw" disabled />
             <x-input label="Total of Withdraw" wire:model="totalWithdraw" disabled />
 
@@ -26,23 +30,19 @@
                     </x-slot>
                     <x-slot name="tbody">
                         @forelse($changedMonthlyCon as $item)
-
-                        <tr>
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                <p>{{ number_format(optional($item->prev_amount, 2)) }}</p>
-
-                            </x-table.table-body>
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                <p>{{date('d/m/Y',strtotime(optional($item->effective_date)))}}</p>
-
-                            </x-table.table-body>
-                        </tr>
+                            <tr>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    <p>{{ number_format(optional($item->prev_amount, 2)) }}</p>
+                                </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    <p>{{date('d/m/Y',strtotime(optional($item->effective_date)))}}</p>
+                                </x-table.table-body>
+                            </tr>
                         @empty
-                        <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
-                            <x-no-data title="No data"/>
-                        </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
+                                <x-no-data title="No data"/>
+                            </x-table.table-body>
                         @endforelse
-
                     </x-slot>
                 </x-table.table>
             </x-modal.card>

@@ -5,6 +5,7 @@ namespace App\Livewire\Cif\Info;
 use App\Models\Cif\CifCustomer;
 use App\Models\Cif\CustomerStatement;
 use App\Models\Fms\ChangeMonthlyContribution;
+use Carbon\Carbon;
 use DB;
 use Livewire\WithPagination;
 use OpenSpout\Common\Entity\Style\Style;
@@ -19,7 +20,7 @@ class Contribution extends Component
     public $customer, $uuid, $changedMonthlyCon, $contributions_out;
     public $startDateContribution, $endDateContribution;
     public $ChangedMonthlyCon, $clientID;
-    public $totalContribution, $lastPaymentAmt, $monthlyContribution, $lastWithdrawAmt, $lastWithdrawDate, $numWithdraw, $totalWithdraw, $contributions;
+    public $totalBalContribution, $totalAddContribution, $totalWithdrawContribution,$lastPaymentAmt, $lastPaymentDate,$monthlyContribution, $lastWithdrawAmt, $lastWithdrawDate, $numWithdraw, $totalWithdraw, $contributions;
 
     public function mount()
     {
@@ -27,13 +28,18 @@ class Contribution extends Component
         $this->customer = CifCustomer::where('uuid', $this->uuid)->where('client_id', $this->clientID)->first();
         $membershipInfo = $this->customer->membership;
 
-        $this->totalContribution = number_format($membershipInfo->total_contribution, 2);
-        $this->lastPaymentAmt = number_format($membershipInfo->last_payment_amount, 2);
+        $this->totalBalContribution = number_format($membershipInfo->total_contribution, 2);
+        $this->totalAddContribution = number_format($membershipInfo->total_cont_add_amt, 2);
+        $this->totalWithdrawContribution = number_format($membershipInfo->total_cont_withdraw_amt, 2);
+        $this->lastPaymentAmt = number_format($membershipInfo->last_cont_add_amt, 2);
+        $this->lastPaymentDate = Carbon::parse($membershipInfo->last_cont_add_date)->format('d/m/Y');
+        $this->lastWithdrawAmt = number_format($membershipInfo->last_cont_withdraw_amt, 2);
         $this->monthlyContribution = number_format($membershipInfo->monthly_contribution, 2);
-        $this->lastWithdrawAmt = number_format($membershipInfo->last_withdraw_amount, 2);
-        $this->lastWithdrawDate = date('d/m/Y', strtotime($membershipInfo->last_withdraw_date));
-        $this->numWithdraw = number_format($membershipInfo->no_of_withdrawal, 2);
-        $this->totalWithdraw = number_format($membershipInfo->total_withdraw_amount, 2);
+        $this->lastWithdrawAmt = number_format($membershipInfo->last_cont_withdraw_amt, 2);
+        $this->lastWithdrawDate = Carbon::parse($membershipInfo->last_cont_withdraw_date)->format('d/m/Y') ?? 'dd-mm-yyyy';
+        $this->numWithdraw = number_format($membershipInfo->no_of_cont_withdrawal, 2);
+        $this->totalWithdraw = number_format($membershipInfo->total_cont_withdraw_amt, 2);
+
         $this->ChangedMonthlyCon        = ChangeMonthlyContribution::where('mbrID', '=', $membershipInfo->mbr_no)->first();
         $this->startDateContribution    =  '2021-12-31';
         $this->endDateContribution      =  now()->format('Y-m-d');
