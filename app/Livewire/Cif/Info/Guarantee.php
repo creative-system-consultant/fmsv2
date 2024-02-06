@@ -45,7 +45,7 @@ class Guarantee extends Component
 
         $this->Guarantee = DB::table('FMS.GUARANTOR_LIST')
             ->select([
-                DB::raw('(SELECT name FROM CIF.CUSTOMERS WHERE CIF.CUSTOMERS.id = FMS.GUARANTOR_LIST.guarantor_mbr_id) AS name'),
+                DB::raw('FMS.uf_get_membership_name(CIF.CUSTOMERS.client_id,CIF.CUSTOMERS.identity_no)AS name'),
                 DB::raw('FMS.GUARANTOR_LIST.mbr_id, FMS.ACCOUNT_POSITIONS.bal_outstanding, FMS.uf_get_account_status(FMS.ACCOUNT_MASTERS.client_id,CIF.CUSTOMERS.id) AS account_status
                 ,FMS.ACCOUNT_MASTERS.account_no, FMS.ACCOUNT_POSITIONS.expiry_date, FMS.GUARANTOR_LIST.status_effective_date, FMS.ACCOUNT_MASTERS.instal_amount,
                 FMS.uf_get_product(FMS.ACCOUNT_MASTERS.client_id, FMS.ACCOUNT_MASTERS.product_id) AS product,
@@ -63,8 +63,6 @@ class Guarantee extends Component
             ->where('CIF.CUSTOMERS.client_id', $clientID)
             ->orderBy('FMS.ACCOUNT_MASTERS.account_status')
             ->get();
-
-        // dd($this->Guarantee);
     }
 
     public function render()
