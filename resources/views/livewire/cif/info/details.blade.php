@@ -12,7 +12,4 @@
 
     <!-- Member's Information -->
     <livewire:cif.info.details.information :uuid="$uuid" />
-
-    <!-- Employer Information -->
-    <livewire:cif.info.details.employer :uuid="$uuid" />
 </div>

@@ -22,7 +22,6 @@ class Details extends Component
         $this->edit = true;
         $this->dispatch('edit')->to(Overview::class);
         $this->dispatch('edit')->to(Information::class);
-        $this->dispatch('edit')->to(Employer::class);
     }
 
     public function saveDetail()
@@ -34,7 +33,6 @@ class Details extends Component
     {
         $this->dispatch('save')->to(Overview::class);
         $this->dispatch('save')->to(Information::class);
-        $this->dispatch('save')->to(Employer::class);
         $this->edit = false;
     }
 
