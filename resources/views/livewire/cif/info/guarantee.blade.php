@@ -81,6 +81,7 @@
                         <x-table.table-header class="text-left " value="BALANCE OUSTANDING" sort="" />
                         <x-table.table-header class="text-left " value="FINANCING STATUS" sort="" />
                         <x-table.table-header class="text-left " value="EFFECTIVE DATE" sort="" />
+                        <x-table.table-header class="text-left " value="GUARANTOR STATUS" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
                         @forelse ($Guarantor as $item)
@@ -113,6 +114,9 @@
     
                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                             <p>{{ date('d/m/Y', strtotime($item->status_effective_date)) }}</p>
+                        </x-table.table-body>
+                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                            <p>{{ $item->guarantor_status }}</p>
                         </x-table.table-body>
                         </tr>
                         @empty
