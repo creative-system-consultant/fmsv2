@@ -5,8 +5,10 @@
             <x-slot name="action" >
                 <div class="flex items-center justify-center space-x-2">
                     <x-button primary label="Close Membership Document" sm />
-                    <x-button wire:click="editDetail" icon="pencil" primary label="Edit" sm />
-                    <x-button icon="save" primary label="Save" sm/>
+                    <x-button wire:click="editDetail" icon="{{ ($disabled == true) ? 'pencil' : 'x' }}" primary label="{{ ($disabled == true) ? 'Edit' : 'Cancel' }}" sm />
+                    @if($disabled == false)
+                        <x-button wire:click="saveDetail" icon="save" primary label="Save" sm/>
+                    @endif
                 </div>
             </x-slot>
             <div class="grid grid-cols-1 gap-2 md:grid-cols-3">
@@ -128,7 +130,7 @@
                     <x-input label="VA Account" placeholder="" wire:model="va_account" :disabled="true" />
                 </div>
                 <div>
-                    <x-input label="Payment Type" placeholder="" wire:model="payment_type" :disabled="true" />
+                    <x-native-select label="Payment Type" placeholder="Select Payment Type" :options="$paymentTypeOptions" option-label="name" option-value="id" wire:model="payment_type_id" :disabled=$disabled />
                 </div>
                 <div>
                     <x-input label="Staff No Payer" placeholder="" wire:model="staffno_payer" :disabled="true" />
@@ -167,7 +169,7 @@
                     @forelse ($introducers as $introducer)
                         <tr>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                {{ $introducer->membership->cifCustomer->name }}
+                                {{ $introducer->introducer->cifCustomer->name }}
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 {{ $introducer->introducer_mbr_no }}

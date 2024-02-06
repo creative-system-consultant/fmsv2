@@ -7,11 +7,9 @@
             <x-input label="Last Payment Amount" wire:model="lastPaymentAmt" disabled />
             <x-input label="Last Payment Date" wire:model="lastPaymentDate" disabled />
             <x-input label="Last Withdraw Amount" wire:model="lastWithdrawAmt" disabled />
-            <x-input label="Last Withraw Amount"  wire:model="lastWithdrawAmt" disabled />
             <x-input label="Last Withdraw Date"  wire:model="lastWithdrawDate" disabled/>
             <x-input label="Monthly" wire:model="monthlyContribution" disabled />
             <x-input label="Number of Withdraw" wire:model="numWithdraw" disabled />
-            <x-input label="Total of Withdraw" wire:model="totalWithdraw" disabled />
 
             <div class="mt-6">
                 <x-button
