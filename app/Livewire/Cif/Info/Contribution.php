@@ -20,7 +20,7 @@ class Contribution extends Component
     public $customer, $uuid, $changedMonthlyCon, $contributions_out;
     public $startDateContribution, $endDateContribution;
     public $ChangedMonthlyCon, $clientID;
-    public $totalBalContribution, $totalAddContribution, $totalWithdrawContribution,$lastPaymentAmt, $lastPaymentDate,$monthlyContribution, $lastWithdrawAmt, $lastWithdrawDate, $numWithdraw, $totalWithdraw, $contributions;
+    public $totalBalContribution, $totalAddContribution, $totalWithdrawContribution,$lastPaymentAmt, $lastPaymentDate,$monthlyContribution,  $lastWithdrawDate, $numWithdraw, $contributions;
 
     public function mount()
     {
@@ -32,13 +32,10 @@ class Contribution extends Component
         $this->totalAddContribution = number_format($membershipInfo->total_cont_add_amt, 2);
         $this->totalWithdrawContribution = number_format($membershipInfo->total_cont_withdraw_amt, 2);
         $this->lastPaymentAmt = number_format($membershipInfo->last_cont_add_amt, 2);
-        $this->lastPaymentDate = Carbon::parse($membershipInfo->last_cont_add_date)->format('d/m/Y');
-        $this->lastWithdrawAmt = number_format($membershipInfo->last_cont_withdraw_amt, 2);
+        $this->lastPaymentDate = ($membershipInfo->last_cont_add_date) ? Carbon::parse($membershipInfo->last_cont_add_date)->format('d-m-Y') : 'dd-mm-yyyy';
         $this->monthlyContribution = number_format($membershipInfo->monthly_contribution, 2);
-        $this->lastWithdrawAmt = number_format($membershipInfo->last_cont_withdraw_amt, 2);
-        $this->lastWithdrawDate = Carbon::parse($membershipInfo->last_cont_withdraw_date)->format('d/m/Y') ?? 'dd-mm-yyyy';
+        $this->lastWithdrawDate = ($membershipInfo->last_cont_withdraw_date) ? Carbon::parse($membershipInfo->last_cont_withdraw_date)->format('d-m-Y') : 'dd-mm-yyyy';
         $this->numWithdraw = number_format($membershipInfo->no_of_cont_withdrawal, 2);
-        $this->totalWithdraw = number_format($membershipInfo->total_cont_withdraw_amt, 2);
 
         $this->ChangedMonthlyCon        = ChangeMonthlyContribution::where('mbrID', '=', $membershipInfo->mbr_no)->first();
         $this->startDateContribution    =  '2021-12-31';

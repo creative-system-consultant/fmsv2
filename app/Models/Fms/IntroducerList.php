@@ -14,11 +14,11 @@ class IntroducerList extends Model
 
     public function membership()
     {
-        return $this->hasOne(FmsMembership::class, 'mbr_no', 'mbr_no');
+        return $this->hasOne(FmsMembership::class, 'mbr_no', 'mbr_no')->where('client_id', auth()->user()->client_id);
     }
 
     public function introducer()
     {
-        return $this->hasOne(FmsMembership::class, 'mbr_no', 'introducer_mbr_no');
+        return $this->hasOne(FmsMembership::class, 'mbr_no', 'introducer_mbr_no')->where('client_id', auth()->user()->client_id);
     }
 }

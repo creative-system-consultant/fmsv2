@@ -3,10 +3,14 @@
 namespace App\Livewire\Cif\Membership;
 
 use App\Models\Cif\CifCustomer;
+use App\Models\Ref\RefPaymentType;
+use App\Services\General\PopupService;
 use Livewire\Component;
+use WireUi\Traits\Actions;
 
 class MemDetails extends Component
 {
+    use Actions;
 
     public $client_id, $id, $uuid, $ref_no, $apply_date, $start_date, $end_date, $total_share, $monthly_share, $last_purchase_amount,
         $last_purchase_date, $last_selling_amount, $last_selling_date, $total_contribution, $monthly_contribution, $last_payment_amount,
@@ -16,71 +20,100 @@ class MemDetails extends Component
         $introducer_flag, $no_of_withdrawal, $source, $tkk_amount, $tkk_last_pay_dt, $va_account,
         $payment_type, $staffno_payer, $withdraw_share_pv, $withdraw_con_pv, $kebajikan_pv, $khairat_pv, $closed_mbr_pv;
 
-    public $introducers;
-
+    public $introducers, $membershipInfo, $customerInfo;
     public $email, $mobileNo, $monthlyContribution;
-
-    public $editDetail = false;
+    public $disabled = true;
+    public $paymentType;
+    public $paymentTypeOptions = [];
 
     public function mount()
     {
         $clientID = auth()->user()->client_id;
 
-        $CustomerInfo = CifCustomer::with('fmsMembership', 'fmsMembership.introducerList')->where('uuid', $this->uuid)->where('client_id', $clientID)->first();
-        $MembershipInfo = $CustomerInfo->fmsMembership;
-        $this->introducers  = $CustomerInfo->fmsMembership->introducerList;
+        $this->paymentType = RefPaymentType::where('client_id', $clientID)->get();
+        $this->paymentTypeOptions = $this->paymentType->map(function ($paymentType) {
+            return ['name' => $paymentType->description, 'id' => $paymentType->id];
+        });
 
-        $this->client_id = $CustomerInfo->client_id ?? "null";
-        $this->id = $CustomerInfo->id ?? "null";
-        $this->ref_no = $MembershipInfo->mbr_no ?? "null";
-        $this->apply_date = $MembershipInfo->apply_date ?? "null";
-        $this->start_date = $MembershipInfo->start_date ?? "null";
-        $this->end_date = $MembershipInfo->end_date ?? "null";
-        $this->total_share = $MembershipInfo->total_share ?? "null";
-        $this->monthly_share = $MembershipInfo->monthly_share ?? "null";
-        $this->last_purchase_amount = $MembershipInfo->last_purchase_amount ?? "null";
-        $this->last_purchase_date = $MembershipInfo->last_purchase_date ?? "null";
-        $this->last_selling_amount = $MembershipInfo->last_selling_amount ?? "null";
-        $this->last_selling_date = $MembershipInfo->last_selling_date ?? "null";
-        $this->total_contribution = $MembershipInfo->total_contribution ?? "null";
-        $this->monthly_contribution = $MembershipInfo->monthly_contribution ?? "null";
-        $this->last_payment_amount = $MembershipInfo->last_payment_amount ?? "null";
-        $this->last_payment_date = $MembershipInfo->last_payment_date ?? "null";
-        $this->last_withdraw_amount = $MembershipInfo->last_withdraw_amount ?? "null";
-        $this->last_withdraw_date = $MembershipInfo->last_withdraw_date ?? "null";
-        $this->total_withdraw_amount = $MembershipInfo->total_withdraw_amount ?? "null";
-        $this->staff_no = $MembershipInfo->staff_no ?? "null";
-        $this->status_id = $MembershipInfo->status_id ?? "null";
-        $this->status_change_date = $MembershipInfo->status_change_date ?? "null";
-        $this->type_id = $MembershipInfo->type_id ?? "null";
-        $this->data_status = $MembershipInfo->data_status ?? "null";
-        $this->created_by = $MembershipInfo->created_by ?? "null";
-        $this->updated_by = $MembershipInfo->updated_by ?? "null";
-        $this->deleted_by = $MembershipInfo->deleted_by ?? "null";
-        $this->created_at = $MembershipInfo->created_at ?? "null";
-        $this->updated_at = $MembershipInfo->updated_at ?? "null";
-        $this->approved_retirement_date = $MembershipInfo->approved_retirement_date ?? "null";
-        $this->effective_retirement_date = $MembershipInfo->effective_retirement_date ?? "null";
-        $this->retirement_flag = $MembershipInfo->retirement_flag ?? "null";
-        $this->entrance_fee = $MembershipInfo->entrance_fee ?? "null";
-        $this->entrance_fee_date = $MembershipInfo->entrance_fee_date ?? "null";
-        $this->no_of_withdrawal = $MembershipInfo->no_of_withdrawal ?? "null";
-        $this->source = $MembershipInfo->source ?? "null";
-        $this->tkk_amount = $MembershipInfo->tkk_amount ?? "null";
-        $this->tkk_last_pay_dt = $MembershipInfo->tkk_last_pay_dt ?? "null";
-        $this->va_account = $MembershipInfo->va_account ?? "null";
-        $this->payment_type = $MembershipInfo->payment_type ?? "null";
-        $this->staffno_payer = $MembershipInfo->staffno_payer ?? "null";
-        $this->withdraw_share_pv = $MembershipInfo->withdraw_share_pv ?? "null";
-        $this->withdraw_con_pv = $MembershipInfo->withdraw_con_pv ?? "null";
-        $this->kebajikan_pv = $MembershipInfo->kebajikan_pv ?? "null";
-        $this->khairat_pv = $MembershipInfo->khairat_pv ?? "null";
-        $this->closed_mbr_pv = $MembershipInfo->closed_mbr_pv ?? "null";
+        $this->customerInfo = CifCustomer::with('fmsMembership', 'fmsMembership.introducerList')->where('uuid', $this->uuid)->where('client_id', $clientID)->first();
+        $this->membershipInfo = $this->customerInfo->fmsMembership;
+        $this->introducers  = $this->customerInfo->fmsMembership->introducerList;
+
+        $this->client_id = $this->customerInfo->client_id ?? "null";
+        $this->id = $this->customerInfo->id ?? "null";
+        $this->ref_no = $this->membershipInfo->mbr_no ?? "null";
+        $this->apply_date = $this->membershipInfo->apply_date ?? "null";
+        $this->start_date = $this->membershipInfo->start_date ?? "null";
+        $this->end_date = $this->membershipInfo->end_date ?? "null";
+        $this->total_share = $this->membershipInfo->total_share ?? "null";
+        $this->monthly_share = $this->membershipInfo->monthly_share ?? "null";
+        $this->last_purchase_amount = $this->membershipInfo->last_purchase_amount ?? "null";
+        $this->last_purchase_date = $this->membershipInfo->last_purchase_date ?? "null";
+        $this->last_selling_amount = $this->membershipInfo->last_selling_amount ?? "null";
+        $this->last_selling_date = $this->membershipInfo->last_selling_date ?? "null";
+        $this->total_contribution = $this->membershipInfo->total_contribution ?? "null";
+        $this->monthly_contribution = $this->membershipInfo->monthly_contribution ?? "null";
+        $this->last_payment_amount = $this->membershipInfo->last_payment_amount ?? "null";
+        $this->last_payment_date = $this->membershipInfo->last_payment_date ?? "null";
+        $this->last_withdraw_amount = $this->membershipInfo->last_withdraw_amount ?? "null";
+        $this->last_withdraw_date = $this->membershipInfo->last_withdraw_date ?? "null";
+        $this->total_withdraw_amount = $this->membershipInfo->total_withdraw_amount ?? "null";
+        $this->staff_no = $this->membershipInfo->staff_no ?? "null";
+        $this->status_id = $this->membershipInfo->status_id ?? "null";
+        $this->status_change_date = $this->membershipInfo->status_change_date ?? "null";
+        $this->type_id = $this->membershipInfo->type_id ?? "null";
+        $this->data_status = $this->membershipInfo->data_status ?? "null";
+        $this->created_by = $this->membershipInfo->created_by ?? "null";
+        $this->updated_by = $this->membershipInfo->updated_by ?? "null";
+        $this->deleted_by = $this->membershipInfo->deleted_by ?? "null";
+        $this->created_at = $this->membershipInfo->created_at ?? "null";
+        $this->updated_at = $this->membershipInfo->updated_at ?? "null";
+        $this->approved_retirement_date = $this->membershipInfo->approved_retirement_date ?? "null";
+        $this->effective_retirement_date = $this->membershipInfo->effective_retirement_date ?? "null";
+        $this->retirement_flag = $this->membershipInfo->retirement_flag ?? "null";
+        $this->entrance_fee = $this->membershipInfo->register_fee ?? "null";
+        $this->entrance_fee_date = $this->membershipInfo->entrance_fee_date ?? "null";
+        $this->no_of_withdrawal = $this->membershipInfo->no_of_withdrawal ?? "null";
+        $this->source = $this->membershipInfo->source ?? "null";
+        $this->tkk_amount = $this->membershipInfo->tkk_amount ?? "null";
+        $this->tkk_last_pay_dt = $this->membershipInfo->tkk_last_pay_dt ?? "null";
+        $this->va_account = $this->membershipInfo->va_account ?? "null";
+        $this->payment_type = $this->membershipInfo->payment_type ?? "null";
+        $this->staffno_payer = $this->membershipInfo->staffno_payer ?? "null";
+        $this->withdraw_share_pv = $this->membershipInfo->withdraw_share_pv ?? "null";
+        $this->withdraw_con_pv = $this->membershipInfo->withdraw_con_pv ?? "null";
+        $this->kebajikan_pv = $this->membershipInfo->kebajikan_pv ?? "null";
+        $this->khairat_pv = $this->membershipInfo->khairat_pv ?? "null";
+        $this->closed_mbr_pv = $this->membershipInfo->closed_mbr_pv ?? "null";
     }
 
-    function editDetail()
+    public function editDetail()
     {
-        $this->editDetail = true;
+        $this->disabled = !$this->disabled;
+    }
+
+    public function saveDetail()
+    {
+        PopupService::confirm($this, 'confirmSaveData', 'Save Updated Data?', 'Are you sure to proceed with the action?');
+    }
+
+    public function confirmSaveData()
+    {
+        dd('saved');
+        // $this->customerInfo->update([
+        //     'name' => $this->name,
+        //     'identity_no' => $this->identity_no,
+        //     'bank_id' => (int) $this->bank_id,
+        //     'bank_acct_no' => $this->bank_acct_no
+        // ]);
+
+        // $this->membershipInfo->update([
+        //     'approved_retirement_date' => $this->approved_retirement_date,
+        //     'effective_retirement_date' => $this->effective_retirement_date,
+        //     'mbr_status' => $this->status_id
+        // ]);
+
+        // $this->disabled = true;
     }
 
     public function render()

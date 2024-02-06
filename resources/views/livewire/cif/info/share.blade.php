@@ -48,58 +48,47 @@
                 </x-slot>
                 <x-slot name="tbody">
                     @forelse ($shares as $item)
-                    <tr>
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <p>{{ date('d/m/Y',strtotime($item->transaction_date)) }}</p>
-                        </x-table.table-body>
-
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <p>{{$item->doc_no ? $item->doc_no: 'N/A'}} </p>
-                        </x-table.table-body>
-
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <p>{{$item->description}}</p>
-                        </x-table.table-body>
-
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <p>{{$item->remarks ? $item->remarks: 'N/A'}} </p>
-                        </x-table.table-body>
-
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <p>
-                                @if($item->dr_cr == 'D')
-                                -
-                                @endif
-                                {{number_format($item->amount,2)}}
-                            </p>
-                        </x-table.table-body>
-
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <p>{{ number_format($item->total_amount, 2) }}</p>
-                        </x-table.table-body>
-
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <p>{{$item->created_by ? $item->created_by : 'N/A'}}</p>
-                        </x-table.table-body>
-
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <p>{{$item->created_at ? date('d/m/Y/h:m:s',strtotime($item->created_at)) : 'N/A'}}</p>
-                        </x-table.table-body>
-
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        
-                        </x-table.table-body>
-
-                    </tr>
+                        <tr>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{ date('d/m/Y',strtotime($item->transaction_date)) }}</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{$item->doc_no ? $item->doc_no: 'N/A'}} </p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{$item->description}}</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{$item->remarks ? $item->remarks: 'N/A'}} </p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>
+                                    @if($item->dr_cr == 'D') - @endif {{number_format($item->amount,2)}}
+                                </p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{ number_format($item->total_amount, 2) }}</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{$item->created_by ? $item->created_by : 'N/A'}}</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{$item->created_at ? date('d/m/Y/h:m:s',strtotime($item->created_at)) : 'N/A'}}</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                            </x-table.table-body>
+                        </tr>
                     @empty
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                        <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
                             <x-no-data title="No data"/>
                         </x-table.table-body>
                     @endforelse
-
                 </x-slot>
             </x-table.table>
 
+            <div class="py-4">
+                {{ $shares->links() }}
+            </div>
         </x-card>
     </div>
 </div>
