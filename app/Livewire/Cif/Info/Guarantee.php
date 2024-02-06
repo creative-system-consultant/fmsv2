@@ -21,8 +21,8 @@ class Guarantee extends Component
 
         $this->Guarantor = DB::table('FMS.GUARANTOR_LIST')
             ->select([
-                DB::raw('(SELECT name FROM CIF.CUSTOMERS WHERE CIF.CUSTOMERS.id = FMS.GUARANTOR_LIST.guarantor_mbr_id) AS name'),
-                DB::raw('FMS.GUARANTOR_LIST.account_no, FMS.GUARANTOR_LIST.mbr_id as guarantor_mbr_id ,FMS.ACCOUNT_POSITIONS.bal_outstanding,
+                DB::raw('FMS.uf_get_membership_name(CIF.CUSTOMERS.client_id,CIF.CUSTOMERS.identity_no) AS name'),
+                DB::raw('FMS.GUARANTOR_LIST.account_no, FMS.GUARANTOR_LIST.guarantor_mbr_id as guarantor_mbr_id ,FMS.ACCOUNT_POSITIONS.bal_outstanding,
                 FMS.uf_get_account_status(FMS.ACCOUNT_MASTERS.client_id,CIF.CUSTOMERS.id) AS account_status,
                 FMS.ACCOUNT_MASTERS.account_no,
                 FMS.ACCOUNT_POSITIONS.expiry_date,
