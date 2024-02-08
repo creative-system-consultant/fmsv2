@@ -26,7 +26,8 @@ class Guarantee extends Component
                 FMS.uf_get_account_status(FMS.ACCOUNT_MASTERS.client_id,CIF.CUSTOMERS.id) AS account_status,
                 FMS.ACCOUNT_MASTERS.account_no,
                 FMS.ACCOUNT_POSITIONS.expiry_date,
-                FMS.GUARANTOR_LIST.status_effective_date,FMS.uf_get_product(FMS.ACCOUNT_MASTERS.client_id, FMS.ACCOUNT_MASTERS.product_id) AS product,
+                FMS.GUARANTOR_LIST.status_effective_date,
+                FMS.uf_get_product(FMS.ACCOUNT_MASTERS.client_id, FMS.ACCOUNT_MASTERS.product_id) AS product,
                 REF.GUARANTORSTATUS.description as guarantor_status'),
             ])
             ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.GUARANTOR_LIST.guarantor_mbr_id')
