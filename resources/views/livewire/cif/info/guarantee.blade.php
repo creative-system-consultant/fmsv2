@@ -21,39 +21,30 @@
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{ $item->mbr_id }}</p>
                             </x-table.table-body>
-
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{ $item->name }}</p>
                             </x-table.table-body>
-
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{ $item->product }}</p>
                             </x-table.table-body>
-
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{ number_format($item->instal_amount,2) }}</p>
                             </x-table.table-body>
-
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{ number_format($item->bal_outstanding,2) }}</p>
                             </x-table.table-body>
-
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{ $item->account_status }}</p>
                             </x-table.table-body>
-
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{ $item->account_no }}</p>
                             </x-table.table-body>
-
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{ $item->guarantor_status }}</p>
                             </x-table.table-body>
-
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{ date('d/m/Y', strtotime($item->expiry_date)) }}</p>
                             </x-table.table-body>
-
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{ date('d/m/Y', strtotime($item->status_effective_date)) }}</p>
                             </x-table.table-body>
@@ -85,44 +76,36 @@
                     </x-slot>
                     <x-slot name="tbody">
                         @forelse ($Guarantor as $item)
-
-                        <tr>
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <p>{{ $item->account_no }}</p>
-                        </x-table.table-body>
-    
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <p>{{$item->guarantor_mbr_id ? $item->guarantor_mbr_id : 'N/A'}}</p>
-
-                        </x-table.table-body>
-    
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <p>{{ $item->name }}</p>
-                        </x-table.table-body>
-    
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <p>{{ $item->product }}</p>
-                        </x-table.table-body>
-    
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <p>{{ number_format($item->bal_outstanding,2) }}</p>
-                        </x-table.table-body>
-    
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <p>{{ $item->account_status }}</p>
-                        </x-table.table-body>
-    
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <p>{{ date('d/m/Y', strtotime($item->status_effective_date)) }}</p>
-                        </x-table.table-body>
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                            <p>{{ $item->guarantor_status }}</p>
-                        </x-table.table-body>
-                        </tr>
+                            <tr>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    <p>{{ $item->account_no }}</p>
+                                </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    <p>{{$item->guarantor_mbr_id ? $item->guarantor_mbr_id : 'N/A'}}</p>
+                                </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    <p>{{ $item->name }}</p>
+                                </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    <p>{{ $item->product }}</p>
+                                </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    <p>{{ number_format($item->bal_outstanding,2) }}</p>
+                                </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    <p>{{ $item->account_status }}</p>
+                                </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    <p>{{ date('d/m/Y', strtotime($item->status_effective_date)) }}</p>
+                                </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    <p>{{ $item->guarantor_status }}</p>
+                                </x-table.table-body>
+                            </tr>
                         @empty
-                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
-                            <x-no-data title="No data"/>
-                        </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                <x-no-data title="No data"/>
+                            </x-table.table-body>
                         @endforelse
                     </x-slot>
                 </x-table.table>
