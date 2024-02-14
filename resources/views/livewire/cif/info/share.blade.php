@@ -56,14 +56,14 @@
                                 <p>{{$item->doc_no ? $item->doc_no: 'N/A'}} </p>
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                <p>{{$item->description}}</p>
+                                <p>{{$item->transactionCode->description}}</p>
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{$item->remarks ? $item->remarks: 'N/A'}} </p>
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>
-                                    @if($item->dr_cr == 'D') - @endif {{number_format($item->amount,2)}}
+                                    @if($item->transactionCode->dr_cr == 'D') - @endif {{number_format($item->amount,2)}}
                                 </p>
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
