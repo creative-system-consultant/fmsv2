@@ -222,7 +222,7 @@ class CustomerSearch extends Component
             $customer = GeneralCustomerSearch::getContributionWithdrawalData($this->clientId, $id);
 
             if (!$customer) {
-                $this->reset('name', 'searchMbrNoValue', 'searchTotContributionAmt');
+                $this->reset('name', 'searchMbrNoValue', 'searchTotContributionAmt', 'searchAmtApplyValue');
                 $this->dispatch('refresh')->self();
                 return;
             }

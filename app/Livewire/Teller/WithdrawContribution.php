@@ -31,6 +31,7 @@ class WithdrawContribution extends Component
 
     // fetch from customer search component
     public $customer;
+    public $applyId;
     public $mbrNo;
     public $accId;
     public $ic;
@@ -58,6 +59,7 @@ class WithdrawContribution extends Component
     public function handleCustomerSelection($customer)
     {
         $this->customer = $customer;
+        $this->applyId = $customer['apply_id'];
         $this->bankMember = $customer['bank_id'];
         $this->mbrNo = (string) $customer['mbr_no'];
         $this->saveButton = $this->bankMember && $customer['bank_acct_no'];
@@ -94,6 +96,7 @@ class WithdrawContribution extends Component
             'userId' => auth()->id(),
             'chequeDate' => $this->chequeDate,
             'bankClient' => $this->bankClient,
+            'idApply' => $this->applyId,
         ]);
 
         if (!$result) {
@@ -108,7 +111,7 @@ class WithdrawContribution extends Component
         $this->dialog()->$dialogType($messageText, $message["SP_RETURN_MSG"]);
 
         $this->dispatch('clear')->to(MembersBankInfo::class);
-        $this->reset('chequeDate', 'txnAmt', 'txnDate');
+        $this->reset('bankClient', 'docNo', 'txnAmt', 'txnDate', 'remarks');
         $this->dispatch('refreshComponentId', id: $this->customer['id'])->to(CustomerSearch::class);
     }
 
