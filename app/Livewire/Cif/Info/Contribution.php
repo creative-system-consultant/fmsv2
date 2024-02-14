@@ -17,7 +17,7 @@ class Contribution extends Component
 {
 
     use WithPagination;
-    public $customer, $uuid, $changedMonthlyCon, $contributions_out;
+    public $customer, $uuid, $changedMonthlyCon;
     public $startDateContribution, $endDateContribution;
     public $ChangedMonthlyCon, $clientID;
     public $totalBalContribution, $totalAddContribution, $totalWithdrawContribution,$lastPaymentAmt, $lastPaymentDate,$monthlyContribution,  $lastWithdrawDate, $numWithdraw, $contributions;
@@ -99,34 +99,9 @@ class Contribution extends Component
             ->orderBy('FMS.MEMBERSHIP_STATEMENTS.id', 'asc')
             ->get();
 
-        $this->contributions_out = DB::table('FMS.MEMBERSHIP_STATEMENTS')
-            ->select(
-                'FMS.MEMBERSHIP_STATEMENTS.id',
-                'FMS.MEMBERSHIP_STATEMENTS.transaction_date',
-                'FMS.MEMBERSHIP_STATEMENTS.remarks',
-                'FMS.MEMBERSHIP_STATEMENTS.transaction_code_id',
-                'FMS.MEMBERSHIP_STATEMENTS.amount',
-                'FMS.MEMBERSHIP_STATEMENTS.total_amount',
-                DB::raw('created_by = FMS.uf_get_users_name(1,FMS.MEMBERSHIP_STATEMENTS.created_by)'),
-                'FMS.MEMBERSHIP_STATEMENTS.created_at',
-                'REF.TRANSACTION_CODES.description',
-                'REF.TRANSACTION_CODES.reverse_trx_id',
-                'REF.TRANSACTION_CODES.trx_group',
-                'REF.TRANSACTION_CODES.dr_cr',
-                'REF.TRANSACTION_CODES.id AS id2'
-            )
-            ->join('REF.TRANSACTION_CODES', 'REF.TRANSACTION_CODES.id', 'FMS.MEMBERSHIP_STATEMENTS.transaction_code_id')
-            ->where('FMS.MEMBERSHIP_STATEMENTS.mbr_no', '=', $this->customer->membership->mbr_no)
-            ->where('FMS.MEMBERSHIP_STATEMENTS.client_id', $this->clientID)
-            ->whereIn('FMS.MEMBERSHIP_STATEMENTS.transaction_code_id', array('4101', '4102', '4103', '4104', '4105'))
-            ->whereBetween(DB::raw('cast(FMS.MEMBERSHIP_STATEMENTS.transaction_date as date)'), [$this->startDateContribution, $this->endDateContribution])
-            ->orderBy('FMS.MEMBERSHIP_STATEMENTS.id', 'asc')
-            ->get();
-
         return view('livewire.cif.info.contribution', [
             'changedMonthlyCon' => $this->changedMonthlyCon,
             'contributions' => $this->contributions,
-            'contributionsOut' => $this->contributions_out,
         ])->extends('layouts.main');
     }
 }

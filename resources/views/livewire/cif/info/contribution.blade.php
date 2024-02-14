@@ -56,12 +56,6 @@
                         <h1>Contribution Statements</h1>
                     </div>
                 </x-tab.title>
-                <x-tab.title name="1">
-                    <div class="flex items-center text-sm spcae-x-2">
-                        <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
-                        <h1>Contribution Out Statements</h1>
-                    </div>
-                </x-tab.title>
             </div>
         </div>
 
@@ -140,76 +134,6 @@
                                     @endif
                                 </x-table.table-body>
                             </tr>
-                            @empty
-                                <x-table.table-body colspan="5" class="text-xs font-medium text-gray-700 ">
-                                    <p>No Data</p>
-                                </x-table.table-body>
-                            @endforelse
-                        </x-slot>
-                    </x-table.table>
-                </x-card>
-            </div>
-
-            <div  x-show="tab == 1">
-                <x-card title="Contribution Out Statements">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center space-x-2">
-                            <x-datetime-picker
-                                label="Start Date"
-                                wire:model.live="startDateContribution"
-                                without-time=true
-                                display-format="DD/MM/YYYY"
-                            />
-                            <x-datetime-picker
-                                label="End Date"
-                                wire:model.live="endDateContribution"
-                                without-time=true
-                                display-format="DD/MM/YYYY"
-                            />
-                        </div>
-
-                        <div class="mt-5">
-                            <x-button sm icon="document-report" green label="Excel"/>
-                            <x-button sm icon="document-report" orange label="PDF" />
-                        </div>
-                    </div>
-
-                    <x-table.table>
-                        <x-slot name="thead">
-                            <x-table.table-header class="text-left" value="Date" sort="" />
-                            <x-table.table-header class="text-left" value="Transaction Description" sort="" />
-                            <x-table.table-header class="text-left" value="Remark" sort="" />
-                            <x-table.table-header class="text-left " value="Amount" sort="" />
-                            <x-table.table-header class="text-left " value="Total Amount" sort="" />
-                            <x-table.table-header class="text-left " value="Action" sort="" />
-                        </x-slot>
-
-                        <x-slot name="tbody">
-                            @forelse ($contributionsOut as $data)
-                                <tr>
-                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                        <p>{{ date('d/m/Y',strtotime($data->transaction_date)) }}</p>
-                                    </x-table.table-body>
-                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                        <p>{{$data->description}}</p>
-                                    </x-table.table-body>
-                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                        <p>{{$data->remarks ? $data->remarks : 'N/A'}}</p>
-                                    </x-table.table-body>
-                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                        <p>
-                                            @if($data->dr_cr == 'D')
-                                            -
-                                            @endif
-                                            {{number_format($data->amount,2)}}
-                                        </p>
-                                    </x-table.table-body>
-                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                        <p>{{number_format($data->total_amount,2)}}</p>
-                                    </x-table.table-body>
-                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    </x-table.table-body>
-                                </tr>
                             @empty
                                 <x-table.table-body colspan="5" class="text-xs font-medium text-gray-700 ">
                                     <p>No Data</p>
