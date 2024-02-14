@@ -171,6 +171,18 @@
                         disabled
                     />
                 @endif
+
+                @if($searchAmtApply)
+                    <x-inputs.currency
+                        class="!pl-[2.5rem]"
+                        label="Applied Amount"
+                        prefix="RM"
+                        thousands=","
+                        decimal="."
+                        wire:model="searchAmtApplyValue"
+                        disabled
+                    />
+                @endif
             </div>
             <div class="flex justify-end mt-3">
                 <x-button
