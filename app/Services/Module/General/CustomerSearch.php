@@ -496,6 +496,7 @@ class CustomerSearch
     ) {
         $query = FmsContributionReqHistory::select(
                 'FMS.CONTRIBUTION_REQ_HISTORY.id',
+                'FMS.CONTRIBUTION_REQ_HISTORY.apply_id',
                 'FMS.CONTRIBUTION_REQ_HISTORY.mbr_no',
                 'CIF.CUSTOMERS.name',
                 'CIF.CUSTOMERS.bank_id',
@@ -530,6 +531,7 @@ class CustomerSearch
     ) {
         $query = FmsContributionReqHistory::select(
             'FMS.CONTRIBUTION_REQ_HISTORY.id',
+            'FMS.CONTRIBUTION_REQ_HISTORY.apply_id',
             'FMS.CONTRIBUTION_REQ_HISTORY.mbr_no',
             'CIF.CUSTOMERS.name',
             'CIF.CUSTOMERS.bank_id',
