@@ -3,6 +3,7 @@
 namespace App\Models\Fms;
 
 use App\Models\Cif\CifCustomer;
+use App\Models\Fms\SpecialAid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,5 +33,10 @@ class FmsMembership extends Model
     public function introducerList()
     {
         return $this->hasMany(IntroducerList::class, 'mbr_no', 'mbr_no');
+    }
+
+    public function specialAid()
+    {
+        return $this->hasMany(SpecialAid::class, 'mbr_no','mbr_no');
     }
 }

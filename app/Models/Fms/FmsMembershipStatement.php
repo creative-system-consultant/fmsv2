@@ -15,6 +15,6 @@ class FmsMembershipStatement extends Model
 
     public function transactionCode()
     {
-        return $this->belongsTo(RefTransactionCode::class, 'transaction_code_id');
+        return $this->hasOne(RefTransactionCode::class,'transaction_code_id','id');
     }
 }

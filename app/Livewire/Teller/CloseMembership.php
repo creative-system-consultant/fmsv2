@@ -64,7 +64,7 @@ class CloseMembership extends Component
         $this->customer = $customer;
         $this->bankMember = $customer['bank_id'];
         $this->mbrNo = (string) $customer['mbr_no'];
-        $this->txnAmt = $customer['total_contribution'] + $customer['total_share'] + $customer['misc_amt'] + $customer['bal_dividen'];
+        $this->txnAmt = $customer['total_contribution'] + $customer['total_share'] + $customer['misc_amt'] + $customer['bal_dividen'] + $customer['advance_payment'];
         $this->saveButton = $this->bankMember && $customer['bank_acct_no'];
         $this->ic = $customer['identity_no'];
         $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
