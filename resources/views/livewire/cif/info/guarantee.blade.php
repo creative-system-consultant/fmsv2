@@ -112,5 +112,4 @@
             </div>
         </x-card>
     </div>
-    
 </div>
