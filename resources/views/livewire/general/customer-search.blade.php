@@ -343,9 +343,9 @@
 
                                             if($customQuery == 'financingRepayment' || $customQuery == 'refundAdvance') {
                                                 $wireClickFunction = 'selectedAccNo(\''.$item->account_no.'\')';
-                                            } elseif($customQuery == 'thirdParty') {
+                                            } elseif($customQuery == 'thirdParty' || $customQuery == 'withdrawContribution') {
                                                 $wireClickFunction = 'selectedId(\''.$item->id.'\')';
-                                            } elseif($customQuery == 'miscellaneousOut' || $customQuery == 'dividendWithdrawal' || $customQuery == 'withdrawContribution' || $customQuery == 'withdrawShare') {
+                                            } elseif($customQuery == 'miscellaneousOut' || $customQuery == 'dividendWithdrawal' || $customQuery == 'withdrawShare') {
                                                 $wireClickFunction = 'selectedMbr(\''.$item->mbr_no.'\')';
                                             }  else {
                                                 $wireClickFunction = 'selectedUuid(\''.$item->uuid.'\')';

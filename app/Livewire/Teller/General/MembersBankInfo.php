@@ -37,6 +37,12 @@ class MembersBankInfo extends Component
         $this->memberBankAccNo = $cifCustAcc->bank_acct_no ?? '';
     }
 
+    #[On('clear')]
+    public function clearInput()
+    {
+        $this->reset('bankMember', 'memberBankAccNo');
+    }
+
     #[On('icSelected')]
     public function icSelected($ic)
     {

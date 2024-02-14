@@ -495,6 +495,7 @@ class CustomerSearch
         $search = null
     ) {
         $query = FmsContributionReqHistory::select(
+                'FMS.CONTRIBUTION_REQ_HISTORY.id',
                 'FMS.CONTRIBUTION_REQ_HISTORY.mbr_no',
                 'CIF.CUSTOMERS.name',
                 'CIF.CUSTOMERS.bank_id',
@@ -517,14 +518,17 @@ class CustomerSearch
             $query->where($searchBy, 'like', '%' . $search . '%');
         }
 
+        $query->orderBy('id', 'DESC');
+
         return $query->paginate(10);
     }
 
     public static function getContributionWithdrawalData(
         $clientId = null,
-        $mbrNo = null
+        $id = null
     ) {
         $query = FmsContributionReqHistory::select(
+            'FMS.CONTRIBUTION_REQ_HISTORY.id',
             'FMS.CONTRIBUTION_REQ_HISTORY.mbr_no',
             'CIF.CUSTOMERS.name',
             'CIF.CUSTOMERS.bank_id',
@@ -542,7 +546,7 @@ class CustomerSearch
         ->where('FMS.MEMBERSHIP.no_of_cont_withdrawal', '<', '5')
         ->where('FMS.CONTRIBUTION_REQ_HISTORY.req_status', '1')
         ->where('FMS.MEMBERSHIP.mbr_status', 'A')
-        ->where('FMS.CONTRIBUTION_REQ_HISTORY.mbr_no', $mbrNo);
+        ->where('FMS.CONTRIBUTION_REQ_HISTORY.id', $id);
 
         return $query->first();
     }
