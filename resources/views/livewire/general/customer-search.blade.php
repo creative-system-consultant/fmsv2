@@ -186,7 +186,7 @@
                         <div class="flex items-center mb-4 space-x-2">
                             <x-label label="Search :"/>
                             <div>
-                                <x-native-select wire:model="searchBy">
+                                <x-native-select wire:model.live="searchBy">
                                     <option value="CIF.CUSTOMERS.name">Name</option>
                                     <option value="CIF.CUSTOMERS.identity_no">Identity No</option>
 
