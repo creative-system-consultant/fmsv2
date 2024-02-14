@@ -16,6 +16,7 @@ class CustomerSearch extends Component
     public $clientId;
 
     public $complete = false;
+    public $dataId;
     public $name;
     public $searchMbrNo = false, $searchMbrNoValue;
     public $searchAccNo = false, $searchAccNoValue;
@@ -216,12 +217,25 @@ class CustomerSearch extends Component
     {
         if ($this->customQuery == 'thirdParty') {
             $customer = GeneralCustomerSearch::getThirdPartyIdData($this->clientId, $id);
+        } elseif ($this->customQuery == 'withdrawContribution') {
+            $customer = GeneralCustomerSearch::getContributionWithdrawalData($this->clientId, $id);
+
+            if (!$customer) {
+                $this->reset('name', 'searchMbrNoValue', 'searchTotContributionAmt');
+                $this->dispatch('refresh')->self();
+                return;
+            }
         }
 
+        $this->dataId = $customer->id;
         $this->name = $customer->name;
 
         if ($this->searchMbrNo) {
             $this->searchMbrNoValue = $customer->mbr_no;
+        }
+
+        if ($this->searchTotContribution) {
+            $this->searchTotContributionAmt = number_format($customer->total_contribution, 2) ?? 0;
         }
 
         if ($this->searchInstitute) {
@@ -260,8 +274,6 @@ class CustomerSearch extends Component
                 $this->dispatch('refresh')->self();
                 return;
             }
-        } elseif ($this->customQuery == 'withdrawContribution') {
-            $customer = GeneralCustomerSearch::getContributionWithdrawalData($this->clientId, $mbrNo);
         } elseif ($this->customQuery == 'withdrawShare') {
             $customer = GeneralCustomerSearch::getWithdrawShareData($this->clientId, $mbrNo);
         }
@@ -357,7 +369,16 @@ class CustomerSearch extends Component
     #[On('refreshComponentId')]
     public function reloadIdData($id)
     {
-        $this->getIdData($id);
+        $customer = $this->getIdData($id);
+
+        if ($customer) {
+            $this->dispatch(
+                'idSelected',
+                customer: $customer,
+            );
+        } else {
+            $this->reset('name', 'searchMbrNoValue', 'searchTotContributionAmt', 'searchInstituteValue', 'searchTrxAmtValue', 'searchModeIdValue');
+        }
     }
 
     #[On('refreshComponentMbrNo')]
