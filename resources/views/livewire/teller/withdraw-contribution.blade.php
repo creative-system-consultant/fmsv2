@@ -1,6 +1,6 @@
 <div>
     <div class="grid grid-cols-1">
-        <livewire:general.customer-search searchMbrNo=true searchTotContribution=true customQuery='withdrawContribution' />
+        <livewire:general.customer-search searchMbrNo=true searchTotContribution=true searchAmtApply=true customQuery='withdrawContribution' />
 
         <div class="grid grid-cols-12 gap-6 py-4 mt-4 rounded-lg dark:bg-gray-900" x-data="{ tab: 0 }">
             <div class="col-span-12 lg:col-span-12">

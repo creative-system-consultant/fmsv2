@@ -34,6 +34,7 @@ class CustomerSearch extends Component
     public $searchInstitute = false, $searchInstituteValue;
     public $searchTrxAmt = false, $searchTrxAmtValue;
     public $searchModeId = false, $searchModeIdValue;
+    public $searchAmtApply = false, $searchAmtApplyValue;
 
     public $customQuery = '';
 
@@ -248,6 +249,10 @@ class CustomerSearch extends Component
 
         if ($this->searchModeId) {
             $this->searchModeIdValue = $customer->mode;
+        }
+
+        if ($this->searchAmtApply) {
+            $this->searchAmtApplyValue = $customer->apply_amt;
         }
 
         return $customer;
