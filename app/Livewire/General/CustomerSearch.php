@@ -79,6 +79,8 @@ class CustomerSearch extends Component
                 "MEMBERSHIP NO",
                 "NAME",
                 "TOTAL SHARE",
+                "AMOUNT APPLIED",
+                "AMOUNT APPROVED",
                 "LAST PAYMENT DATE",
                 "ACTION",
             ];
@@ -273,14 +275,14 @@ class CustomerSearch extends Component
             $customer = GeneralCustomerSearch::getMiscellaneousOutMbrData($this->clientId, $mbrNo, $this->complete);
         } elseif ($this->customQuery == 'dividendWithdrawal') {
             $customer = GeneralCustomerSearch::getDividendWithdrawalData($this->clientId, $mbrNo);
-
-            if (!$customer) {
-                $this->reset('name', 'searchMbrNoValue', 'searchBalDividenValue');
-                $this->dispatch('refresh')->self();
-                return;
-            }
         } elseif ($this->customQuery == 'withdrawShare') {
             $customer = GeneralCustomerSearch::getWithdrawShareData($this->clientId, $mbrNo);
+        }
+
+        if (!$customer) {
+            $this->reset('name', 'searchMbrNoValue', 'searchMiscAmtValue', 'searchBalDividenValue', 'searchTotContributionAmt', 'searchTotShareAmt');
+            $this->dispatch('refresh')->self();
+            return;
         }
 
         $this->name = $customer->name;

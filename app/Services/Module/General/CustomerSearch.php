@@ -174,6 +174,8 @@ class CustomerSearch
             'CIF.CUSTOMERS.name',
             'FMS.MEMBERSHIP.total_share',
             'FMS.MEMBERSHIP.last_payment_date',
+            'FMS.SHARES_REQ_HISTORY.approved_amt',
+            'FMS.SHARES_REQ_HISTORY.apply_amt',
         )
             ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', 'FMS.SHARES_REQ_HISTORY.mbr_no')
             ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', 'FMS.MEMBERSHIP.cif_id')
@@ -196,18 +198,22 @@ class CustomerSearch
         $mbrNo = null
     ) {
         $query = FmsShareReqHistory::select(
+            'FMS.SHARES_REQ_HISTORY.id',
             'FMS.SHARES_REQ_HISTORY.mbr_no',
             'CIF.CUSTOMERS.name',
             'FMS.MEMBERSHIP.total_share',
             'FMS.MEMBERSHIP.last_payment_date',
             'CIF.CUSTOMERS.identity_no',
             'CIF.CUSTOMERS.bank_id',
-            'CIF.CUSTOMERS.bank_acct_no'
+            'CIF.CUSTOMERS.bank_acct_no',
+            'FMS.SHARES_REQ_HISTORY.approved_amt',
+            'FMS.SHARES_REQ_HISTORY.apply_amt',
         )
             ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', 'FMS.SHARES_REQ_HISTORY.mbr_no')
             ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', 'FMS.MEMBERSHIP.cif_id')
             ->where('FMS.SHARES_REQ_HISTORY.direction', 'sell')
             ->where('FMS.SHARES_REQ_HISTORY.mbr_no', $mbrNo)
+            ->where('FMS.SHARES_REQ_HISTORY.req_status', 1)
             ->where('FMS.SHARES_REQ_HISTORY.client_id', $clientId)
             ->where('CIF.CUSTOMERS.client_id', $clientId)
             ->where('FMS.MEMBERSHIP.client_id', $clientId);
