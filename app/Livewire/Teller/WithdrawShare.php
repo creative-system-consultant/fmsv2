@@ -65,7 +65,7 @@ class WithdrawShare extends Component
         $this->bankMember = $customer['bank_id'];
         $this->mbrNo = (string) $customer['mbr_no'];
         $this->totalShareValid = $customer['total_share'] - $this->minShare;
-        $this->txnAmt = $this->totalShareValid;
+        $this->txnAmt = $customer['approved_amt'];;
         $this->saveButton = $this->bankMember && $customer['bank_acct_no'];
 
         $this->ic = $customer['identity_no'];
@@ -113,7 +113,7 @@ class WithdrawShare extends Component
         $this->dialog()->$dialogType($messageText, $message["SP_RETURN_MSG"]);
 
         $this->reset('chequeDate', 'txnAmt', 'txnDate');
-        $this->dispatch('refreshComponent', uuid: $this->customer['uuid'])->to(CustomerSearch::class);
+        $this->dispatch('refreshComponentMbrNo', mbrNo: $this->customer['mbr_no'])->to(CustomerSearch::class);
     }
 
     public function render()

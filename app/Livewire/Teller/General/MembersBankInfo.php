@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Teller\General;
 
+use App\Models\Cif\CifCustomer;
 use App\Services\General\PopupService;
 use App\Services\Model\BankService;
-use App\Services\Model\CifCustomer;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -32,7 +32,7 @@ class MembersBankInfo extends Component
         $this->clientId = auth()->user()->client_id;
         $this->refBank = BankService::getAllRefBanks($this->clientId);
 
-        $cifCustAcc = CifCustomer::getCifCustomerByIc($this->ic);
+        $cifCustAcc = CifCustomer::whereIdentityNo($this->ic)->where('client_id', $this->clientId)->first();
         $this->bankMember = $cifCustAcc->bank_id ?? null;
         $this->memberBankAccNo = $cifCustAcc->bank_acct_no ?? '';
     }
@@ -46,7 +46,8 @@ class MembersBankInfo extends Component
     #[On('icSelected')]
     public function icSelected($ic)
     {
-        $cifCustAcc = CifCustomer::getCifCustomerByIc($ic);
+        $cifCustAcc = CifCustomer::whereIdentityNo($ic)->where('client_id', $this->clientId)->first();
+
         $this->bankMember = $cifCustAcc->bank_id ?? null;
         $this->memberBankAccNo = $cifCustAcc->bank_acct_no ?? '';
 
@@ -64,10 +65,13 @@ class MembersBankInfo extends Component
     {
         $data = [
             'bank_id' => $this->bankMember,
-            'bank_acct_no' => $this->memberBankAccNo
+            'bank_acct_no' => $this->memberBankAccNo,
+            'updated_at' => now(),
+            'updated_by' => auth()->user()->id,
         ];
 
-        CifCustomer::updateCifCustomer($this->ic, $data);
+        CifCustomer::whereIdentityNo($this->ic)->where('client_id', $this->clientId)->update($data);
+        CifCustomer::whereIdentityNo($this->ic)->where('client_id', 10)->update($data);
 
         $data = array('bankMember' => $this->bankMember, 'memberBankAccNo' => $this->memberBankAccNo);
         $this->dispatch('updatePayButton', $data);
