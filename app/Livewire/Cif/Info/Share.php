@@ -16,7 +16,7 @@ class Share extends Component
     use WithPagination;
 
     public $customer, $uuid, $startDateShare, $endDateShare, $clientID;
-    public $totalShare, $lastPurchaseAmt, $lastPurchaseDate, $monthly, $lastSellAmt, $lastSellDate;
+    public $totalShare, $sharePaymentMethod, $totalPurchaseShare, $totalSellShare, $lastPurchaseAmt, $lastPurchaseDate, $monthly, $lastSellAmt, $numWithdraw, $lastSellDate;
 
     public function mount()
     {
@@ -27,6 +27,10 @@ class Share extends Component
         $membershipInfo = $this->customer->membership;
 
         $this->totalShare = number_format($membershipInfo->total_share, 2);
+        $this->sharePaymentMethod = number_format($membershipInfo->share_pmt_mode_flag);
+        $this->totalPurchaseShare = number_format($membershipInfo->total_share_purchase_amt, 2);
+        $this->totalSellShare = number_format($membershipInfo->total_share_selling_amt, 2);
+        $this->numWithdraw = number_format($membershipInfo->no_of_shares_withdrawal);
         $this->lastPurchaseAmt = number_format($membershipInfo->last_purchase_amount, 2);
         $this->lastPurchaseDate = ($membershipInfo->last_purchase_date) ? Carbon::parse($membershipInfo->last_purchase_date)->format('d-m-Y') : 'dd-mm-yyyy';
         $this->monthly = number_format($membershipInfo->monthly_share, 2);

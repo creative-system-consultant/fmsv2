@@ -20,7 +20,7 @@ class Contribution extends Component
     public $customer, $uuid, $changedMonthlyCon;
     public $startDateContribution, $endDateContribution;
     public $ChangedMonthlyCon, $clientID;
-    public $totalBalContribution, $totalAddContribution, $totalWithdrawContribution,$lastPaymentAmt, $lastPaymentDate,$monthlyContribution,  $lastWithdrawDate, $numWithdraw, $contributions;
+    public $totalBalContribution, $totalAddContribution, $totalWithdrawContribution, $lastPaymentAmt, $lastWithdrawAmt, $lastPaymentDate, $monthlyContribution,  $lastWithdrawDate, $numWithdraw, $contributions;
 
     public function mount()
     {
@@ -35,7 +35,8 @@ class Contribution extends Component
         $this->lastPaymentDate = ($membershipInfo->last_cont_add_date) ? Carbon::parse($membershipInfo->last_cont_add_date)->format('d-m-Y') : 'dd-mm-yyyy';
         $this->monthlyContribution = number_format($membershipInfo->monthly_contribution, 2);
         $this->lastWithdrawDate = ($membershipInfo->last_cont_withdraw_date) ? Carbon::parse($membershipInfo->last_cont_withdraw_date)->format('d-m-Y') : 'dd-mm-yyyy';
-        $this->numWithdraw = number_format($membershipInfo->no_of_cont_withdrawal, 2);
+        $this->lastWithdrawAmt = number_format($membershipInfo->last_cont_withdraw_amt, 2);
+        $this->numWithdraw = number_format($membershipInfo->no_of_cont_withdrawal);
 
         $this->ChangedMonthlyCon        = ChangeMonthlyContribution::where('mbrID', '=', $membershipInfo->mbr_no)->first();
         $this->startDateContribution    =  '2021-12-31';

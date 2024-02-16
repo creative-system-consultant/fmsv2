@@ -12,6 +12,7 @@ use App\Models\Ref\RefLanguage;
 use App\Models\Ref\RefMarital;
 use App\Models\Ref\RefRace;
 use App\Models\Ref\RefTitle;
+use App\Models\Ref\RefBank;
 use App\Services\General\PopupService;
 use Carbon\Carbon;
 use Livewire\Attributes\On;
@@ -22,7 +23,9 @@ class Information extends Component
 {
     public $disabled = true;
     public $customerInfo;
-    public $uuid, $title_id, $name, $identity_type_id, $identity_no, $email, $email2, $phone, $resident_phone, $gender_id, $birth_date, $race_id, $bumi, $language_id, $marital_id, $country_id, $monthly_contribution, $year_tabung_khairat, $amt_tabung_khairat, $clientID;
+    public $uuid, $title_id, $name, $identity_type_id, $identity_no, $email, $email2, $phone, $resident_phone, $gender_id, $birth_date, $race_id, $bumi, $language_id, $marital_id, $country_id, $monthly_contribution, $year_tabung_khairat, $amt_tabung_khairat, $bank_id, $bank_acct_no, $va_account, $clientID;
+    public $banks;
+    public $bankOptions = [];
 
     public function mount()
     {
@@ -36,6 +39,12 @@ class Information extends Component
         // $language = RefLanguage::select('description')->where('id', $this->customerInfo->language_id)->first();
         $marital = RefMarital::select('description')->where('id', $this->customerInfo->marital_id)->first();
         $country = RefCountry::select('description')->where('id', $this->customerInfo->country_id)->first();
+
+        // Transform banks data to match the select options format
+        $this->banks = RefBank::where('client_id', $this->clientID)->get();
+        $this->bankOptions = $this->banks->map(function ($bank) {
+            return ['name' => $bank->description, 'id' => $bank->id];
+        })->toArray();
 
         $this->title_id = $title->description ?? '';
         $this->name = $this->customerInfo->name;
@@ -55,12 +64,14 @@ class Information extends Component
         $this->monthly_contribution = $membershipInfo->monthly_contribution;
         $this->year_tabung_khairat = $membershipInfo->year_tabung_khairat;
         $this->amt_tabung_khairat = $membershipInfo->amt_tabung_khairat;
+        $this->bank_id = $this->customerInfo->bank_id;
+        $this->bank_acct_no = $this->customerInfo->bank_acct_no;
     }
 
     #[On('edit')]
     public function editData()
     {
-        // $this->disabled = false;
+        $this->disabled = false;
     }
 
     #[On('save')]
