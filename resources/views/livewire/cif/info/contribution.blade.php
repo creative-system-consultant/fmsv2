@@ -1,16 +1,18 @@
 <div>
     <x-card title="Contribution Information">
-        <div class="grid items-center grid-cols-1 gap-2 md:grid-cols-3">
-            <x-input label="Total Balance Contribution" wire:model="totalBalContribution" disabled />
-            <x-input label="Total Add Contribution" wire:model="totalAddContribution" disabled />
-            <x-input label="Total Withdraw Contribution" wire:model="totalWithdrawContribution" disabled />
-            <x-input label="Last Payment Amount" wire:model="lastPaymentAmt" disabled />
-            <x-input label="Last Payment Date" wire:model="lastPaymentDate" disabled />
-            <x-input label="Last Withdraw Amount" wire:model="lastWithdrawAmt" disabled />
-            <x-input label="Last Withdraw Date"  wire:model="lastWithdrawDate" disabled/>
-            <x-input label="Monthly" wire:model="monthlyContribution" disabled />
-            <x-input label="Number of Withdraw" wire:model="numWithdraw" disabled />
-
+        <div>
+            <div class="grid items-center grid-cols-1 gap-2 md:grid-cols-3">
+                <x-input label="Total Balance Contribution" wire:model="totalBalContribution" disabled />
+                <x-input label="Monthly Contribution" wire:model="monthlyContribution" disabled />
+                <x-input label="No. of Contribution Withdrawal" wire:model="numWithdraw" disabled />
+                <x-input label="Total Add Contribution" wire:model="totalAddContribution" disabled />
+                <x-input label="Last Payment Amount" wire:model="lastPaymentAmt" disabled />
+                <x-input label="Last Payment Date" wire:model="lastPaymentDate" disabled />
+                <x-input label="Total Withdraw Contribution" wire:model="totalWithdrawContribution" disabled />
+                <x-input label="Last Withdraw Amount" wire:model="lastWithdrawAmt" disabled />
+                <x-input label="Last Withdraw Date"  wire:model="lastWithdrawDate" disabled/>
+            </div>
+            
             <div class="mt-6">
                 <x-button
                     onclick="$openModal('contribution-histrory-modal')"
@@ -89,8 +91,8 @@
                             <x-table.table-header class="text-left" value="Date" sort="" />
                             <x-table.table-header class="text-left" value="Transaction Description" sort="" />
                             <x-table.table-header class="text-left" value="Remark" sort="" />
-                            <x-table.table-header class="text-left " value="Amount" sort="" />
-                            <x-table.table-header class="text-left " value="Total Amount" sort="" />
+                            <x-table.table-header class="text-right" value="Amount" sort="" />
+                            <x-table.table-header class="text-right" value="Total Amount" sort="" />
                             <x-table.table-header class="text-left " value="Created By" sort="" />
                             <x-table.table-header class="text-left " value="Created At" sort="" />
                             <x-table.table-header class="text-left " value="Action" sort="" />
@@ -107,7 +109,7 @@
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <p>{{$item->remarks ? $item->remarks : 'N/A'}}</p>
                                 </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
                                     <p>
                                         @if($item->dr_cr == 'D')
                                         -
@@ -115,7 +117,7 @@
                                         {{number_format($item->amount,2)}}
                                     </p>
                                 </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
                                     <p>{{number_format($item->total_amount,2)}}</p>
                                 </x-table.table-body>
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">

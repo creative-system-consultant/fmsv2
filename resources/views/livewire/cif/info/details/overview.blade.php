@@ -1,6 +1,6 @@
 <div>
     <div>
-        <x-card title="Membership Overview" >
+        <x-card title="Membership Overview">
             <div class="grid grid-cols-1 gap-2 md:grid-cols-3">
                 <x-input label="Staff No" placeholder="" wire:model="staff_no" :disabled="true" />
                 <x-input label="Membership No." placeholder="" wire:model="ref_no" :disabled="true" />

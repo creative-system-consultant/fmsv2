@@ -12,7 +12,7 @@ use Livewire\Component;
 class Employer extends Component
 {
     public $disabled = true;
-    public $uuid, $current_employer_name, $company_address, $company_phone_no, $company_fax_no, $job_group_id, $job_status_id, $job_position, $current_employment_date, $current_salary, $clientID;
+    public $uuid, $current_employer_name, $company_address, $company_phone_no, $company_fax_no, $job_group_id, $job_status_id, $job_department, $job_position, $current_employment_date, $current_salary, $clientID;
 
     public function mount()
     {
@@ -24,12 +24,13 @@ class Employer extends Component
         $this->current_employer_name = ($customerInfo->employer) ? $customerInfo->employer->name : '';
         $this->company_address = $customerInfo->employer->fullAddress ?? '';
         $this->company_phone_no = ($customerInfo->employer) ? $customerInfo->employer->office_num : '';
-        $this->company_fax_no = $customerInfo->employer->faxNo ?? '';
+        $this->company_fax_no = ($customerInfo->employer) ? $customerInfo->employer->worker_num : '';
         $this->job_group_id = $job_group->groups ?? '';
         $this->job_status_id = $job_status->description ?? '';
-        $this->job_position = ($customerInfo->employer) ? $customerInfo->employer->position_id : '';
+        $this->job_department = ($customerInfo->employer) ? $customerInfo->employer->department : '';
+        $this->job_position = ($customerInfo->employer) ? $customerInfo->employer->position : '';
         $this->current_employment_date = ($customerInfo->employer) ? Carbon::parse($customerInfo->employer->work_start)->format('d-m-Y') : '';
-        $this->current_salary = ($customerInfo->employer) ? $customerInfo->employer->salary_ref : '';
+        $this->current_salary = ($customerInfo->employer) ? $customerInfo->employer->salary : '';
     }
 
     public function render()

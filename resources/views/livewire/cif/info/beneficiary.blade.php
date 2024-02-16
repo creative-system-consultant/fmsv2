@@ -49,28 +49,28 @@
                                     <option value="{{$religion->id}}">{{$religion->description}}</option>
                                     @endforeach
                     </x-native-select>
-                    <x-native-select label="Relation" wire:model="families.{{$key}}.relation_id" :disabled=$disabled>
+                    <x-native-select label="Relationship" wire:model="families.{{$key}}.relation_id" :disabled=$disabled>
                         @foreach ($relations as $relation)
                                     <option value="{{$relation->id}}">{{$relation->description}}</option>
                                     @endforeach
                     </x-native-select>
                     <x-input
-                        label="Contact No."
+                        label="Contact No"
                         wire:model="families.{{$key}}.phone_no"
                         :disabled=$disabled
                     />
                     <x-input
-                        label="Employer Name."
+                        label="Employer Name"
                         wire:model="families.{{$key}}.employer_name"
                         :disabled=$disabled
                     />
                     <x-input
-                        label="Position."
+                        label="Position"
                         wire:model="families.{{$key}}.work_post"
                         :disabled=$disabled
                     />
                     <x-input
-                        label="Salary."
+                        label="Salary"
                         wire:model="families.{{$key}}.salary"
                         :disabled=$disabled
                     />

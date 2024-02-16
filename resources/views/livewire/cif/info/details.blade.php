@@ -7,9 +7,6 @@
         @endif
     </div>
 
-    <!-- Membership Overview -->
-    <livewire:cif.info.details.overview :uuid="$uuid" />
-
     <!-- Member's Information -->
     <livewire:cif.info.details.information :uuid="$uuid" />
 </div>
