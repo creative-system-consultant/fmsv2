@@ -194,20 +194,26 @@
                 />
 
                 @php
-                    $result = $customQuery[0]; // Start with the first character
+                    // Ensure $customQuery is a string and not empty
+                    if (is_string($customQuery) && strlen($customQuery) > 0) {
+                        $result = $customQuery[0]; // Start with the first character
 
-                    // Loop through the customQuery starting from the second character
-                    for ($i = 1; $i < strlen($customQuery); $i++) {
-                        // If the character is uppercase, prepend a space
-                        if (ctype_upper($customQuery[$i])) {
-                            $result .= ' ';
+                        // Loop through the customQuery starting from the second character
+                        for ($i = 1; $i < strlen($customQuery); $i++) {
+                            // If the character is uppercase, prepend a space
+                            if (ctype_upper($customQuery[$i])) {
+                                $result .= ' ';
+                            }
+                            // Append the current character to the result
+                            $result .= $customQuery[$i];
                         }
-                        // Append the current character to the result
-                        $result .= $customQuery[$i];
-                    }
 
-                    // Uppercase the first letter of each word
-                    $title = ucwords($result);
+                        // Uppercase the first letter of each word
+                        $title = ucwords($result);
+                    } else {
+                        // Handle the case where $customQuery is not a valid string
+                        $title = ''; // Or set a default title or handle the error as appropriate
+                    }
                 @endphp
 
                 <x-modal.card title="Search Listing {{ ucwords($title) }}" align="center" max-width="6xl" blur wire:model.defer="search-modal">
