@@ -16,7 +16,6 @@
                 <x-input label="Bumiputera Status" placeholder="" wire:model="bumi" :disabled=$disabled />
                 <x-input label="Marital Status" placeholder="" wire:model="marital_id" :disabled=$disabled />
                 <x-input label="Citizenship" placeholder="" wire:model="country_id" :disabled=$disabled />
-                {{-- <x-input label="Monthly Contribution" placeholder="" wire:model="monthly_contribution" :disabled=$disabled /> --}}
                 <x-input label="Year Tabung Khairat" placeholder="" wire:model="year_tabung_khairat" :disabled=$disabled />
                 <x-input label="Tabung Khairat" placeholder="" wire:model="amt_tabung_khairat" :disabled=$disabled />
                 <x-native-select label="Bank" placeholder="Select Bank" :options="$bankOptions" option-label="name" option-value="id" wire:model="bank_id" :disabled=$disabled />
