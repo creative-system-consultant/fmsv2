@@ -12,7 +12,7 @@ class SpecialAid extends Model
     protected $table   = 'FMS.SPECIAL_AID';
     protected $guarded = [];
 
-    public function Customer()
+    public function members()
     {
         return $this->belongsTo(FmsMembership::class, 'mbr_no', 'mbr_no');
     }
