@@ -39,18 +39,14 @@
                         <livewire:general.teller.common-page module='financingRepayment' searchMthInstallAmt=true searchInstallAmtArear=true searchTotContribution=true />
                         @elseif($type_payment_in == 'Early Settlement Payment')
                         <livewire:general.teller.common-page module='earlySettlementPayment' searchAccNo=true searchBalOutstanding=true searchRebate=true searchSettleProfit=true />
-
                         @elseif($type_payment_in == 'Third Party')
                         <livewire:general.teller.common-page module='thirdParty' searchMbrNo=true searchInstitute=true searchTrxAmt=true searchModeId=true />
-
                         @elseif($type_payment_in == 'Miscellaneous in')
                             <livewire:teller.misc-in />
                         @elseif($type_payment_in == 'Autopay')
                         <livewire:teller.autopay.autopay />
-
                         @elseif($type_payment_in == 'Early Settlement Overlap')
                         <livewire:teller.settlement-overlap.settlement-overlap />
-
                         @elseif($type_payment_in == 'Bulk Payment')
                         <livewire:general.teller.common-page module='bulkPayment' />
                         @endif
