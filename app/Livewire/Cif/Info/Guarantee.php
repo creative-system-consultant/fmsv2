@@ -21,9 +21,9 @@ class Guarantee extends Component
 
         $this->Guarantor = DB::table('FMS.GUARANTOR_LIST')
             ->select([
-                DB::raw('FMS.uf_get_membership_name(CIF.CUSTOMERS.client_id,CIF.CUSTOMERS.identity_no) AS name'),
+                DB::raw('FMS.uf_get_membership_name(FMS.GUARANTOR_LIST.client_id,fms.GUARANTOR_LIST.guarantor_mbr_id) AS name'),
                 DB::raw('FMS.GUARANTOR_LIST.account_no, FMS.GUARANTOR_LIST.guarantor_mbr_id as guarantor_mbr_id ,FMS.ACCOUNT_POSITIONS.bal_outstanding,
-                FMS.uf_get_account_status(FMS.ACCOUNT_MASTERS.client_id,CIF.CUSTOMERS.id) AS account_status,
+                FMS.uf_get_account_status(FMS.ACCOUNT_MASTERS.client_id,FMS.ACCOUNT_MASTERS.account_status) AS account_status,
                 FMS.ACCOUNT_MASTERS.account_no,
                 FMS.ACCOUNT_POSITIONS.expiry_date,
                 FMS.GUARANTOR_LIST.status_effective_date,
@@ -35,6 +35,8 @@ class Guarantee extends Component
             ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_POSITIONS.account_no', '=', 'FMS.GUARANTOR_LIST.account_no')
             ->join('FMS.ACCOUNT_MASTERS', 'FMS.ACCOUNT_MASTERS.account_no', '=', 'FMS.ACCOUNT_POSITIONS.account_no')
             ->join('REF.GUARANTORSTATUS','REF.GUARANTORSTATUS.id','FMS.GUARANTOR_LIST.guarantor_status')
+            ->where('FMS.GUARANTOR_LIST.guarantor_status',1)
+            ->where('FMS.ACCOUNT_POSITIONS.bal_outstanding','>',0)
             ->where('FMS.GUARANTOR_LIST.client_id', $clientID)
             ->where('FMS.ACCOUNT_MASTERS.client_id', $clientID)
             ->where('FMS.ACCOUNT_POSITIONS.client_id', $clientID)
@@ -49,16 +51,18 @@ class Guarantee extends Component
 
         $this->Guarantee = DB::table('FMS.GUARANTOR_LIST')
             ->select([
-                DB::raw('FMS.uf_get_membership_name(CIF.CUSTOMERS.client_id,CIF.CUSTOMERS.identity_no) AS name'),
-                DB::raw('FMS.GUARANTOR_LIST.mbr_id, FMS.ACCOUNT_POSITIONS.bal_outstanding, FMS.uf_get_account_status(FMS.ACCOUNT_MASTERS.client_id,CIF.CUSTOMERS.id) AS account_status
+                DB::raw('FMS.uf_get_membership_name(FMS.GUARANTOR_LIST.client_id,FMS.GUARANTOR_LIST.mbr_id) AS name'),
+                DB::raw('mbr_id = FMS.GUARANTOR_LIST.mbr_id, FMS.ACCOUNT_POSITIONS.bal_outstanding, FMS.uf_get_account_status(FMS.ACCOUNT_MASTERS.client_id,FMS.ACCOUNT_MASTERS.account_status) AS account_status
                 ,FMS.ACCOUNT_MASTERS.account_no, FMS.ACCOUNT_POSITIONS.expiry_date, FMS.GUARANTOR_LIST.status_effective_date, FMS.ACCOUNT_MASTERS.instal_amount,
                 FMS.uf_get_product(FMS.ACCOUNT_MASTERS.client_id, FMS.ACCOUNT_MASTERS.product_id) AS product,
-                FMS.uf_get_guarantor_status(FMS.GUARANTOR_LIST.guarantor_status,FMS.GUARANTOR_LIST.guarantor_no) AS guarantor_status'),
+                FMS.uf_get_guarantor_status(FMS.GUARANTOR_LIST.client_id,FMS.GUARANTOR_LIST.guarantor_status) AS guarantor_status'),
             ])
             ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.GUARANTOR_LIST.guarantor_mbr_id')
             ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'FMS.MEMBERSHIP.cif_id')
             ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_POSITIONS.account_no', '=', 'FMS.GUARANTOR_LIST.account_no')
             ->join('FMS.ACCOUNT_MASTERS', 'FMS.ACCOUNT_MASTERS.account_no', '=', 'FMS.ACCOUNT_POSITIONS.account_no')
+            ->where('FMS.GUARANTOR_LIST.guarantor_status',1)
+            ->where('FMS.ACCOUNT_POSITIONS.bal_outstanding','>',0)
             ->where('FMS.GUARANTOR_LIST.guarantor_mbr_id', $this->MembershipInfo->mbr_no)
             ->where('FMS.GUARANTOR_LIST.client_id', $clientID)
             ->where('FMS.ACCOUNT_MASTERS.client_id', $clientID)

@@ -101,6 +101,7 @@ class Share extends Component
         ->whereBetween(DB::raw('CAST(transaction_date AS DATE)'), [$this->startDateShare, $this->endDateShare])
         ->orderBy('id', 'asc')
         ->paginate(10);
+        
 
         return view('livewire.cif.info.share', [
             'shares' => $shares
