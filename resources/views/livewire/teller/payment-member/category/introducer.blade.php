@@ -28,10 +28,10 @@
                             @endif
                         >
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700">
-                                {{ $list->customer->mbr_no }}
+                                {{ $list->membership->mbr_no }}
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                {{ $list->customer->cifCustomer->name }}
+                                {{ $list->membership->cifCustomer->name }}
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 {{ $list->introducer->mbr_no }}
@@ -43,9 +43,9 @@
                                 {{ $list->introducer->cifCustomer->identity_no }}
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                @unless($customer && $list->customer->mbr_no == $customer->mbr_no && $list->customer->client_id == $customer->client_id)
+                                @unless($customer && $list->membership->mbr_no == $customer->mbr_no && $list->membership->client_id == $customer->client_id)
                                     <div class="flex items-center space-x-2">
-                                        <x-button xs icon="cursor-click" label="select" green wire:click="selectIntroducer('{{ $list->customer->mbr_no }}')" />
+                                        <x-button xs icon="cursor-click" label="select" green wire:click="selectIntroducer('{{ $list->membership->mbr_no }}')" />
                                     </div>
                                 @endunless
                             </x-table.table-body>
