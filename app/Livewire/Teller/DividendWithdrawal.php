@@ -76,7 +76,7 @@ class DividendWithdrawal extends Component
         $this->mbrNo = (string) $customer['mbr_no'];
         $this->docNo = "N/A";
         $this->balDividen = $customer['bal_dividen'];
-        $this->txnAmt = $customer['bal_dividen'];
+        $this->txnAmt = $customer['div_cash_approved'] ?? $customer['bal_dividen'];
         $this->saveButton = true;
 
         // $this->dispatch('endProcessing');

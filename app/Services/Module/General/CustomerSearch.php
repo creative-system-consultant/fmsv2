@@ -486,15 +486,17 @@ class CustomerSearch
         $clientId = null,
         $mbrNo = null
     ) {
-        $query = DividendFinal::select([
-            'mbr_no',
-            'identity_no',
-            'name',
-            'bal_dividen'
-        ])
-            ->whereRaw('ISNULL(bal_dividen, 0) > 0')
-            ->where('client_id', $clientId)
-            ->where('mbr_no', $mbrNo);
+        $query = DB::table('FMS.DIVIDEND_FINAL as df')
+            ->select([
+                'df.mbr_no',
+                'df.identity_no',
+                'df.name',
+                'df.bal_dividen',
+                DB::raw("(select div_cash_approved from siskop.APPLY_DIVIDEND where client_id = ".$clientId." and mbr_no = ".$mbrNo." and flag = 20) as div_cash_approved"),
+            ])
+            ->whereRaw('ISNULL(df.bal_dividen, 0) > 0')
+            ->where('df.client_id', $clientId)
+            ->where('df.mbr_no', $mbrNo);
 
         return $query->first();
     }
