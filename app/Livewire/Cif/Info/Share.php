@@ -102,7 +102,6 @@ class Share extends Component
         ->orderBy('id', 'asc')
         ->paginate(10);
         
-
         return view('livewire.cif.info.share', [
             'shares' => $shares
         ]);
