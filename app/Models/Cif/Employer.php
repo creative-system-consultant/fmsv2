@@ -14,7 +14,7 @@ class Employer extends Model
 
     public function address()
     {
-        return $this->hasOne(Address::class, 'cif_id', 'cif_id')->where('address_type_id', 3);
+        return $this->hasOne(Address::class, 'cif_id', 'cif_id')->where('address_type_id', 2);
     }
 
     public function getFaxNoAttribute()
