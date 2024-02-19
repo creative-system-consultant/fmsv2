@@ -4,13 +4,13 @@
         <div class="grid grid-cols-1 gap-x-2 gap-y-0 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1">
             <x-table.table>
                 <x-slot name="thead">
-                    <x-table.table-header class="text-left" value="BORROWER`S MEMBERSHIP NO" sort="" />
-                    <x-table.table-header class="text-left" value="BORROWER`S NAME" sort="" />
-                    <x-table.table-header class="text-left" value="FINANCING" sort="" />
+                    <x-table.table-header class="text-left"  value="BORROWER`S MEMBERSHIP NO" sort="" />
+                    <x-table.table-header class="text-left"  value="BORROWER`S NAME" sort="" />
+                    <x-table.table-header class="text-left " value="ACCOUNT NO" sort="" />
+                    <x-table.table-header class="text-left"  value="FINANCING" sort="" />
                     <x-table.table-header class="text-left " value="INSTALL AMOUNT" sort="" />
                     <x-table.table-header class="text-left " value="TOTAL OUSTANDING" sort="" />
                     <x-table.table-header class="text-left " value="FINANCING STATUS" sort="" />
-                    <x-table.table-header class="text-left " value="ACCOUNT NO" sort="" />
                     <x-table.table-header class="text-left " value="GUARANTOR STATUS" sort="" />
                     <x-table.table-header class="text-left " value="EXPIRED DATE" sort="" />
                     <x-table.table-header class="text-left " value="EFFECTIVE DATE" sort="" />
@@ -25,6 +25,9 @@
                                 <p>{{ $item->name }}</p>
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                <p>{{ $item->account_no }}</p>
+                            </x-table.table-body>
+                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{ $item->product }}</p>
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
@@ -35,9 +38,6 @@
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{ $item->account_status }}</p>
-                            </x-table.table-body>
-                            <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                <p>{{ $item->account_no }}</p>
                             </x-table.table-body>
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{ $item->guarantor_status }}</p>
