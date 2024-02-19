@@ -73,7 +73,7 @@ class Share extends Component
                     return [
                         'Date'                      => date('d/m/Y', strtotime($item->transaction_date)),
                         'Doc No'                    => ($item->doc_no ? $item->doc_no : 'N/A'),
-                        'Transaction Description'   => $item->description,
+                        'Transaction Description'   => $item->transactionCode->description,
                         'Remark'                    => ($item->remarks ? $item->remarks : 'N/A'),
                         'Amount'                    => ($item->dr_cr == 'D' ? '-' : number_format($item->amount, 2)),
                         'Total Amount'              => number_format($item->total_amount, 2),
