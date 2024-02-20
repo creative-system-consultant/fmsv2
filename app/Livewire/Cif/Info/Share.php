@@ -31,11 +31,11 @@ class Share extends Component
         $this->totalPurchaseShare = number_format($membershipInfo->total_share_purchase_amt, 2);
         $this->totalSellShare = number_format($membershipInfo->total_share_selling_amt, 2);
         $this->numWithdraw = number_format($membershipInfo->no_of_shares_withdrawal);
-        $this->lastPurchaseAmt = number_format($membershipInfo->last_purchase_amount, 2);
-        $this->lastPurchaseDate = ($membershipInfo->last_purchase_date) ? Carbon::parse($membershipInfo->last_purchase_date)->format('d-m-Y') : 'dd-mm-yyyy';
+        $this->lastPurchaseAmt = number_format($membershipInfo->last_share_purchase_amt, 2);
+        $this->lastPurchaseDate = ($membershipInfo->last_share_purchase_date) ? Carbon::parse($membershipInfo->last_share_purchase_date)->format('d-m-Y') : 'dd-mm-yyyy';
         $this->monthly = number_format($membershipInfo->monthly_share, 2);
-        $this->lastSellAmt = number_format($membershipInfo->last_selling_amount, 2);
-        $this->lastSellDate = ($membershipInfo->last_selling_date) ? Carbon::parse($membershipInfo->last_selling_date)->format('d-m-Y') : 'dd-mm-yyyy';
+        $this->lastSellAmt = number_format($membershipInfo->last_share_selling_amt, 2);
+        $this->lastSellDate = ($membershipInfo->last_share_selling_date) ? Carbon::parse($membershipInfo->last_share_selling_date)->format('d-m-Y') : 'dd-mm-yyyy';
     }
 
     public function renderReportList()
@@ -101,7 +101,7 @@ class Share extends Component
         ->whereBetween(DB::raw('CAST(transaction_date AS DATE)'), [$this->startDateShare, $this->endDateShare])
         ->orderBy('id', 'asc')
         ->paginate(10);
-        
+
         return view('livewire.cif.info.share', [
             'shares' => $shares
         ]);
