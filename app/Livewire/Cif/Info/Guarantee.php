@@ -34,7 +34,7 @@ class Guarantee extends Component
             ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'FMS.MEMBERSHIP.cif_id')
             ->join('FMS.ACCOUNT_POSITIONS', 'FMS.ACCOUNT_POSITIONS.account_no', '=', 'FMS.GUARANTOR_LIST.account_no')
             ->join('FMS.ACCOUNT_MASTERS', 'FMS.ACCOUNT_MASTERS.account_no', '=', 'FMS.ACCOUNT_POSITIONS.account_no')
-            ->join('REF.GUARANTORSTATUS','REF.GUARANTORSTATUS.id','FMS.GUARANTOR_LIST.guarantor_status')
+            ->join('REF.GUARANTORSTATUS','REF.GUARANTORSTATUS.code','FMS.GUARANTOR_LIST.guarantor_status')
             ->where('FMS.GUARANTOR_LIST.guarantor_status',1)
             ->where('FMS.ACCOUNT_POSITIONS.bal_outstanding','>',0)
             ->where('FMS.GUARANTOR_LIST.client_id', $clientID)
