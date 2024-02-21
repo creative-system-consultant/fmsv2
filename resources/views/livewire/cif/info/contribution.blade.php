@@ -27,6 +27,7 @@
                     <x-slot name="thead">
                         <x-table.table-header class="text-center" value="AMOUNT" sort="" />
                         <x-table.table-header class="text-center" value="EFFECTIVE DATE" sort="" />
+                        <x-table.table-header class="text-center" value="EXPIRY DATE" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
                         @forelse($changedMonthlyCon as $item)
@@ -37,9 +38,12 @@
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <p>{{date('d/m/Y',strtotime(optional($item->effective_date)))}}</p>
                                 </x-table.table-body>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    <p>{{date('d/m/Y',strtotime(optional($item->expiry_date)))}}</p>
+                                </x-table.table-body>
                             </tr>
                         @empty
-                            <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
+                            <x-table.table-body colspan="3" class="text-xs font-medium text-center text-gray-700 ">
                                 <x-no-data title="No data"/>
                             </x-table.table-body>
                         @endforelse
