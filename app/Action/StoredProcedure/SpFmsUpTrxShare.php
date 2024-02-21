@@ -18,7 +18,7 @@ class SpFmsUpTrxShare
         $sp = 'fms.up_trx_shares';
 
         // Construct the SQL statement to execute the stored procedure with provided parameters.
-        $sql = "SET NOCOUNT ON; exec " . $sp . "  :clientId, :mbrNo, :txnAmt, :txnDate, :docNo, :txnCode, :remarks, :bankMember, :userId, :chequeDate, :bankClient";
+        $sql = "SET NOCOUNT ON; exec " . $sp . "  :clientId, :mbrNo, :txnAmt, :txnDate, :docNo, :txnCode, :remarks, :bankMember, :userId, :chequeDate, :bankClient, :idApply";
 
         // Execute the statement using Laravel's database query builder and capture the result.
         $result = DB::select($sql, $data);
