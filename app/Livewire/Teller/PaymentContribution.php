@@ -109,6 +109,7 @@ class PaymentContribution extends Component
             'userId' => auth()->id(),
             'chequeDate' => $this->chequeDate,
             'bankClient' => $this->bankClient,
+            'idApply' => NULL
         ]);
 
         if (!$result) {
