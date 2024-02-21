@@ -33,6 +33,7 @@ class WithdrawShare extends Component
 
     // fetch from customer search component
     public $customer;
+    public $applyId;
     public $mbrNo;
     public $accId;
     public $totalShareValid;
@@ -58,19 +59,20 @@ class WithdrawShare extends Component
         $this->txnCode = '3104';
     }
 
-    #[On('mbrSelected')]
+    #[On('idSelected')]
     public function handleCustomerSelection($customer)
     {
         $this->customer = $customer;
+        $this->applyId = $customer['apply_id'];
         $this->bankMember = $customer['bank_id'];
         $this->mbrNo = (string) $customer['mbr_no'];
         $this->totalShareValid = $customer['total_share'] - $this->minShare;
         $this->txnAmt = $customer['approved_amt'];;
         $this->saveButton = $this->bankMember && $customer['bank_acct_no'];
-
         $this->ic = $customer['identity_no'];
-        $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
         $this->docNo = 'N/A';
+
+        $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
     }
 
     #[On('updatePayButton')]
@@ -99,6 +101,7 @@ class WithdrawShare extends Component
             'userId' => auth()->id(),
             'chequeDate' => $this->chequeDate,
             'bankClient' => $this->bankClient,
+            'idApply' => $this->applyId,
         ]);
 
         if (!$result) {
@@ -112,8 +115,9 @@ class WithdrawShare extends Component
 
         $this->dialog()->$dialogType($messageText, $message["SP_RETURN_MSG"]);
 
+        $this->dispatch('clear')->to(MembersBankInfo::class);
         $this->reset('chequeDate', 'txnAmt', 'txnDate');
-        $this->dispatch('refreshComponentMbrNo', mbrNo: $this->customer['mbr_no'])->to(CustomerSearch::class);
+        $this->dispatch('refreshComponentId', id: $this->customer['id'])->to(CustomerSearch::class);
     }
 
     public function render()

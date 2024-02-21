@@ -222,12 +222,14 @@ class CustomerSearch extends Component
             $customer = GeneralCustomerSearch::getThirdPartyIdData($this->clientId, $id);
         } elseif ($this->customQuery == 'withdrawContribution') {
             $customer = GeneralCustomerSearch::getContributionWithdrawalData($this->clientId, $id);
+        } elseif ($this->customQuery == 'withdrawShare') {
+            $customer = GeneralCustomerSearch::getWithdrawShareData($this->clientId, $id);
+        }
 
-            if (!$customer) {
-                $this->reset('name', 'searchMbrNoValue', 'searchTotContributionAmt', 'searchAmtApplyValue');
-                $this->dispatch('refresh')->self();
-                return;
-            }
+        if (!$customer) {
+            $this->reset('name', 'searchMbrNoValue', 'searchTotContributionAmt', 'searchAmtApplyValue', 'searchTotShareAmt');
+            $this->dispatch('refresh')->self();
+            return;
         }
 
         $this->dataId = $customer->id;
@@ -257,6 +259,10 @@ class CustomerSearch extends Component
             $this->searchAmtApplyValue = $customer->apply_amt;
         }
 
+        if ($this->searchTotShare) {
+            $this->searchTotShareAmt = number_format($customer->total_share, 2) ?? 0;
+        }
+
         return $customer;
     }
 
@@ -275,8 +281,6 @@ class CustomerSearch extends Component
             $customer = GeneralCustomerSearch::getMiscellaneousOutMbrData($this->clientId, $mbrNo, $this->complete);
         } elseif ($this->customQuery == 'dividendWithdrawal') {
             $customer = GeneralCustomerSearch::getDividendWithdrawalData($this->clientId, $mbrNo);
-        } elseif ($this->customQuery == 'withdrawShare') {
-            $customer = GeneralCustomerSearch::getWithdrawShareData($this->clientId, $mbrNo);
         }
 
         if (!$customer) {
