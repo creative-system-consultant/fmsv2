@@ -43,7 +43,6 @@ class TabungKhairat extends Component
     public $doc_no;
     public $bankClient;
     public $remarks;
-    //public $saveButton;
     public $type;
     public $saveButton = false;
 
@@ -57,12 +56,13 @@ class TabungKhairat extends Component
         $this->type = 1;
     }
 
-    #[On('idSelected')]
-    public function selectSpecialAid($apply_id){
+    public function selectSpecialAid($apply_id) {
         $selected_id = SpecialAid::selectraw("
             cif.customers.identity_no,
             fms.membership.mbr_no,
             cif.customers.name,
+            cif.customers.bank_id,
+            cif.customers.bank_acct_no,
             FMS.SPECIAL_AID_REQ_HISTORY.approved_amount,
             FMS.SPECIAL_AID_REQ_HISTORY.approved_date,
             descs = fms.get_special_aid_name(cif.customers.client_id,FMS.SPECIAL_AID_REQ_HISTORY.special_aid_id),
@@ -78,7 +78,6 @@ class TabungKhairat extends Component
         ->where('FMS.SPECIAL_AID_REQ_HISTORY.apply_id',$apply_id)
         ->first();
 
-        
         $this->ic              = $selected_id->identity_no;
         $this->mbr_no          = $selected_id->mbr_no;
         $this->name            = $selected_id->name;
@@ -89,6 +88,7 @@ class TabungKhairat extends Component
         $this->descs           = $selected_id->descs;
         $this->payment         = $selected_id->payment;
         $this->apply_id        = $selected_id->apply_id;
+        $this->saveButton = $this->bankMember && $this->bank_acct_no;
 
         $this->dispatch('icSelected', ic: $this->ic)->to(MembersBankInfo::class);
         $this->doc_no = 'N/A';
@@ -110,7 +110,7 @@ class TabungKhairat extends Component
     public function confirmSaveTransaction()
     {
         $result = SpFmsUpTrxSpecialAid::handle([
-            
+
             'clientId' => $this->client_id,
             'applyId' => $this->apply_id,
             'mbrNo' => $this->mbr_no,
@@ -136,9 +136,9 @@ class TabungKhairat extends Component
 
         $this->dispatch('clear')->to(MembersBankInfo::class);
         $this->reset('approved_amount', 'txn_date', 'remarks', 'doc_no');
-        
+
         // $this->dispatch('refreshComponentMbrNo', mbr_no: $this->customer['mbr_no'])->to(CustomerSearch::class);
-    } 
+    }
 
     public function render()
     {
