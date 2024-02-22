@@ -37,10 +37,10 @@ class Contribution extends Component
         $this->lastWithdrawDate = ($membershipInfo->last_cont_withdraw_date) ? Carbon::parse($membershipInfo->last_cont_withdraw_date)->format('d-m-Y') : 'dd-mm-yyyy';
         $this->numWithdraw = number_format($membershipInfo->no_of_cont_withdrawal, 2);
 
-        $this->ChangedMonthlyCon        = ChangeMonthlyContribution::where('mbrID', '=', $membershipInfo->mbr_no)->first();
+        $this->ChangedMonthlyCon        = ChangeMonthlyContribution::where('mbr_no', '=', $membershipInfo->mbr_no)->first();
         $this->startDateContribution    =  '2021-12-31';
         $this->endDateContribution      =  now()->format('Y-m-d');
-        $this->changedMonthlyCon =  ChangeMonthlyContribution::where('mbrID', $this->customer->membership->mbr_no)->get();
+        $this->changedMonthlyCon =  ChangeMonthlyContribution::where('mbr_no', $this->customer->membership->mbr_no)->get();
     }
 
     public function renderReportList()

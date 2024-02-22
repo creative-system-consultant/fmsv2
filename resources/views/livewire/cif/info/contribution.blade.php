@@ -30,10 +30,10 @@
                         @forelse($changedMonthlyCon as $item)
                             <tr>
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    <p>{{ number_format(optional($item->prev_amount, 2)) }}</p>
+                                    <p>{{ number_format($item->prev_amount, 2) }}</p>
                                 </x-table.table-body>
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    <p>{{date('d/m/Y',strtotime(optional($item->effective_date)))}}</p>
+                                    <p>{{date('d/m/Y',strtotime($item->effective_date))}}</p>
                                 </x-table.table-body>
                             </tr>
                         @empty

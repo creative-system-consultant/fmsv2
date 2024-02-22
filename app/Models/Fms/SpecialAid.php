@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class SpecialAid extends Model
 {
     use HasFactory;
-    protected $table   = 'FMS.SPECIAL_AID';
+    protected $table   = 'FMS.SPECIAL_AID_REQ_HISTORY';
     protected $guarded = [];
 
     public function members()
