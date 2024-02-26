@@ -38,10 +38,11 @@ class Contribution extends Component
         $this->lastWithdrawAmt = number_format($membershipInfo->last_cont_withdraw_amt, 2);
         $this->numWithdraw = number_format($membershipInfo->no_of_cont_withdrawal);
 
-        $this->ChangedMonthlyCon        = ChangeMonthlyContribution::where('mbrID', '=', $membershipInfo->mbr_no)->first();
+        //$this->ChangedMonthlyCon        = ChangeMonthlyContribution::where('mbr_no', '=', $membershipInfo->mbr_no)->first();
         $this->startDateContribution    =  '2021-12-31';
         $this->endDateContribution      =  now()->format('Y-m-d');
-        $this->changedMonthlyCon =  ChangeMonthlyContribution::where('mbrID', $this->customer->membership->mbr_no)->get();
+        $this->changedMonthlyCon =  ChangeMonthlyContribution::where('mbr_no', $this->customer->membership->mbr_no)->get();
+        //dd($this->changedMonthlyCon);
     }
 
     public function renderReportList()

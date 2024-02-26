@@ -25,21 +25,21 @@
             <x-modal.card  title="Monthly Contribution History-In Details" align="center"  wire:model.defer="contribution-histrory-modal">
                 <x-table.table>
                     <x-slot name="thead">
-                        <x-table.table-header class="text-center" value="AMOUNT" sort="" />
+                        <x-table.table-header class="text-right" value="AMOUNT" sort="" />
                         <x-table.table-header class="text-center" value="EFFECTIVE DATE" sort="" />
                         <x-table.table-header class="text-center" value="EXPIRY DATE" sort="" />
                     </x-slot>
                     <x-slot name="tbody">
                         @forelse($changedMonthlyCon as $item)
                             <tr>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    <p>{{ number_format(optional($item->prev_amount, 2)) }}</p>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right ">
+                                    <p>{{ number_format($item->prev_amount,2) }}</p>
                                 </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    <p>{{date('d/m/Y',strtotime(optional($item->effective_date)))}}</p>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                    <p>{{date('d/m/Y',strtotime($item->effective_date))}}</p>
                                 </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                    <p>{{date('d/m/Y',strtotime(optional($item->expiry_date)))}}</p>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
+                                    <p>{{ $item->expiry_date ? date('d/m/Y', strtotime($item->expiry_date)) : ' ' }}</p>
                                 </x-table.table-body>
                             </tr>
                         @empty
