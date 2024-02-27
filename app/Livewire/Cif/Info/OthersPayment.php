@@ -50,10 +50,8 @@ class OthersPayment extends Component
             ->where('FMS.OTHER_PAYMENTS_STATEMENTS.mbr_no', '=', $this->customer->membership->mbr_no)
             ->where('FMS.OTHER_PAYMENTS_STATEMENTS.client_id', $this->clientID)
             ->where('REF.TRANSACTION_CODES.client_id', $this->clientID)
-            //->whereIn('REF.TRANSACTION_CODES.trx_group', array('OTHER PMT - INTRODUCER', 'TABUNG', 'OTHER PMT - INTRODUCER (REVERSAL)', 'TABUNG (REVERSAL)'))
             ->orderBy('FMS.OTHER_PAYMENTS_STATEMENTS.id', 'asc')
             ->get();
-        // ->paginate(10);
 
 
         return view('livewire.cif.info.others-payment', [
