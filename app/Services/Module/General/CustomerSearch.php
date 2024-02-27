@@ -170,6 +170,7 @@ class CustomerSearch
         $search = null
     ) {
         $query = FmsShareReqHistory::select(
+            'FMS.SHARES_REQ_HISTORY.id',
             'FMS.SHARES_REQ_HISTORY.mbr_no',
             'CIF.CUSTOMERS.name',
             'FMS.MEMBERSHIP.total_share',
@@ -195,10 +196,11 @@ class CustomerSearch
 
     public static function getWithdrawShareData(
         $clientId = null,
-        $mbrNo = null
+        $id = null
     ) {
         $query = FmsShareReqHistory::select(
             'FMS.SHARES_REQ_HISTORY.id',
+            'FMS.SHARES_REQ_HISTORY.apply_id',
             'FMS.SHARES_REQ_HISTORY.mbr_no',
             'CIF.CUSTOMERS.name',
             'FMS.MEMBERSHIP.total_share',
@@ -212,7 +214,7 @@ class CustomerSearch
             ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', 'FMS.SHARES_REQ_HISTORY.mbr_no')
             ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', 'FMS.MEMBERSHIP.cif_id')
             ->where('FMS.SHARES_REQ_HISTORY.direction', 'sell')
-            ->where('FMS.SHARES_REQ_HISTORY.mbr_no', $mbrNo)
+            ->where('FMS.SHARES_REQ_HISTORY.id', $id)
             ->where('FMS.SHARES_REQ_HISTORY.req_status', 1)
             ->where('FMS.SHARES_REQ_HISTORY.client_id', $clientId)
             ->where('CIF.CUSTOMERS.client_id', $clientId)
@@ -486,15 +488,17 @@ class CustomerSearch
         $clientId = null,
         $mbrNo = null
     ) {
-        $query = DividendFinal::select([
-            'mbr_no',
-            'identity_no',
-            'name',
-            'bal_dividen'
-        ])
-            ->whereRaw('ISNULL(bal_dividen, 0) > 0')
-            ->where('client_id', $clientId)
-            ->where('mbr_no', $mbrNo);
+        $query = DB::table('FMS.DIVIDEND_FINAL as df')
+            ->select([
+                'df.mbr_no',
+                'df.identity_no',
+                'df.name',
+                'df.bal_dividen',
+                DB::raw("(select div_cash_approved from siskop.APPLY_DIVIDEND where client_id = ".$clientId." and mbr_no = ".$mbrNo." and flag = 20) as div_cash_approved"),
+            ])
+            ->whereRaw('ISNULL(df.bal_dividen, 0) > 0')
+            ->where('df.client_id', $clientId)
+            ->where('df.mbr_no', $mbrNo);
 
         return $query->first();
     }

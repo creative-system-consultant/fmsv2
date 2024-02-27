@@ -4,7 +4,7 @@ namespace App\Action\StoredProcedure;
 
 use DB;
 
-class SpFmsUpTrxShare
+class SpFmsUpTrxSpecialAid
 {
     /**
      * Execute the stored procedure with the provided data.
@@ -15,13 +15,15 @@ class SpFmsUpTrxShare
     public static function handle($data)
     {
         // Define the name of the stored procedure.
-        $sp = 'fms.up_trx_shares';
+        $sp = 'FMS.trx_special_aid';
 
         // Construct the SQL statement to execute the stored procedure with provided parameters.
-        $sql = "SET NOCOUNT ON; exec " . $sp . "  :clientId, :mbrNo, :txnAmt, :txnDate, :docNo, :txnCode, :remarks, :bankMember, :userId, :chequeDate, :bankClient, :idApply";
+        $sql = "exec " . $sp . "  :clientId, :applyId, :mbrNo, :txnAmt, :docNo, :type, :txnDate, :txnCode, :remarks, :userId";
 
         // Execute the statement using Laravel's database query builder and capture the result.
+        //dd($sql,$data);
         $result = DB::select($sql, $data);
+        
 
         // Return the result of the statement execution.
         return $result;

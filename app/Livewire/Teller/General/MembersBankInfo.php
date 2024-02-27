@@ -16,7 +16,7 @@ class MembersBankInfo extends Component
 
     public $clientId;
     public $mbrNo;
-    public $ic;
+    public $ic = '';
     public $refBank;
 
     #[Rule('required')]

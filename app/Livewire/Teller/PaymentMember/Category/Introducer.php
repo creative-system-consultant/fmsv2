@@ -128,7 +128,7 @@ class Introducer extends Component
         $clientId = $this->clientId;
 
         $lists = IntroducerList::with([
-            'customer' => function ($query) use ($clientId) {
+            'membership' => function ($query) use ($clientId) {
                 $query->where('client_id', $clientId);
             },
             'introducer' => function ($query) use ($clientId) {

@@ -39,7 +39,6 @@
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{ $item->account_status }}</p>
                             </x-table.table-body>
-                            
                             <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                 <p>{{ $item->guarantor_status }}</p>
                             </x-table.table-body>
