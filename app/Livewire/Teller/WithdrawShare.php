@@ -116,7 +116,7 @@ class WithdrawShare extends Component
         $this->dialog()->$dialogType($messageText, $message["SP_RETURN_MSG"]);
 
         $this->dispatch('clear')->to(MembersBankInfo::class);
-        $this->reset('chequeDate', 'txnAmt', 'txnDate');
+        $this->reset('chequeDate', 'bankMember', 'bankClient', 'docNo', 'txnAmt', 'txnDate', 'remarks');
         $this->dispatch('refreshComponentId', id: $this->customer['id'])->to(CustomerSearch::class);
     }
 
