@@ -38,10 +38,10 @@ class Information extends Component
         $identityType = RefIdentityType::select('description')->where('id', $this->customerInfo->identity_type_id)->first();
         $gender = RefGender::select('description')->where('code', $this->customerInfo->gender_code)->first();
         $race = RefRace::select('description')->where('id', $this->customerInfo->race_id)->first();
-        $religion = RefReligion::select('description')->where('id', $this->customerInfo->religion_id)->first();
-        $education = RefEducation::select('description')->where('id', $this->customerInfo->education_id)->first();
+        $religion = RefReligion::select('description')->where('code', $this->customerInfo->religion_id)->first();
+        $education = RefEducation::select('description')->where('code', $this->customerInfo->education_id)->first();
         // $language = RefLanguage::select('description')->where('id', $this->customerInfo->language_id)->first();
-        $marital = RefMarital::select('description')->where('id', $this->customerInfo->marital_id)->first();
+        $marital = RefMarital::select('description')->where('code', $this->customerInfo->marital_id)->first();
         $country = RefCountry::select('description')->where('id', $this->customerInfo->country_id)->first();
 
         // Transform banks data to match the select options format
