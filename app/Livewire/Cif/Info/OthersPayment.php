@@ -27,33 +27,32 @@ class OthersPayment extends Component
 
     public function render()
     {
-        $clientID = auth()->user()->client_id;
-        $this->customer = CifCustomer::where('uuid', $this->uuid)->where('client_id', $clientID)->first();
+        $this->clientID = auth()->user()->client_id;
+        $this->customer = CifCustomer::where('uuid', $this->uuid)->where('client_id', $this->clientID)->first();
 
-        $othersPayment = DB::table('FMS.MEMBERSHIP_STATEMENTS')
+        $othersPayment = DB::table('FMS.OTHER_PAYMENTS_STATEMENTS')
             ->select(
-                'FMS.MEMBERSHIP_STATEMENTS.id',
-                'FMS.MEMBERSHIP_STATEMENTS.mbr_no',
-                'FMS.MEMBERSHIP_STATEMENTS.doc_no',
-                'FMS.MEMBERSHIP_STATEMENTS.transaction_date',
-                'FMS.MEMBERSHIP_STATEMENTS.remarks',
-                'FMS.MEMBERSHIP_STATEMENTS.transaction_code_id',
-                'FMS.MEMBERSHIP_STATEMENTS.amount',
+                'FMS.OTHER_PAYMENTS_STATEMENTS.id',
+                'FMS.OTHER_PAYMENTS_STATEMENTS.mbr_no',
+                'FMS.OTHER_PAYMENTS_STATEMENTS.doc_no',
+                'FMS.OTHER_PAYMENTS_STATEMENTS.txn_date',
+                'FMS.OTHER_PAYMENTS_STATEMENTS.remarks',
+                'FMS.OTHER_PAYMENTS_STATEMENTS.txn_code',
+                'FMS.OTHER_PAYMENTS_STATEMENTS.txn_amt',
                 DB::raw('created_by = 1'),
-                'FMS.MEMBERSHIP_STATEMENTS.created_at',
+                'FMS.OTHER_PAYMENTS_STATEMENTS.created_at',
                 'REF.TRANSACTION_CODES.id AS id2',
                 'REF.TRANSACTION_CODES.description',
                 'REF.TRANSACTION_CODES.reverse_trx_id',
                 'REF.TRANSACTION_CODES.dr_cr'
             )
-            ->join('REF.TRANSACTION_CODES', 'REF.TRANSACTION_CODES.id', 'FMS.MEMBERSHIP_STATEMENTS.transaction_code_id')
-            ->where('FMS.MEMBERSHIP_STATEMENTS.mbr_no', '=', $this->customer->membership->mbr_no)
-            ->where('FMS.MEMBERSHIP_STATEMENTS.client_id', $this->clientID)
+            ->join('REF.TRANSACTION_CODES', 'REF.TRANSACTION_CODES.id', 'FMS.OTHER_PAYMENTS_STATEMENTS.txn_code')
+            ->where('FMS.OTHER_PAYMENTS_STATEMENTS.mbr_no', '=', $this->customer->membership->mbr_no)
+            ->where('FMS.OTHER_PAYMENTS_STATEMENTS.client_id', $this->clientID)
             ->where('REF.TRANSACTION_CODES.client_id', $this->clientID)
-            ->whereIn('REF.TRANSACTION_CODES.trx_group', array('OTHER PMT - INTRODUCER', 'TABUNG', 'OTHER PMT - INTRODUCER (REVERSAL)', 'TABUNG (REVERSAL)'))
-            ->orderBy('FMS.MEMBERSHIP_STATEMENTS.id', 'asc')
+            //->whereIn('REF.TRANSACTION_CODES.trx_group', array('OTHER PMT - INTRODUCER', 'TABUNG', 'OTHER PMT - INTRODUCER (REVERSAL)', 'TABUNG (REVERSAL)'))
+            ->orderBy('FMS.OTHER_PAYMENTS_STATEMENTS.id', 'asc')
             ->get();
-        // dd($this->customer->membership->mbr_no);
         // ->paginate(10);
 
 
