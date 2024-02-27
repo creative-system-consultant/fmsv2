@@ -27,7 +27,7 @@ class Share extends Component
         $membershipInfo = $this->customer->membership;
 
         $this->totalShare = number_format($membershipInfo->total_share, 2);
-        $this->sharePaymentMethod = number_format($membershipInfo->share_pmt_mode_flag);
+        $this->sharePaymentMethod = $membershipInfo->share_pmt_mode_flag == 1 ? 'Lumpsum' : 'Installment';
         $this->totalPurchaseShare = number_format($membershipInfo->total_share_purchase_amt, 2);
         $this->totalSellShare = number_format($membershipInfo->total_share_selling_amt, 2);
         $this->numWithdraw = number_format($membershipInfo->no_of_shares_withdrawal);
