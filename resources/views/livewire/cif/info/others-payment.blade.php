@@ -45,7 +45,7 @@
                     </x-table.table-body>
 
                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                        <p>{{ date('d/m/Y',strtotime($item->transaction_date)) }}</p>
+                        <p>{{ date('d/m/Y',strtotime($item->txn_date)) }}</p>
                     </x-table.table-body>
 
                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
@@ -65,7 +65,7 @@
                             @if($item->dr_cr == 'D')
                             -
                             @endif
-                            {{number_format($item->amount,2)}}
+                            {{number_format($item->txn_amt,2)}}
                         </p>
                     </x-table.table-body>
 
