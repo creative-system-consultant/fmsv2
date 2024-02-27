@@ -124,7 +124,7 @@ class PurchaseShare extends Component
 
         $this->dialog()->$dialogType($messageText, $message["SP_RETURN_MSG"]);
 
-        $this->reset('chequeDate', 'txnAmt', 'txnDate');
+        $this->reset('chequeDate', 'bankMember', 'bankClient', 'docNo', 'txnAmt', 'txnDate', 'remarks');
         $this->dispatch('refreshComponent', uuid: $this->customer['uuid'])->to(CustomerSearch::class);
     }
 
