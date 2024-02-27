@@ -10,5 +10,10 @@ class ChangeMonthlyContribution extends Model
     use HasFactory;
 
     protected $table   = 'FMS.CHANGES_MONTHLY_CONTRIBUTION';
+    protected $casts = [
+        'effective_date' => 'datetime',
+        'expiry_date' => 'datetime',
+    ];
+
     protected $guarded = [];
 }

@@ -12,7 +12,7 @@
                 <x-input label="Last Withdraw Amount" wire:model="lastWithdrawAmt" disabled />
                 <x-input label="Last Withdraw Date"  wire:model="lastWithdrawDate" disabled/>
             </div>
-            
+
             <div class="mt-6">
                 <x-button
                     onclick="$openModal('contribution-histrory-modal')"
@@ -32,14 +32,14 @@
                     <x-slot name="tbody">
                         @forelse($changedMonthlyCon as $item)
                             <tr>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right ">
+                                <x-table.table-body colspan="" class="text-xs font-medium text-right text-gray-700 ">
                                     <p>{{ number_format($item->prev_amount,2) }}</p>
                                 </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
-                                    <p>{{date('d/m/Y',strtotime($item->effective_date))}}</p>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
+                                    <p>{{ $item->effective_date->format('d/m/Y') }}</p>
                                 </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-center ">
-                                    <p>{{ $item->expiry_date ? date('d/m/Y', strtotime($item->expiry_date)) : ' ' }}</p>
+                                <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
+                                    <p>{{ $item->expiry_date?->format('d/m/Y') ?? '' }}</p>
                                 </x-table.table-body>
                             </tr>
                         @empty
@@ -113,7 +113,7 @@
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     <p>{{$item->remarks ? $item->remarks : 'N/A'}}</p>
                                 </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
+                                <x-table.table-body colspan="" class="text-xs font-medium text-right text-gray-700">
                                     <p>
                                         @if($item->dr_cr == 'D')
                                         -
@@ -121,7 +121,7 @@
                                         {{number_format($item->amount,2)}}
                                     </p>
                                 </x-table.table-body>
-                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 text-right">
+                                <x-table.table-body colspan="" class="text-xs font-medium text-right text-gray-700">
                                     <p>{{number_format($item->total_amount,2)}}</p>
                                 </x-table.table-body>
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
