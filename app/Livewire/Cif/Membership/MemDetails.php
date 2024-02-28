@@ -84,7 +84,7 @@ class MemDetails extends Component
         $this->source = $this->membershipInfo->source ?? "";
         $this->tkk_amount = $this->membershipInfo->tkk_amount ?? "";
         $this->tkk_last_pay_dt = $this->membershipInfo->tkk_last_pay_dt ?? "";
-        $this->va_account = $this->membershipInfo->va_account ?? "";
+        $this->va_account = $this->membershipInfo->va_no ?? "";
         $this->payment_type = $this->membershipInfo->payment_type ?? "";
         $this->staffno_payer = $this->membershipInfo->staffno_payer ?? "";
         $this->withdraw_share_pv = $this->membershipInfo->withdraw_share_pv ?? "";
