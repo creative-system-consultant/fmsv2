@@ -9,14 +9,22 @@ use App\Services\General\PopupService;
 use App\Services\Model\BankIbtService;
 use App\Services\Model\BankService;
 use App\Services\Model\FmsGlobalParm;
+use App\Services\Module\General\CustomerSearch as GeneralCustomerSearch;
 use App\Traits\DividendWithdrawalRulesTrait;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 use WireUi\Traits\Actions;
 
 class DividendWithdrawal extends Component
 {
-    use Actions, DividendWithdrawalRulesTrait;
+    use Actions, DividendWithdrawalRulesTrait, WithPagination;
+
+    public $tabIndex = 1;
+    public $searchBy = 'name', $search;
+    public $name;
+    public $searchMbrNoValue;
+    public $searchBalDividenValue;
 
     public $clientId;
     public $startDate;
@@ -43,6 +51,8 @@ class DividendWithdrawal extends Component
     public $txnDate;
     public $remarks;
 
+    protected $listeners = ['refresh' => '$refresh'];
+
     public function mount()
     {
         $this->clientId = auth()->user()->client_id;
@@ -68,25 +78,47 @@ class DividendWithdrawal extends Component
         }
     }
 
-    #[On('mbrSelected')]
-    public function handleCustomerSelection($customer)
+    public function updatingSearch()
     {
-        // $this->loading = true;
-        $this->customer = $customer;
-        $this->mbrNo = (string) $customer['mbr_no'];
-        $this->docNo = "N/A";
-        $this->balDividen = $customer['bal_dividen'];
-        $this->txnAmt = $customer['div_cash_approved'] ?? $customer['bal_dividen'];
-        $this->saveButton = true;
+        $this->resetPage();
+    }
 
-        // $this->dispatch('endProcessing');
+    public function selectedMbrSiskop($mbrNo)
+    {
+        $customer = GeneralCustomerSearch::getDividendWithdrawalSiskopData($this->clientId, $mbrNo);
+
+        $this->name = $customer->name;
+        $this->searchMbrNoValue = $customer->mbr_no;
+        $this->searchBalDividenValue = number_format($customer->dividend_total, 2) ?? 0;
+
+        $this->customer = $customer;
+        $this->mbrNo = (string) $customer->mbr_no;
+        $this->docNo = "N/A";
+        $this->balDividen = $customer->dividend_total;
+        $this->txnAmt = $customer->div_cash_approved;
+        $this->saveButton = true;
+    }
+
+    public function selectedMbr($mbrNo)
+    {
+        $customer = GeneralCustomerSearch::getDividendWithdrawalData($this->clientId, $mbrNo);
+
+        $this->name = $customer->name;
+        $this->searchMbrNoValue = $customer->mbr_no;
+        $this->searchBalDividenValue = number_format($customer->bal_dividen, 2) ?? 0;
+
+        $this->customer = $customer;
+        $this->mbrNo = (string) $customer->mbr_no;
+        $this->docNo = "N/A";
+        $this->balDividen = $customer->bal_dividen;
+        $this->txnAmt = $customer->bal_dividen;
+        $this->saveButton = true;
     }
 
     public function selectType($name, $code)
     {
         $this->selectedType = $name;
         $this->txnCode = $code;
-        // $this->reset();  need to reset input field when change type
         $this->resetValidation();
     }
 
@@ -119,12 +151,20 @@ class DividendWithdrawal extends Component
         $messageText = $message["SP_RETURN_CODE"] == 0 ? 'Success!' : 'Error!';
 
         $this->dialog()->$dialogType($messageText, $message["SP_RETURN_MSG"]);
-        $this->reset('chequeDate', 'bankMember', 'bankClient', 'docNo', 'txnAmt', 'txnDate', 'remarks');
-        $this->dispatch('refreshComponentMbrNo', mbrNo: $this->customer['mbr_no'])->to(CustomerSearch::class);
+        $this->reset('name', 'searchMbrNoValue', 'searchBalDividenValue', 'customer', 'mbrNo', 'docNo', 'balDividen', 'chequeDate', 'bankMember', 'bankClient', 'docNo', 'txnAmt', 'txnDate', 'remarks');
+        $this->docNo = 'N/A';
+        $this->saveButton = false;
+        $this->dispatch('refresh')->self();
     }
 
     public function render()
     {
-        return view('livewire.teller.dividend-withdrawal');
+        $siskopDatas = GeneralCustomerSearch::getAllDividendWithdrawalSiskop($this->clientId, $this->searchBy, $this->search);
+        $fmsDatas = GeneralCustomerSearch::getAllDividendWithdrawal($this->clientId, $this->searchBy, $this->search);
+
+        return view('livewire.teller.dividend-withdrawal', [
+            'siskopDatas' => $siskopDatas,
+            'fmsDatas' => $fmsDatas
+        ]);
     }
 }

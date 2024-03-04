@@ -9,6 +9,7 @@ use App\Models\Fms\FmsContributionReqHistory;
 use App\Models\Fms\FmsMiscAccount;
 use App\Models\Fms\FmsShareReqHistory;
 use App\Models\Fms\FmsThirdParty;
+use App\Models\Siskop\SiskopApplyDividend;
 use App\Models\Siskop\SiskopContribution;
 use DB;
 
@@ -464,6 +465,48 @@ class CustomerSearch
         return $query;
     }
 
+    public static function getAllDividendWithdrawalSiskop(
+        $clientId = null,
+        $searchBy = null,
+        $search = null
+    ) {
+        $query = DB::table('siskop.APPLY_DIVIDEND as a')
+            ->select([
+                'b.mbr_no', 'c.identity_no', 'c.name', 'a.dividend_total'
+            ])
+            ->join('FMS.MEMBERSHIP as b', 'b.mbr_no', '=', 'a.mbr_no')
+            ->join('CIF.CUSTOMERS as c', 'c.id', '=', 'b.cif_id')
+            ->where('a.client_id', $clientId)
+            ->where('b.client_id', $clientId)
+            ->where('c.client_id', $clientId)
+            ->where('a.flag', '20');
+
+        if ($search && $searchBy) {
+            $query->where($searchBy, 'like', '%' . $search . '%');
+        }
+
+        return $query->paginate(10);
+    }
+
+    public static function getDividendWithdrawalSiskopData(
+        $clientId = null,
+        $mbrNo = null
+    ) {
+        $query = DB::table('siskop.APPLY_DIVIDEND as a')
+            ->select([
+                'b.mbr_no', 'c.identity_no', 'c.name', 'a.dividend_total', 'a.div_cash_approved'
+            ])
+            ->join('FMS.MEMBERSHIP as b', 'b.mbr_no', '=', 'a.mbr_no')
+            ->join('CIF.CUSTOMERS as c', 'c.id', '=', 'b.cif_id')
+            ->where('a.client_id', $clientId)
+            ->where('b.client_id', $clientId)
+            ->where('c.client_id', $clientId)
+            ->where('a.flag', '20')
+            ->where('a.mbr_no', $mbrNo);
+
+        return $query->first();
+    }
+
     public static function getAllDividendWithdrawal(
         $clientId = null,
         $searchBy = null,
@@ -494,7 +537,6 @@ class CustomerSearch
                 'df.identity_no',
                 'df.name',
                 'df.bal_dividen',
-                DB::raw("(select div_cash_approved from siskop.APPLY_DIVIDEND where client_id = ".$clientId." and mbr_no = ".$mbrNo." and flag = 20) as div_cash_approved"),
             ])
             ->whereRaw('ISNULL(df.bal_dividen, 0) > 0')
             ->where('df.client_id', $clientId)
