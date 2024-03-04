@@ -470,7 +470,7 @@ class CustomerSearch
         $searchBy = null,
         $search = null
     ) {
-        $query = DB::table('siskop.APPLY_DIVIDEND as a')
+        $query = DB::table('FMS.DIVIDEND_REQ as a')
             ->select([
                 'b.mbr_no', 'c.identity_no', 'c.name', 'a.dividend_total'
             ])
@@ -479,7 +479,7 @@ class CustomerSearch
             ->where('a.client_id', $clientId)
             ->where('b.client_id', $clientId)
             ->where('c.client_id', $clientId)
-            ->where('a.flag', '20');
+            ->where('a.req_status', 1);
 
         if ($search && $searchBy) {
             $query->where($searchBy, 'like', '%' . $search . '%');
@@ -492,7 +492,7 @@ class CustomerSearch
         $clientId = null,
         $mbrNo = null
     ) {
-        $query = DB::table('siskop.APPLY_DIVIDEND as a')
+        $query = DB::table('FMS.DIVIDEND_REQ as a')
             ->select([
                 'b.mbr_no', 'c.identity_no', 'c.name', 'a.dividend_total', 'a.div_cash_approved'
             ])
@@ -501,7 +501,7 @@ class CustomerSearch
             ->where('a.client_id', $clientId)
             ->where('b.client_id', $clientId)
             ->where('c.client_id', $clientId)
-            ->where('a.flag', '20')
+            ->where('a.req_status', 1)
             ->where('a.mbr_no', $mbrNo);
 
         return $query->first();
