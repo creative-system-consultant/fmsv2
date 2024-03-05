@@ -22,8 +22,7 @@ jobs:
 
     - name: Debug SSH Command
       run: |
-        echo "${{ secrets.WORK_DIR }}"
-        ssh -i ~/.ssh/id_ed25519 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo 'Checking directory access' && cd E:\\apps\\fmsv2 && echo 'In directory' && git status"
+        ssh -i ~/.ssh/id_ed25519 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd E:\\apps\\fmsv2 && pwd && ls -la && git status"
 
     - name: Pull from Windows server
       run: |
