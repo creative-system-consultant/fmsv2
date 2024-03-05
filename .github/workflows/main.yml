@@ -13,18 +13,16 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Test SSH setup
-      run: |
-        mkdir -p ~/.ssh
-        touch ~/.ssh/test_file
-        ls -la ~/.ssh/
-
     - name: Set up SSH
       run: |
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
         ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+    - name: Debug SSH Command
+      run: |
+        ssh -i ~/.ssh/id_ed25519 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo 'Checking directory access' && cd E:\\apps\\fmsv2 && echo 'In directory' && git status"
 
     - name: Pull from Windows server
       run: |
