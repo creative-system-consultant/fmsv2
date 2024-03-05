@@ -22,7 +22,7 @@ jobs:
 
     - name: Debug SSH Command
       run: |
-        ssh -i ~/.ssh/id_ed25519 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd E:\\apps\\fmsv2 && pwd && ls -la && git status"
+        ssh -i ~/.ssh/id_ed25519 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd E:\\apps\\fmsv2 && echo %cd% && dir && git status"
 
     - name: Pull from Windows server
       run: |
