@@ -1,4 +1,4 @@
-name: Pull from Windows Server
+name: Pull from Windows Server on Merge
 
 on:
   push:
@@ -9,16 +9,22 @@ on:
 jobs:
   pull_from_windows_server:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
     - name: Set up SSH
       run: |
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > C:\Users\Administrator\.ssh\id_rsa && chmod 600 C:\Users\Administrator\.ssh\id_rsa
-        ssh-keyscan -H ${{ secrets.SSH_HOST }} >> C:\Users\Administrator\.ssh\known_hosts
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
     - name: Pull from Windows server
       run: |
-        ssh -i C:\Users\Administrator\.ssh\id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull"
+        ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout development && git pull"
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SSH_HOST: ${{ secrets.SSH_HOST }}
+        SSH_USER: ${{ secrets.SSH_USER }}
+        WORK_DIR: ${{ secrets.WORK_DIR }}
