@@ -1,26 +1,24 @@
+name: Pull from Windows Server
+
 on:
   push:
     branches:
-      - main
+      - development
   workflow_dispatch:
 
 jobs:
-  run_pull:
-    name: run pull
+  pull_from_windows_server:
     runs-on: ubuntu-latest
 
     steps:
-    - name: check if ~/.ssh exists
-      run: |
-        if [ ! -d ~/.ssh ]; then
-          mkdir -p ~/.ssh
-        fi
-    - name: install ssh keys
-      run: |
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-    - name: connect and pull
-      run: ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && exit"
-    - name: cleanup
-      run: rm -rf ~/.ssh
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install SSH key
+      run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+
+    - name: Add Windows server to known hosts
+      run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+    - name: Pull from Windows server
+      run: ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull"
