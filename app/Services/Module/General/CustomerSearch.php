@@ -470,16 +470,19 @@ class CustomerSearch
         $searchBy = null,
         $search = null
     ) {
-        $query = DB::table('FMS.DIVIDEND_REQ as a')
+        $query = DB::table('FMS.DIVIDEND_REQ')
             ->select([
-                'b.mbr_no', 'c.identity_no', 'c.name', 'a.dividend_total'
+                'FMS.MEMBERSHIP.mbr_no',
+                'CIF.CUSTOMERS.identity_no',
+                'CIF.CUSTOMERS.name',
+                'FMS.DIVIDEND_REQ.dividend_total'
             ])
-            ->join('FMS.MEMBERSHIP as b', 'b.mbr_no', '=', 'a.mbr_no')
-            ->join('CIF.CUSTOMERS as c', 'c.id', '=', 'b.cif_id')
-            ->where('a.client_id', $clientId)
-            ->where('b.client_id', $clientId)
-            ->where('c.client_id', $clientId)
-            ->where('a.req_status', 1);
+            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.DIVIDEND_REQ.mbr_no')
+            ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'FMS.MEMBERSHIP.cif_id')
+            ->where('FMS.DIVIDEND_REQ.client_id', $clientId)
+            ->where('FMS.MEMBERSHIP.client_id', $clientId)
+            ->where('CIF.CUSTOMERS.client_id', $clientId)
+            ->where('FMS.DIVIDEND_REQ.req_status', 1);
 
         if ($search && $searchBy) {
             $query->where($searchBy, 'like', '%' . $search . '%');
@@ -492,17 +495,21 @@ class CustomerSearch
         $clientId = null,
         $mbrNo = null
     ) {
-        $query = DB::table('FMS.DIVIDEND_REQ as a')
+        $query = DB::table('FMS.DIVIDEND_REQ')
             ->select([
-                'b.mbr_no', 'c.identity_no', 'c.name', 'a.dividend_total', 'a.div_cash_approved'
+                'FMS.MEMBERSHIP.mbr_no',
+                'CIF.CUSTOMERS.identity_no',
+                'CIF.CUSTOMERS.name',
+                'FMS.DIVIDEND_REQ.dividend_total',
+                'FMS.DIVIDEND_REQ.div_cash_approved'
             ])
-            ->join('FMS.MEMBERSHIP as b', 'b.mbr_no', '=', 'a.mbr_no')
-            ->join('CIF.CUSTOMERS as c', 'c.id', '=', 'b.cif_id')
-            ->where('a.client_id', $clientId)
-            ->where('b.client_id', $clientId)
-            ->where('c.client_id', $clientId)
-            ->where('a.req_status', 1)
-            ->where('a.mbr_no', $mbrNo);
+            ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.DIVIDEND_REQ.mbr_no')
+            ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'FMS.MEMBERSHIP.cif_id')
+            ->where('FMS.DIVIDEND_REQ.client_id', $clientId)
+            ->where('FMS.MEMBERSHIP.client_id', $clientId)
+            ->where('CIF.CUSTOMERS.client_id', $clientId)
+            ->where('FMS.DIVIDEND_REQ.req_status', 1)
+            ->where('FMS.DIVIDEND_REQ.mbr_no', $mbrNo);
 
         return $query->first();
     }
@@ -512,13 +519,19 @@ class CustomerSearch
         $searchBy = null,
         $search = null
     ) {
-        $query = DividendFinal::select(
-            'mbr_no',
-            'identity_no',
-            'name',
-            'bal_dividen')
-            ->whereRaw('ISNULL(bal_dividen, 0) > 0')
-            ->where('client_id', $clientId);
+        $query = DB::table('FMS.DIVIDEND_FINAL')
+                    ->select([
+                        'FMS.MEMBERSHIP.mbr_no',
+                        'CIF.CUSTOMERS.identity_no',
+                        'CIF.CUSTOMERS.name',
+                        'FMS.DIVIDEND_FINAL.bal_dividen'
+                    ])
+                    ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.DIVIDEND_FINAL.mbr_no')
+                    ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'FMS.MEMBERSHIP.cif_id')
+                    ->whereRaw('ISNULL(FMS.DIVIDEND_FINAL.bal_dividen, 0) > 0')
+                    ->where('FMS.DIVIDEND_FINAL.client_id', $clientId)
+                    ->where('FMS.MEMBERSHIP.client_id', $clientId)
+                    ->where('CIF.CUSTOMERS.client_id', $clientId);
 
         if ($search && $searchBy) {
             $query->where($searchBy, 'like', '%' . $search . '%');
@@ -531,16 +544,20 @@ class CustomerSearch
         $clientId = null,
         $mbrNo = null
     ) {
-        $query = DB::table('FMS.DIVIDEND_FINAL as df')
-            ->select([
-                'df.mbr_no',
-                'df.identity_no',
-                'df.name',
-                'df.bal_dividen',
-            ])
-            ->whereRaw('ISNULL(df.bal_dividen, 0) > 0')
-            ->where('df.client_id', $clientId)
-            ->where('df.mbr_no', $mbrNo);
+        $query = DB::table('FMS.DIVIDEND_FINAL')
+                    ->select([
+                        'FMS.MEMBERSHIP.mbr_no',
+                        'CIF.CUSTOMERS.identity_no',
+                        'CIF.CUSTOMERS.name',
+                        'FMS.DIVIDEND_FINAL.bal_dividen'
+                    ])
+                    ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.DIVIDEND_FINAL.mbr_no')
+                    ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'FMS.MEMBERSHIP.cif_id')
+                    ->whereRaw('ISNULL(FMS.DIVIDEND_FINAL.bal_dividen, 0) > 0')
+                    ->where('FMS.DIVIDEND_FINAL.client_id', $clientId)
+                    ->where('FMS.MEMBERSHIP.client_id', $clientId)
+                    ->where('CIF.CUSTOMERS.client_id', $clientId)
+                    ->where('FMS.DIVIDEND_FINAL.mbr_no', $mbrNo);
 
         return $query->first();
     }
