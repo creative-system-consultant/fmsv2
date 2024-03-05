@@ -22,7 +22,7 @@ jobs:
 
     - name: Pull from Windows server
       run: |
-        ssh -i ~/.ssh/id_ed25519 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "E: && cd ${{ secrets.WORK_DIR }} && git checkout development && git pull"
+        ssh -i ~/.ssh/id_ed25519 ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "${{ secrets.WORK_DIR }} && git checkout development && git pull"
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         SSH_HOST: ${{ secrets.SSH_HOST }}
