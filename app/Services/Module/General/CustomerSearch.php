@@ -472,6 +472,7 @@ class CustomerSearch
     ) {
         $query = DB::table('FMS.DIVIDEND_REQ')
             ->select([
+                'FMS.DIVIDEND_REQ.apply_id',
                 'FMS.MEMBERSHIP.mbr_no',
                 'CIF.CUSTOMERS.identity_no',
                 'CIF.CUSTOMERS.name',
@@ -497,6 +498,7 @@ class CustomerSearch
     ) {
         $query = DB::table('FMS.DIVIDEND_REQ')
             ->select([
+                'FMS.DIVIDEND_REQ.apply_id',
                 'FMS.MEMBERSHIP.mbr_no',
                 'CIF.CUSTOMERS.identity_no',
                 'CIF.CUSTOMERS.name',
