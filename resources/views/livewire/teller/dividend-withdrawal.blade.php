@@ -32,7 +32,7 @@
                                         <div class="flex items-center ">
                                             <x-tab.title name="1" wire:click="changeTab">
                                                 <div class="flex items-center text-sm spcae-x-2">
-                                                    <h1>Siskop</h1>
+                                                    <h1>SISKOP</h1>
                                                 </div>
                                             </x-tab.title>
                                             <x-tab.title name="2" wire:click="changeTab">
@@ -66,7 +66,8 @@
                                                 <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
                                                 <x-table.table-header class="text-left" value="IC NO" sort="" />
                                                 <x-table.table-header class="text-left" value="NAME" sort="" />
-                                                <x-table.table-header class="text-left" value="BALANCE" sort="" />
+                                                <x-table.table-header class="text-left" value="APPLY AMOUNT" sort="" />
+                                                <x-table.table-header class="text-left" value="TOTAL DIVIDEND" sort="" />
                                                 <x-table.table-header class="text-left" value="ACTION" sort="" />
                                             </x-slot>
                                             <x-slot name="tbody">
@@ -85,7 +86,10 @@
                                                         <p>{{ $siskopData->name }}</p>
                                                     </x-table.table-body>
                                                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                        <p>{{ $siskopData->dividend_total }}</p>
+                                                        <p>{{ $siskopData->div_cash_approved }}</p>
+                                                    </x-table.table-body>
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        <p>{{ $siskopData->bal_dividen }}</p>
                                                     </x-table.table-body>
                                                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                                         <x-button x-on:click="close" sm icon="plus" primary label="Select" wire:click="selectedMbrSiskop('{{ $siskopData->mbr_no }}')" />
@@ -113,7 +117,8 @@
                                                 <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
                                                 <x-table.table-header class="text-left" value="IC NO" sort="" />
                                                 <x-table.table-header class="text-left" value="NAME" sort="" />
-                                                <x-table.table-header class="text-left" value="BALANCE" sort="" />
+                                                <x-table.table-header class="text-left" value="APPLY AMOUNT" sort="" />
+                                                <x-table.table-header class="text-left" value="TOTAL DIVIDEND" sort="" />
                                                 <x-table.table-header class="text-left" value="ACTION" sort="" />
                                             </x-slot>
                                             <x-slot name="tbody">
@@ -127,6 +132,9 @@
                                                     </x-table.table-body>
                                                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                                         <p>{{ $fmsData->name }}</p>
+                                                    </x-table.table-body>
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        <p>{{ $fmsData->bal_div_pending_withdrawal }}</p>
                                                     </x-table.table-body>
                                                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                                         <p>{{ $fmsData->bal_dividen }}</p>

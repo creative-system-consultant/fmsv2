@@ -476,14 +476,18 @@ class CustomerSearch
                 'FMS.MEMBERSHIP.mbr_no',
                 'CIF.CUSTOMERS.identity_no',
                 'CIF.CUSTOMERS.name',
-                'FMS.DIVIDEND_REQ.dividend_total'
+                'FMS.DIVIDEND_REQ.div_cash_approved',
+                'FMS.DIVIDEND_FINAL.bal_dividen'
             ])
             ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.DIVIDEND_REQ.mbr_no')
             ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'FMS.MEMBERSHIP.cif_id')
+            ->join('FMS.DIVIDEND_FINAL', 'FMS.DIVIDEND_FINAL.mbr_no', '=', 'FMS.DIVIDEND_REQ.mbr_no')
             ->where('FMS.DIVIDEND_REQ.client_id', $clientId)
             ->where('FMS.MEMBERSHIP.client_id', $clientId)
             ->where('CIF.CUSTOMERS.client_id', $clientId)
-            ->where('FMS.DIVIDEND_REQ.req_status', 1);
+            ->where('FMS.DIVIDEND_FINAL.client_id', $clientId)
+            ->where('FMS.DIVIDEND_REQ.req_status', 1)
+            ->orderBy('FMS.DIVIDEND_REQ.id', 'DESC');
 
         if ($search && $searchBy) {
             $query->where($searchBy, 'like', '%' . $search . '%');
@@ -502,14 +506,16 @@ class CustomerSearch
                 'FMS.MEMBERSHIP.mbr_no',
                 'CIF.CUSTOMERS.identity_no',
                 'CIF.CUSTOMERS.name',
-                'FMS.DIVIDEND_REQ.dividend_total',
-                'FMS.DIVIDEND_REQ.div_cash_approved'
+                'FMS.DIVIDEND_REQ.div_cash_approved',
+                'FMS.DIVIDEND_FINAL.bal_dividen'
             ])
             ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.DIVIDEND_REQ.mbr_no')
             ->join('CIF.CUSTOMERS', 'CIF.CUSTOMERS.id', '=', 'FMS.MEMBERSHIP.cif_id')
+            ->join('FMS.DIVIDEND_FINAL', 'FMS.DIVIDEND_FINAL.mbr_no', '=', 'FMS.DIVIDEND_REQ.mbr_no')
             ->where('FMS.DIVIDEND_REQ.client_id', $clientId)
             ->where('FMS.MEMBERSHIP.client_id', $clientId)
             ->where('CIF.CUSTOMERS.client_id', $clientId)
+            ->where('FMS.DIVIDEND_FINAL.client_id', $clientId)
             ->where('FMS.DIVIDEND_REQ.req_status', 1)
             ->where('FMS.DIVIDEND_REQ.mbr_no', $mbrNo);
 
@@ -526,6 +532,7 @@ class CustomerSearch
                         'FMS.MEMBERSHIP.mbr_no',
                         'CIF.CUSTOMERS.identity_no',
                         'CIF.CUSTOMERS.name',
+                        'FMS.DIVIDEND_FINAL.bal_div_pending_withdrawal',
                         'FMS.DIVIDEND_FINAL.bal_dividen'
                     ])
                     ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.DIVIDEND_FINAL.mbr_no')
