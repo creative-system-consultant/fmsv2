@@ -43,9 +43,9 @@ class Address extends Component
         $clientID = auth()->user()->client_id;
         $customer = CifCustomer::where('uuid', $this->uuid)->where('client_id', $clientID)->first();
 
-        $this->states                   = RefState::all();
-        $this->countries                = RefCountry::all();
-        $this->addressTypes             = AddressType::whereIn('id', [2, 3, 11])->get();
+        $this->states                   = RefState::where('client_id', $clientID)->get();
+        $this->countries                = RefCountry::where('client_id', $clientID)->get();
+        $this->addressTypes             = AddressType::where('client_id', $clientID)->get();
 
         if ($customer->addresses) {
             $this->addresses = $customer->addresses->map(function ($address) {
