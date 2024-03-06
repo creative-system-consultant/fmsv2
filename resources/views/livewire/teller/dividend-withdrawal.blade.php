@@ -30,12 +30,12 @@
                                 <div class="grid grid-cols-1 sgap-4">
                                     <div class="flex mb-4 bg-white rounded-lg shadow-sm dark:bg-gray-900">
                                         <div class="flex items-center ">
-                                            <x-tab.title name="1">
+                                            <x-tab.title name="1" wire:click="changeTab">
                                                 <div class="flex items-center text-sm spcae-x-2">
                                                     <h1>Siskop</h1>
                                                 </div>
                                             </x-tab.title>
-                                            <x-tab.title name="2">
+                                            <x-tab.title name="2" wire:click="changeTab">
                                                 <div class="flex items-center text-sm spcae-x-2">
                                                     <h1>FMS</h1>
                                                 </div>
@@ -62,6 +62,7 @@
                                     <div x-show="tab == 1">
                                         <x-table.table>
                                             <x-slot name="thead">
+                                                <x-table.table-header class="text-left" value="APPLY ID" sort="" />
                                                 <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
                                                 <x-table.table-header class="text-left" value="IC NO" sort="" />
                                                 <x-table.table-header class="text-left" value="NAME" sort="" />
@@ -71,6 +72,9 @@
                                             <x-slot name="tbody">
                                                 @forelse ($siskopDatas as $siskopData)
                                                 <tr>
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        <p>{{ $siskopData->apply_id }}</p>
+                                                    </x-table.table-body>
                                                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                                         <p>{{ $siskopData->mbr_no }}</p>
                                                     </x-table.table-body>

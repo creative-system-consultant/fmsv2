@@ -3,6 +3,7 @@
 namespace App\Livewire\Teller;
 
 use App\Action\StoredProcedure\SpFmsTrxDividendOut;
+use App\Action\StoredProcedure\SpFmsUpTrxDivOutCash;
 use App\Livewire\General\CustomerSearch;
 use App\Services\General\ActgPeriod;
 use App\Services\General\PopupService;
@@ -50,6 +51,7 @@ class DividendWithdrawal extends Component
     public $txnAmt;
     public $txnDate;
     public $remarks;
+    public $applyId = 0;
 
     protected $listeners = ['refresh' => '$refresh'];
 
@@ -83,6 +85,11 @@ class DividendWithdrawal extends Component
         $this->resetPage();
     }
 
+    public function changeTab()
+    {
+        $this->reset('name', 'searchMbrNoValue', 'searchBalDividenValue', 'customer', 'mbrNo', 'docNo', 'balDividen', 'chequeDate', 'bankMember', 'bankClient', 'docNo', 'txnAmt', 'txnDate', 'remarks', 'applyId');
+    }
+
     public function selectedMbrSiskop($mbrNo)
     {
         $customer = GeneralCustomerSearch::getDividendWithdrawalSiskopData($this->clientId, $mbrNo);
@@ -96,6 +103,7 @@ class DividendWithdrawal extends Component
         $this->docNo = "N/A";
         $this->balDividen = $customer->dividend_total;
         $this->txnAmt = $customer->div_cash_approved;
+        $this->applyId = (int) $customer->apply_id;
         $this->saveButton = true;
     }
 
@@ -130,7 +138,7 @@ class DividendWithdrawal extends Component
 
     public function confirmSaveTransaction()
     {
-        $result = SpFmsTrxDividendOut::handle([
+        $result = SpFmsUpTrxDivOutCash::handle([
             'clientId' => $this->clientId,
             'mbrNo' => $this->mbrNo,
             'txnAmt' => $this->txnAmt,
@@ -139,6 +147,7 @@ class DividendWithdrawal extends Component
             'remarks' => $this->remarks,
             'userId' => auth()->id(),
             'bankClient' => $this->bankClient,
+            'applyId' => $this->applyId
         ]);
 
         if (!$result) {
@@ -151,7 +160,7 @@ class DividendWithdrawal extends Component
         $messageText = $message["SP_RETURN_CODE"] == 0 ? 'Success!' : 'Error!';
 
         $this->dialog()->$dialogType($messageText, $message["SP_RETURN_MSG"]);
-        $this->reset('name', 'searchMbrNoValue', 'searchBalDividenValue', 'customer', 'mbrNo', 'docNo', 'balDividen', 'chequeDate', 'bankMember', 'bankClient', 'docNo', 'txnAmt', 'txnDate', 'remarks');
+        $this->reset('name', 'searchMbrNoValue', 'searchBalDividenValue', 'customer', 'mbrNo', 'docNo', 'balDividen', 'chequeDate', 'bankMember', 'bankClient', 'docNo', 'txnAmt', 'txnDate', 'remarks', 'applyId');
         $this->docNo = 'N/A';
         $this->saveButton = false;
         $this->dispatch('refresh')->self();
