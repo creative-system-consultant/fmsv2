@@ -67,7 +67,7 @@
                                                 <x-table.table-header class="text-left" value="IC NO" sort="" />
                                                 <x-table.table-header class="text-left" value="NAME" sort="" />
                                                 <x-table.table-header class="text-left" value="APPLY AMOUNT" sort="" />
-                                                <x-table.table-header class="text-left" value="TOTAL DIVIDEND" sort="" />
+                                                <x-table.table-header class="text-left" value="BALANCE" sort="" />
                                                 <x-table.table-header class="text-left" value="ACTION" sort="" />
                                             </x-slot>
                                             <x-slot name="tbody">
@@ -118,7 +118,7 @@
                                                 <x-table.table-header class="text-left" value="IC NO" sort="" />
                                                 <x-table.table-header class="text-left" value="NAME" sort="" />
                                                 <x-table.table-header class="text-left" value="APPLY AMOUNT" sort="" />
-                                                <x-table.table-header class="text-left" value="TOTAL DIVIDEND" sort="" />
+                                                <x-table.table-header class="text-left" value="BALANCE" sort="" />
                                                 <x-table.table-header class="text-left" value="ACTION" sort="" />
                                             </x-slot>
                                             <x-slot name="tbody">
