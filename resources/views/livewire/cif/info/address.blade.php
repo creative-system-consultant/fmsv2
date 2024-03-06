@@ -14,9 +14,7 @@
         </div>
 
         <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
-            <! -- Start loop -->
             @forelse ($addresses as $key => $address)
-            {{-- @dump($address) --}}
             <x-card title="Address Detail {{ $loop->iteration }}" >
                 <x-slot name="action" >
                     <div class="flex items-center space-x-2">
@@ -52,28 +50,28 @@
                     </div>
                     <div class="grid grid-cols-1 gap-2 mt-2">
                         <x-native-select label="Address Type" wire:model.lazy="addresses.{{ $key }}.address_type_id" name="address_type_id"  :disabled="$editAddress">
-                            @forelse ($addressTypes as $addressType)
-                                <option value="{{ $addressType->id }}">{{ $addressType->description }}</option>
-                            @empty @endforelse
+                            @foreach ($addressTypes as $addressType)
+                                <option value="{{ $addressType->code }}">{{ $addressType->description }}</option>
+                            @endforeach
                         </x-native-select>
                     </div>
                     <div class="grid grid-cols-1 gap-2 mt-2 lg:grid-cols-2">
                         <x-input
                             label="Postcode"
-                            wire:model.lazy="addresses.{{$key}}.postcode"
+                            wire:model.lazy="addresses.{{ $key }}.postcode"
                             :disabled="$editAddress"
                         />
                         <x-input
                             label="Town"
-                            wire:model.lazy="addresses.{{$key}}.town"
+                            wire:model.lazy="addresses.{{ $key }}.town"
                             :disabled="$editAddress"
                         />
                     </div>
                     <div class="grid grid-cols-1 gap-2 mt-2 lg:grid-cols-2">
                         <x-native-select label="State" wire:model.lazy="addresses.{{ $key }}.state_id" name="state_id"  :disabled="$editAddress">
-                            @forelse ($states as $state)
+                            @foreach ($states as $state)
                                 <option value="{{ $state->id }}">{{ $state->description }}</option>
-                            @empty @endforelse
+                            @endforeach
                         </x-native-select>
                     </div>
                 </div>
