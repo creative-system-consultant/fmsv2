@@ -96,12 +96,12 @@ class DividendWithdrawal extends Component
 
         $this->name = $customer->name;
         $this->searchMbrNoValue = $customer->mbr_no;
-        $this->searchBalDividenValue = number_format($customer->dividend_total, 2) ?? 0;
+        $this->searchBalDividenValue = number_format($customer->bal_dividen, 2) ?? 0;
 
         $this->customer = $customer;
         $this->mbrNo = (string) $customer->mbr_no;
         $this->docNo = "N/A";
-        $this->balDividen = $customer->dividend_total;
+        $this->balDividen = $customer->bal_dividen;
         $this->txnAmt = $customer->div_cash_approved;
         $this->applyId = (int) $customer->apply_id;
         $this->saveButton = true;
