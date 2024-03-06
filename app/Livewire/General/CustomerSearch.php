@@ -38,7 +38,7 @@ class CustomerSearch extends Component
 
     public $customQuery = '';
 
-    public $searchBy = 'name', $search, $sortField, $sortDirection;
+    public $searchBy = 'CIF.CUSTOMERS.name', $search, $sortField, $sortDirection;
 
     public $headers = [];
 

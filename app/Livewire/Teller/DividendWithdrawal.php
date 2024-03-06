@@ -21,7 +21,7 @@ class DividendWithdrawal extends Component
     use Actions, DividendWithdrawalRulesTrait, WithPagination;
 
     public $tabIndex = 1;
-    public $searchBy = 'name', $search;
+    public $searchBy = 'CIF.CUSTOMERS.name', $search;
     public $name;
     public $searchMbrNoValue;
     public $searchBalDividenValue;
