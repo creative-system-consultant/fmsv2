@@ -486,8 +486,8 @@ class CustomerSearch
             ->where('FMS.MEMBERSHIP.client_id', $clientId)
             ->where('CIF.CUSTOMERS.client_id', $clientId)
             ->where('FMS.DIVIDEND_FINAL.client_id', $clientId)
-            ->where('FMS.DIVIDEND_REQ.req_status', 1)
-            ->orderBy('FMS.DIVIDEND_REQ.id', 'DESC');
+            ->whereIn('FMS.DIVIDEND_REQ.req_status', [ 4, 5, 6, 7 ])
+            ->orderBy('FMS.DIVIDEND_REQ.id', 'ASC');
 
         if ($search && $searchBy) {
             $query->where($searchBy, 'like', '%' . $search . '%');
@@ -516,7 +516,7 @@ class CustomerSearch
             ->where('FMS.MEMBERSHIP.client_id', $clientId)
             ->where('CIF.CUSTOMERS.client_id', $clientId)
             ->where('FMS.DIVIDEND_FINAL.client_id', $clientId)
-            ->where('FMS.DIVIDEND_REQ.req_status', 1)
+            ->whereIn('FMS.DIVIDEND_REQ.req_status', [ 4, 5, 6, 7 ])
             ->where('FMS.DIVIDEND_REQ.mbr_no', $mbrNo);
 
         return $query->first();
