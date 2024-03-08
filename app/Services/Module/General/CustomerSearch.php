@@ -558,6 +558,7 @@ class CustomerSearch
                         'FMS.MEMBERSHIP.mbr_no',
                         'CIF.CUSTOMERS.identity_no',
                         'CIF.CUSTOMERS.name',
+                        'FMS.DIVIDEND_FINAL.bal_div_pending_withdrawal',
                         'FMS.DIVIDEND_FINAL.bal_dividen'
                     ])
                     ->join('FMS.MEMBERSHIP', 'FMS.MEMBERSHIP.mbr_no', '=', 'FMS.DIVIDEND_FINAL.mbr_no')
