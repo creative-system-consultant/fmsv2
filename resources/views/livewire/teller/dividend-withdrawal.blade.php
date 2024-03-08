@@ -117,7 +117,6 @@
                                                 <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
                                                 <x-table.table-header class="text-left" value="IC NO" sort="" />
                                                 <x-table.table-header class="text-left" value="NAME" sort="" />
-                                                <x-table.table-header class="text-left" value="APPLY AMOUNT" sort="" />
                                                 <x-table.table-header class="text-left" value="BALANCE" sort="" />
                                                 <x-table.table-header class="text-left" value="ACTION" sort="" />
                                             </x-slot>
@@ -134,10 +133,7 @@
                                                         <p>{{ $fmsData->name }}</p>
                                                     </x-table.table-body>
                                                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                        <p>{{ $fmsData->bal_div_pending_withdrawal }}</p>
-                                                    </x-table.table-body>
-                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                        <p>{{ $fmsData->bal_dividen }}</p>
+                                                        <p>{{ number_format($fmsData->bal_dividen - $fmsData->bal_div_pending_withdrawal, 2) }}</p>
                                                     </x-table.table-body>
                                                     <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                                         <x-button x-on:click="close" sm icon="plus" primary label="Select" wire:click="selectedMbr('{{ $fmsData->mbr_no }}')" />

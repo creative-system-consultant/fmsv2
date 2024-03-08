@@ -113,13 +113,13 @@ class DividendWithdrawal extends Component
 
         $this->name = $customer->name;
         $this->searchMbrNoValue = $customer->mbr_no;
-        $this->searchBalDividenValue = number_format($customer->bal_dividen, 2) ?? 0;
+        $this->searchBalDividenValue = number_format($customer->bal_dividen - $customer->bal_div_pending_withdrawal, 2) ?? 0;
 
         $this->customer = $customer;
         $this->mbrNo = (string) $customer->mbr_no;
         $this->docNo = "N/A";
         $this->balDividen = $customer->bal_dividen;
-        $this->txnAmt = $customer->bal_dividen;
+        $this->txnAmt = $customer->bal_dividen - $customer->bal_div_pending_withdrawal;
         $this->saveButton = true;
     }
 
@@ -144,6 +144,7 @@ class DividendWithdrawal extends Component
             'txnAmt' => $this->txnAmt,
             'txnDate' => $this->txnDate,
             'txnCode' => $this->txnCode,
+            'docNo' => $this->docNo,
             'remarks' => $this->remarks,
             'userId' => auth()->id(),
             'bankClient' => $this->bankClient,
