@@ -119,7 +119,7 @@ class DividendWithdrawal extends Component
         $this->mbrNo = (string) $customer->mbr_no;
         $this->docNo = "N/A";
         $this->balDividen = $customer->bal_dividen;
-        $this->txnAmt = $customer->bal_dividen - $customer->bal_div_pending_withdrawal;
+        $this->txnAmt = number_format($customer->bal_dividen - $customer->bal_div_pending_withdrawal, 2) ?? 0;
         $this->saveButton = true;
     }
 
