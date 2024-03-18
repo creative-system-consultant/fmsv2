@@ -4,7 +4,7 @@
         <x-card title="Membership Overview" >
             <x-slot name="action" >
                 <div class="flex items-center justify-center space-x-2">
-                    <x-button primary label="Close Membership Document" sm />
+                    <x-button primary label="Close Membership Document" sm wire:click="closeMembership" />
                     <x-button wire:click="editDetail" icon="{{ ($disabled == true) ? 'pencil' : 'x' }}" primary label="{{ ($disabled == true) ? 'Edit' : 'Cancel' }}" sm />
                     @if($disabled == false)
                         <x-button wire:click="saveDetail" icon="save" primary label="Save" sm/>

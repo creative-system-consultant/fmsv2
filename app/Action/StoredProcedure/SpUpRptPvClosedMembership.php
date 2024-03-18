@@ -4,7 +4,7 @@ namespace App\Action\StoredProcedure;
 
 use DB;
 
-class SpFmsUpTrxSpecialAid
+class SpUpRptPvClosedMembership
 {
     /**
      * Execute the stored procedure with the provided data.
@@ -15,10 +15,10 @@ class SpFmsUpTrxSpecialAid
     public static function handle($data)
     {
         // Define the name of the stored procedure.
-        $sp = 'FMS.trx_special_aid';
+        $sp = 'RPT.up_rpt_pv_closed_membership';
 
         // Construct the SQL statement to execute the stored procedure with provided parameters.
-        $sql = "exec " . $sp . "  :clientId, :applyId, :mbrNo, :txnAmt, :docNo, :type, :txnDate, :remarks, :userId";
+        $sql = "exec " . $sp . "  :clientId, :mbrNo, :userId";
 
         // Execute the statement using Laravel's database query builder and capture the result.
         $result = DB::select($sql, $data);

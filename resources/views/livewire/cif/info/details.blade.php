@@ -1,6 +1,6 @@
 <div>
     <div class="flex items-center justify-end space-x-2">
-        <x-button primary label="Close Membership Document" sm />
+        <x-button primary label="Close Membership Document" sm wire:click="closeMembership" />
         <x-button wire:click="editDetail" icon="pencil" primary label="Edit" sm />
         @if($edit)
             <x-button wire:click="saveDetail" icon="save" primary label="Save" sm />

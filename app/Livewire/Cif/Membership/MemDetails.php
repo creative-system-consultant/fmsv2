@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Cif\Membership;
 
+use App\Action\StoredProcedure\SpUpRptPvClosedMembership;
 use App\Models\Cif\CifCustomer;
 use App\Models\Fms\Membership;
 use App\Models\Ref\RefMemStatus;
 use App\Models\Ref\RefPaymentType;
 use App\Services\General\PopupService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -121,6 +123,27 @@ class MemDetails extends Component
         // ]);
 
         // $this->disabled = true;
+    }
+
+    public function closeMembership()
+    {
+        $result = SpUpRptPvClosedMembership::handle([
+            'clientId' => $this->client_id,
+            'mbrNo' => $this->ref_no,
+            'userId' => auth()->id(),
+        ]);
+
+        if (!empty($result) && is_array($result)) {
+            $data = (object) $result[0];
+        } else {
+            $data = new \stdClass();
+        }
+
+        $pdf = Pdf::loadView('pdf.membership_details', ['data' => $data]);
+        $fileName = 'test_pdf.pdf';
+        $pdf->save(storage_path($fileName));
+
+        return response()->download(storage_path($fileName))->deleteFileAfterSend(true);
     }
 
     public function render()
