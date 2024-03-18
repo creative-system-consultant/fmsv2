@@ -18,12 +18,12 @@ class SpFmsUpTrxSpecialAid
         $sp = 'FMS.trx_special_aid';
 
         // Construct the SQL statement to execute the stored procedure with provided parameters.
-        $sql = "exec " . $sp . "  :clientId, :applyId, :mbrNo, :txnAmt, :docNo, :type, :txnDate, :txnCode, :remarks, :userId";
+        $sql = "exec " . $sp . "  :clientId, :applyId, :mbrNo, :txnAmt, :docNo, :type, :txnDate, :remarks, :userId";
 
         // Execute the statement using Laravel's database query builder and capture the result.
         //dd($sql,$data);
         $result = DB::select($sql, $data);
-        
+
 
         // Return the result of the statement execution.
         return $result;

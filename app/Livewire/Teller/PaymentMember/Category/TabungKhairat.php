@@ -110,7 +110,6 @@ class TabungKhairat extends Component
     public function confirmSaveTransaction()
     {
         $result = SpFmsUpTrxSpecialAid::handle([
-
             'clientId' => $this->client_id,
             'applyId' => $this->apply_id,
             'mbrNo' => $this->mbr_no,
@@ -118,7 +117,7 @@ class TabungKhairat extends Component
             'docNo' => $this->doc_no,
             'type' => $this->type,
             'txnDate' => $this->txn_date,
-            'txnCode' => $this->txnCode,
+            // 'txnCode' => $this->txnCode,
             'remarks' => $this->remarks,
             'userId' => auth()->id(),
         ]);
