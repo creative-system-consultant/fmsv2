@@ -10,9 +10,18 @@
                             icon="plus"
                             green
                             label="Create"
+                            disabled
                         />
                     </div>
                     <div class="flex items-center space-x-2">
+                        <x-label label="Order By : " />
+                        <select  wire:model.live.debounce.1500ms ="orderBy" 
+                            class="rounded-md p-1 border">
+                            <option value="default">Default</option>
+                            <option value="branch_id">Branch Id</option>
+                            <option value="branch_name">Branch Name</option>
+                            <option value="priority">Priority</option>
+                        </select>
                         <x-label label="Search : " />
                         <x-input
                             type="text"
@@ -34,6 +43,7 @@
                     <x-slot name="thead">
                         <x-table.table-header class="text-left" value="NO." sort="" />
                         <x-table.table-header class="text-left" value="BRANCH ID" sort="" />
+                        <x-table.table-header class="text-left" value="SYSTEM DESCRIPTION" sort="" />
                         <x-table.table-header class="text-left" value="BRANCH NAME" sort="" />
                         <x-table.table-header class="text-left" value="PRIORITY" sort="" />
                         <x-table.table-header class="text-left" value="ACTION" sort="" />
@@ -47,6 +57,10 @@
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
                                     {{ $branchid->branch_id }}
+                                </x-table.table-body>
+
+                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                    {{ $branchid->sys_desc }}
                                 </x-table.table-body>
 
                                 <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
@@ -71,6 +85,7 @@
                                         icon="trash"
                                         red
                                         label="Delete"
+                                        disabled
                                     />
                                 </x-table.table-body>
                             </tr>
@@ -90,9 +105,13 @@
     <!-- modal -->
     <x-modal.card title="{{ $modalTitle }}" align="center" blur wire:model.defer="openModal" max-width="lg">
 
-        <div class="grid gap-4 my-2 lg:grid-cols-1 ">
+        <div class="grid gap-4 my-2 lg:grid-cols-2 ">
             <div class="tooltip buttom" title="Input should be a number, limited to 4 digits">
                 <x-input wire:model="branch_id" label="Branch ID " placeholder="" class="uppercase " />
+            </div>
+
+            <div class="tooltip buttom" title="">
+                <x-input wire:model="sys_desc" label="System Description" placeholder="" class="uppercase " disabled/>
             </div>
 
             <div class="tooltip buttom" title="Enter the name and location of the branch (e.g., 'AMPANG')">

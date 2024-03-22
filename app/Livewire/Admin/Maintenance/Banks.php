@@ -26,11 +26,13 @@ class Banks extends Component
 
     // Properties for banks data
     public $code;
+    public $sys_desc;
     public $description;
     public $status;
     public $bank_acc_len;
     public $priority;
     public $bank_client;
+    public $bank_cust;
 
     // Pagination & searching
     public $paginated;
@@ -49,6 +51,7 @@ class Banks extends Component
             'status' => 'nullable|boolean',
             'bank_acc_len' => 'required|numeric|min:1|max:99',
             'bank_client' => 'nullable|boolean',
+            'bank_cust' => 'nullable|boolean',
         ];
     }
 
@@ -60,6 +63,7 @@ class Banks extends Component
             'status' => 'nullable|boolean',
             'bank_acc_len' => 'required|numeric|min:1|max:99',
             'bank_client' => 'nullable|boolean',
+            'bank_cust' => 'nullable|boolean',
             'priority' => 'numeric|min:1|max:9999'
         ];
     }
@@ -72,17 +76,19 @@ class Banks extends Component
     public function openCreateModal()
     {
         $this->setupModal("create", "Create Bank", "Bank" );
-        $this->reset(['code','description', 'bank_acc_len','status','bank_client']);
+        $this->reset(['code','description', 'bank_acc_len','status','bank_client','bank_cust','priority']);
         $this->resetValidation();
     }
 
     public function openUpdateModal($id)
     {
         $this->bank = ModelService::findById(RefBank::class, $id);
+        $this->sys_desc = $this->bank->sys_desc;
         $this->description = $this->bank->description;
         $this->bank_acc_len = $this->bank->bank_acc_len;
         $this->bank->status == 1 ? $this->status = true : $this->status = false;
         $this->bank->bank_client == 'Y' ? $this->bank_client = true : $this->bank_client = false;
+        $this->bank->bank_cust == 'Y' ? $this->bank_cust = true : $this->bank_cust = false;
         $this->priority = $this->bank->priority;
         $this->code = $this->bank->code;
 
@@ -99,6 +105,7 @@ class Banks extends Component
             'priority' => $this->priority ?? 9999,
             'bank_acc_len' => trim($this->bank_acc_len),
             'bank_client' => $this->bank_client ? 'Y' : 'N',
+            'bank_cust' => $this->bank_cust ? 'Y' : 'N',
         ];
     }
 
