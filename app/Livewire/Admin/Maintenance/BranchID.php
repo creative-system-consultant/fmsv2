@@ -26,12 +26,14 @@ class BranchId extends Component
 
     // Properties for branch id data
     public $branch_id;
+    public $sys_desc;
     public $branch_name;
     public $priority;
 
     // Pagination and searching
     public $paginated;
     public $searchQuery;
+    public $orderBy = 'default';
 
     // Services
     protected $popupService;
@@ -69,6 +71,7 @@ class BranchId extends Component
     {
         $this->branchid = ModelService::findById(RefBranchID::class, $id);
         $this->branch_id = $this->branchid->branch_id;
+        $this->sys_desc = $this->branchid->sys_desc;
         $this->branch_name = $this->branchid->branch_name;
         $this->priority = $this->branchid->priority;
 
@@ -127,14 +130,26 @@ class BranchId extends Component
 
     public function render()
     {
+        if ($this->orderBy == 'default') {
+            $orderBy = [
+                'priority' => 'ASC',
+                'branch_name' => 'ASC'
+            ];
+        } else {
+            $orderBy = [
+                $this->orderBy => 'ASC'
+            ];
+        }
+
         $data = MaintenanceService::getPaginated(
             RefBranchID::class,
             $this->paginated, // $perPage
             $this->searchQuery, // $searchQuery
-            [
-                'priority' => 'ASC',
-                'branch_name' => 'ASC'
-            ] // $orderByArray
+            $orderBy // $orderByArray
+            // [
+            //     'priority' => 'ASC',
+            //     'branch_name' => 'ASC'
+            // ] // $orderByArray
         );
 
         return view('livewire.admin.maintenance.branch-id', [
