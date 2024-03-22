@@ -24,6 +24,7 @@
         "@fullcalendar/google-calendar": "^6.1.8",
         "@fullcalendar/timegrid": "^6.1.8",
         "@ryangjchandler/alpine-tooltip": "^1.2.0",
+        "apexcharts": "^3.47.0",
         "axios": "^1.5.0",
         "echarts": "^5.4.3",
         "filepond": "^4.30.6",

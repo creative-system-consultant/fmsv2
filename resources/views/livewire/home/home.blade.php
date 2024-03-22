@@ -61,66 +61,57 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="relative flex flex-col px-4 py-6 mt-6 mb-20 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:border-black" >
-                        @if (auth()->user()->user_type != 2)
                             <div>
                                 <div class="flex mb-4 overflow-x-auto overflow-y-hidden bg-white rounded-lg shadow-sm dark:bg-gray-900">
                                         <div class="flex items-center flex-shrink-0 space-x-4 ">
                                             <x-tab.title name="0">
-                                                <div class="flex items-center space-x-2 text-sm">
+                                                <div class="flex items-center space-x-2 text-sm" >
                                                     <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
-                                                    @if($clientType == 'siskop membership financing')
-                                                        <h1>Disbursement Listing</h1>
-                                                    @else
-                                                        <h1>Active Membership</h1>
-                                                    @endif
+                                                    <h1>Contribution Request</h1>
                                                 </div>
                                             </x-tab.title>
                                             <x-tab.title name="1">
                                                 <div class="flex items-center space-x-2 text-sm">
+                                                    <x-icon name="clipboard-list" class="w-5 h-5 mr-2" />
+                                                    <h1>Share Request</h1>
+                                                </div>
+                                            </x-tab.title>
+                                            <x-tab.title name="2">
+                                                <div class="flex items-center space-x-2 text-sm" >
                                                     <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
-                                                    @if($clientType == 'siskop membership financing')
-                                                        <h1>Pre Disbursement Listing</h1>
-                                                    @else
-                                                        <h1>Closed Membership</h1>
-                                                    @endif
+                                                    <h1>Dividend Request</h1>
                                                 </div>
                                             </x-tab.title>
                                         </div>
                                 </div>
                                 <div x-show="tab == 0">
                                     <div class="mt-2">
-                                        <div class="flex items-center justify-start mb-4">
-                                            <x-input
-                                                wire:model=""
-                                                placeholder="Search"
-                                            />
-                                        </div>
-                                        @if($clientType == 'siskop membership financing')
                                             <x-table.table>
                                                 <x-slot name="thead">
                                                     <x-table.table-header class="text-left" value="NO" sort="" />
-                                                    <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
-                                                    <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
-                                                    <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
+                                                    <x-table.table-header class="text-left" value="NAME" sort="" />
+                                                    <x-table.table-header class="text-left" value="TOTAL CONTRIBUTION" sort="" />
+                                                    <x-table.table-header class="text-left" value="AMOUNT APPLIED" sort="" />
                                                 </x-slot>
                                                 <x-slot name="tbody">
-                                                    @forelse($disb as $item)
+                                                    @forelse($contribution_req as $item)
                                                     <tr>
                                                         <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
                                                             {{ $loop->iteration }}
                                                         </x-table.table-body>
 
-                                                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                            {{$item->name}}
+                                                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700">
+                                                            <a href="{{route('teller.teller-list')}}">{{ $item->name }}</a>
                                                         </x-table.table-body>
 
-                                                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                            {{$item->ACCOUNT_NO}}
+                                                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700" href="{{route('profile')}}">
+                                                            <a href="{{ route('teller.teller-list') }}">{{$item->total_contribution}}</>
                                                         </x-table.table-body>
 
-                                                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                            {{$item->mbr_no}}
+                                                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700" href="{{route('profile')}}">
+                                                            <a href="{{ route('teller.teller-list') }}">{{ number_format($item->approved_amt,2,'.',',') }}</>
                                                         </x-table.table-body>
                                                     </tr>
                                                     @empty
@@ -132,69 +123,78 @@
                                                     @endforelse
                                                 </x-slot>
                                             </x-table.table>
-                                            <div class="mt-4">
+                                            {{-- <div class="mt-4">
                                                 {{ $disb->links('livewire::pagination-links') }}
-                                            </div>
-                                        @else
-                                            <x-table.table>
-                                                <x-slot name="thead">
-                                                    <x-table.table-header class="text-left" value="NO" sort="" />
-                                                    <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
-                                                    <x-table.table-header class="text-left" value="IC NUMBER" sort="" />
-                                                    <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
-                                                </x-slot>
-                                                <x-slot name="tbody">
-                                                    @forelse($activeMember as $item)
-                                                    <tr>
-                                                        <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
-                                                            {{ $loop->iteration }}
-                                                        </x-table.table-body>
-
-                                                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                            {{$item->cifCustomer->name}}
-                                                        </x-table.table-body>
-
-                                                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                            {{$item->cifCustomer->identity_no}}
-                                                        </x-table.table-body>
-
-                                                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                            {{$item->mbr_no}}
-                                                        </x-table.table-body>
-                                                    </tr>
-                                                    @empty
-                                                    <tr>
-                                                        <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
-                                                            <x-no-data title="No data"/>
-                                                        </x-table.table-body>
-                                                    </tr>
-                                                    @endforelse
-                                                </x-slot>
-                                            </x-table.table>
-                                            <div class="mt-4">
-                                                {{ $activeMember->links('livewire::pagination-links') }}
-                                            </div>
-                                        @endif
+                                            </div> --}}
+                                    </div>
+                                    {{-- bar chart contribution --}}
+                                    <div class="flex flex-col px-4 py-6 mt-6 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:text-white dark:border-black">
+                                        <div class="p-4 bg-white border-[1.5px dark:border-gray-800">
+                                            <b class="inline-flex space-y-1 text-sm">Total Application Contribution</b>
+                                            <div id="barChartCont" wire:ignore></div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div x-show="tab == 1">
                                     <div class="mt-2">
-                                        <div class="flex items-center justify-start mb-4">
-                                            <x-input
-                                                wire:model=""
-                                                placeholder="Search"
-                                            />
+                                        <x-table.table>
+                                            <x-slot name="thead">
+                                                <x-table.table-header class="text-left" value="NO" sort="" />
+                                                <x-table.table-header class="text-left" value="NAME" sort="" />
+                                                <x-table.table-header class="text-left" value="TOTAL SHARE" sort="" />
+                                                <x-table.table-header class="text-left" value="SHARE APPLIED" sort="" />
+                                            </x-slot>
+                                            <x-slot name="tbody">
+                                                @forelse($share_req as $item)
+                                                <tr>
+                                                    <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
+                                                        {{ $loop->iteration }}
+                                                    </x-table.table-body>
+
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        {{$item->name}}
+                                                    </x-table.table-body>
+
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        {{ number_format($item->total_share,2,'.',',') }}
+                                                    </x-table.table-body>
+
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
+                                                        {{ number_format($item->approved_amt,2,'.',',') }}
+                                                    </x-table.table-body>
+                                                </tr>
+                                                @empty
+                                                <tr>
+                                                    <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
+                                                        <x-no-data title="No data"/>
+                                                    </x-table.table-body>
+                                                </tr>
+                                                @endforelse
+                                            </x-slot>
+                                        </x-table.table>
+                                        {{-- <div class="mt-4">
+                                            {{ $disb->links('livewire::pagination-links') }}
+                                        </div> --}}
+                                    </div>
+                                    {{-- bar chart share --}}
+                                    <div class="flex flex-col px-4 py-6 mt-6 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:text-white dark:border-black">
+                                        <div class="p-4 bg-white border-[1.5px dark:border-gray-800">
+                                            <b class="inline-flex space-y-1 text-sm">Total Application Share</b>
+                                            <div id="barChartShare" wire:ignore></div>
                                         </div>
-                                        @if($clientType == 'siskop membership financing')
+                                    </div>
+                                </div>
+                                <div x-show="tab == 2">
+                                    <div class="mt-2">
                                             <x-table.table>
                                                 <x-slot name="thead">
                                                     <x-table.table-header class="text-left" value="NO" sort="" />
-                                                    <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
-                                                    <x-table.table-header class="text-left" value="ACCOUNT NO" sort="" />
-                                                    <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
+                                                    <x-table.table-header class="text-left" value="NAME" sort="" />
+                                                    <x-table.table-header class="text-left" value="DIVIDEND TOTAL" sort="" />
+                                                    <x-table.table-header class="text-left" value="DIVIDEND APPLIED" sort="" />
                                                 </x-slot>
                                                 <x-slot name="tbody">
-                                                    @forelse($preDisb as $item)
+                                                    @forelse($dividen_req as $item)
                                                     <tr>
                                                         <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
                                                             {{ $loop->iteration }}
@@ -205,11 +205,11 @@
                                                         </x-table.table-body>
 
                                                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                            {{$item->ACCOUNT_NO}}
+                                                            {{$item->dividend_total}}
                                                         </x-table.table-body>
 
                                                         <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                            {{$item->mbr_no}}
+                                                            {{ number_format($item->div_cash_approved,2,'.',',') }}
                                                         </x-table.table-body>
                                                     </tr>
                                                     @empty
@@ -221,137 +221,20 @@
                                                     @endforelse
                                                 </x-slot>
                                             </x-table.table>
-                                            <div class="mt-4">
-                                                {{ $preDisb->links('livewire::pagination-links') }}
-                                            </div>
-                                        @else
-                                            <x-table.table>
-                                                <x-slot name="thead">
-                                                    <x-table.table-header class="text-left" value="NO" sort="" />
-                                                    <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
-                                                    <x-table.table-header class="text-left" value="IC NUMBER" sort="" />
-                                                    <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
-                                                </x-slot>
-                                                <x-slot name="tbody">
-                                                    @forelse($closeMember as $item)
-                                                    <tr>
-                                                        <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
-                                                            {{ $loop->iteration }}
-                                                        </x-table.table-body>
-
-                                                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                            {{$item->cifCustomer->name}}
-                                                        </x-table.table-body>
-
-                                                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                            {{$item->cifCustomer->identity_no}}
-                                                        </x-table.table-body>
-
-                                                        <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                            {{$item->mbr_no}}
-                                                        </x-table.table-body>
-                                                    </tr>
-                                                    @empty
-                                                    <tr>
-                                                        <x-table.table-body colspan="" class="text-xs font-medium text-center text-gray-700 ">
-                                                            <x-no-data title="No data"/>
-                                                        </x-table.table-body>
-                                                    </tr>
-                                                    @endforelse
-                                                </x-slot>
-                                            </x-table.table>
-                                            <div class="mt-4">
-                                                {{ $closeMember->links('livewire::pagination-links') }}
-                                            </div>
-                                        @endif
+                                            {{-- <div class="mt-4">
+                                                {{ $disb->links('livewire::pagination-links') }}
+                                            </div> --}}
+                                    </div>
+                                    {{-- bar chart div --}}
+                                    <div class="flex flex-col px-4 py-6 mt-6 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:text-white dark:border-black">
+                                        <div class="p-4 bg-white border-[1.5px dark:border-gray-800">
+                                            <b class="inline-flex space-y-1 text-sm">Total Application Dividen</b>
+                                            <div id="barChartDiv" wire:ignore></div>
+                                        </div>
                                     </div>
                                 </div>
+                                
                             </div>
-                        @else
-                            <div>
-                                <div class="flex mb-4 overflow-x-auto overflow-y-hidden bg-white rounded-lg shadow-sm dark:bg-gray-900">
-                                    <div class="flex items-center flex-shrink-0 space-x-4 ">
-                                        <x-tab.title name="0">
-                                            <div class="flex items-center space-x-2 text-sm">
-                                                <x-icon name="clipboard-list" class="w-5 h-5 mr-2"/>
-                                                <h1>List Of User</h1>
-                                            </div>
-                                        </x-tab.title>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-start mb-4">
-                                    <x-input
-                                        wire:model=""
-                                        placeholder="Search"
-                                    />
-                                </div>
-                                @if(auth()->user()->client_id == 4)
-                                    <x-table.table>
-                                        <x-slot name="thead">
-                                            <x-table.table-header class="text-left" value="NO" sort="" />
-                                            <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
-                                            <x-table.table-header class="text-left" value="IC NUMBER" sort="" />
-                                            <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
-                                        </x-slot>
-                                        <x-slot name="tbody">
-                                            <tr>
-                                                <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
-                                                    1
-                                                </x-table.table-body>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    Dato Mus
-                                                </x-table.table-body>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    420376509687
-                                                </x-table.table-body>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    45325
-                                                </x-table.table-body>
-                                            </tr>
-                                            <tr>
-                                                <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
-                                                    2
-                                                </x-table.table-body>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    Fattah
-                                                </x-table.table-body>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    772811431698
-                                                </x-table.table-body>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    24582
-                                                </x-table.table-body>
-                                            </tr>
-                                        </x-slot>
-                                    </x-table.table>
-                                @else
-                                    <x-table.table>
-                                        <x-slot name="thead">
-                                            <x-table.table-header class="text-left" value="NO" sort="" />
-                                            <x-table.table-header class="text-left" value="MEMBER NAME" sort="" />
-                                            <x-table.table-header class="text-left" value="IC NUMBER" sort="" />
-                                            <x-table.table-header class="text-left" value="MEMBERSHIP NO" sort="" />
-                                        </x-slot>
-                                        <x-slot name="tbody">
-                                            <tr>
-                                                <x-table.table-body colspan="" class="py-3 text-xs font-medium text-gray-700">
-                                                    1
-                                                </x-table.table-body>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    Dato Mus
-                                                </x-table.table-body>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    420376509687
-                                                </x-table.table-body>
-                                                <x-table.table-body colspan="" class="text-xs font-medium text-gray-700 ">
-                                                    45325
-                                                </x-table.table-body>
-                                            </tr>
-                                        </x-slot>
-                                    </x-table.table>
-                                @endif
-                            </div>
-                        @endif
                     </div>
                 </div>
 
@@ -366,100 +249,354 @@
                             <h1 class="pt-1 text-sm text-gray-500 dark:text-white">
                                 {{ auth()->user()->email }}
                             </h1>
-                            <div class="w-full mt-5">
-                                <x-button class="w-full py-3" href="{{route('profile')}}" outline black label="Edit Profile" />
+                            <div class="w-1/2 mt-5">
+                                <x-button class="w-full py-3" href="{{route('profile')}}" rounded primary label="Edit Profile" />
                             </div>
                         </div>
                     </div>
-                    @if (auth()->user()->user_type != 2)
-                    <div class="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-1">
-                        <div class="relative flex flex-col px-4 py-6 mt-6 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:border-black dark:text-white">
-                            <div class="flex items-center space-x-4">
-                                <div class="relative">
-                                    <div class="relative w-32 h-32 rounded-full bg-gradient-to-r from-primary-500 to-primary-600"
-                                        :class="tab == 0 ? 'animate-spin' : ''">
-                                    </div>
-                                    <div class="absolute inset-x-0 flex items-center justify-center w-24 h-24 mx-auto bg-white rounded-full dark:bg-gray-800 top-4">
-                                        @if($clientType == 'siskop membership financing')
-                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{ number_format($disb->total()) }}</h1>
-                                        @else
-                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{ number_format($activeMember->total()) }}</h1>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="space-y-1 text-xl">
-                                        @if($clientType == 'siskop membership financing')
-                                            <h1>Disbursement Listing</h1>
-                                        @else
-                                            <h1>Active Membership</h1>
-                                        @endif
-                                    </div>
+                
+                            <div class="flex flex-col justify-center px-4 py-6 mt-6 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:text-white dark:border-black">
+                                <div class="p-4 bg-white border-[1.5px dark:border-gray-800">
+                                    <b class="text-sm pb-3 ">Total Withdrawal Request Pending Processing {{ $currentDate }}</b>
+                                        <div class ="my-7 " id="pieChart" wire:ignore></div>
+                                        <div class="w-1/2 mt-5 mx-28   ">
+                                            <x-button class="w-full py-3" href="{{route('teller.teller-list')}}" rounded primary label=" Go to Teller" />
+                                        </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="flex flex-col px-4 py-6 mt-6 border rounded-lg shadow-lg dark:bg-gray-800 dark:text-white dark:border-black">
-                            <div class="flex items-center space-x-4">
-                                <div class="relative">
-                                    <div class="relative w-32 h-32 rounded-full bg-gradient-to-r from-primary-600 to-primary-500"
-                                    :class="tab == 1 ? 'animate-spin' : ''">
-                                    </div>
-                                    <div class="absolute inset-x-0 flex items-center justify-center w-24 h-24 mx-auto bg-white rounded-full dark:bg-gray-800 top-4">
-                                        @if($clientType == 'siskop membership financing')
-                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{ number_format($preDisb->total()) }}</h1>
-                                        @else
-                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">{{ number_format($closeMember->total()) }}</h1>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="space-y-1 text-xl">
-                                    @if($clientType == 'siskop membership financing')
-                                        <h1>Pre Disbursement Listing</h1>
-                                    @else
-                                        <h1>Close Membership</h1>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @else
-                        @if(auth()->user()->client_id == 4)
-                            <div class="flex flex-col px-4 py-6 mt-6 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:text-white dark:border-black">
-                                <div class="flex items-center space-x-4">
-                                    <div class="relative">
-                                        <div class="relative w-32 h-32 rounded-full bg-gradient-to-r from-primary-600 to-primary-500"
-                                        :class="tab == 0 ? 'animate-spin' : ''">
-                                        </div>
-                                        <div class="absolute inset-x-0 flex items-center justify-center w-24 h-24 mx-auto bg-white rounded-full dark:bg-gray-800 top-4">
-                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">2</h1>
-                                        </div>
-                                    </div>
-                                    <div class="space-y-1 text-xl">
-                                        <h1>List Of User</h1>
-                                    </div>
-                                </div>
-                            </div>
-                        @else
-                            <div class="flex flex-col px-4 py-6 mt-6 bg-white border rounded-lg shadow-lg dark:bg-gray-800 dark:text-white dark:border-black">
-                                <div class="flex items-center space-x-4">
-                                    <div class="relative">
-                                        <div class="relative w-32 h-32 rounded-full bg-gradient-to-r from-primary-600 to-primary-500"
-                                        :class="tab == 0 ? 'animate-spin' : ''">
-                                        </div>
-                                        <div class="absolute inset-x-0 flex items-center justify-center w-24 h-24 mx-auto bg-white rounded-full dark:bg-gray-800 top-4">
-                                            <h1 class="text-2xl font-semibold text-primary-500 dark:text-primary-200">1</h1>
-                                        </div>
-                                    </div>
-                                    <div class="space-y-1 text-xl">
-                                        <h1>List Of User</h1>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                    @endif
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+{{-- script dashboard chart  --}}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+@push('js')
+
+{{-- barchart_contribution --}}
+    <script>
+        
+        let darkMode = localStorage.getItem('theme') === 'dark';
+        let dataLabelColor = darkMode ? 'white' : 'black';
+    
+        let barChartData = @json($barchartcont);
+        // console.log('barChart');
+        // console.log(barChartData);
+        data2 = JSON.parse(barChartData);
+    
+        data3 = []
+        name3 = []
+    
+        function getRandomColor() {
+        let letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+            return color;
+        }
+    
+        let colors = [];
+        for(i=0;i<data2.length;i++){
+            data3.push(data2[i]['total_rows'])
+            name3.push(data2[i]['contribution_date'])
+        }
+    
+        for(i=0;i<name3.length;i++){
+            colors.push(getRandomColor());
+        }
+
+        var options = {
+            series: [{
+                name: 'RESULT',
+                data: data3
+            }],
+            chart: {
+                type: 'bar',
+                height: 350,
+                stacked: true,
+            },
+            colors: colors,
+            responsive: [{
+                breakpoint: 500,
+                options: {
+                    legend: {
+                        position: 'bottom',
+                        offsetX: -10,
+                        offsetY: 0
+                    }
+                }
+            }],
+            plotOptions: {
+                bar: {
+                    distributed: true,
+                    horizontal:false,
+                    borderRadius: 1,
+                    dataLabels: {
+                        total: {
+                            enabled: true,
+                            style: {
+                                fontSize: '13px',
+                                fontWeight: 900,
+                                color:dataLabelColor
+                            }
+                        }
+                    }
+                },
+            },
+            xaxis: {
+                labels: {
+                    show:false,
+                },
+                categories: name3,
+            },
+            yaxis: {
+            title: {
+                text: 'Total Application'
+            }
+            },
+            legend: {
+                position: 'bottom',
+                offsetX: -10,
+                offsetY: 0
+            },
+            fill: {
+                opacity: 1
+            }
+        };
+        var chart = new ApexCharts(document.getElementById("barChartCont"), options);
+        chart.render();
+    </script>
+
+{{-- barchart_share --}}
+    <script>
+        let darkMode2 = localStorage.getItem('theme') === 'dark';
+        let dataLabelColor2 = darkMode ? 'white' : 'black';
+
+        let barChartData_share = @json($barchartshare);
+        // console.log('barChart');
+        // console.log(barChartData);
+        data2 = JSON.parse(barChartData_share);
+
+        data3 = []
+        name3 = []
+
+        function getRandomColor() {
+        let letters2 = '0123456789ABCDEF';
+        let color2 = '#';
+        for (let b = 0; b < 6; b++) {
+            color2 += letters2[Math.floor(Math.random() * 16)];
+        }
+            return color2;
+        }
+
+        let colors2 = [];
+        for(b=0;b<data2.length;b++){
+            data3.push(data2[b]['total_rows'])
+            name3.push(data2[b]['share_date'])
+        }
+
+        for(b=0;b<name3.length;b++){
+            colors2.push(getRandomColor());
+        }
+
+        var options = {
+            series: [{
+                name: 'RESULT',
+                data: data3
+            }],
+            chart: {
+                type: 'bar',
+                height: 350,
+                stacked: true,
+            },
+            colors: colors,
+            responsive: [{
+                breakpoint: 500,
+                options: {
+                    legend: {
+                        position: 'bottom',
+                        offsetX: -10,
+                        offsetY: 0
+                    }
+                }
+            }],
+            plotOptions: {
+                bar: {
+                    distributed: true,
+                    horizontal:false,
+                    borderRadius: 1,
+                    dataLabels: {
+                        total: {
+                            enabled: true,
+                            style: {
+                                fontSize: '13px',
+                                fontWeight: 900,
+                                color:dataLabelColor
+                            }
+                        }
+                    }
+                },
+            },
+            xaxis: {
+                labels: {
+                    show:false,
+                },
+                categories: name3,
+            },
+            yaxis: {
+            title: {
+                text: 'Total Application'
+            }
+            },
+            legend: {
+                position: 'bottom',
+                offsetX: -10,
+                offsetY: 0
+            },
+            fill: {
+                opacity: 1
+            }
+        };
+        var chart = new ApexCharts(document.getElementById("barChartShare"), options);
+        chart.render();
+    </script>
+
+{{-- barchart_div --}}
+    <script>
+        let darkMode3 = localStorage.getItem('theme') === 'dark';
+        let dataLabelColor3 = darkMode ? 'white' : 'black';
+
+        let barChartData_div = @json($barchartdiv);
+        // console.log('barChart');
+        // console.log(barChartData);
+        data2 = JSON.parse(barChartData_div);
+
+        data3 = []
+        name3 = []
+
+        function getRandomColor() {
+        let letters3 = '0123456789ABCDEF';
+        let color3 = '#';
+        for (let c = 0; c < 6; c++) {
+            color3 += letters3[Math.floor(Math.random() * 16)];
+        }
+            return color3;
+        }
+
+        let colors3 = [];
+        for(c=0;c<data2.length;c++){
+            data3.push(data2[c]['total_rows'])
+            name3.push(data2[c]['div_date'])
+        }
+
+        for(c=0;c<name3.length;c++){
+            colors3.push(getRandomColor());
+        }
+
+        var options = {
+            series: [{
+                name: 'RESULT',
+                data: data3
+            }],
+            chart: {
+                type: 'bar',
+                height: 350,
+                stacked: true,
+            },
+            colors: colors,
+            responsive: [{
+                breakpoint: 500,
+                options: {
+                    legend: {
+                        position: 'bottom',
+                        offsetX: -10,
+                        offsetY: 0
+                    }
+                }
+            }],
+            plotOptions: {
+                bar: {
+                    distributed: true,
+                    horizontal:false,
+                    borderRadius: 1,
+                    dataLabels: {
+                        total: {
+                            enabled: true,
+                            style: {
+                                fontSize: '13px',
+                                fontWeight: 900,
+                                color:dataLabelColor
+                            }
+                        }
+                    }
+                },
+            },
+            xaxis: {
+                labels: {
+                    show:false,
+                },
+                categories: name3,
+            },
+            yaxis: {
+            title: {
+                text: 'Total Application'
+            }
+            },
+            legend: {
+                position: 'bottom',
+                offsetX: -10,
+                offsetY: 0
+            },
+            fill: {
+                opacity: 1
+            }
+        };
+        var chart = new ApexCharts(document.getElementById("barChartDiv"), options);
+        chart.render();
+    </script>
+
+{{-- chartPie --}}
+    <script>
+            var options = {
+                series: [ {{$withdrawContributionCount}}, {{ $withdrawShareCount }}, {{ $dividendWithdrawalCount }}],
+                chart: {
+                    type: 'pie',
+                    height: 350,
+                },
+                colors: [],
+                dataLabels: {
+                    style: {
+                        fontSize: "20px",
+                        fontWeight: "bold",
+                    },
+                },
+                tooltip: {
+                    style: {
+                        fontSize: '15px',
+                        colors: '#000000',
+                    }
+                },
+                // title: {
+                //     text: 'Total Withdrawal Request Pending Processing No of Request',
+                //     align: 'center'
+                // },
+                labels: ['Contribution', 'Share', 'Dividen' ],
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                    }
+                }]
+            };
+            var chart = new ApexCharts(document.getElementById('pieChart'), options);
+            chart.render();
+    </script>
+
+@endpush
+
